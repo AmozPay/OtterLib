@@ -1,6 +1,10 @@
 # code editors
 .vscode
 
+# docs
+docs/html
+docs/latex
+
 #tools
 gitflow/
 

@@ -3,4 +3,4 @@ IndentWidth: 4
 ---
 Language: Cpp
 ColumnLimit: 100
-AlignAfterOpenBracket: BAS_BlockIndent
+AlignAfterOpenBracket: BlockIndent
