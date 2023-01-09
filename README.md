@@ -13,7 +13,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for ways to get started.
 
 ## Documentation
 
-[Documentation](https://www.youtube.com/watch?v=p7YXXieghto)
+[Documentation](https://amozpay.github.io/OtterLib)
 
 
 ## Authors
