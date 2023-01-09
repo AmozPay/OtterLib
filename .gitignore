@@ -1,3 +1,9 @@
+# code editors
+.vscode
+
+#tools
+gitflow/
+
 # Prerequisites
 *.d
 
