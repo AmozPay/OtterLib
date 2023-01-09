@@ -4,21 +4,21 @@ on: [push, delete, pull_request]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
     if: github.repository == 'AmozPay/Otter-Type'
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      # - name: lint with clang
-      #   run: |
-      #     cd #GITHUB_WORKSPACE/frontend
-      #     yarn
-      #     yarn lint:fix
+      - name: lint with clang
+        run: |
+          cd #GITHUB_WORKSPACE
+          ./lint.sh
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: ':art: Fix styling - GITHUB CI'
   mirror_to_epitech:
+    if: github.repository == 'AmozPay/Otter-Type'
     needs: lint
     runs-on: ubuntu-latest
     steps: # <-- must use actions/checkout before mirroring!
