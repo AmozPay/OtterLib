@@ -1,0 +1,43 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  create_release:
+    name: Build and release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get version from tag
+        id: lasttag
+        run: |
+          echo TAG=${GITHUB_REF#refs/tags/v}
+          echo ::set-output name=version::${GITHUB_REF#refs/tags/v}
+        shell: bash
+      - name: Parse Changelog Entry
+        id: changelog
+        uses: coditory/changelog-parser@v1
+        with:
+          version: ${{ steps.lasttag.outputs.version }}
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.changelog.outputs.version }}
+          release_name: v${{ steps.changelog.outputs.version }}
+          body: ${{ steps.changelog.outputs.description }}
+      # - name: upload artifact
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: path
+      #     asset_name: path
+      #     asset_content_type: application/gzip
