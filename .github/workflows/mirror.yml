@@ -4,7 +4,7 @@ on: [push, delete, pull_request]
 
 jobs:
   lint:
-    if: github.repository == 'AmozPay/Otter-Type'
+    if: github.repository == 'AmozPay/OtterLib'
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -18,7 +18,7 @@ jobs:
         with:
           commit_message: ':art: Fix styling - GITHUB CI'
   mirror_to_epitech:
-    if: github.repository == 'AmozPay/Otter-Type'
+    if: github.repository == 'AmozPay/OtterLib'
     needs: lint
     runs-on: ubuntu-latest
     steps: # <-- must use actions/checkout before mirroring!
