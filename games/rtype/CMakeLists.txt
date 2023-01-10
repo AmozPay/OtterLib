@@ -30,10 +30,6 @@ execute_process(
 
 add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
-include_directories(${OTTERLIB_DIR}/core/include)
-include_directories(${OTTERLIB_DIR}/graphic/include)
-include_directories(${OTTERLIB_DIR}/network/include)
-
 file(GLOB CLIENT_FILES src/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp)
 
@@ -49,5 +45,9 @@ target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
 target_link_libraries(r-type_server OtterCore)
 target_link_libraries(r-type_server OtterNetwork)
 target_link_libraries(r-type_server OtterGraphic)
-install(TARGETS r-type_server r-type_client RUNTIME DESTINATION bin)
+install(TARGETS r-type_server r-type_client RUNTIME DESTINATION bin COMPONENT release)
+
+# only install this binary, do not include OtterLib in the package
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_COMPONENTS_ALL release)
 include(CPack)
