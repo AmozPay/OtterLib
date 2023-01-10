@@ -3,7 +3,8 @@ name: Check if project compiles
 on:
   push:
     branches:
-      - "*"
+      - "feature/*"
+      - develop
   pull_request:
     branches:
       - develop
@@ -35,7 +36,15 @@ jobs:
         uses: actions/checkout@v2
       - name: "TODO: build OtterLib on Windows"
         run: |
-          echo TODO
+          ls
+          cd OtterLib
+          mkdir build && cd build
+          cmake ..
+          cmake --build .
+          cd ../..
       - name: "TODO: build RType on Windows"
         run: |
-          echo TODO
+          cd games/rtype
+          mkdir build && cd build
+          cmake ..
+          cmake --build .

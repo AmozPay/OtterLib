@@ -114,3 +114,5 @@ install)
 	exit
 	;;
 esac
+
+rm -rf gitflow
