@@ -1,0 +1,41 @@
+name: Check if project compiles
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build_linux:
+    name: On Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: build OtterLib
+        run: |
+          cd $GITHUB_WORKSPACE/OtterLib
+          mkdir build && cd build
+          cmake ..
+          cmake --build .
+      - name: build rtype
+        run: |
+          cd $GITHUB_WORKSPACE/games/rtype
+          mkdir build && cd build
+          cmake ..
+          cmake --build .
+  build_windows:
+    name: On Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: "TODO: build OtterLib on Windows"
+        run: |
+          echo TODO
+      - name: "TODO: build RType on Windows"
+        run: |
+          echo TODO
