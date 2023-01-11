@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.17)
-project(
-    OtterLib
-    VERSION 0.0.1
-    DESCRIPTION
-    "Otter Game Engine"
-)
+
+# define project version with CI build
+if(DEFINED ENV{PROJECT_VERSION})
+    project(
+        OtterLib
+        VERSION $ENV{PROJECT_VERSION}
+        DESCRIPTION "Otter Game Engine"
+    )
+else()
+    project(
+        OtterLib
+        VERSION 0.1.0
+        DESCRIPTION "Otter Game Engine"
+    )
+endif()
 
 # Create Static Libraries
 
