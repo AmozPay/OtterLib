@@ -1,12 +1,19 @@
 cmake_minimum_required(VERSION 3.17)
-project(
-    RType
-    VERSION 0.0.1
-    DESCRIPTION
-    "Epitech Project"
-)
 
-
+# define project version with CI build
+if(DEFINED ENV{PROJECT_VERSION})
+    project(
+        RType
+        VERSION $ENV{PROJECT_VERSION}
+        DESCRIPTION "Epitech Project"
+    )
+else()
+    project(
+        RType
+        VERSION 0.1.0
+        DESCRIPTION "Epitech Project"
+    )
+endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_SOURCE_DIR}/../../OtterLib)
@@ -30,24 +37,34 @@ execute_process(
 
 add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
-include_directories(${OTTERLIB_DIR}/core/include)
-include_directories(${OTTERLIB_DIR}/graphic/include)
-include_directories(${OTTERLIB_DIR}/network/include)
-
 file(GLOB CLIENT_FILES src/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp)
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
-target_link_libraries(r-type_client OtterCore)
-target_link_libraries(r-type_client OtterNetwork)
+target_link_libraries(r-type_client
+    OtterCore
+    OtterNetwork
+)
 
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
-target_link_libraries(r-type_server OtterCore)
-target_link_libraries(r-type_server OtterNetwork)
-target_link_libraries(r-type_server OtterGraphic)
-install(TARGETS r-type_server r-type_client RUNTIME DESTINATION bin)
+target_link_libraries(r-type_server
+    OtterCore
+    OtterNetwork
+    OtterGraphic
+)
+
+install(
+    TARGETS r-type_server r-type_client
+    RUNTIME
+    DESTINATION bin
+    COMPONENT release
+)
+
+# only install this project, do not include OtterLib in the package
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_COMPONENTS_ALL release)
 include(CPack)
