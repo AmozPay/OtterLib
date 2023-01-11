@@ -52,7 +52,14 @@ install(TARGETS
     OtterNetwork
     OtterCore
     EXPORT OtterLib
-    DESTINATION lib)
+    DESTINATION lib
+)
+
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP")
+else()
+    set(CPACK_GENERATOR "TGZ")
+endif()
 
 # Bundle output with cpack
 include(CPack)

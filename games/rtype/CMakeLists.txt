@@ -64,6 +64,12 @@ install(
     COMPONENT release
 )
 
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+else()
+    set(CPACK_GENERATOR "TGZ")
+endif()
+
 # only install this project, do not include OtterLib in the package
 set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 set(CPACK_COMPONENTS_ALL release)
