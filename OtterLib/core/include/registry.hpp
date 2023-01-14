@@ -1,7 +1,7 @@
 
-
 #ifndef REGISTRY_H
 #define REGISTRY_H
+
 #include <any>
 #include <memory>
 #include <optional>
@@ -80,7 +80,7 @@ template <typename C> class sparse_array {
 
     void erase(size_type pos) { _data[pos].reset(); }
     size_type get_index(value_type const &obj) const {
-        long addr = std::addressof(obj);
+        auto addr = std::addressof(obj);
         for (int i = 0; i != _data.size(); i++) {
             if (addr == std::addressof(_data[i]))
                 return (i);
@@ -92,11 +92,14 @@ template <typename C> class sparse_array {
     container_t _data;
 };
 
-class registry {
+class ComponentManager {
   public:
-    registry(){};
+    template <class C> using container_t = sparse_array<C>;
 
-    template <class C> sparse_array<C> &register_component() {
+  public:
+    ComponentManager(){};
+
+    template <class C> container_t<C> &register_component() {
         auto res =
             _type_map.try_emplace(std::type_index(typeid(C), std::make_any<sparse_array<C>>()));
         if (res.second == true)
@@ -104,11 +107,11 @@ class registry {
         return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
     }
 
-    template <class C> sparse_array<C> &get_components() {
+    template <class C> container_t<C> &get_components() {
         return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
     }
 
-    template <class C> sparse_array<C> const &get_components() const {
+    template <class C> container_t<C> const &get_components() const {
         return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
     }
 
@@ -116,4 +119,4 @@ class registry {
     std::unordered_map<std::type_index, std::any> _type_map; // std::any_cast
 };
 
-#endif /* REGISTRY_H */
+#endif /*COMPONENTMANAGER_H */
