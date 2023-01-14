@@ -1,0 +1,10 @@
+[requires]
+zlib/1.2.13
+sdl/2.26.1
+sfml/2.5.1
+raylib/4.0.0
+boost/1.76.0
+asio/1.18.2
+
+[generators]
+cmake

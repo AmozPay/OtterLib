@@ -15,8 +15,27 @@ else()
     )
 endif()
 
+# Check if conan is installed
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    # If not, install conan
+    execute_process(
+            COMMAND conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing
+            RESULT_VARIABLE result
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+        include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+        conan_basic_setup()
+    else()
+        message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+    endif()
+endif()
+
 # Build OtterLib
-set(OTTERLIB_DIR ${CMAKE_SOURCE_DIR}/../../OtterLib)
+set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
 file(MAKE_DIRECTORY ${OTTERLIB_DIR}/build)
 execute_process(
     COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} ..
@@ -46,6 +65,7 @@ target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
 target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
+    ${CONAN_LIBS}
 )
 
 # build server
@@ -55,6 +75,7 @@ target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
     OtterGraphic
+    ${CONAN_LIBS}
 )
 
 install(
