@@ -1,4 +1,3 @@
+#pragma once
 
-namespace Otter::Core {
-void print_hello(void);
-}
+#include "Orchestrator.hpp"

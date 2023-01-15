@@ -2,18 +2,16 @@
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
+#include "EntityManager.hpp"
 #include <any>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
-class entity {
-  public:
-  private:
-    int entity;
-};
 
+namespace Core {
 template <typename C> class sparse_array {
   public:
     using value_type = std::optional<C>;         // optional component type
@@ -62,8 +60,9 @@ template <typename C> class sparse_array {
         return _data[pos];
     }
     reference_type insert_at(size_type pos, C &&comp) {
-        if (pos >= _data.size())
+        if (pos >= _data.size()) {
             _data.resize(pos);
+        }
         _data[pos] = comp;
         return _data[pos];
     }
@@ -95,6 +94,7 @@ template <typename C> class sparse_array {
 class ComponentManager {
   public:
     template <class C> using container_t = sparse_array<C>;
+    template <class C> using reference_type = typename container_t<C>::reference_type;
 
   public:
     ComponentManager(){};
@@ -102,8 +102,14 @@ class ComponentManager {
     template <class C> container_t<C> &register_component() {
         auto res =
             _type_map.try_emplace(std::type_index(typeid(C), std::make_any<sparse_array<C>>()));
-        if (res.second == true)
+        if (res.second == true) {
+            _destroy_map.emplace(
+                std::type_index(typeid(C), [](ComponentManager &m, Entity const &entity) {
+                    auto type = m.get_components<C>().erase(entity);
+                }));
+
             return (std::any_cast<C>(*res.first));
+        }
         return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
     }
 
@@ -115,8 +121,31 @@ class ComponentManager {
         return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
     }
 
+    template <typename C> reference_type<C> add_component(Entity const &addr, C &&component) {
+        container_t<C> cont = *_type_map.find(std::type_index(typeid(C)));
+        return cont.insert_at(addr, component);
+    }
+
+    template <typename C, typename... Params>
+    reference_type<C> emplace_component(Entity const &addr, Params &&...var) {
+        container_t<C> cont = *_type_map.find(std::type_index(typeid(C)));
+        return cont.emplace_at(addr, var...);
+    }
+    template <typename C> void remove_component(Entity const &addr) {
+        container_t<C> cont = *_type_map.find(std::type_index(typeid(C)));
+        cont.erase(addr);
+    }
+
+    void remoce_entity(Entity const &addr) {
+        for (const auto &[key, value] : _destroy_map) {
+            value(*this, addr);
+        }
+    }
+
   private:
     std::unordered_map<std::type_index, std::any> _type_map; // std::any_cast
+    std::unordered_map<std::type_index, std::function<void(ComponentManager &, Entity const &)>>
+        _destroy_map;
 };
-
+} // namespace Core
 #endif /*COMPONENTMANAGER_H */

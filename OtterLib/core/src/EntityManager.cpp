@@ -6,7 +6,7 @@
 */
 
 #include "EntityManager.hpp"
-
+namespace Core {
 EntityManager::EntityManager() {
     _livingEntityCount = 0;
     for (Entity it = 1; it < MAX_ENTITY; it++)
@@ -34,3 +34,4 @@ void EntityManager::destroyEntity(Entity entity) {
     _availableEntity.push(entity);
     _livingEntityCount -= 1;
 }
+} // namespace Core
