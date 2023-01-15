@@ -1,4 +1,4 @@
 
 
-#include "registry.hpp"
-int main() { registry toto; }
+#include "OtterCore.hpp"
+int main() {}
