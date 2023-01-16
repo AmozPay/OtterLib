@@ -36,6 +36,7 @@ MAIN = main.cpp
 
 FILE = registry.cpp \
 	EntityManager.cpp \
+	test.cpp
 
 DIR_INCLUDE = -I include
 
