@@ -5,6 +5,7 @@ cmake-build-debug/
 
 # code editors
 .vscode
+.vs
 
 # docs
 docs/html
