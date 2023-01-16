@@ -1,12 +1,13 @@
 #ifndef COMPONENTCONTAINER_H
 #define COMPONENTCONTAINER_H
+
 #include <any>
 #include <functional>
 #include <memory>
 #include <optional>
-#include <typeindex>
 #include <unordered_map>
 #include <vector>
+
 namespace Core {
 
 template <typename C> class sparse_array {
