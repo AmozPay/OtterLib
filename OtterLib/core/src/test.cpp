@@ -2,10 +2,13 @@
 
 #include "Orchestrator.hpp"
 
+
 void init(Core::Orchestrator &data)
-{
-  //registering
-  //adding data
+  {
+    data.register_component<testcomponent>();
+
+  // registering
+    // adding data
 }
 
 /*   EXEmple systeme
@@ -17,22 +20,19 @@ void logging_system ( registry & r ) {
     auto const & vel = velocities [ i ];
     if ( pos && vel ) {
       std :: cerr << i << " : Position = { " << pos . value () . x << " , " << pos . value
-	() . y << " } , Velocity = { " << vel . value () . vx << " , " << vel . value () .
-	vy << " } " << std :: endl ;
+        () . y << " } , Velocity = { " << vel . value () . vx << " , " << vel . value () .
+        vy << " } " << std :: endl ;
     }
   }
   }*/
 
+int main(int argc, char *argv[]) {
+    Core::Orchestrator data;
 
-int main(int argc, char *argv[])
-{
-  Core::Orchestrator data;
-
-  init(data);
-  while (1) {
-    // system call Proto:
-    //  void SYS_NAME(Orchestrator &data); 
-
-  }
-  return 0;
+    init(data);
+    while (1) {
+        // system call Proto:
+        //  void SYS_NAME(Orchestrator &data);
+    }
+    return 0;
 }

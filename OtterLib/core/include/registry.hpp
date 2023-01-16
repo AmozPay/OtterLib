@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include <utility>
 namespace Core {
 
 class ComponentManager {
@@ -25,24 +26,25 @@ class ComponentManager {
 
     template <class C> container_t<C> &register_component() {
         auto res =
-            _type_map.try_emplace(std::type_index(typeid(C), std::make_any<sparse_array<C>>()));
+	  _type_map.try_emplace(std::type_index(typeid(C)), sparse_array<C>());
         if (res.second == true) {
-            _destroy_map.emplace(
-                std::type_index(typeid(C), [](ComponentManager &m, Entity const &entity) {
-                    auto type = m.get_components<C>().erase(entity);
-                }));
-
-            return (std::any_cast<C>(*res.first));
+	  _destroy_map.emplace(std::type_index(typeid(C)),
+	   [](ComponentManager &m, Entity const &entity) {
+	    m.get_components<C>().erase(entity);
+	  });
+	  std::any resu = (*res.first);
+	  container_t<C> &val = (std::any_cast<container_t<C>>(resu));
+	  return val;
         }
-        return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
+        return std::any_cast<container_t<C>&>(*_type_map.find(std::type_index(typeid(C))));
     }
 
     template <class C> container_t<C> &get_components() {
-        return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
+        return std::any_cast<container_t<C>&>(*_type_map.find(std::type_index(typeid(C))));
     }
 
     template <class C> container_t<C> const &get_components() const {
-        return std::any_cast<C>(*_type_map.find(std::type_index(typeid(C))));
+        return std::any_cast<container_t<C>&>(*_type_map.find(std::type_index(typeid(C))));
     }
 
     template <typename C> reference_type<C> add_component(Entity const &addr, C &&component) {
