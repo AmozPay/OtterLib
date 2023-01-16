@@ -15,8 +15,26 @@ else()
     )
 endif()
 
-# Create Static Libraries
+# Check if conan is installed
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    # If not, install conan
+    execute_process(
+            COMMAND conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing
+            RESULT_VARIABLE result
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+        include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+        conan_basic_setup()
+    else()
+        message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+    endif()
+endif()
 
+# Create Static Libraries
 file(GLOB CORE_FILES core/src/*.cpp)
 add_library(OtterCore STATIC ${CORE_FILES})
 target_compile_features(OtterCore PUBLIC cxx_std_20)
@@ -26,7 +44,6 @@ file(GLOB NETWORK_FILES network/src/*.cpp)
 add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(OtterNetwork PUBLIC network/include)
-
 
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
 add_library(OtterGraphic STATIC ${GRAPHIC_FILES})
