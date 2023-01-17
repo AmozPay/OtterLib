@@ -31,11 +31,15 @@ template <typename C> class sparse_array {
     ~sparse_array(){};
 
     sparse_array &operator=(sparse_array const &other) {
+        if (this == &other)
+            return *this;
         _data = other._data;
+        return *this;
     }; // copy assignment operator
 
     sparse_array &operator=(sparse_array &&other) noexcept {
         _data = std::move(other._data);
+        return *this;
     }; // move assignment operator
 
     reference_type operator[](size_t idx) { return _data[idx]; };
@@ -53,18 +57,16 @@ template <typename C> class sparse_array {
 
     reference_type insert_at(size_type pos, C const &comp) {
         if (pos >= _data.size())
-            _data.resize(pos);
-        _data[pos] = comp;
+            _data.resize(pos, std::optional<C>());
+        _data.insert(_data.begin() + pos, comp);
         return _data[pos];
     }
     reference_type insert_at(size_type pos, C &&comp) {
-        if (pos >= _data.size()) {
-            _data.resize(pos);
-        }
-        _data[pos] = comp;
+        if (pos >= _data.size())
+            _data.resize(pos, std::optional<C>());
+        _data.insert(_data.begin() + pos, comp);
         return _data[pos];
     }
-
     // to test maybe not work   don't understnad use of std::allocator_trait
     template <class... Params> reference_type emplace_at(size_type pos, Params &&...var) {
         std::allocator<std::optional<C>> alocator = _data.get_allocator();
@@ -74,7 +76,11 @@ template <typename C> class sparse_array {
         alocator.construct(&_data[pos], var...);
         return _data[pos];
     }
-
+    bool isEmpty() const {
+        if (_data.empty() == true)
+            return true;
+        return false;
+    }
     void erase(size_type pos) { _data[pos].reset(); }
     size_type get_index(value_type const &obj) const {
         auto addr = std::addressof(obj);

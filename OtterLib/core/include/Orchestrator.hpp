@@ -3,12 +3,36 @@
 
 #include "registry.hpp"
 #include <iostream>
-class testcomponent{
-  testcomponent(){
-    std::cout << "construct" << std::endl;};
-  void yolo(){std::cout << "oi";}
+
+class testcomponent {
+  public:
+    testcomponent(int var) {
+        std::cout << "construct" << std::endl;
+        this->dt = var;
+    };
+    ~testcomponent(){};
+    testcomponent(testcomponent const &source) { dt = source.dt; }
+    testcomponent(testcomponent const &&source) noexcept { dt = std::move(source.dt); }
+
+    testcomponent &operator=(testcomponent const other) {
+        dt = other.dt;
+        return *this;
+    }
+    testcomponent &operator=(testcomponent const &&source) noexcept {
+        dt = std::move(source.dt);
+        return *this;
+    }
+    void yolo() { std::cout << dt; }
+    int getdata() { return dt; }
+
+  private:
+    int dt;
 };
 
+struct test_str {
+    int i;
+    std::string name;
+};
 
 namespace Core {
 class Orchestrator {
@@ -17,23 +41,27 @@ class Orchestrator {
 
     Entity CreateEntity() { return _entity.CreateEntity(); }
 
-  template <class C> Core::sparse_array<C> &register_component() {
+    template <class C> Core::sparse_array<C> &register_component() {
         return _components.register_component<C>();
     }
-  template <class C> typename Core::ComponentManager::container_t<C> &get_components() {
+    template <class C> typename Core::ComponentManager::container_t<C> &get_components() {
         return _components.get_components<C>();
     }
-  template <class C> typename Core::ComponentManager::container_t<C> const &get_components() const {
+    template <class C>
+    typename Core::ComponentManager::container_t<C> const &get_components() const {
         return _components.get_components<C>();
     }
     template <typename C>
-    typename Core::ComponentManager::reference_type<C> add_component(Entity const &addr, C &&component) {
-        return _components.add_component<C>(addr, component);
+    typename Core::ComponentManager::reference_type<C> add_component(Entity const &addr,
+                                                                     C &&component) {
+        typename Core::ComponentManager::reference_type<C> re =
+            _components.add_component<C>(addr, std::forward<C>(component));
+        return re;
     }
 
     template <typename C, typename... Params>
     typename Core::ComponentManager::reference_type<C> emplace_component(Entity const &addr,
-                                                                   Params &&...var) {
+                                                                         Params &&...var) {
         return emplace_component<C>(addr, var...);
     }
 
