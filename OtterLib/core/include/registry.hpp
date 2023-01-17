@@ -63,7 +63,7 @@ class ComponentManager {
     // template <typename C> void remove_component() { rm a full components list
 
     template <typename C> void remove_component(Entity const &addr) {
-        container_t<C> cont = *_type_map.find(std::type_index(typeid(C)));
+        container_t<C> &cont = this->get_components<C>();
         cont.erase(addr);
     }
 
