@@ -15,16 +15,13 @@ void compoTest(Core::Orchestrator &data, Core::sparse_array<testcomponent> &ref)
     if (get.isEmpty())
         std::cout << "error: is empty" << std::endl;
     if (ref.isEmpty())
-      std::cout << "error: refe don work" << std::endl;
+        std::cout << "error: refe don work" << std::endl;
     ref[id]->yolo();
     get[id]->yolo();
     data.remove_component<testcomponent>(id);
     if (get.isEmpty())
-      std::cout << "error: need to be empty" << std::endl;
+        std::cout << "error: need to be empty" << std::endl;
 }
-
-
-
 
 void init(Core::Orchestrator &data) {
     auto type = data.register_component<testcomponent>();
@@ -37,18 +34,18 @@ void init(Core::Orchestrator &data) {
     if (gets.isEmpty())
         std::cout << "gets is empty" << std::endl;
     compoTest(data, get);
-    std::cout <<"register struct ?" << std::endl;
+    std::cout << "register struct ?" << std::endl;
     auto type1 = data.register_component<test_str>();
 
     auto enti = data.createEntity();
     if (enti < 0)
-      std::cout << "entity creat faile" << std::endl;
-    
+        std::cout << "entity creat faile" << std::endl;
+
     std::optional<testcomponent> &reff = data.add_component(enti, testcomponent(18));
     std::optional<test_str> &reff2 = data.add_component(enti, test_str(19));
-    data.remove_entity(enti);    
+    data.remove_entity(enti);
     if (type1.isEmpty())
-      std::cout << "entity clear" << std::endl;
+        std::cout << "entity clear" << std::endl;
     // registering
     // adding data
 }

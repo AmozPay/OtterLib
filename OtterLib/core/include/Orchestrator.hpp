@@ -11,7 +11,7 @@ class testcomponent {
         this->dt = var;
     };
     ~testcomponent(){
-      //      std::cout << "destruct test" << std::endl;
+        //      std::cout << "destruct test" << std::endl;
     };
     testcomponent(testcomponent const &source) { dt = source.dt; }
     testcomponent(testcomponent const &&source) noexcept { dt = std::move(source.dt); }
@@ -27,22 +27,23 @@ class testcomponent {
     void yolo() { std::cout << dt; }
     int getdata() { return dt; }
 
-private:
+  private:
     int dt;
 };
 
 class test_str {
-public:
-  test_str(int i, std::string toto="") : name(toto){
-    _i = i;
-    std::cout << "construct str" << std::endl;
-      }
-  ~test_str(){
-    //  std::cout << "destruct" << std::endl;
-  }
-private:
-  int _i;
-  std::string name;
+  public:
+    test_str(int i, std::string toto = "") : name(toto) {
+        _i = i;
+        std::cout << "construct str" << std::endl;
+    }
+    ~test_str() {
+        //  std::cout << "destruct" << std::endl;
+    }
+
+  private:
+    int _i;
+    std::string name;
 };
 
 namespace Core {
@@ -73,13 +74,15 @@ class Orchestrator {
     template <typename C, typename... Params>
     typename Core::ComponentManager::reference_type<C> emplace_component(Entity const &addr,
                                                                          Params &&...var) {
-      return emplace_component<C>(addr, var...);
+        return emplace_component<C>(addr, var...);
     }
-  
-  template <typename C> void remove_component(Entity const &addr) {_components.remove_component<C>(addr);}
+
+    template <typename C> void remove_component(Entity const &addr) {
+        _components.remove_component<C>(addr);
+    }
     void remove_entity(Entity const &addr) {
-      _components.remove_entity(addr);
-      _entity.destroyEntity(addr);
+        _components.remove_entity(addr);
+        _entity.destroyEntity(addr);
     }
 
   private:
