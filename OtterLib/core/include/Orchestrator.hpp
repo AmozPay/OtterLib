@@ -1,6 +1,7 @@
 #ifndef ORCHESTRATOR_H
 #define ORCHESTRATOR_H
 
+#include "SystemManager.hpp"
 #include "registry.hpp"
 #include <iostream>
 #include <string>
@@ -87,7 +88,7 @@ class Orchestrator {
 
   private:
     ComponentManager _components;
-    //    SystemManager _systems;
+    //	SystemManager _systems;
     EntityManager _entity;
 };
 

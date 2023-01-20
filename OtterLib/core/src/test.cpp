@@ -1,6 +1,5 @@
 
 #include "Orchestrator.hpp"
-
 void compoTest(Core::Orchestrator &data, Core::sparse_array<testcomponent> &ref) {
     int id = 1;
 
@@ -65,10 +64,18 @@ void logging_system ( registry & r ) {
   }
   }*/
 
+void print(Core::Orchestrator &) { std::cout << "workjn" << std::endl; }
+
+void test_system(auto &data) {
+    Core::SystemManager sysTest;
+    sysTest.register_system(&print);
+    sysTest.run_systems(data);
+}
+
 int main(int argc, char *argv[]) {
     Core::Orchestrator data;
-
-    init(data);
+    test_system(data);
+    //    init(data);
     //    while (1) {
     // system call Proto:
     //  void SYS_NAME(Orchestrator &data);
