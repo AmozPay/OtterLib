@@ -1,23 +1,31 @@
 #pragma once
 
 #include "Orchestrator.hpp"
+#include "SystemManager.hpp"
 
 namespace Otter::Core {
-    /*
-    class OtterCore {
-      OtterCore() : _data() {
+    
+  class OtterCore {
+  public:
+    OtterCore() : _data(), _systems()
+      {
+	_isRunning = true;
       }
-      void engineStart();
 
+      /**
+       * @brief start the engine
+       * @return exit code
+       */
+      int engineStart();
+      void registerComponents();
+      void registerSystems();
 
     private:
       void loop();
       void init();
-
+      
+      bool _isRunning;
       Orchestrator _data;
-      //main
-
-    }
-    */
-
+      SystemManager _systems;
+};
 }

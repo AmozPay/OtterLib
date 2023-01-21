@@ -1,7 +1,6 @@
 #ifndef ORCHESTRATOR_H
 #define ORCHESTRATOR_H
 
-#include "SystemManager.hpp"
 #include "registry.hpp"
 
 #include <iostream>
@@ -172,7 +171,6 @@ namespace Otter::Core {
 
       private:
         ComponentManager _components;
-        //	SystemManager _systems;
         EntityManager _entity;
     };
 

@@ -36,7 +36,9 @@ MAIN = main.cpp
 
 FILE = registry.cpp \
 	EntityManager.cpp \
-	test.cpp
+	OtterCore.cpp  \
+	main.cpp \
+	endPointDev.cpp\
 
 DIR_INCLUDE = -I include
 
