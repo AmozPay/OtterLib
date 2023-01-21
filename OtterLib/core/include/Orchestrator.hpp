@@ -75,7 +75,7 @@ class Orchestrator {
 
     /**
      * @brief Register component
-     * @details register a component in the Core
+     * @details register a component type in the core, do not initiate component data
      * @see sparse_array()
      * @return a reference to container_t<C> (aka: sparse_array<C>)
      */
@@ -105,8 +105,8 @@ class Orchestrator {
 
     /**
      * @brief Add component
-     * @details put a component in the core linked to a entity
-     * @param The entity to link the comoonent
+     * @details put a component, already exiten, in the core linked to a entity
+     * @param The entity to link the component
      * @param a rvalue to a component
      * @see EntityManager()
      * @return a reference to the array of C component
