@@ -4,14 +4,14 @@
 #include <functional>
 #include <iostream>
 #include <vector>
-namespace Core {
+namespace Otter::Core {
 
 class Orchestrator;
 
 /**
- * @class System Manager
+ * @class SystemManager
  *
- * @details class who store and call system.
+ * @brief class who store and call system.
  *
  * @warning Feathure actuali 1.0 can't store complex system
  */
@@ -22,7 +22,7 @@ class SystemManager {
 
     /**
      * @brief Function for register system
-     * @params A function lvalue or rvalue
+     * @param A function lvalue or rvalue
      * @warning Feathure actuali 1.0 can't store complex system
      */
     template <typename F> void register_system(F &&function) {
@@ -33,7 +33,7 @@ class SystemManager {
      * @brief Exec all system
      *
      * @details excution donne in the same order as the registering
-     * @params lvalue to a orchestrator.
+     * @param lvalue to a orchestrator.
      */
     void run_systems(Core::Orchestrator &reg) {
         for (auto const &it : _systems) {
