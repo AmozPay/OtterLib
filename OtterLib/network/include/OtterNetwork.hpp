@@ -1,4 +1,4 @@
 
 namespace Otter::Network {
-void print_hello(void);
+    void print_hello(void);
 }

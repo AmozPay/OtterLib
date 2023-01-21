@@ -12,42 +12,41 @@
 #include <stdexcept>
 
 namespace Otter::Core {
-using Entity = std::uint32_t;
+    using Entity = std::uint32_t;
 #define MAX_ENTITY 1000
 
-// add template<> or arg for scene  to store array of entity per scene
-
+    // add template<> or arg for scene  to store array of entity per scene
 
     /**
      * @class EntityManager
      * @brief manage all the entity, alocate id for new and free old id
      */
-  class EntityManager {
-  public:
-    /**
-     * @brief defualt constructor
-     */
-    EntityManager();
-    ~EntityManager();
-
-    /**
-      * @brief register a new entity
-     * @return entity newly create
-     */
-    Entity CreateEntity();
+    class EntityManager {
+      public:
+        /**
+         * @brief defualt constructor
+         */
+        EntityManager();
+        ~EntityManager();
 
         /**
-     * @brief destroy a entity
-     * @details free id to let new object get id lower
-     * @param entity to delete
-     */
-void destroyEntity(Entity entity);
+         * @brief register a new entity
+         * @return entity newly create
+         */
+        Entity CreateEntity();
 
-  protected:
-  private:
-    std::queue<Entity> _availableEntity;
-    // queue set with all id possible, assure the good balance of the id
-    std::size_t _livingEntityCount;
-};
-} // namespace Core
+        /**
+         * @brief destroy a entity
+         * @details free id to let new object get id lower
+         * @param entity to delete
+         */
+        void destroyEntity(Entity entity);
+
+      protected:
+      private:
+        std::queue<Entity> _availableEntity;
+        // queue set with all id possible, assure the good balance of the id
+        std::size_t _livingEntityCount;
+    };
+} // namespace Otter::Core
 #endif /* !ENTITYMANAGER_HPP_ */

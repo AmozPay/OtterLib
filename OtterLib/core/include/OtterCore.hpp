@@ -3,21 +3,21 @@
 #include "Orchestrator.hpp"
 
 namespace Otter::Core {
-/*
-class OtterCore {
-  OtterCore() : _data() {
-  }
-  void engineStart();
+    /*
+    class OtterCore {
+      OtterCore() : _data() {
+      }
+      void engineStart();
 
 
-private:
-  void loop();
-  void init();
+    private:
+      void loop();
+      void init();
 
-  Orchestrator _data;
-  //main
+      Orchestrator _data;
+      //main
 
-}
-*/
+    }
+    */
 
 }
