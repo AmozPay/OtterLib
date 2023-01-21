@@ -1,4 +1,23 @@
+#pragma once
+
+#include "Orchestrator.hpp"
 
 namespace Otter::Core {
-void print_hello(void);
+/*
+class OtterCore {
+  OtterCore() : _data() {
+  }
+  void engineStart();
+
+
+private:
+  void loop();
+  void init();
+
+  Orchestrator _data;
+  //main
+
+}
+*/
+
 }
