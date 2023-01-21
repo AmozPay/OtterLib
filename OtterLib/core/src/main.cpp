@@ -2,7 +2,7 @@
 
 int main()
 {
-  Otter::Core::OtterCore engin;
+    Otter::Core::OtterCore engin;
 
-return engin.engineStart();
+    return engin.engineStart();
 }

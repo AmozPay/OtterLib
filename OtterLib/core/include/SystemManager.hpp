@@ -19,7 +19,7 @@ namespace Otter::Core {
      */
     class SystemManager {
       public:
-      SystemManager() : _systems() {};
+        SystemManager() : _systems(){};
         ~SystemManager(){};
 
         /**
@@ -34,11 +34,8 @@ namespace Otter::Core {
             _systems.push_back(std::function(f));
         }
 
-      void operator()(Otter::Core::Orchestrator &ref, std::string phase, float time = 0)
-      {
-	this->run_systems(ref);
+        void operator()(Otter::Core::Orchestrator& ref, std::string phase, float time = 0) { this->run_systems(ref); }
 
-      }
         /**
          * @brief Exec all system
          *
