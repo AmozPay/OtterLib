@@ -1,17 +1,19 @@
 #include "Orchestrator.hpp"
+
 #include <iostream>
 
-void compoTest(Otter::Core::Orchestrator &data, Otter::Core::sparse_array<testcomponent> &ref) {
+void compoTest(Otter::Core::Orchestrator& data, Otter::Core::sparse_array<testcomponent>& ref)
+{
     int id = 1;
 
-    std::optional<testcomponent> &reff = data.add_component(id, testcomponent(18));
+    std::optional<testcomponent>& reff = data.add_component(id, testcomponent(18));
 
     if (reff.has_value())
         std::cout << "contain value" << std::endl;
     if (reff.has_value() == false)
         std::cout << "no contain value" << std::endl;
 
-    Otter::Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
+    Otter::Core::ComponentManager::container_t<testcomponent>& get = data.get_components<testcomponent>();
     if (get.isEmpty())
         std::cout << "error: is empty" << std::endl;
     if (ref.isEmpty())
@@ -23,12 +25,12 @@ void compoTest(Otter::Core::Orchestrator &data, Otter::Core::sparse_array<testco
         std::cout << "error: need to be empty" << std::endl;
 }
 
-void init(Otter::Core::Orchestrator &data) {
+void init(Otter::Core::Orchestrator& data)
+{
     auto type = data.register_component<testcomponent>();
 
-    Otter::Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
-    Otter::Core::ComponentManager::container_t<testcomponent> const &gets =
-        data.get_components<testcomponent>();
+    Otter::Core::ComponentManager::container_t<testcomponent>& get = data.get_components<testcomponent>();
+    Otter::Core::ComponentManager::container_t<testcomponent> const& gets = data.get_components<testcomponent>();
     if (get.isEmpty())
         std::cout << "get is empty" << std::endl;
     if (gets.isEmpty())
@@ -41,8 +43,8 @@ void init(Otter::Core::Orchestrator &data) {
     if (enti < 0)
         std::cout << "entity creat faile" << std::endl;
 
-    std::optional<testcomponent> &reff = data.add_component(enti, testcomponent(18));
-    std::optional<test_str> &reff2 = data.add_component(enti, test_str(19));
+    std::optional<testcomponent>& reff = data.add_component(enti, testcomponent(18));
+    std::optional<test_str>& reff2 = data.add_component(enti, test_str(19));
     data.remove_entity(enti);
     if (type1.isEmpty())
         std::cout << "entity clear" << std::endl;
@@ -65,19 +67,21 @@ void logging_system ( registry & r ) {
   }
   }*/
 
-void print(Otter::Core::Orchestrator &) { std::cout << "workjn" << std::endl; }
+void print(Otter::Core::Orchestrator&) { std::cout << "workjn" << std::endl; }
 
-void test_system(auto &data) {
+void test_system(auto& data)
+{
     Otter::Core::SystemManager sysTest;
     sysTest.register_system(&print);
     sysTest.run_systems(data);
 }
 
-int &fun(int &b) { return b; }
+int& fun(int& b) { return b; }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     //    Otter::Core::Orchestrator data;
-  //    testref();
+    //    testref();
     //    test_system(data);
     //    init(data);
     //    while (1) {
@@ -87,16 +91,18 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-int &converte_any(int *var) {
+int& converte_any(int* var)
+{
     *var = 4;
     return *var;
 }
 
-void test_ptr_to_ref() {
+void test_ptr_to_ref()
+{
     int var = 5;
     std::cout << var << std::endl; // expected 5
 
-    int &var2 = converte_any(&var);
+    int& var2 = converte_any(&var);
     std::cout << var << std::endl;  // expected 4
     std::cout << var2 << std::endl; // expected 4
     var2 = 8;

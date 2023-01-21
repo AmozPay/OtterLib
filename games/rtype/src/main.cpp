@@ -1,8 +1,10 @@
 #include "OtterNetwork.hpp"
+
 #include <iostream>
 #include <raylib.h>
 
-int main(int ac, char **av) {
+int main(int ac, char** av)
+{
 #ifdef TARGET_CLIENT
     std::cout << "CLIENT" << std::endl;
 #elif TARGET_SERVER
