@@ -7,16 +7,34 @@
 namespace Core {
 
 class Orchestrator;
+
+/**
+ * @class System Manager
+ *
+ * @details class who store and call system.
+ *
+ * @warning Feathure actuali 1.0 can't store complex system
+ */
 class SystemManager {
   public:
     SystemManager() : _systems(){};
     ~SystemManager(){};
 
+    /**
+     * @brief Function for register system
+     * @params A function lvalue or rvalue
+     * @warning Feathure actuali 1.0 can't store complex system
+     */
     template <typename F> void register_system(F &&function) {
         auto f = [&function](Core::Orchestrator &reg) { function(reg); };
         _systems.push_back(std::function(f));
     }
-
+    /**
+     * @brief Exec all system
+     *
+     * @details excution donne in the same order as the registering
+     * @params lvalue to a orchestrator.
+     */
     void run_systems(Core::Orchestrator &reg) {
         for (auto const &it : _systems) {
             it(reg);

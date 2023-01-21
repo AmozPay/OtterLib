@@ -17,12 +17,31 @@ namespace Core {
 
 // add template<> or arg for scene  to store array of entity per scene
 
-class EntityManager {
+
+    /**
+     * @class Entity manager
+     * @details manage all the entity, alocate id for new and free old id
+     */
+  class EntityManager {
   public:
+    /**
+     * @brief defualt constructor
+     */
     EntityManager();
     ~EntityManager();
+
+    /**
+      * @brief register a new entity
+     * @return entity newly create
+     */
     Entity CreateEntity();
-    void destroyEntity(Entity entity);
+
+        /**
+     * @brief destroy a entity
+     * @details free id to let new object get id lower
+     * @params entity to delete
+     */
+void destroyEntity(Entity entity);
 
   protected:
   private:

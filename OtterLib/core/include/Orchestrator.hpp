@@ -48,22 +48,69 @@ class test_str {
 };
 
 namespace Core {
+
+/**
+ * @class Orchestrator
+ * @brief orchestre all the entity component and system together
+ *
+ * @details is the main interface for game dev, give righ to use all major partie of core
+ *
+ */
 class Orchestrator {
   public:
+    /**
+     * @brief Constructor default
+     *
+     * @details A basic constructor
+     *
+     */
     Orchestrator() : _components(), _entity() {}
 
+    /**
+     * @brief create a entity
+     * @details Genere a Entity in the pool with a pool of object available
+     * @return the Id of the entity generate
+     */
     Entity createEntity() { return _entity.CreateEntity(); }
 
+    /**
+     * @brief Register component
+     * @details register a component in the Core
+     * @see sparse_array()
+     * @return a reference to container_t<C> (aka: sparse_array<C>)
+     */
     template <class C> Core::sparse_array<C> &register_component() {
         return _components.register_component<C>();
     }
+
+    /**
+     * @brief Get component
+     * @details ask the core to give you the array of component C
+     * @see sparse_array()
+     * @return a reference to container_t<C> (aka: sparse_array<C)
+     */
     template <class C> typename Core::ComponentManager::container_t<C> &get_components() {
         return _components.get_components<C>();
     }
+    /**
+     * @brief Get component
+     * @see sparse_array()
+     * @see get_components()
+     * @return a Const reference to container_t<C> (aka: sparse_array)
+     */
     template <class C>
     typename Core::ComponentManager::container_t<C> const &get_components() const {
         return _components.get_components<C>();
     }
+
+    /**
+     * @brief Add component
+     * @details put a component in the core linked to a entity
+     * @params The entity to link the comoonent
+     * @params a rvalue to a component
+     * @see EntityManager()
+     * @return a reference to the array of C component
+     */
     template <typename C>
     typename Core::ComponentManager::reference_type<C> add_component(Entity const &addr,
                                                                      C &&component) {
@@ -78,9 +125,23 @@ class Orchestrator {
         return emplace_component<C>(addr, var...);
     }
 
+    /**
+     * @brief Remove a componet
+     * @details remove a type componet from the entity
+     * @params the entity who want to erase is component
+     * @see EntityManager()
+     * @return a reference to the array of C component
+     */
     template <typename C> void remove_component(Entity const &addr) {
         _components.remove_component<C>(addr);
     }
+
+    /**
+     * @brief Remove entity
+     * @details remove all component of a entity X, and remove the entity
+     * @params entity to erase for the core
+     */
+
     void remove_entity(Entity const &addr) {
         _components.remove_entity(addr);
         _entity.destroyEntity(addr);
