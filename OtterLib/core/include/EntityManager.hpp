@@ -10,17 +10,17 @@
 #include <cstdint>
 #include <queue>
 #include <stdexcept>
+
+namespace Otter::Core {
 using Entity = std::uint32_t;
 #define MAX_ENTITY 1000
-
-namespace Core {
 
 // add template<> or arg for scene  to store array of entity per scene
 
 
     /**
-     * @class Entity manager
-     * @details manage all the entity, alocate id for new and free old id
+     * @class EntityManager
+     * @brief manage all the entity, alocate id for new and free old id
      */
   class EntityManager {
   public:
@@ -39,7 +39,7 @@ namespace Core {
         /**
      * @brief destroy a entity
      * @details free id to let new object get id lower
-     * @params entity to delete
+     * @param entity to delete
      */
 void destroyEntity(Entity entity);
 

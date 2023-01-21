@@ -8,10 +8,12 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Core {
+
+
+namespace Otter::Core {
 
 /**
- * @class Sparse array
+ * @class sparse_array
  * @brief Container type for any unique typename
  *
  */
@@ -40,7 +42,7 @@ template <typename C> class sparse_array {
      *
      * @details create a new class and copy the data from the source in the newly created
      *
-     * @params lvalue to a sparse array
+     * @param lvalue to a sparse array
      */
     sparse_array(sparse_array const &source) : _data(source._data){};
 
@@ -49,7 +51,7 @@ template <typename C> class sparse_array {
      *
      * @details Move a existing sparse array to the one created
      *
-     * @params A Rvalue to a sparse array
+     * @param A Rvalue to a sparse array
      * @warning Methode used for optimization
      */
     sparse_array(sparse_array &&source) noexcept
@@ -78,14 +80,14 @@ template <typename C> class sparse_array {
 
     /**
      * @brief Operator for indexing
-     * @params size_t of the data scearched
+     * @param size_t of the data scearched
      * @return reference_type
      */
     reference_type operator[](size_t idx) { return _data[idx]; };
 
     /**
      * @brief Operator for indexing
-     * @params size_t of the data scearched
+     * @param size_t of the data scearched
      * @return const_reference_type
      */
     const_reference_type operator[](size_t idx) const { return _data[idx]; }
@@ -106,8 +108,8 @@ template <typename C> class sparse_array {
 
     /**
      * @brief Insert data a index
-     * @params index
-     * @params lvalue of Composant to store
+     * @param index
+     * @param lvalue of Composant to store
      * @return reference_type
      */
     reference_type insert_at(size_type pos, C const &comp) {
@@ -119,8 +121,8 @@ template <typename C> class sparse_array {
 
     /**
      * @brief Insert data a index
-     * @params index
-     * @params rvalue of Composant to store
+     * @param index
+     * @param rvalue of Composant to store
      * @return reference_type
      */
     reference_type insert_at(size_type pos, C &&comp) {
@@ -151,13 +153,13 @@ template <typename C> class sparse_array {
     }
     /**
      * @brief erase data at index
-     * @params index
+     * @param index
      */
     void erase(size_type pos) { _data[pos].reset(); }
 
     /**
      * @brief find index of component
-     * @params Valu_type of a component
+     * @param Valu_type of a component
      * @return index at wich is store
      */
     size_type get_index(value_type const &obj) const {

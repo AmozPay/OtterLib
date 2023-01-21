@@ -6,7 +6,7 @@
 */
 
 #include "EntityManager.hpp"
-namespace Core {
+namespace Otter::Core {
 EntityManager::EntityManager() {
     _livingEntityCount = 0;
     for (Entity it = 1; it < MAX_ENTITY; it++)

@@ -14,7 +14,7 @@
 #include <vector>
 
 #include <utility>
-namespace Core {
+namespace Otter::Core {
 
 class ComponentManager {
   public:

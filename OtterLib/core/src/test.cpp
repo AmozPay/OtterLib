@@ -1,7 +1,7 @@
 #include "Orchestrator.hpp"
 #include <iostream>
 
-void compoTest(Core::Orchestrator &data, Core::sparse_array<testcomponent> &ref) {
+void compoTest(Otter::Core::Orchestrator &data, Otter::Core::sparse_array<testcomponent> &ref) {
     int id = 1;
 
     std::optional<testcomponent> &reff = data.add_component(id, testcomponent(18));
@@ -11,7 +11,7 @@ void compoTest(Core::Orchestrator &data, Core::sparse_array<testcomponent> &ref)
     if (reff.has_value() == false)
         std::cout << "no contain value" << std::endl;
 
-    Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
+    Otter::Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
     if (get.isEmpty())
         std::cout << "error: is empty" << std::endl;
     if (ref.isEmpty())
@@ -23,11 +23,11 @@ void compoTest(Core::Orchestrator &data, Core::sparse_array<testcomponent> &ref)
         std::cout << "error: need to be empty" << std::endl;
 }
 
-void init(Core::Orchestrator &data) {
+void init(Otter::Core::Orchestrator &data) {
     auto type = data.register_component<testcomponent>();
 
-    Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
-    Core::ComponentManager::container_t<testcomponent> const &gets =
+    Otter::Core::ComponentManager::container_t<testcomponent> &get = data.get_components<testcomponent>();
+    Otter::Core::ComponentManager::container_t<testcomponent> const &gets =
         data.get_components<testcomponent>();
     if (get.isEmpty())
         std::cout << "get is empty" << std::endl;
@@ -65,10 +65,10 @@ void logging_system ( registry & r ) {
   }
   }*/
 
-void print(Core::Orchestrator &) { std::cout << "workjn" << std::endl; }
+void print(Otter::Core::Orchestrator &) { std::cout << "workjn" << std::endl; }
 
 void test_system(auto &data) {
-    Core::SystemManager sysTest;
+    Otter::Core::SystemManager sysTest;
     sysTest.register_system(&print);
     sysTest.run_systems(data);
 }
@@ -76,8 +76,8 @@ void test_system(auto &data) {
 int &fun(int &b) { return b; }
 
 int main(int argc, char *argv[]) {
-    //    Core::Orchestrator data;
-    testref();
+    //    Otter::Core::Orchestrator data;
+  //    testref();
     //    test_system(data);
     //    init(data);
     //    while (1) {

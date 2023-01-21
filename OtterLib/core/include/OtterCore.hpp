@@ -2,7 +2,7 @@
 
 #include "Orchestrator.hpp"
 
-namespace Core {
+namespace Otter::Core {
 /*
 class OtterCore {
   OtterCore() : _data() {

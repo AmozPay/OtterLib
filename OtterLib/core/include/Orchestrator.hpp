@@ -47,7 +47,7 @@ class test_str {
     std::string name;
 };
 
-namespace Core {
+namespace Otter::Core {
 
 /**
  * @class Orchestrator
@@ -106,8 +106,8 @@ class Orchestrator {
     /**
      * @brief Add component
      * @details put a component in the core linked to a entity
-     * @params The entity to link the comoonent
-     * @params a rvalue to a component
+     * @param The entity to link the comoonent
+     * @param a rvalue to a component
      * @see EntityManager()
      * @return a reference to the array of C component
      */
@@ -128,7 +128,7 @@ class Orchestrator {
     /**
      * @brief Remove a componet
      * @details remove a type componet from the entity
-     * @params the entity who want to erase is component
+     * @param the entity who want to erase is component
      * @see EntityManager()
      * @return a reference to the array of C component
      */
@@ -139,7 +139,7 @@ class Orchestrator {
     /**
      * @brief Remove entity
      * @details remove all component of a entity X, and remove the entity
-     * @params entity to erase for the core
+     * @param entity to erase for the core
      */
 
     void remove_entity(Entity const &addr) {
