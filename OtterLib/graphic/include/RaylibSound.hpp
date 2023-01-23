@@ -8,8 +8,7 @@
 #ifndef RAYLIBSOUND_HPP_
 #define RAYLIBSOUND_HPP_
 
-#include <string>
-#include <raylib.h>
+#include "Raylib.hpp"
 
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
@@ -33,22 +32,27 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Play the sound
+         * @return Nothing
          */
         void play();
         /**
          * @brief Pause the sound
+         * @return Nothing
          */
         void pause();
         /**
          * @brief Resume the sound
+         * @return Nothing
          */
         void resume();
         /**
          * @brief Stop the sound
+         * @return Nothing
          */
         void stop();
         /**
          * @brief Set the volume of the sound
+         * @return Nothing
          */
         void restart();
 
@@ -60,7 +64,8 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Set the volume of the sound
-         * @param volume The volume of the sound
+         * @param volume: The volume of the sound
+         * @return Nothing
          */
         void setVolume(const float &volume);
 

@@ -8,7 +8,7 @@
 #ifndef RAYLIBKEYBOARD_HPP_
 #define RAYLIBKEYBOARD_HPP_
 
-#include <raylib.h>
+#include "Raylib.hpp"
 
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
@@ -22,7 +22,7 @@ namespace Otter::Graphic::Raylib
     public:
         /**
          * @brief Construct a new Keyboard object
-         * @param key The key to check
+         * @param key: The key to check
          */
         explicit RaylibKeyboard(const int &key);
         /**
@@ -32,11 +32,13 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Set the key to check
-         * @param key The key to check
+         * @param key: The key to check
+         * @return Nothing
          */
         void setKey(const int &key);
         /**
          * @brief Set the exit key
+         * @return Nothing
          */
         void setExitKey() const;
 
