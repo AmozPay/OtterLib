@@ -16,17 +16,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: build OtterLib
-        run: |
-          cd $GITHUB_WORKSPACE/OtterLib
-          mkdir build && cd build
-          cmake ..
-          cmake --build .
       - name: build rtype
         run: |
-          cd $GITHUB_WORKSPACE/games/rtype
-          mkdir build && cd build
-          cmake ..
+          sudo pip install conan
+          cd OtterLib
+          sudo conan install . --build=missing -c tools.system.package_manager:mode=install
+          sudo rm conan.lock conanbuildinfo.cmake conanbuildinfo.txt conaninfo.txt graph_info.json
+          conan install . --build=missing
+          cmake -S . -B build
+          cd build
           cmake --build .
   build_windows:
     name: On Windows
@@ -34,17 +32,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: "TODO: build OtterLib on Windows"
-        run: |
-          ls
-          cd OtterLib
-          mkdir build && cd build
-          cmake ..
-          cmake --build .
-          cd ../..
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
       - name: "TODO: build RType on Windows"
+        shell: pwsh
         run: |
-          cd games/rtype
-          mkdir build && cd build
-          cmake ..
+          pip install conan
+          cd OtterLib
+          conan install . --build=missing -c tools.system.package_manager:mode=install
+          Remove-Item conan.lock, conanbuildinfo.cmake, conanbuildinfo.txt, conaninfo.txt, graph_info.json
+          cmake -S . -B build -G "Visual Studio 17 2022"
+          cd build/
           cmake --build .

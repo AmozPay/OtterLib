@@ -1,8 +1,11 @@
 #cmake
 build/
+cmake-build/
+cmake-build-debug/
 
 # code editors
 .vscode
+.vs
 
 # docs
 docs/html
@@ -43,3 +46,26 @@ gitflow/
 *.exe
 *.out
 *.app
+r-type_server
+r-type_client
+
+# CMake files
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+cmake-build-debug
+
+# Conan files
+conan.lock
+conanbuildinfo.cmake
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
