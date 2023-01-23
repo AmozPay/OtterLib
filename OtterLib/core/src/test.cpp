@@ -12,7 +12,6 @@ void compoTest(Otter::Core::Orchestrator& data, Otter::Core::sparse_array<testco
         std::cout << "contain value" << std::endl;
     if (reff.has_value() == false)
         std::cout << "no contain value" << std::endl;
-
     Otter::Core::ComponentManager::container_t<testcomponent>& get = data.get_components<testcomponent>();
     if (get.isEmpty())
         std::cout << "error: is empty" << std::endl;
@@ -71,13 +70,14 @@ void print(Otter::Core::Orchestrator&) { std::cout << "workjn" << std::endl; }
 
 void test_system(auto& data)
 {
-    Otter::Core::SystemManager sysTest;
+  /*    Otter::Core::SystemManager sysTest;
     sysTest.register_system(&print);
-    sysTest.run_systems(data);
+    sysTest.run_systems(data);*/
 }
 
 int& fun(int& b) { return b; }
 
+/*
 int main(int argc, char* argv[])
 {
     //    Otter::Core::Orchestrator data;
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     //  void SYS_NAME(Orchestrator &data);
     //}
     return 0;
-}
+    }*/
 
 int& converte_any(int* var)
 {

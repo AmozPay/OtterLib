@@ -28,11 +28,13 @@ namespace Otter::Core {
          * @warning Feathure actuali 1.0 can't store complex system
          */
         template <typename F>
-        void register_system(F&& function)
+        void registerSystem(F&& function)
         {
             auto f = [&function](Core::Orchestrator& reg) { function(reg); };
             _systems.push_back(std::function(f));
         }
+
+        void operator()(Otter::Core::Orchestrator& ref, std::string phase, float time = 0) { this->run_systems(ref); }
 
         /**
          * @brief Exec all system
@@ -62,7 +64,6 @@ namespace Otter::Core {
         U binding_func(U func) {
           reutrn func;
           }*/
-
         std::vector<std::function<void(Core::Orchestrator&)>> _systems;
     };
 
