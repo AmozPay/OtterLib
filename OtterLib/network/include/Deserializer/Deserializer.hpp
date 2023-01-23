@@ -8,6 +8,7 @@
 #ifndef DESERIALIZER_HPP_
 #define DESERIALIZER_HPP_
 
+#include <boost/archive/binary_iarchive.hpp>
 #include <sstream>
 
 namespace Network {

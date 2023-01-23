@@ -13,22 +13,28 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <sstream>
 
-class gps_position : Serializable {
+class gps_position : public Serializable {
   public:
     gps_position(){};
-
-    gps_position(int d, int m, float s) : degrees(d), minutes(m), seconds(s) {}
-
-    template <class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-        (void)version;
-        ar& degrees;
-        ar& minutes;
-        ar& seconds;
-    }
+    gps_position(int d, int m, float s) : degrees(d), minutes(m), seconds(s){};
 
   private:
+    boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
+    {
+        archive& degrees;
+        archive& minutes;
+        archive& seconds;
+        return archive;
+    };
+
+    boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
+    {
+        archive& degrees;
+        archive& minutes;
+        archive& seconds;
+        return archive;
+    };
+
     int degrees;
     int minutes;
     float seconds;
@@ -50,5 +56,6 @@ int main()
 
     Network::Deserializer::loadArchive(stringBuff, newGps);
     Network::Deserializer::loadArchive(stringBuff2, newGps2);
+
     return 0;
 }

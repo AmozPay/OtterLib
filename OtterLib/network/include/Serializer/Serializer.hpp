@@ -8,6 +8,7 @@
 #ifndef SERIALIZER_HPP_
 #define SERIALIZER_HPP_
 
+#include <boost/archive/binary_oarchive.hpp>
 #include <sstream>
 
 namespace Network {
