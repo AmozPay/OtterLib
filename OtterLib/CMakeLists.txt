@@ -15,6 +15,11 @@ else()
     )
 endif()
 
+find_program(CONAN conan)
+if (NOT CONAN)
+    message(FATAL_ERROR "Conan not found!")
+endif()
+
 # Check if conan is installed
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
     include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
