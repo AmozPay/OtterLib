@@ -10,9 +10,9 @@
 #include "Raylib.hpp"
 
 /**
- * @brief Namespace for encapsulation of Raylib Texture functions
+ * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Raylib {
+namespace Otter::Graphic::Raylib {
 
     /**
      * @brief Class for encapsulation of Raylib Texture functions

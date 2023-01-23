@@ -10,7 +10,10 @@
 #include <utility>
 
 
-namespace Raylib {
+/**
+ * @brief The namespace of the Otter Graphic library for Raylib
+ */
+namespace Otter::Graphic::Raylib {
 
     /**
      * @brief Constructor for the Raylib::Text class

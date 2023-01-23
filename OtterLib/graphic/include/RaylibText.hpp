@@ -10,9 +10,9 @@
 #include "Raylib.hpp"
 
 /**
- * @brief Namespace for the encapsulation Raylib functions
+ * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Raylib {
+namespace Otter::Graphic::Raylib {
 
     /**
      * @brief Class for the encapsulation of the Raylib Text functions

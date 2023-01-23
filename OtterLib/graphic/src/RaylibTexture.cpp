@@ -7,7 +7,10 @@
 
 #include "RaylibTexture.hpp"
 
-namespace Raylib {
+/**
+ * @brief The namespace of the Otter Graphic library for Raylib
+ */
+namespace Otter::Graphic::Raylib {
 
     /**
      * @brief Constructor of the RaylibTexture class
