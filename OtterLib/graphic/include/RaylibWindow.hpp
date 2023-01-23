@@ -8,8 +8,7 @@
 #ifndef RAYLIBWINDOW_HPP_
 #define RAYLIBWINDOW_HPP_
 
-#include <string>
-#include <raylib.h>
+#include "Raylib.hpp"
 
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
@@ -35,23 +34,27 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Set the framerate limit
-         * @param framerate The framerate limit
+         * @param framerate: The framerate limit
+         * @return Nothing
          */
         static void setFramerateLimit(const int &framerate);
         /**
          * @brief Set the screen height
-         * @param height The height of the screen
+         * @param height: The height of the screen
+         * @return Nothing
          */
         static void setScreenHeight(const int &height);
         /**
          * @brief Set the screen width
-         * @param width The width of the screen
+         * @param width: The width of the screen
+         * @return Nothing
          */
         static void setScreenWidth(const int &width);
         /**
          * @brief Get the screen width
-         * @param width The width of the screen
-         * @param height The height of the screen
+         * @param width: The width of the screen
+         * @param height: The height of the screen
+         * @return Nothing
          */
         static void setScreenSize(const int &width, const int &height);
 
@@ -74,14 +77,17 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Start the drawing process
+         * @return Nothing
          */
         static void startDrawing();
         /**
          * @brief End the drawing process
+         * @return Nothing
          */
         static void endDrawing();
         /**
          * @brief Clear the window
+         * @return Nothing
          */
         static void clearBackground();
     };

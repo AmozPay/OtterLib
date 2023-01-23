@@ -8,7 +8,7 @@
 #ifndef RAYLIBMOUSE_HPP_
 #define RAYLIBMOUSE_HPP_
 
-#include <raylib.h>
+#include "Raylib.hpp"
 
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
@@ -22,7 +22,7 @@ namespace Otter::Graphic::Raylib
     public:
         /**
          * @brief Construct a new Mouse object
-         * @param button The button to check
+         * @param button: The button to check
          */
         explicit RaylibMouse(const int &button);
         /**
@@ -32,7 +32,8 @@ namespace Otter::Graphic::Raylib
 
         /**
          * @brief Set the button to check
-         * @param button The button to check
+         * @param button: The button to check
+         * @return Nothing
          */
         void setButton(const int &button);
 
