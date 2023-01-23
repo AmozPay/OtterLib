@@ -23,8 +23,8 @@ jobs:
           sudo conan install . --build=missing -c tools.system.package_manager:mode=install
           sudo rm conan.lock conanbuildinfo.cmake conanbuildinfo.txt conaninfo.txt graph_info.json
           conan install . --build=missing
-          mkdir ../build && cd ../build
-          cmake ..
+          cmake -S . -B build
+          cd build
           cmake --build .
   build_windows:
     name: On Windows
@@ -37,8 +37,10 @@ jobs:
         with:
           python-version: '3.9'
       - name: "TODO: build RType on Windows"
+        shell: pwsh
         run: |
-          winget install -e --id JFrog.Conan
+          pip install conan
+          cd OtterLib
           conan install . --build=missing -c tools.system.package_manager:mode=install
           Remove-Item conan.lock, conanbuildinfo.cmake, conanbuildinfo.txt, conaninfo.txt, graph_info.json
           cmake -S . -B build -G "Visual Studio 17 2022"
