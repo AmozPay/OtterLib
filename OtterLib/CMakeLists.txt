@@ -46,7 +46,7 @@ target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(OtterNetwork PUBLIC network/include)
 
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
-add_library(OtterGraphic STATIC ${GRAPHIC_FILES})
+add_library(OtterGraphic STATIC ${GRAPHIC_FILES} graphic/include)
 target_compile_features(OtterGraphic PUBLIC cxx_std_20)
 target_include_directories(OtterGraphic PUBLIC graphic/include)
 
