@@ -10,15 +10,15 @@ namespace Otter::Core {
 
     void OtterCore::loop()
     {
-        _systems(_data, "init");
+        _systems(_data, SystemManager::init);
         while (this->_isRunning) {
-            _systems(_data, "preEvent");
-            _systems(_data, "event");
-            _systems(_data, "preUpdate");
-            _systems(_data, "update");
-            _systems(_data, "predraw");
-            _systems(_data, "draw");
-            _systems(_data, "subDraw");
+            _systems(_data, SystemManager::preEvent);
+            _systems(_data, SystemManager::event);
+            _systems(_data, SystemManager::preUpdate);
+            _systems(_data, SystemManager::update);
+            _systems(_data, SystemManager::preDraw);
+            _systems(_data, SystemManager::draw);
+            _systems(_data, SystemManager::subDraw);
         }
     }
 
