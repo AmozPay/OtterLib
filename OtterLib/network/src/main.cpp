@@ -11,7 +11,9 @@
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <iostream>
 #include <sstream>
+#include <typeinfo>
 
 class gps_position : public Serializable {
   public:
@@ -54,8 +56,6 @@ int main()
     gps_position newGps;
     gps_position newGps2;
 
-    Network::Deserializer::loadArchive(stringBuff, newGps);
-    Network::Deserializer::loadArchive(stringBuff2, newGps2);
-
+    auto test = Network::Deserializer::loadArchive<gps_position>(stringBuff2);
     return 0;
 }

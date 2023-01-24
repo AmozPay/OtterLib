@@ -5,7 +5,8 @@
 ## makefile
 ##
 
-SRC			=	./src/main.cpp\
+SRC			=	./src/Deserializer/Deserializer.cpp\
+				./src/main.cpp
 
 ISRC 		=	-I ./include/Serializable\
 				-I ./include/Serializer\
