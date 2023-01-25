@@ -1,0 +1,13 @@
+input: .
+output: .retype
+url: https://github.com/AmozPay/OtterLib
+branding:
+  title: OtterLib
+  label: Docs
+links:
+- text: OtterLib Api Reference
+  link: http://localhost:5000/AmozPay/OtterLib/api-reference/index.html
+footer:
+  copyright: "&copy; Copyright {{ year }}. All rights reserved."
+exclude:
+  - doxygen*
