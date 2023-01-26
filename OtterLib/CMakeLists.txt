@@ -15,6 +15,12 @@ else()
     )
 endif()
 
+if (WIN32)
+    set(CMAKE_SHELL "powershell.exe")
+else()
+    set(CMAKE_SHELL bash -c)
+endif()
+
 # Find Conan
 find_program(CONAN conan)
 if (NOT CONAN)
@@ -29,7 +35,7 @@ else()
     # If not, install conan dependencies
     message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
     execute_process(
-            COMMAND bash -c "conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
+            COMMAND ${CMAKE_SHELL} "conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
             OUTPUT_VARIABLE result
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
