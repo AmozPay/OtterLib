@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: build rtype
+      - name: Build RType on Linux
         run: |
           sudo pip install conan
           conan profile new --detect default
@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: "TODO: build RType on Windows"
+      - name: Build RType on Windows
         shell: pwsh
         run: |
           pip install conan
