@@ -2,7 +2,6 @@
 #include "OtterNetwork.hpp"
 
 #include <iostream>
-#include <unistd.h>
 
 int main(int ac, char** av)
 {
@@ -13,7 +12,6 @@ int main(int ac, char** av)
 #endif
     Otter::Network::print_hello();
     Otter::Graphic::start();
-    sleep(10);
     Otter::Graphic::end();
     return 0;
 }
