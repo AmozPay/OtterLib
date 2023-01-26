@@ -15,9 +15,10 @@ else()
     )
 endif()
 
+# Find Conan
 find_program(CONAN conan)
 if (NOT CONAN)
-    message(FATAL_ERROR "Conan not found!")
+    message(FATAL_ERROR "[Conan] Conan not found!")
 endif()
 
 # Check if conan is installed
@@ -25,17 +26,19 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
     include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
     conan_basic_setup()
 else()
-    # If not, install conan
+    # If not, install conan dependencies
+    message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
     execute_process(
-            COMMAND conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing
-            RESULT_VARIABLE result
+            COMMAND bash -c "conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
+            OUTPUT_VARIABLE result
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+        message(STATUS "[Conan] Conan dependencies installed!")
         include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
         conan_basic_setup()
     else()
-        message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+        message(FATAL_ERROR "[Conan] Conan install error: ${result}")
     endif()
 endif()
 
