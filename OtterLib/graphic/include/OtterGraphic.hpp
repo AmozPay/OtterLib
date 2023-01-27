@@ -16,4 +16,4 @@
 #include "RaylibTexture.hpp"
 #include "RaylibWindow.hpp"
 
-#endif //RTYPE_OTTERGRAPHIC_HPP
+#endif // RTYPE_OTTERGRAPHIC_HPP
