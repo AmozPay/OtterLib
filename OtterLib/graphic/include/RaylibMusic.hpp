@@ -12,18 +12,17 @@
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Otter::Graphic::Raylib
-{
+namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibMusic class for Raylib music management
      */
     class RaylibMusic {
-    public:
+      public:
         /**
          * @brief Construct a new Music object
          * @param music_path The path of the music
          */
-        explicit RaylibMusic(const std::string &music_path);
+        explicit RaylibMusic(const std::string& music_path);
         /**
          * @brief Destroy the Music object
          */
@@ -66,7 +65,7 @@ namespace Otter::Graphic::Raylib
          * @param volume: The volume of the music
          * @return Nothing
          */
-        void setVolume(const float &volume);
+        void setVolume(const float& volume);
 
         /**
          * @brief Get the volume of the music
@@ -78,6 +77,6 @@ namespace Otter::Graphic::Raylib
         Music _music;
         float _volume;
     };
-}
+} // namespace Otter::Graphic::Raylib
 
 #endif /* !RAYLIBMUSIC_HPP_ */

@@ -11,14 +11,14 @@
 ** Types
 */
 
-//#define ENGINE_LOG                                                                                                   
-#include <string>
-#include <raylib.h>
-#include <iostream>
-#include <bitset>
-#include <vector>
-#include <set>
-#include <map>
-#include <queue>
+//#define ENGINE_LOG
 #include <array>
+#include <bitset>
+#include <iostream>
+#include <map>
 #include <memory>
+#include <queue>
+#include <raylib.h>
+#include <set>
+#include <string>
+#include <vector>

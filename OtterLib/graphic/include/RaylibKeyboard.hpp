@@ -13,18 +13,17 @@
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Otter::Graphic::Raylib
-{
+namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibKeyboard class for Raylib keyboard management
      */
     class RaylibKeyboard {
-    public:
+      public:
         /**
          * @brief Construct a new Keyboard object
          * @param key: The key to check
          */
-        explicit RaylibKeyboard(const int &key);
+        explicit RaylibKeyboard(const int& key);
         /**
          * @brief Destroy the Keyboard object
          */
@@ -35,7 +34,7 @@ namespace Otter::Graphic::Raylib
          * @param key: The key to check
          * @return Nothing
          */
-        void setKey(const int &key);
+        void setKey(const int& key);
         /**
          * @brief Set the exit key
          * @return Nothing
@@ -63,9 +62,9 @@ namespace Otter::Graphic::Raylib
          */
         [[nodiscard]] bool isKeyUp() const;
 
-    private:
+      private:
         int _key;
     };
-}
+} // namespace Otter::Graphic::Raylib
 
 #endif /* !RAYLIBKEYBOARD_HPP_ */
