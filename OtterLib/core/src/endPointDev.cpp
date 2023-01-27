@@ -8,7 +8,11 @@ void func2(Otter::Core::Orchestrator& ref) { std::cout << "i am working3" << std
 
 namespace Otter::Core {
 
-    void OtterCore::registerComponents() {}
+    void OtterCore::registerComponents()
+    {
+        _data.register_component<test_str>();
+        _data.register_component<testcomponent>();
+    }
 
     void OtterCore::registerSystems()
     {
@@ -16,4 +20,5 @@ namespace Otter::Core {
         _systems.registerSystem(func1, Otter::Core::SystemManager::update);
         _systems.registerSystem(func2, Otter::Core::SystemManager::preUpdate);
     }
+
 } // namespace Otter::Core
