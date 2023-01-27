@@ -13,18 +13,17 @@
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Otter::Graphic::Raylib
-{
+namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibSound class for Raylib sound management
      */
     class RaylibSound {
-    public:
+      public:
         /**
          * @brief Construct a new Sound object
          * @param sound_path The path of the sound
          */
-        explicit RaylibSound(const std::string &sound_path);
+        explicit RaylibSound(const std::string& sound_path);
         /**
          * @brief Destroy the Sound object
          */
@@ -67,7 +66,7 @@ namespace Otter::Graphic::Raylib
          * @param volume: The volume of the sound
          * @return Nothing
          */
-        void setVolume(const float &volume);
+        void setVolume(const float& volume);
 
         /**
          * @brief Get the volume of the sound
@@ -75,10 +74,10 @@ namespace Otter::Graphic::Raylib
          */
         [[nodiscard]] float getVolume() const;
 
-    private:
+      private:
         Sound _sound;
         float _volume;
     };
 
-}
+} // namespace Otter::Graphic::Raylib
 #endif /* !RAYLIBSOUND_HPP_ */

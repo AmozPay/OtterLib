@@ -13,18 +13,17 @@
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Otter::Graphic::Raylib
-{
+namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibMouse class for Raylib mouse management
      */
     class RaylibMouse {
-    public:
+      public:
         /**
          * @brief Construct a new Mouse object
          * @param button: The button to check
          */
-        explicit RaylibMouse(const int &button);
+        explicit RaylibMouse(const int& button);
         /**
          * @brief Destroy the Mouse object
          */
@@ -35,7 +34,7 @@ namespace Otter::Graphic::Raylib
          * @param button: The button to check
          * @return Nothing
          */
-        void setButton(const int &button);
+        void setButton(const int& button);
 
         /**
          * @brief Get the mouse wheel move
@@ -83,9 +82,10 @@ namespace Otter::Graphic::Raylib
          * @return True if the mouse button is up, false otherwise
          */
         [[nodiscard]] bool isMouseButtonUp() const;
-    private:
+
+      private:
         int _button;
     };
-}
+} // namespace Otter::Graphic::Raylib
 
 #endif /* !RAYLIBMOUSE_HPP_ */

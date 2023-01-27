@@ -13,8 +13,7 @@
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
  */
-namespace Otter::Graphic::Raylib
-{
+namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibWindow class for Raylib window management
      */
@@ -26,7 +25,7 @@ namespace Otter::Graphic::Raylib
          * @param width The width of the window
          * @param title The title of the window
          */
-        RaylibWindow(const int &height, const int &width, const std::string &title);
+        RaylibWindow(const int& height, const int& width, const std::string& title);
         /**
          * @brief Destroy the Window object
          */
@@ -37,26 +36,26 @@ namespace Otter::Graphic::Raylib
          * @param framerate: The framerate limit
          * @return Nothing
          */
-        static void setFramerateLimit(const int &framerate);
+        static void setFramerateLimit(const int& framerate);
         /**
          * @brief Set the screen height
          * @param height: The height of the screen
          * @return Nothing
          */
-        static void setScreenHeight(const int &height);
+        static void setScreenHeight(const int& height);
         /**
          * @brief Set the screen width
          * @param width: The width of the screen
          * @return Nothing
          */
-        static void setScreenWidth(const int &width);
+        static void setScreenWidth(const int& width);
         /**
          * @brief Get the screen width
          * @param width: The width of the screen
          * @param height: The height of the screen
          * @return Nothing
          */
-        static void setScreenSize(const int &width, const int &height);
+        static void setScreenSize(const int& width, const int& height);
 
         /**
          * @brief Get the width of the window
@@ -91,6 +90,6 @@ namespace Otter::Graphic::Raylib
          */
         static void clearBackground();
     };
-}
+} // namespace Otter::Graphic::Raylib
 
 #endif /* !RAYLIBWINDOW_HPP_ */
