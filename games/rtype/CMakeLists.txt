@@ -48,7 +48,7 @@ file(GLOB CLIENT_FILES src/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp)
 
 # build client
-add_executable(r-type_client ${CLIENT_FILES})
+add_executable(r-type_client ${CLIENT_FILES} include)
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
 target_link_libraries(r-type_client
     OtterCore
@@ -58,7 +58,7 @@ target_link_libraries(r-type_client
 )
 
 # build server
-add_executable(r-type_server ${SERVER_FILES})
+add_executable(r-type_server ${SERVER_FILES} include)
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
 target_link_libraries(r-type_server
     OtterCore
