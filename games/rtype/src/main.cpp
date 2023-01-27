@@ -1,6 +1,8 @@
+#include "OtterGraphic.hpp"
 #include "OtterNetwork.hpp"
 
 #include <iostream>
+
 #include <raylib.h>
 /*
 int main(int ac, ch0ar** av)
@@ -44,7 +46,10 @@ int main(int ac, ch0ar** av)
     //--------------------------------------------------------------------------------------
 
     return 0;
-    Otter::Network::print_hello();
+
+Otter::Network::print_hello();
+    Otter::Graphic::start();
+    Otter::Graphic::end();
     return 0;
 }
 */
