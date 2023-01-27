@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Factory.hpp"
 #include "Orchestrator.hpp"
 #include "SystemManager.hpp"
 
@@ -8,7 +7,9 @@ namespace Otter::Core {
 
     class OtterCore {
       public:
-        OtterCore() : _data(), _systems(), _factory(_data) { _isRunning = true; }
+        OtterCore() : _factory(), _data(_factory), _systems() { _isRunning = true; };
+
+        ~OtterCore(){};
 
         /**
          * @brief start the engine
@@ -23,8 +24,8 @@ namespace Otter::Core {
         void init();
 
         bool _isRunning;
+        Factory _factory;
         Orchestrator _data;
         SystemManager _systems;
-        Factory _factory;
     };
 } // namespace Otter::Core

@@ -9,7 +9,6 @@
 #define FACTORY_HPP_
 
 #include "EntityManager.hpp"
-#include "Orchestrator.hpp"
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -17,24 +16,33 @@
 #include <map>
 
 namespace Otter::Core {
+    class Orchestrator;
+
     namespace pt = boost::property_tree;
 
     class Component {};
+
+    template <class T>
+    concept buildable = requires(T b, Entity e, Orchestrator& core, pt::ptree t) {
+                            b.__initialise(e, core, t);
+                            {
+                                T::Tag
+                            };
+                        };
 
     class Factory {
         using initializer_mptr = std::function<void(Entity, Orchestrator& core, pt::ptree)>;
 
       public:
-        Factory(Otter::Core::Orchestrator& core);
+        Factory();
         ~Factory();
-        Entity createFromFile(std::string path);
-        std::vector<Entity> loadEntitiesFromFolder(std::string path);
+        Entity createFromFile(std::string path, Otter::Core::Orchestrator& core);
+        std::vector<Entity> loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core);
         void addComponentSerializer(std::string component_name,
                                     std::function<void(Entity, Orchestrator& core, pt::ptree)> initializer);
 
       protected:
       private:
-        Otter::Core::Orchestrator& _core;
         // void _initTexture2DComponent(Entity entity, pt::ptree root);
         std::map<std::string, initializer_mptr> _initializers;
     };

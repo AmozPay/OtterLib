@@ -7,6 +7,8 @@
 
 #include "Factory.hpp"
 
+#include "Orchestrator.hpp"
+
 #include <filesystem>
 #include <fstream>
 #include <map>
@@ -14,23 +16,24 @@
 #include <sstream>
 
 namespace Otter::Core {
+
     namespace pt = boost::property_tree;
 
-    Factory::Factory(Otter::Core::Orchestrator& core) : _core(core) {}
+    Factory::Factory() {}
 
     Factory::~Factory() {}
 
-    void Factory::addComponentSerializer(std::string component_name,
+    void Factory::addComponentSerializer(std::string component_json_key,
                                          std::function<void(Entity, Orchestrator& core, pt::ptree)> initializer)
     {
-        _initializers[component_name] = initializer;
+        _initializers[component_json_key] = initializer;
     }
 
-    Otter::Core::Entity Factory::createFromFile(std::string path)
+    Otter::Core::Entity Factory::createFromFile(std::string path, Otter::Core::Orchestrator& core)
     {
         pt::ptree root;
-        Otter::Core::Entity e = _core.createEntity();
-        std::function<void(Entity, Orchestrator & core, pt::ptree)> initializer;
+        Otter::Core::Entity e = core.createEntity();
+        std::function<void(Entity, Orchestrator&, pt::ptree)> initializer;
 
         if (!std::filesystem::exists(path))
             throw std::runtime_error("This file does not exist: " + path);
@@ -40,22 +43,22 @@ namespace Otter::Core {
             auto& key = it.first;
             auto& value = it.second;
             if (_initializers.find(key) == _initializers.end()) {
-                _core.remove_entity(e);
+                core.remove_entity(e);
                 throw std::runtime_error("No initializing method found for component: " + key);
             }
             initializer = _initializers.at(key);
-            initializer(e, _core, value);
+            initializer(e, core, value);
         }
         return e;
     }
 
-    std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path)
+    std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core)
     {
         std::vector<Entity> entities;
 
         for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(path)) {
             auto file_path = std::filesystem::absolute(path) / dirEntry;
-            Entity e = this->createFromFile(file_path);
+            Entity e = this->createFromFile(file_path, core);
             entities.emplace_back(e);
         }
 
