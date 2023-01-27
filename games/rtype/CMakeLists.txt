@@ -15,30 +15,6 @@ else()
     )
 endif()
 
-# Check if conan is installed
-find_program(CONAN "conan")
-if(NOT CONAN)
-    message(FATAL_ERROR "Conan is not installed")
-endif()
-
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-    conan_basic_setup()
-else()
-    # If not, install conan
-    execute_process(
-            COMMAND conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing
-            RESULT_VARIABLE result
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-        include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-        conan_basic_setup()
-    else()
-        message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
-    endif()
-endif()
-
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
 file(MAKE_DIRECTORY ${OTTERLIB_DIR}/build)
@@ -58,8 +34,15 @@ execute_process(
     WORKING_DIRECTORY ${OTTERLIB_DIR}/build
 )
 
-
 add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
+
+# Check if conan dependencies are installed
+if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
+    include(${OTTERLIB_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
+endif()
 
 file(GLOB CLIENT_FILES src/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp)
@@ -70,6 +53,7 @@ target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
 target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
+    OtterGraphic
     ${CONAN_LIBS}
 )
 

@@ -1,7 +1,7 @@
 #ifndef ORCHESTRATOR_H
 #define ORCHESTRATOR_H
 
-#include "SystemManager.hpp"
+#include "Factory.hpp"
 #include "registry.hpp"
 
 #include <iostream>
@@ -56,6 +56,13 @@ class test_str {
         //  std::cout << "destruct" << std::endl;
     }
 
+    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& t, Otter::Core::pt::ptree p)
+    {
+        std::cout << "i am beeing builded" << std::endl;
+    }
+
+    inline static std::string Tag = "test_str";
+
   private:
     int _i;
     std::string name;
@@ -78,7 +85,7 @@ namespace Otter::Core {
          * @details A basic constructor
          *
          */
-        Orchestrator() : _components(), _entity() {}
+        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), _builder(fac) {}
 
         /**
          * @brief create a entity
@@ -96,7 +103,26 @@ namespace Otter::Core {
         template <class C>
         Core::sparse_array<C>& register_component()
         {
+
+            register_facto<C>();
+
             return _components.register_component<C>();
+        }
+
+        template <buildable B>
+        bool register_facto()
+        {
+            std::cout << "class << " << typeid(B).name() << " have buidler" << std::endl;
+            _builder.addComponentSerializer(typeid(B).name(),
+                                            std::function<void(Entity, Orchestrator&, pt::ptree)>(&B::__initialise));
+            return true;
+        }
+
+        template <class T>
+        bool register_facto()
+        {
+            std::cout << "class << " << typeid(T).name() << " no buildre" << std::endl;
+            return false;
         }
 
         /**
@@ -172,8 +198,8 @@ namespace Otter::Core {
 
       private:
         ComponentManager _components;
-        //	SystemManager _systems;
         EntityManager _entity;
+        Factory& _builder;
     };
 
 } // namespace Otter::Core

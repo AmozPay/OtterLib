@@ -16,17 +16,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: build OtterLib
+      - name: Build RType on Linux
         run: |
-          cd $GITHUB_WORKSPACE/OtterLib
-          mkdir build && cd build
-          cmake ..
-          cmake --build .
-      - name: build rtype
-        run: |
-          cd $GITHUB_WORKSPACE/games/rtype
-          mkdir build && cd build
-          cmake ..
+          sudo pip install conan
+          conan profile new --detect default
+          cmake -S . -B build
+          cd build
           cmake --build .
   build_windows:
     name: On Windows
@@ -34,17 +29,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: "TODO: build OtterLib on Windows"
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Build RType on Windows
+        shell: pwsh
         run: |
-          ls
-          cd OtterLib
-          mkdir build && cd build
-          cmake ..
-          cmake --build .
-          cd ../..
-      - name: "TODO: build RType on Windows"
-        run: |
-          cd games/rtype
-          mkdir build && cd build
-          cmake ..
+          pip install conan
+          cmake -S . -B build -G "Visual Studio 17 2022"
+          cd build/
           cmake --build .
