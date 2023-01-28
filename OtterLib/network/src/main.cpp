@@ -6,7 +6,6 @@
 */
 
 #include "Deserializer.hpp"
-#include "Serializable.hpp"
 #include "Serializer.hpp"
 
 #include <boost/archive/binary_iarchive.hpp>
@@ -15,47 +14,30 @@
 #include <sstream>
 #include <typeinfo>
 
-class gps_position : public Serializable {
+class gps_position {
   public:
     gps_position(){};
     gps_position(int d, int m, float s) : degrees(d), minutes(m), seconds(s){};
 
   private:
-    boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-    {
-        archive& degrees;
-        archive& minutes;
-        archive& seconds;
-        return archive;
-    };
-
-    boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-    {
-        archive& degrees;
-        archive& minutes;
-        archive& seconds;
-        return archive;
-    };
-
     int degrees;
     int minutes;
     float seconds;
 };
 
+#include "NetworkableVariable.hpp"
+
 int main()
 {
+    Network::Networkable::Variable<int> var(12);
+
+    var = 42;
+
     std::stringbuf stringBuff;
-    std::stringbuf stringBuff2;
 
-    const gps_position gps(0, 0, 0.0f);
-    const gps_position gps2(1, 1, 1.f);
+    Network::Serializer::saveArchive(stringBuff, var);
 
-    Network::Serializer::saveArchive(stringBuff, gps);
-    Network::Serializer::saveArchive(stringBuff2, gps2);
+    auto newVar = Network::Deserializer::loadArchive<Network::Networkable::Variable<int>>(stringBuff);
 
-    gps_position newGps;
-    gps_position newGps2;
-
-    auto test = Network::Deserializer::loadArchive<gps_position>(stringBuff2);
     return 0;
 }

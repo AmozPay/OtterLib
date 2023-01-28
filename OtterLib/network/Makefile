@@ -10,7 +10,8 @@ SRC			=	./src/Deserializer/Deserializer.cpp\
 
 ISRC 		=	-I ./include/Serializable\
 				-I ./include/Serializer\
-				-I ./include/Deserializer
+				-I ./include/Deserializer\
+				-I ./include/NetworkableVariable
 
 OBJ			=	$(SRC:.cpp=.o)
 
