@@ -50,6 +50,31 @@ namespace Network {
                 status = VariableStatusEnum::UPDATED;
             };
 
+            Variable<T> operator+(Variable<T> otherVariable) const
+            {
+                return Variable<T>(this->value + otherVariable.getValue());
+            };
+
+            Variable<T> operator-(Variable<T> otherVariable) const
+            {
+                return Variable<T>(this->value - otherVariable.getValue());
+            };
+
+            Variable<T> operator*(Variable<T> otherVariable) const
+            {
+                return Variable<T>(this->value * otherVariable.getValue());
+            };
+
+            Variable<T> operator/(Variable<T> otherVariable) const
+            {
+                return Variable<T>(this->value / otherVariable.getValue());
+            };
+
+            Variable<T> operator%(Variable<T> otherVariable) const
+            {
+                return Variable<T>(this->value % otherVariable.getValue());
+            };
+
             BinaryOutputArchive& operator&(BinaryOutputArchive& archive)
             {
                 archive& value;
