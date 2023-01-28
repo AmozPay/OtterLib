@@ -80,7 +80,7 @@ namespace Otter::Core {
             for (const auto& [key, value] : _destroy_map) {
                 value(*this, addr);
             }
-        }
+	}
 
       private:
         std::unordered_map<std::type_index, std::any> _type_map; // std::any_cast
