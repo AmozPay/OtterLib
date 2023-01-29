@@ -5,39 +5,57 @@
 ** main
 */
 
-#include "Deserializer.hpp"
+#include "NetworkableClass.hpp"
+#include "NetworkableVariable.hpp"
 #include "Serializer.hpp"
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <iostream>
-#include <sstream>
-#include <typeinfo>
-
-class gps_position {
+class gps_position : public Network::Networkable::Class {
   public:
-    gps_position(){};
-    gps_position(int d, int m, float s) : degrees(d), minutes(m), seconds(s){};
+    gps_position(int d, int m, float s)
+    {
+        SET_NETWORKABLE_VARIABLE(degrees, d);
+        SET_NETWORKABLE_VARIABLE(minutes, m);
+        SET_NETWORKABLE_VARIABLE(seconds, s);
+    };
+
+    void setDegrees(int degrees) { this->degrees = this->degrees + degrees; }
+
+    void setMinutes(int minutes) { this->minutes = this->minutes + minutes; }
+
+    void setSeconds(float seconds) { this->seconds = seconds + seconds; }
 
   private:
-    int degrees;
-    int minutes;
-    float seconds;
+    Network::Networkable::Variable<int> degrees;
+    Network::Networkable::Variable<int> minutes;
+    Network::Networkable::Variable<float> seconds;
 };
-
-#include "NetworkableVariable.hpp"
 
 int main()
 {
-    Network::Networkable::Variable<int> var(12);
 
-    var = 42;
+    gps_position position(10, 10, 10);
 
-    std::stringbuf stringBuff;
+    position.setDegrees(20);
 
-    Network::Serializer::saveArchive(stringBuff, var);
+    IdStringBufMap map = position.getUpdatedNetworkableVariable();
 
-    auto newVar = Network::Deserializer::loadArchive<Network::Networkable::Variable<int>>(stringBuff);
+    // std::string id = "test";
+    // std::string id2 = "test2";
+
+    // Network::Networkable::Variable<int> var(12);
+    // Network::Networkable::Variable<std::string> var2("test");
+    // Network::Networkable::Class classNetworkable;
+
+    // classNetworkable.setNewNetworkableVariable(id, var);
+    // classNetworkable.setNewNetworkableVariable(id2, var2);
+
+    // std::stringbuf bufferSent;
+
+    // Network::Networkable::Variable<int> var3(42);
+
+    // Network::Serializer::saveArchive(bufferSent, var3);
+
+    // classNetworkable.updateNetworkableVariable(id, bufferSent);
 
     return 0;
 }

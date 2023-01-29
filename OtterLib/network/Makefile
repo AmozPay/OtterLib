@@ -11,13 +11,14 @@ SRC			=	./src/Deserializer/Deserializer.cpp\
 ISRC 		=	-I ./include/Serializable\
 				-I ./include/Serializer\
 				-I ./include/Deserializer\
-				-I ./include/NetworkableVariable
+				-I ./include/NetworkableVariable\
+				-I ./include/NetworkableClass
 
 OBJ			=	$(SRC:.cpp=.o)
 
 NAME		=	serialization
 
-CPPFLAGS	= 	$(ISRC) -Wall -Wextra -g3 
+CPPFLAGS	= 	$(ISRC) -Wall -Wextra -g3 -std=c++20
 
 CXX 		= 	clang
 
