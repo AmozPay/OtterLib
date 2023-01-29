@@ -9,7 +9,9 @@
 #define RTYPE_COMPONENTS_HPP
 
 #include "OtterGraphic.hpp"
+#include "Utils.hpp"
 
+#include <chrono>
 #include <memory>
 #include <string>
 
@@ -31,8 +33,8 @@ namespace Otter::Games::RType::Components {
      * @var end: The end of the collision rectangle
      */
     struct Collision {
-        std::vector<float> origin;
-        std::vector<float> end;
+        Otter::Games::RType::Utils::Vector2 origin;
+        Otter::Games::RType::Utils::Vector2 end;
     };
 
     /**
@@ -84,7 +86,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Texture {
         std::string path;
-        std::shared_ptr<Otter::Graphic::Raylib::RaylibTexture> sprite;
+        Otter::Graphic::Raylib::RaylibTexture& sprite;
     };
 
     /**
@@ -96,7 +98,7 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        std::vector<float> position;
+        Otter::Games::RType::Utils::Vector2 position;
         float rotation;
         float scale;
     };
@@ -106,11 +108,11 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
-     * @var acceleration: The acceleration of the entity
+     * @var acceleration: A vector of float for the acceleration of the entity
      */
     struct Velocity {
         float speed;
-        float acceleration;
+        Otter::Games::RType::Utils::Vector2 acceleration;
     };
 
     /**
@@ -148,13 +150,13 @@ namespace Otter::Games::RType::Components {
     enum ObstacleType { WALL, BULLET, POWERUP };
 
     /**
-     * @brief Component for the obstacle
-     * @details The obstacle component is used to store the type and the tag of the obstacle
-     * @struct Obstacle
-     * @var type: The type of the obstacle
-     * @var tag: The tag of the obstacle
+     * @brief Component for the box collider
+     * @details The box collider component is used to store the type and the tag of the box
+     * @struct BoxCollider
+     * @var type: The type of the box
+     * @var tag: The tag of the box
      */
-    struct Obstacle {
+    struct BoxCollider {
         ObstacleType type;
         std::string tag;
     };
@@ -184,8 +186,10 @@ namespace Otter::Games::RType::Components {
      * @details The destructible component is used to know if an entity is destructible. If it is, it will be destroyed
      * when it will have 0 hp
      * @struct Destructible
+     * @var isDestructible: If the entity is destructible: true, otherwise: false
      */
     struct Destructible {
+        bool isDestructible;
     };
 
     /**
@@ -202,9 +206,17 @@ namespace Otter::Games::RType::Components {
      * @details The shooter component is used to know if an entity is a shooter. If it is, it will be able to shoot
      * @struct Shooter
      * @var direction: The direction of the shot
+     * @var canShoot: If the entity can shoot: true, otherwise: false
+     * @var shotNbr: The number of shot, -1 if infinite
+     * @var reloadTime: The reload time of the shot, -1 if infinite
+     * @var lastShotTimestamp: The timestamp of the last shot
      */
     struct Shooter {
         ShotDirection direction;
+        bool canShoot;
+        int shotNbr;
+        int reloadTime;
+        std::time_t lastShotTimestamp;
     };
 
 } // namespace Otter::Games::RType::Components
