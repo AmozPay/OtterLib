@@ -1,9 +1,7 @@
 [requires]
-zlib/1.2.13
-sfml/2.5.1
 raylib/4.0.0
-boost/1.76.0
-asio/1.18.2
+boost/1.81.0
+asio/1.24.0
 
 [generators]
 cmake
