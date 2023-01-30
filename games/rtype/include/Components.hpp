@@ -9,6 +9,7 @@
 #define RTYPE_COMPONENTS_HPP
 
 #include "OtterGraphic.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
 
 #include <chrono>
@@ -23,6 +24,16 @@ namespace Otter::Games::RType::Components {
      * @struct Render
      */
     struct Render {
+    };
+
+    /**
+     * @brief Component for the texture
+     * @details The texture component store a reference to the texture of an entity
+     * @struct Texture
+     * @var texture: An instance of the RaylibTexture class
+     */
+    struct Texture {
+        Otter::Graphic::Raylib::RaylibTexture &texture;
     };
 
     /**
