@@ -1,5 +1,10 @@
 #cmake
 build/
+
+# docs
+.retype
+node_modules
+
 cmake-build*/
 # code editors
 .vscode
