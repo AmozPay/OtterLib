@@ -57,8 +57,8 @@ namespace Otter::Core {
         std::vector<Entity> entities;
 
         for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(path)) {
-            auto file_path = std::filesystem::absolute(path) / dirEntry;
-            Entity e = this->createFromFile(file_path, core);
+            std::filesystem::path file_path = std::filesystem::absolute(path) / dirEntry;
+            Entity e = this->createFromFile(file_path.generic_string(), core);
             entities.emplace_back(e);
         }
 
