@@ -27,10 +27,11 @@ if (NOT CONAN)
     message(FATAL_ERROR "[Conan] Conan not found!")
 endif()
 
+
 # Check if conan is installed
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
-    conan_basic_setup()
+include(${CMAKE_CURRENT_SOURCE_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 else()
     # If not, install conan dependencies
     message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
@@ -48,21 +49,63 @@ else()
     endif()
 endif()
 
-# Create Static Libraries
+# Add google tests
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  # Specify the commit you depend on and update it regularly.
+  URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+enable_testing()
+
+# CREATE STATIC LIBRARIES
+# OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
-add_library(OtterCore STATIC ${CORE_FILES})
+list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
+add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
 target_include_directories(OtterCore PUBLIC core/include)
 
+# OtterCore tests
+file(GLOB CORE_TESTS core/tests/*.cpp)
+add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
+target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
+target_include_directories(OtterCoreTests PUBLIC core/include)
+target_link_libraries(OtterCoreTests gtest_main)
+add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
+
+# OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
+list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(OtterNetwork PUBLIC network/include)
 
+# OtterNetwork tests
+file(GLOB NETWORK_TESTS network/tests/*.cpp)
+add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
+target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
+target_include_directories(OtterNetworkTests PUBLIC network/include)
+target_link_libraries(OtterNetworkTests gtest_main)
+add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
+
+
+# OtterGraphic
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
 add_library(OtterGraphic STATIC ${GRAPHIC_FILES} graphic/include)
 target_compile_features(OtterGraphic PUBLIC cxx_std_20)
 target_include_directories(OtterGraphic PUBLIC graphic/include)
+
+# OtterGraphic tests
+file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
+add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
+target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
+target_include_directories(OtterGraphicTests PUBLIC graphic/include)
+target_link_libraries(OtterGraphicTests gtest_main)
+add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)

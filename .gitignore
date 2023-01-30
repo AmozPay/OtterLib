@@ -1,8 +1,6 @@
 #cmake
 build/
-cmake-build/
-cmake-build-debug/
-
+cmake-build*/
 # code editors
 .vscode
 .vs
