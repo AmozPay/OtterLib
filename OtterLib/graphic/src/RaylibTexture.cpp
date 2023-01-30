@@ -31,7 +31,7 @@ namespace Otter::Graphic::Raylib {
      * @brief Draw the texture
      * @return Nothing
      */
-    void RaylibTexture::draw(Vector position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
+    void RaylibTexture::draw(Vector2 position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
 
     /**
      * @brief Set the texture
