@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** network [WSL: Ubuntu]
 ** File description:
-** NetworkableClass
+** Networkable Class
 */
 
 #ifndef NETWORKABLECLASS_HPP_
@@ -10,6 +10,7 @@
 
 #include "Deserializer.hpp"
 #include "Serializer.hpp"
+#include "Variable.hpp"
 
 #include <any>
 #include <functional>
@@ -18,7 +19,6 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 using IdObjectMap = std::unordered_map<std::string, std::any>;
 using IdStringBufMap = std::map<std::string, std::stringbuf&>;
@@ -55,11 +55,15 @@ namespace Network {
             {
                 std::stringstream stream;
                 std::stringstream::pos_type streamWriteBegin;
+                IdUpdateAndUpdatedFuncMap::iterator it;
 
                 Serializer::saveArchive(stream, componentId);
                 streamWriteBegin = stream.tellp();
                 for (auto& [key, value] : _idObjectMap) {
-                    _idUpdateAndUpdatedFuncMap.find(key)->second.second(key, value, stream);
+                    it = _idUpdateAndUpdatedFuncMap.find(key);
+                    if (it == _idUpdateAndUpdatedFuncMap.end())
+                        break;
+                    it->second.second(key, value, stream);
                 }
                 if (streamWriteBegin == stream.tellp())
                     return std::nullopt;
@@ -90,7 +94,6 @@ namespace Network {
                         networkVariable->resetStatus();
                     }
                 };
-
                 _idObjectMap.insert({id, value});
                 _idUpdateAndUpdatedFuncMap.try_emplace(id, std::pair<UpdateFunc, UpdatedFunc>(updateFunc, updatedFunc));
             };
@@ -98,9 +101,13 @@ namespace Network {
           private:
             void updateNetworkableVariable(const std::string& id, std::stringstream& stream)
             {
-                std::any& variableNetworkable = _idObjectMap.find(id)->second;
+                IdObjectMap::iterator idObjectIt = _idObjectMap.find(id);
+                IdUpdateAndUpdatedFuncMap::iterator updateFuncIt = _idUpdateAndUpdatedFuncMap.find(id);
 
-                _idUpdateAndUpdatedFuncMap.find(id)->second.first(stream, variableNetworkable);
+                if (idObjectIt == _idObjectMap.end() || updateFuncIt == _idUpdateAndUpdatedFuncMap.end()) {
+                    return;
+                }
+                updateFuncIt->second.first(stream, idObjectIt->second);
             };
 
             IdObjectMap _idObjectMap;
