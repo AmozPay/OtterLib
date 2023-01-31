@@ -50,6 +50,7 @@ file(GLOB SERVER_FILES src/*.cpp)
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
+target_include_directories(r-type_client PUBLIC include/)
 target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
@@ -60,6 +61,7 @@ target_link_libraries(r-type_client
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
+target_include_directories(r-type_server PUBLIC include/)
 target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
