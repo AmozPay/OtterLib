@@ -19,6 +19,7 @@ namespace Otter::Core {
         _systems.registerSystem(func, Otter::Core::SystemManager::init);
         _systems.registerSystem(func1, Otter::Core::SystemManager::update);
         _systems.registerSystem(func2, Otter::Core::SystemManager::preUpdate);
+        _systems.registerSystem(, Otter::Core::SystemManager::preUpdate);
     }
 
 } // namespace Otter::Core
