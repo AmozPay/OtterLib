@@ -5,6 +5,9 @@
 
 namespace Otter::Core {
 
+    extern void registerComponents(Otter::Core::Orchestrator &);
+    extern void registerSystems(Otter::Core::SystemManager &);
+
     class OtterCore {
       public:
         OtterCore() : _factory(), _data(_factory), _systems() { _isRunning = true; };
@@ -16,8 +19,6 @@ namespace Otter::Core {
          * @return exit code
          */
         int engineStart();
-        void registerComponents();
-        void registerSystems();
 
       private:
         void loop();
