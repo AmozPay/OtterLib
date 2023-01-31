@@ -5,10 +5,9 @@
 ** OtterGraphic.hpp
 */
 
-#ifndef OTTERGRAPHIC_HPP_
-#define OTTERGRAPHIC_HPP_
+#ifndef RTYPE_OTTERGRAPHIC_HPP
+#define RTYPE_OTTERGRAPHIC_HPP
 
-#include "Raylib.hpp"
 #include "RaylibKeyboard.hpp"
 #include "RaylibMouse.hpp"
 #include "RaylibMusic.hpp"
@@ -17,4 +16,4 @@
 #include "RaylibTexture.hpp"
 #include "RaylibWindow.hpp"
 
-#endif /* !OTTERGRAPHIC_HPP_ */
+#endif // RTYPE_OTTERGRAPHIC_HPP

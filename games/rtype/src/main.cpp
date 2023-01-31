@@ -12,6 +12,8 @@ int main(int ac, ch0ar** av)
 #elif TARGET_SERVER
     std::cout << "SERVER" << std::endl;
 #endif
+    Otter::Network::print_hello();
+
     const int screenWidth = 800;
     const int screenHeight = 450;
 
