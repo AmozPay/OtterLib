@@ -109,11 +109,13 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
-     * @var acceleration: A vector of float for the acceleration of the entity
+     * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
+     * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
+     * no acceleration and 1 is for the right or down
      */
     struct Velocity {
         float speed;
-        Otter::Games::RType::Utils::Vector2 acceleration;
+        Otter::Games::RType::Utils::Vector2 accelerationDirection;
     };
 
     /**
