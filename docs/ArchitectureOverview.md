@@ -96,9 +96,37 @@ loadEntitiesFromFolder(path, Orchestrator&)vector~Entity~
 
 ## DataManagement
 ### In short, A class who store data and give methode to retrieve them when needed.
-#### This class need to:
+#### This class:
 - [ ] Optimize the space the data take
 - [ ] Optimize the speed witch it take to retrive and store
 - [ ] Store many type of data
 + [ ] Give a user interface with the less boilerplating
 
+#### Implementation
+- The same data are stored in optized a storage
+  - > see sparse_array
+
+- Each group of data are stored in a generic way
+  - > see component_manager
+
+- Each data are assigned/linked to an Id (entity)
+  - > see EntityManager
+
+- All fonctionality a centralize in a user friendly interface
+  - > see Orchestrator
+## Execution of function/script
+### In short, this is the part who run function in a order to permit the game to run.
+the fonction are write by the game developer and register in the engine.
+> Here  - How to create a system -
+## Factory
+### A Class implementing a factory from json giving righ to creating ensemble of object without coding
+  2 ways of creating object:
+  * creating from a file
+  * creating from folder
+
+![](./PetPangolin.png)
+
+
+```C++
+int main() {
+}```
