@@ -23,12 +23,11 @@ namespace Otter::Core {
     class Component {};
 
     template <class T>
-    concept buildable = requires(T b, Entity e, Orchestrator& core, pt::ptree t) {
-                            b.__initialise(e, core, t);
-                            {
-                                T::Tag
-                            };
-                        };
+    concept buildable = requires(T b, Entity e, Orchestrator& core, pt::ptree t)
+    {
+        b.__initialise(e, core, t);
+        {T::Tag};
+    };
 
     class Factory {
         using initializer_mptr = std::function<void(Entity, Orchestrator& core, pt::ptree)>;
