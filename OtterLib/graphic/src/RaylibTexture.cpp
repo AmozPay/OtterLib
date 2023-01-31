@@ -18,7 +18,7 @@ namespace Otter::Graphic::Raylib {
      * @return Instance of the RaylibTexture class
      */
     RaylibTexture::RaylibTexture(const std::string& texturePath)
-        : _texture(LoadTexture(texturePath.c_str())), _position({0, 0}), _rotation(0), _scale(1), _color(WHITE)
+        : _texture(LoadTexture(texturePath.c_str())), _rotation(0), _scale(1), _color(WHITE)
     {
     }
 
@@ -31,7 +31,7 @@ namespace Otter::Graphic::Raylib {
      * @brief Draw the texture
      * @return Nothing
      */
-    void RaylibTexture::draw() { DrawTextureEx(_texture, _position, _rotation, _scale, _color); }
+    void RaylibTexture::draw(Vector2 position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
 
     /**
      * @brief Set the texture
@@ -43,13 +43,6 @@ namespace Otter::Graphic::Raylib {
         UnloadTexture(_texture);
         _texture = LoadTexture(texturePath.c_str());
     }
-
-    /**
-     * @brief Set the position of the texture
-     * @param position: Position of the texture
-     * @return Nothing
-     */
-    void RaylibTexture::setPosition(Vector2 position) { _position = position; }
 
     /**
      * @brief Set the rotation of the texture
@@ -77,12 +70,6 @@ namespace Otter::Graphic::Raylib {
      * @return Texture2D
      */
     Texture2D RaylibTexture::getTexture() const { return _texture; }
-
-    /**
-     * @brief Get the position of the texture
-     * @return Vector2
-     */
-    Vector2 RaylibTexture::getPosition() const { return _position; }
 
     /**
      * @brief Get the rotation of the texture

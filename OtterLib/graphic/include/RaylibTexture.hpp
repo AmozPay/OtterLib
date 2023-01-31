@@ -24,9 +24,11 @@ namespace Otter::Graphic::Raylib {
 
         /**
          * @brief Draw the texture
+         * @details Draw the texture at the position given in parameter
+         * @param position: The position to draw the texture
          * @return Nothing
          */
-        void draw();
+        void draw(Vector2 position);
 
         /**
          * @brief Set the texture to use
@@ -34,13 +36,6 @@ namespace Otter::Graphic::Raylib {
          * @return Nothing
          */
         void setTexture(const std::string& texturePath);
-
-        /**
-         * @brief Set the position of the texture
-         * @param position: The position to set
-         * @return Nothing
-         */
-        void setPosition(Vector2 position);
 
         /**
          * @brief Set the rotation of the texture
@@ -70,12 +65,6 @@ namespace Otter::Graphic::Raylib {
         [[nodiscard]] Texture2D getTexture() const;
 
         /**
-         * @brief Get the position of the texture
-         * @return The position of the texture
-         */
-        [[nodiscard]] Vector2 getPosition() const;
-
-        /**
          * @brief Get the rotation of the texture
          * @return The rotation of the texture
          */
@@ -95,7 +84,6 @@ namespace Otter::Graphic::Raylib {
 
       private:
         Texture2D _texture;
-        Vector2 _position;
         float _rotation;
         float _scale;
         Color _color;
