@@ -26,10 +26,12 @@ namespace Otter::Games::RType::System::Sprite {
     {
         auto const& sprites = ref.get_components<Otter::Games::RType::Components::Texture>();
         auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
-        for (size_t i = 0; i < sprites.size() && i < transforms.size(); i++) {
+        auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
+        for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
             auto const& sprite = sprites[i];
             auto const& transform = transforms[i];
-            if (sprite && transform) {
+            auto const& render = renders[i];
+            if (sprite && transform && render) {
                 sprite->texture.setScale(transform->scale);
                 sprite->texture.setRotation(transform->rotation);
                 sprite->texture.draw({transform->position.x, transform->position.y});
