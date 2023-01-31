@@ -27,6 +27,22 @@ namespace Otter::Games::RType::Components {
     };
 
     /**
+     * @brief Component for the window
+     * @details The window component is used to create & manage a window
+     * @struct Window
+     * @var width: The width of the window
+     * @var height: The height of the window
+     * @var title: The title of the window
+     * @var window: An instance of the RaylibWindow class
+     */
+    struct Window {
+        int width;
+        int height;
+        std::string title;
+        Otter::Graphic::Raylib::RaylibWindow& window;
+    };
+
+    /**
      * @brief Component for the collision
      * @details The collision component is used to check if an entity is colliding with another entity
      * @struct Collision
