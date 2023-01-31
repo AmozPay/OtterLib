@@ -1,8 +1,11 @@
 #cmake
 build/
-cmake-build/
-cmake-build-debug/
 
+# docs
+.retype
+node_modules
+
+cmake-build*/
 # code editors
 .vscode
 .vs

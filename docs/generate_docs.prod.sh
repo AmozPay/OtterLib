@@ -5,4 +5,4 @@ doxygen Doxyfile
 rm -rf .retype
 mkdir .retype
 mv html .retype/api-reference
-yarn && yarn retype build
+yarn && yarn retype build retype.prod.yml
