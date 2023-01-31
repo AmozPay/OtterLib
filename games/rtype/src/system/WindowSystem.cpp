@@ -5,9 +5,17 @@
 ** WindowSystem.cpp
 */
 
-#include "OtterCore.hpp"
-#include "OtterGraphic.hpp"
+#include "WindowSystem.hpp"
 
-void OpenWindow(Otter::Core::Orchestrator& ref) {
-    Otter::Graphic::Raylib::RaylibWindow window(800, 600, "RType");
-}
+namespace Otter::Games::RType::System::Window {
+
+    void OpenWindow(Otter::Core::Orchestrator& ref) {
+        Otter::Graphic::Raylib::RaylibWindow window(800, 600, "RType");
+        
+    }
+
+    void CloseWindow(Otter::Core::Orchestrator& ref) {
+         
+    }
+
+} // namespace Otter::Games::RType::System::Window
