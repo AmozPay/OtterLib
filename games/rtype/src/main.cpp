@@ -1,5 +1,7 @@
-#include "OtterGraphic.hpp"
-#include "OtterNetwork.hpp"
+// #include "OtterGraphic.hpp"
+// #include "OtterNetwork.hpp"
+
+#include "OtterCore.hpp"
 
 #include <iostream>
 
@@ -55,3 +57,22 @@ Otter::Network::print_hello();
     return 0;
 }
 */
+
+void func(Otter::Core::Orchestrator& ref) { std::cout << "i am working" << std::endl; }
+
+void func1(Otter::Core::Orchestrator& ref) { std::cout << "i am working2" << std::endl; }
+
+void func2(Otter::Core::Orchestrator& ref) { std::cout << "i am working3" << std::endl; }
+
+void Otter::Core::registerComponents(Otter::Core::Orchestrator &orchestrator)
+{
+    orchestrator.register_component<test_str>();
+    orchestrator.register_component<testcomponent>();
+}
+
+void Otter::Core::registerSystems(Otter::Core::SystemManager &manager)
+{
+    manager.registerSystem(func, Otter::Core::SystemManager::init);
+    manager.registerSystem(func1, Otter::Core::SystemManager::update);
+    manager.registerSystem(func2, Otter::Core::SystemManager::preUpdate);
+}

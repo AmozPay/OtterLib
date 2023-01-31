@@ -3,8 +3,8 @@
 namespace Otter::Core {
     void OtterCore::init()
     {
-        registerComponents();
-        registerSystems();
+        registerComponents(this->_data);
+        registerSystems(this->_systems);
         /// call factory
     }
 
