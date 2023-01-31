@@ -18,10 +18,10 @@ namespace Network {
         ~Deserializer(){};
 
         template <class T>
-        static T loadArchive(std::stringbuf& stringBuff)
+        static T loadArchive(std::stringstream& stringStream)
         {
             T loadedData = T();
-            boost::archive::binary_iarchive ia(stringBuff);
+            boost::archive::binary_iarchive ia(stringStream);
 
             ia >> loadedData;
             return loadedData;

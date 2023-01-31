@@ -14,6 +14,7 @@
 #include <any>
 #include <functional>
 #include <map>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -21,8 +22,8 @@
 
 using IdObjectMap = std::unordered_map<std::string, std::any>;
 using IdStringBufMap = std::map<std::string, std::stringbuf&>;
-using UpdateFunc = std::function<void(std::stringbuf&, std::any&)>;
-using UpdatedFunc = std::function<void(const std::string&, std::any&, IdStringBufMap&)>;
+using UpdateFunc = std::function<void(std::stringstream&, std::any&)>;
+using UpdatedFunc = std::function<void(const std::string&, std::any&, std::stringstream&)>;
 using UpdateAndUpdatedFuncPair = std::pair<UpdateFunc, UpdatedFunc>;
 using IdUpdateAndUpdatedFuncMap = std::unordered_map<std::string, UpdateAndUpdatedFuncPair>;
 
@@ -39,21 +40,30 @@ namespace Network {
             Class(){};
             ~Class(){};
 
-            void updateNetworkableVariables(IdStringBufMap& variablesToUpdate)
+            void updateNetworkableVariables(std::stringstream& stream)
             {
-                for (auto& [key, value] : variablesToUpdate) {
-                    updateNetworkableVariable(key, value);
+                std::stringstream::pos_type endStreamPos = stream.tellp();
+                std::string id;
+
+                while (stream.tellg() < endStreamPos) {
+                    id = Deserializer::loadArchive<std::string>(stream);
+                    updateNetworkableVariable(id, stream);
                 }
             }
 
-            IdStringBufMap getUpdatedNetworkableVariable()
+            std::optional<std::stringstream> getUpdatedNetworkableVariable(const std::size_t& componentId)
             {
-                IdStringBufMap variablesToUpdate;
+                std::stringstream stream;
+                std::stringstream::pos_type streamWriteBegin;
 
+                Serializer::saveArchive(stream, componentId);
+                streamWriteBegin = stream.tellp();
                 for (auto& [key, value] : _idObjectMap) {
-                    _idUpdateAndUpdatedFuncMap.find(key)->second.second(key, value, variablesToUpdate);
+                    _idUpdateAndUpdatedFuncMap.find(key)->second.second(key, value, stream);
                 }
-                return variablesToUpdate;
+                if (streamWriteBegin == stream.tellp())
+                    return std::nullopt;
+                return stream;
             }
 
           protected:
@@ -62,23 +72,22 @@ namespace Network {
             {
                 std::any value = std::make_any<Variable<T>*>(&variable);
 
-                UpdateFunc updateFunc = [](std::stringbuf& stringBuff, std::any object)
+                UpdateFunc updateFunc = [](std::stringstream& stream, std::any object)
                 {
                     Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
 
-                    *networkVariable = Network::Deserializer::loadArchive<Variable<T>>(stringBuff);
+                    *networkVariable = Network::Deserializer::loadArchive<Variable<T>>(stream);
                     networkVariable->resetStatus();
                 };
 
-                UpdatedFunc updatedFunc = [](const std::string& id, std::any& object, IdStringBufMap& variablesToUpdate)
+                UpdatedFunc updatedFunc = [](const std::string& id, std::any& object, std::stringstream& stream)
                 {
                     Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
 
                     if (networkVariable->getStatus() == VariableStatusEnum::UPDATED) {
-                        std::stringbuf stringBuff;
-
-                        Network::Serializer::saveArchive<Variable<T>>(stringBuff, *networkVariable);
-                        variablesToUpdate.insert(std::pair<std::string, std::stringbuf&>(id, stringBuff));
+                        Network::Serializer::saveArchive<std::string>(stream, id);
+                        Network::Serializer::saveArchive<Variable<T>>(stream, *networkVariable);
+                        networkVariable->resetStatus();
                     }
                 };
 
@@ -87,11 +96,11 @@ namespace Network {
             };
 
           private:
-            void updateNetworkableVariable(const std::string& id, std::stringbuf& stringBuff)
+            void updateNetworkableVariable(const std::string& id, std::stringstream& stream)
             {
                 std::any& variableNetworkable = _idObjectMap.find(id)->second;
 
-                _idUpdateAndUpdatedFuncMap.find(id)->second.first(stringBuff, variableNetworkable);
+                _idUpdateAndUpdatedFuncMap.find(id)->second.first(stream, variableNetworkable);
             };
 
             IdObjectMap _idObjectMap;

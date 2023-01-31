@@ -18,9 +18,9 @@ namespace Network {
         ~Serializer(){};
 
         template <class T>
-        static void saveArchive(std::stringbuf& stringBuff, T classToArchive)
+        static void saveArchive(std::stringstream& stringStream, T classToArchive)
         {
-            boost::archive::binary_oarchive oa(stringBuff);
+            boost::archive::binary_oarchive oa(stringStream);
 
             oa << classToArchive;
         };
