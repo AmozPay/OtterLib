@@ -44,7 +44,7 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp)
+file(GLOB CLIENT_FILES src/*.cpp src/Register/*.cpp src/System/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp)
 
 # build client
