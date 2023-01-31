@@ -119,12 +119,41 @@ loadEntitiesFromFolder(path, Orchestrator&)vector~Entity~
 the fonction are write by the game developer and register in the engine.
 > Here  - How to create a system -
 ## Factory
-### A Class implementing a factory from json giving righ to creating ensemble of object without coding
+### A Class implementing a factory from json giving right to creating ensemble of object without coding
   2 ways of creating object:
   * creating from a file
   * creating from folder
 
-![](./PetPangolin.png)
+## abstract
+### main
+the main is already implemented.
+Actualy the main expose 2 fonction to integrate code.
+       - registerComponents
+      - registerSystems
+### Base loop
+
+
+
+```mermaid
+sequenceDiagram
+	Graphique->>ClientCore: Event detected
+	ClientCore->>ClientNetwork: push message
+	ClientNetwork-->ServerNetwork:Bit comunication
+	ClientCore->>ClientNetwork: push RPC
+	ClientNetwork-->ServerNetwork:Bit comunication
+	ClientCore->>Graphique: DrawMe something
+	ClientNetwork-->ServerNetwork:Bit comunication
+	ServerNetwork ->> ServerCore:Recieving mesage
+	ClientNetwork-->ServerNetwork:Bit comunication
+	ServerNetwork ->> ServerCore:Recieving RPC
+	ClientNetwork-->ServerNetwork:Bit comunication
+	ServerCore->>ServerNetwork: Push Verified Updated Component
+	ClientNetwork->>ClientCore: Receive Autorirator update
+	ClientCore->>Graphique: DrawMe something
+ 	
+```
+
+![](./lovu_otter.png)
 
 
 ```C++
