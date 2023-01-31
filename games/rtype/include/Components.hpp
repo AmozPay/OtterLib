@@ -33,12 +33,14 @@ namespace Otter::Games::RType::Components {
      * @var width: The width of the window
      * @var height: The height of the window
      * @var title: The title of the window
+     * @var fps: The target framerate of the window
      * @var window: An instance of the RaylibWindow class
      */
     struct Window {
         int width;
         int height;
         std::string title;
+        int fps;
         Otter::Graphic::Raylib::RaylibWindow& window;
     };
 
