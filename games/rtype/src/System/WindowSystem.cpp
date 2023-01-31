@@ -6,7 +6,6 @@
 */
 
 #include "WindowSystem.hpp"
-
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
 

@@ -44,13 +44,13 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-file(GLOB CLIENT_FILES src/*.cpp src/Register/*.cpp src/System/*.cpp)
-file(GLOB SERVER_FILES src/*.cpp)
+file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp)
+file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp)
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
-target_include_directories(r-type_client PUBLIC include/ include/System/)
+target_include_directories(r-type_client PUBLIC include/ include/System)
 target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
