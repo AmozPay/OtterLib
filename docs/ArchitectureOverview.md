@@ -127,10 +127,22 @@ the fonction are write by the game developer and register in the engine.
 ## abstract
 ### main
 the main is already implemented.
-Actualy the main expose 2 fonction to integrate code.
-       - registerComponents
-      - registerSystems
+Actualy the main use 2 fonction who need to be implement by game developpeur
+   - registerComponents
+>function where we register all component who will be used
+   - registerSystems
+>function where we register all system who will be used
 ### Base loop
+Implement a actual loop 
+
+
+
+
+
+
+
+
+
 
 
 
