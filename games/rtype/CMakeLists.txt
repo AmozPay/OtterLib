@@ -61,7 +61,7 @@ target_link_libraries(r-type_client
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
-target_include_directories(r-type_server PUBLIC include/)
+target_include_directories(r-type_server PUBLIC include/ include/System)
 target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
