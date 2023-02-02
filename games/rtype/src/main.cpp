@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <raylib.h>
+
 /*
 int main(int ac, ch0ar** av)
 {
@@ -63,13 +64,13 @@ void func1(Otter::Core::Orchestrator& ref) { std::cout << "i am working2" << std
 
 void func2(Otter::Core::Orchestrator& ref) { std::cout << "i am working3" << std::endl; }
 
-void Otter::Core::registerComponents(Otter::Core::Orchestrator &orchestrator)
+void Otter::Core::registerComponents(Otter::Core::Orchestrator& orchestrator)
 {
     orchestrator.register_component<test_str>();
     orchestrator.register_component<testcomponent>();
 }
 
-void Otter::Core::registerSystems(Otter::Core::SystemManager &manager)
+void Otter::Core::registerSystems(Otter::Core::SystemManager& manager)
 {
     manager.registerSystem(func, Otter::Core::SystemManager::init);
     manager.registerSystem(func1, Otter::Core::SystemManager::update);
