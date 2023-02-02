@@ -11,21 +11,21 @@
 #include "OtterCore.hpp"
 
 namespace Otter::Games::RType::System::Window {
-    /**
-     * @brief Open a window
-     * @details Open a window with the stored parameters
-     * @param ref: The orchestrator
-     * @return void
-     */
-    void OpenWindow(Otter::Core::Orchestrator& ref);
-
-    /**
-     * @brief Close the window
-     * @details Close the window and remove the component
-     * @param ref: The orchestrator
-     * @return void
-     */
-    void CloseWindow(Otter::Core::Orchestrator& ref);
+    //    /**
+    //     * @brief Open a window
+    //     * @details Open a window with the stored parameters
+    //     * @param ref: The orchestrator
+    //     * @return void
+    //     */
+    //    void OpenWindow(Otter::Core::Orchestrator& ref);
+    //
+    //    /**
+    //     * @brief Close the window
+    //     * @details Close the window and remove the component
+    //     * @param ref: The orchestrator
+    //     * @return void
+    //     */
+    //    void CloseWindow(Otter::Core::Orchestrator& ref);
 
     /**
      * @brief Set the target framerate
