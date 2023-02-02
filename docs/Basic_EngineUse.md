@@ -26,8 +26,6 @@ Let define some composant that we will use in the next chapter:
 - a Velocity -> represent the moving variation when accelerating and slowing.
 
 ``` C++
-
-
 class Transform {
 public:
 	int x;
@@ -67,6 +65,7 @@ public:
 
 > See Also Network/Neworkable Variable
 ## how to Create a System
+
 A system is a single function, So it can be:
 - a lambda
 - a primive function
@@ -100,7 +99,6 @@ For this use the public methode _get_component()_ with the type of component you
 Next store the result in a Sparse_array<>& (same type as the get).
 
 #### 4. Iteration
-
 
 nice you have the component list, now is time to use them.
 So we start by iterating on them and test if they exist.
