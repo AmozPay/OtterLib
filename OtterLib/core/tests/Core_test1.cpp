@@ -47,3 +47,42 @@ TEST(registry, test_remove)
     EXPECT_TRUE(tmp[1]);
     EXPECT_TRUE(!(tmp[3]));
 }
+
+
+TEST(registry_advanced, test_multipl_comp)
+{
+  Otter::Core::ComponentManager reg;
+
+auto const &tmp = reg.register_component<intTest>();
+auto const &tmp2 = reg.register_component<float>();
+  auto const &tmp3 = reg.register_component<std::string>();
+
+  reg.add_component<float>(0, 5.3);
+  reg.add_component<float>(2, 25.5);
+  
+  reg.add_component<intTest>(1,intTest(5));
+  reg.add_component<intTest>(2, intTest(10));
+  reg.add_component<intTest>(3, intTest(15));
+
+  reg.add_component(0, std::string("un"));
+  reg.add_component(2, std::string("deux"));
+
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_EQ(tmp2.size(), 3);
+    EXPECT_EQ(tmp3.size(), 3);
+
+    EXPECT_TRUE(tmp[1]);
+  reg.remove_component<intTest>(1);
+    EXPECT_FALSE(tmp[1]);
+    EXPECT_TRUE(tmp[2]);
+    EXPECT_TRUE(tmp2[2]);
+    EXPECT_TRUE(tmp3[2]);
+    reg.remove_entity(2);
+    EXPECT_FALSE(tmp[2]);
+    EXPECT_FALSE(tmp2[2]);
+    EXPECT_FALSE(tmp3[2]);
+
+    EXPECT_TRUE(tmp[3]);
+    reg.remove_entity(3);
+    EXPECT_FALSE(tmp[3]);    
+}
