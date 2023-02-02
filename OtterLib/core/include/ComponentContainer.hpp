@@ -11,7 +11,7 @@
 namespace Otter::Core {
 
     /**
-11;rgb:1e1e/1e1e/1e1e* @class sparse_array
+     * @class sparse_array
      * @brief Container type for any unique typename
      *
      */
