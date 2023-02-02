@@ -1,6 +1,8 @@
 #ifndef TEST_HPP
 #define TEST_HPP
-#include "ComponentContainer.hpp"
+#include "OtterCore.hpp"
+
+#include <gtest/gtest.h>
 
 class intTest {
   public:
@@ -22,7 +24,7 @@ class sparse_arrayTest : public ::testing::Test {
         f3.insert_at(0, 41);
         f3.insert_at(1, 42);
         f3.insert_at(3, 43);
-    }
+    };
 
     Otter::Core::sparse_array<int> f0;
     Otter::Core::sparse_array<int> f1;
