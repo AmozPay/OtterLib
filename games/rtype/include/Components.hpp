@@ -37,11 +37,21 @@ namespace Otter::Games::RType::Components {
      * @var window: An instance of the RaylibWindow class
      */
     struct Window {
-        int width;
-        int height;
-        std::string title;
-        int fps;
-        Otter::Graphic::Raylib::RaylibWindow& window;
+        Window(int width, int height, const std::string& title, int fps)
+            : _window(Otter::Graphic::Raylib::RaylibWindow(height, width, title))
+        {
+            _width = width;
+            _height = height;
+            _title = title;
+            _fps = fps;
+        };
+        ~Window() = default;
+
+        int _width;
+        int _height;
+        std::string _title;
+        int _fps;
+        Otter::Graphic::Raylib::RaylibWindow _window;
     };
 
     /**
