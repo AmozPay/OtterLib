@@ -1,18 +1,25 @@
 // #include "OtterGraphic.hpp"
 // #include "OtterNetwork.hpp"
 
+#include "Components.hpp"
 #include "OtterCore.hpp"
-#include "OtterGraphic.hpp"
+#include "System.hpp"
 
-#include <iostream>
+namespace Otter::Core {
+    void registerComponents(Otter::Core::Orchestrator& ref)
+    {
+        ref.register_component<Otter::Games::RType::Components::Window>();
 
-int main(int ac, char** av)
-{
-#ifdef TARGET_CLIENT
-    std::cout << "CLIENT" << std::endl;
-#elif TARGET_SERVER
-    std::cout << "SERVER" << std::endl;
-#endif
+        // TODO: need to be cleaned
+        Entity e = ref.createEntity();
+        ref.add_component(e, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
+    }
 
-    return 0;
-}
+    void registerSystems(Otter::Core::SystemManager& ref)
+    {
+        ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
+        ref.registerSystem(Otter::Games::RType::System::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
+        ref.registerSystem(Otter::Games::RType::System::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
+        ref.registerSystem(Otter::Games::RType::System::Window::EndDraw, Otter::Core::SystemManager::subDraw);
+    }
+} // namespace Otter::Core
