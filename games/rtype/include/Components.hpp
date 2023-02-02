@@ -23,19 +23,19 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {
-    };
+    struct Render {};
 
     /**
-     * @brief Component for the collision
-     * @details The collision component is used to check if an entity is colliding with another entity
-     * @struct Collision
-     * @var origin: The origin of the collision rectangle
-     * @var end: The end of the collision rectangle
+     * @brief Component for the box collider
+     * @details The box collider component is used to store the size of the hitbox of an entity, in order to detect
+     * collision
+     * @struct BoxCollider
+     * @var width: The width of the box collider rectangle
+     * @var height: The height of the box collider rectangle
      */
-    struct Collision {
-        Otter::Games::RType::Utils::Vector2 origin;
-        Otter::Games::RType::Utils::Vector2 end;
+    struct BoxCollider {
+        unsigned int width;
+        unsigned int height;
     };
 
     /**
@@ -151,13 +151,13 @@ namespace Otter::Games::RType::Components {
     enum ObstacleType { WALL, BULLET, POWERUP };
 
     /**
-     * @brief Component for the box collider
+     * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
-     * @struct BoxCollider
+     * @struct Obstacle
      * @var type: The type of the box
      * @var tag: The tag of the box
      */
-    struct BoxCollider {
+    struct Obstacle {
         ObstacleType type;
         std::string tag;
     };
