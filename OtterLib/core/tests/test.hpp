@@ -10,7 +10,9 @@ class intTest {
 
     ~intTest(){};
 
-    int getDt() { return _dt; };
+    int getDt() const { return _dt; };
+
+    void setDt(int dt) { _dt = dt; };
 
   private:
     int _dt;
