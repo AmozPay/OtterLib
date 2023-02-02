@@ -104,7 +104,7 @@ file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
 add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
 target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
 target_include_directories(OtterGraphicTests PUBLIC graphic/include)
-target_link_libraries(OtterGraphicTests gtest_main raylib)
+target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
 add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
 
 # Find headers
