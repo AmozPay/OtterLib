@@ -29,7 +29,7 @@ if(result)
 endif()
 
 execute_process(
-    COMMAND ${CMAKE_COMMAND} --build .
+    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib
     RESULT_VARIABLE result
     WORKING_DIRECTORY ${OTTERLIB_DIR}/build
 )
@@ -70,6 +70,11 @@ target_link_libraries(r-type_server
     OtterGraphic
     ${CONAN_LIBS}
 )
+
+# Does not compile tests
+add_custom_target(r-type)
+add_dependencies(r-type r-type_server r-type_client)
+
 
 install(
     TARGETS r-type_server r-type_client
