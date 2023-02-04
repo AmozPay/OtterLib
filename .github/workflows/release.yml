@@ -10,6 +10,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  packages: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -101,7 +102,6 @@ jobs:
           cd OtterLib
           ls
           cmake -S . -B build
-          cmake --build build --config Release -G "Visual Studio 17 2022"
           cpack --config build/CPackConfig.cmake
           ls
           cd ../..
@@ -111,7 +111,6 @@ jobs:
         run: |
           cd games\rtype
           cmake -S . -B build
-          cmake --build build --config Release
           cpack --config build/CPackConfig.cmake
           ls
           cd ../..
