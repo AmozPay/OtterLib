@@ -22,6 +22,6 @@ namespace Otter::Games::RType::System::Move {
      */
     void EntityMovement(Otter::Core::Orchestrator& ref);
 
-}
+} // namespace Otter::Games::RType::System::Move
 
 #endif // RTYPE_MOVESYSTEM_HPP

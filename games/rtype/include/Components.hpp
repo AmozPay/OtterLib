@@ -21,6 +21,7 @@ namespace Otter::Games::RType::Components {
     /**
      * @brief Component for the rendering
      * @details The render component is used to render an entity
+     * You need to add the render component to an entity to be able to render it
      * @struct Render
      */
     struct Render {
@@ -174,14 +175,19 @@ namespace Otter::Games::RType::Components {
      * no acceleration and 1 is for the right or down
      */
     struct Velocity {
-        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
-            : _accelerationDirection(accelerationDirection)
+        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
+                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection),
+              _constantAccelerationDirection(constantAccelerationDirection)
         {
             _speed = speed;
+            _constantSpeed = constantSpeed;
         };
         ~Velocity() = default;
 
         float _speed;
+        float _constantSpeed;
+        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
         Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
@@ -294,6 +300,15 @@ namespace Otter::Games::RType::Components {
         int shotNbr;
         int reloadTime;
         std::time_t lastShotTimestamp;
+    };
+
+    /**
+     * @brief Component for the dispawnable
+     * @details The dispawnable component is used to know if an entity is dispawnable. If it is, it will be destroyed
+     * You need to add the component to the entity to be able to dispawn it
+     * @struct Render
+     */
+    struct Dispawnable {
     };
 
 } // namespace Otter::Games::RType::Components
