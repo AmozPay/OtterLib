@@ -29,6 +29,12 @@ namespace Otter::Core {
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
         ref.add_component(e, Otter::Games::RType::Components::Velocity(10, {1, 1}));
+        auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.ESCAPE, Otter::Games::RType::Utils::EventState::CLOSE);
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
