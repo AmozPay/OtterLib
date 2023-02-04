@@ -65,7 +65,15 @@ target_include_directories(OtterCore PUBLIC core/include scripting/include)
 file(GLOB NETWORK_FILES network/src/*.cpp)
 add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
-target_include_directories(OtterNetwork PUBLIC network/include)
+target_include_directories(
+    OtterNetwork
+    PUBLIC
+    network/include
+    network/include/Deserializer
+    network/include/Networkable
+    network/include/Serializable
+    network/include/Serializer
+)
 
 # OtterScripting
 file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
