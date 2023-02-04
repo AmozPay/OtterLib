@@ -82,6 +82,18 @@ namespace Otter::Graphic::Raylib {
          */
         [[nodiscard]] Color getColor() const;
 
+        /**
+         * @brief Get the width of the texture
+         * @return The width of the texture
+         */
+        [[nodiscard]] int getWidth() const;
+
+        /**
+         * @brief Get the height of the texture
+         * @return The height of the texture
+         */
+        [[nodiscard]] int getHeight() const;
+
       private:
         Texture2D _texture;
         float _rotation;

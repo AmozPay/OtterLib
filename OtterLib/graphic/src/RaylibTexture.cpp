@@ -90,4 +90,8 @@ namespace Otter::Graphic::Raylib {
      */
     Color RaylibTexture::getColor() const { return _color; }
 
+    int RaylibTexture::getWidth() const { return _texture.width; }
+
+    int RaylibTexture::getHeight() const { return _texture.height; }
+
 } // namespace Otter::Graphic::Raylib
