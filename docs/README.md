@@ -1,12 +1,13 @@
 ---
 description: humm
-expanded:true
-icon: "sparkle"
-label: ECS
-title: What is a ECS
+expanded: true
+icon: ":rocket:"
+label: Introduction
+title: Introduction
 ---
 
-# ECS
+The OtterLib is a game library that allows you to build your game using an **ECS** engine.
+
 A Ecs is a concept used for develop game with a more efficient way.
 Where a object don't store is data and fonction but only refer to them. Letting the place to store optimalment the data
 ## Definition

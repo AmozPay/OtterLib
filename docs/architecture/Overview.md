@@ -1,12 +1,9 @@
 ---
 description: This is a custom description for this page
 expanded: true
-icon: ":rocket:"
 label: Architecture Overview
 title: Architecture Overview
 ---
-
-## OtterLib Core
 
 The OtterLib is composed of different static libraries:
 - OtterCore
