@@ -11,34 +11,30 @@ namespace Otter::Core {
 
     void registerComponents(Otter::Core::Orchestrator& ref)
     {
-        #if defined(TARGET_CLIENT)
         ref.register_component<Otter::Games::RType::Components::Window>();
         ref.register_component<Otter::Games::RType::Components::Texture>();
         ref.register_component<Otter::Games::RType::Components::Render>();
         ref.register_component<Otter::Games::RType::Components::Keyboard>();
-
-        #endif
-
         ref.register_component<Otter::Games::RType::Components::Transform>();
         ref.register_component<Otter::Games::RType::Components::Player>();
         ref.register_component<Otter::Games::RType::Components::Velocity>();
 
-        // TODO: need to be cleaned
-        #if defined(TARGET_CLIENT)
+// TODO: need to be cleaned
+#if defined(TARGET_CLIENT)
 
         Entity e1 = ref.createEntity();
         ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
-        #endif
+#endif
 
         //        Otter::Graphic::Raylib::RaylibTexture texture("../assets/image.png");
         Entity e = ref.createEntity();
 
-        #if defined(TARGET_CLIENT)
-            ref.add_component(e, Otter::Games::RType::Components::Texture(
-                                    "../assets/image.png", Otter::Graphic::Raylib::RaylibTexture("../assets/image.png")));
-            ref.add_component(e, Otter::Games::RType::Components::Render());
-            ref.add_component(e, Otter::Games::RType::Components::Keyboard());
-        #endif
+#if defined(TARGET_CLIENT)
+        ref.add_component(e, Otter::Games::RType::Components::Texture(
+                                 "../assets/image.png", Otter::Graphic::Raylib::RaylibTexture("../assets/image.png")));
+        ref.add_component(e, Otter::Games::RType::Components::Render());
+        ref.add_component(e, Otter::Games::RType::Components::Keyboard());
+#endif
 
         ref.add_component(e, Otter::Games::RType::Components::Transform(0.1, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
