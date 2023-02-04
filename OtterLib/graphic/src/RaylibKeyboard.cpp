@@ -7,21 +7,28 @@
 #include "RaylibKeyboard.hpp"
 
 namespace Otter::Graphic::Raylib {
-    RaylibKeyboard::RaylibKeyboard(const int& key) : _key(key) {}
+    RaylibKeyboard::RaylibKeyboard() = default;
 
     RaylibKeyboard::~RaylibKeyboard() = default;
 
-    void RaylibKeyboard::setKey(const int& key) { _key = key; }
+    void RaylibKeyboard::setKey(RaylibKey raylibKey, const int& state) { _keyMap[raylibKey] = state; }
 
-    void RaylibKeyboard::setExitKey() const { SetExitKey(_key); }
+    void RaylibKeyboard::removeKey(RaylibKey raylibKey) { _keyMap.erase(raylibKey); }
 
-    bool RaylibKeyboard::isKeyPressed() const { return IsKeyPressed(_key); }
+    void RaylibKeyboard::setExitKey(RaylibKey raylibKey) const { SetExitKey(raylibKey); }
 
-    bool RaylibKeyboard::isKeyDown() const { return IsKeyDown(_key); }
+    bool RaylibKeyboard::isKeyPressed(RaylibKey key) const { return IsKeyPressed(key); }
 
-    bool RaylibKeyboard::isKeyReleased() const { return IsKeyReleased(_key); }
+    bool RaylibKeyboard::isKeyDown(RaylibKey key) const { return IsKeyDown(key); }
 
-    bool RaylibKeyboard::isKeyUp() const { return IsKeyUp(_key); }
+    bool RaylibKeyboard::isKeyReleased(RaylibKey key) const { return IsKeyReleased(key); }
+
+    bool RaylibKeyboard::isKeyUp(RaylibKey key) const { return IsKeyUp(key); }
 
     int RaylibKeyboard::getKeyPressed() { return GetKeyPressed(); }
+
+    std::map<RaylibKeyboard::RaylibKey, int>::iterator RaylibKeyboard::begin() { return _keyMap.begin(); }
+
+    std::map<RaylibKeyboard::RaylibKey, int>::iterator RaylibKeyboard::end() { return _keyMap.end(); }
+
 } // namespace Otter::Graphic::Raylib
