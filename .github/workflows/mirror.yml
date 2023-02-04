@@ -14,9 +14,10 @@ jobs:
           cd $GITHUB_WORKSPACE
           bash tools/lint.sh
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: ':art: Fix styling - GITHUB CI'
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "Fix: styling - GITHUB CI" || echo No changes to be committed
   mirror_to_epitech:
     if: github.repository == 'AmozPay/OtterLib'
     needs: lint

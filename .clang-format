@@ -2,4 +2,14 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 ---
 Language: Cpp
-ColumnLimit: 100
+ColumnLimit: 120
+AlwaysBreakTemplateDeclarations: Yes
+NamespaceIndentation: All
+BreakBeforeBraces: Custom
+IncludeBlocks: Regroup
+PointerAlignment: Left
+ReferenceAlignment: Left
+SeparateDefinitionBlocks: Always
+BraceWrapping:
+  AfterFunction: true
+  BeforeLambdaBody: true

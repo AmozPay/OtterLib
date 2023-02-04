@@ -1,0 +1,6 @@
+build
+**/**/build
+**/**/conanbuild*
+**/**/graph_info.json
+**/**/conaninfo.txt
+# **/**/conan.lock
