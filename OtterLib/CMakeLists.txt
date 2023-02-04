@@ -107,17 +107,26 @@ target_include_directories(OtterGraphicTests PUBLIC graphic/include)
 target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
 add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
 
+# Does not compile tests
+add_custom_target(OtterLib)
+add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
+
+# Compile tests only
+add_custom_target(OtterLibTests)
+add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
 file(GLOB NETWORK_HEADERS network/include/*.hpp)
 file(GLOB GRAPHIC_HEADERS graphic/include/*.hpp)
 
 # Add headers to installed elements
-install(FILES 
+install(FILES
     ${GRAPHIC_HEADERS}
     ${NETWORK_HEADERS}
     ${CORE_HEADERS}
-    DESTINATION "include")
+    DESTINATION "include"
+)
 
 # Add static libraries to installed elements
 # Export them for use in other CMakes
