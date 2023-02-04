@@ -7,7 +7,6 @@
 
 #include "Components.hpp"
 #include "OtterCore.hpp"
-#include "OtterGraphic.hpp"
 
 namespace Otter::Games::RType::System::Sprite {
 
@@ -17,7 +16,7 @@ namespace Otter::Games::RType::System::Sprite {
         for (size_t i = 0; i < sprites.size(); i++) {
             auto const& sprite = sprites[i];
             if (sprite) {
-//                sprite->_texture = Otter::Graphic::Raylib::RaylibTexture(sprite->_path);
+                //                sprite->_texture = Otter::Graphic::Raylib::RaylibTexture(sprite->_path);
             }
         }
     }
