@@ -58,6 +58,8 @@ target_link_libraries(r-type_client
     ${CONAN_LIBS}
 )
 
+file(COPY src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
