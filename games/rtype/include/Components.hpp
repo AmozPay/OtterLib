@@ -23,7 +23,8 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {};
+    struct Render {
+    };
 
     /**
      * @brief Component for the window
@@ -60,7 +61,10 @@ namespace Otter::Games::RType::Components {
      * @var keyboard: An instance of the RaylibKeyboard class
      */
     struct Keyboard {
-        Otter::Graphic::Raylib::RaylibKeyboard& keyboard;
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        ~Keyboard() = default;
+
+        Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
     };
 
     /**
@@ -150,9 +154,10 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position): _position(position) {
-                _scale = scale;
-                _rotation = rotation;
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+        {
+            _scale = scale;
+            _rotation = rotation;
         }
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
@@ -170,8 +175,15 @@ namespace Otter::Games::RType::Components {
      * no acceleration and 1 is for the right or down
      */
     struct Velocity {
-        float speed;
-        Otter::Games::RType::Utils::Vector2 accelerationDirection;
+        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection)
+        {
+            _speed = speed;
+        };
+        ~Velocity() = default;
+
+        float _speed;
+        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -182,8 +194,15 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
-        int id;
-        std::string tag;
+        Player(int id, const std::string& tag)
+        {
+            _id = id;
+            _tag = tag;
+        };
+        ~Player() = default;
+
+        int _id;
+        std::string _tag;
     };
 
     /**
