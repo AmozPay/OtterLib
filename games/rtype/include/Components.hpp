@@ -246,7 +246,7 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
-        uint hp;
+        unsigned int hp;
     };
 
     /**
@@ -256,7 +256,7 @@ namespace Otter::Games::RType::Components {
      * @var damage: The damage of the entity
      */
     struct Damage {
-        uint damage;
+        unsigned int damage;
     };
 
     /**
