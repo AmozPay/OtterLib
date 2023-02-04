@@ -1,0 +1,88 @@
+#include "test.hpp"
+
+TEST(registry, test_register_new_composant)
+{
+    Otter::Core::ComponentManager registry;
+
+    registry.register_component<intTest>();
+    auto const& tmp = registry.get_components<intTest>();
+    EXPECT_TRUE((std::is_same<decltype(tmp), const Otter::Core::sparse_array<intTest>&>::value));
+    EXPECT_TRUE(tmp.isEmpty());
+}
+
+TEST(registry, test_add_composant)
+{
+    Otter::Core::ComponentManager registry;
+    auto const& tmp2 = registry.register_component<intTest>();
+    auto const& tmp = registry.get_components<intTest>();
+    //  EXPECT_EQ(tmp, tmp2);
+    auto& v2 = registry.add_component(1, intTest(42));
+    auto& v1 = registry.add_component(3, intTest(3));
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_TRUE(tmp[1]);
+    EXPECT_TRUE(tmp[3]);
+    EXPECT_TRUE(!(tmp[0]));
+    EXPECT_EQ(tmp[3].value().getDt(), 3);
+    v1->setDt(10);
+    EXPECT_EQ(tmp[3]->getDt(), 10);
+}
+
+TEST(registry, test_remove)
+{
+    Otter::Core::ComponentManager registry;
+    auto const& tmp = registry.register_component<intTest>();
+    auto& v1 = registry.add_component(1, intTest(42));
+    auto& v2 = registry.add_component(3, intTest(3));
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_TRUE(tmp[1]);
+    EXPECT_TRUE(tmp[3]);
+
+    registry.remove_component<intTest>(2);
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_TRUE(tmp[1]);
+    EXPECT_TRUE(tmp[3]);
+    registry.remove_component<intTest>(3);
+
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_TRUE(tmp[1]);
+    EXPECT_TRUE(!(tmp[3]));
+}
+
+
+TEST(registry_advanced, test_multipl_comp)
+{
+  Otter::Core::ComponentManager reg;
+
+auto const &tmp = reg.register_component<intTest>();
+auto const &tmp2 = reg.register_component<float>();
+  auto const &tmp3 = reg.register_component<std::string>();
+
+  reg.add_component<float>(0, 5.3);
+  reg.add_component<float>(2, 25.5);
+  
+  reg.add_component<intTest>(1,intTest(5));
+  reg.add_component<intTest>(2, intTest(10));
+  reg.add_component<intTest>(3, intTest(15));
+
+  reg.add_component(0, std::string("un"));
+  reg.add_component(2, std::string("deux"));
+
+    EXPECT_EQ(tmp.size(), 4);
+    EXPECT_EQ(tmp2.size(), 3);
+    EXPECT_EQ(tmp3.size(), 3);
+
+    EXPECT_TRUE(tmp[1]);
+  reg.remove_component<intTest>(1);
+    EXPECT_FALSE(tmp[1]);
+    EXPECT_TRUE(tmp[2]);
+    EXPECT_TRUE(tmp2[2]);
+    EXPECT_TRUE(tmp3[2]);
+    reg.remove_entity(2);
+    EXPECT_FALSE(tmp[2]);
+    EXPECT_FALSE(tmp2[2]);
+    EXPECT_FALSE(tmp3[2]);
+
+    EXPECT_TRUE(tmp[3]);
+    reg.remove_entity(3);
+    EXPECT_FALSE(tmp[3]);    
+}

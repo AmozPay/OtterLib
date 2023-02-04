@@ -29,7 +29,7 @@ if(result)
 endif()
 
 execute_process(
-    COMMAND ${CMAKE_COMMAND} --build .
+    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib
     RESULT_VARIABLE result
     WORKING_DIRECTORY ${OTTERLIB_DIR}/build
 )
@@ -45,7 +45,7 @@ else()
 endif()
 
 file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp)
-file(GLOB SERVER_FILES src/*.cpp)
+file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp)
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
@@ -58,16 +58,23 @@ target_link_libraries(r-type_client
     ${CONAN_LIBS}
 )
 
+file(COPY src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
-target_include_directories(r-type_server PUBLIC include/)
+target_include_directories(r-type_server PUBLIC include/ include/System)
 target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
     OtterGraphic
     ${CONAN_LIBS}
 )
+
+# Does not compile tests
+add_custom_target(r-type)
+add_dependencies(r-type r-type_server r-type_client)
+
 
 install(
     TARGETS r-type_server r-type_client

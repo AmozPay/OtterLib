@@ -67,13 +67,13 @@ file(GLOB CORE_FILES core/src/*.cpp)
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
-target_include_directories(OtterCore PUBLIC core/include)
+target_include_directories(OtterCore PUBLIC core/include ../games/rtype/include/System/)
 
 # OtterCore tests
 file(GLOB CORE_TESTS core/tests/*.cpp)
 add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
 target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-target_include_directories(OtterCoreTests PUBLIC core/include)
+target_include_directories(OtterCoreTests PUBLIC core/include ../games/rtype/include/System/)
 target_link_libraries(OtterCoreTests gtest_main)
 add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 
@@ -104,8 +104,16 @@ file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
 add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
 target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
 target_include_directories(OtterGraphicTests PUBLIC graphic/include)
-target_link_libraries(OtterGraphicTests gtest_main raylib)
+target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
 add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
+
+# Does not compile tests
+add_custom_target(OtterLib)
+add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
+
+# Compile tests only
+add_custom_target(OtterLibTests)
+add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
@@ -113,11 +121,12 @@ file(GLOB NETWORK_HEADERS network/include/*.hpp)
 file(GLOB GRAPHIC_HEADERS graphic/include/*.hpp)
 
 # Add headers to installed elements
-install(FILES 
+install(FILES
     ${GRAPHIC_HEADERS}
     ${NETWORK_HEADERS}
     ${CORE_HEADERS}
-    DESTINATION "include")
+    DESTINATION "include"
+)
 
 # Add static libraries to installed elements
 # Export them for use in other CMakes
