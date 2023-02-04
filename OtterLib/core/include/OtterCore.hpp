@@ -5,8 +5,8 @@
 
 namespace Otter::Core {
 
-    extern void registerComponents(Otter::Core::Orchestrator &);
-    extern void registerSystems(Otter::Core::SystemManager &);
+    extern void registerComponents(Otter::Core::Orchestrator&);
+    extern void registerSystems(Otter::Core::SystemManager&);
 
     class OtterCore {
       public:
