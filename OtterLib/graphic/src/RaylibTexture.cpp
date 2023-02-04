@@ -40,7 +40,8 @@ namespace Otter::Graphic::Raylib {
      * @param rec2: second rectangle
      * @return bool
      */
-    bool RaylibTexture::checkCollisionRecs(Rectangle rec1, Rectangle rec2) { return CheckCollisionRecs(rec1, rec2); }
+    bool RaylibTexture::checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const
+    { return CheckCollisionRecs(rec1, rec2); }
 
 
     /**

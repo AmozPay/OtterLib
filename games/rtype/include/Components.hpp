@@ -62,8 +62,8 @@ namespace Otter::Games::RType::Components {
      * @var height: The height of the box collider rectangle
      */
     struct BoxCollider {
-        unsigned int width;
-        unsigned int height;
+        float width;
+        float height;
     };
 
     /**
