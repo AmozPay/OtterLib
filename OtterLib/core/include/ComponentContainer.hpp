@@ -142,10 +142,11 @@ namespace Otter::Core {
         reference_type emplace_at(size_type pos, Params&&... var)
         {
             std::allocator<std::optional<C>> alocator = _data.get_allocator();
-
+            /*
             if (_data[pos])
                 alocator.destroy(&_data[pos]);
             alocator.construct(&_data[pos], var...);
+            */
             return _data[pos];
         }
 
