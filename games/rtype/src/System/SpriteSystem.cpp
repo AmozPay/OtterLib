@@ -17,24 +17,24 @@ namespace Otter::Games::RType::System::Sprite {
         for (size_t i = 0; i < sprites.size(); i++) {
             auto const& sprite = sprites[i];
             if (sprite) {
-                sprite->texture = Otter::Graphic::Raylib::RaylibTexture(sprite->path);
+//                sprite->_texture = Otter::Graphic::Raylib::RaylibTexture(sprite->_path);
             }
         }
     }
 
     void Draw(Otter::Core::Orchestrator& ref)
     {
-        auto const& sprites = ref.get_components<Otter::Games::RType::Components::Texture>();
+        auto& sprites = ref.get_components<Otter::Games::RType::Components::Texture>();
         auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
         auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
-            auto const& sprite = sprites[i];
+            auto& sprite = sprites[i];
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->texture.setScale(transform->scale);
-                sprite->texture.setRotation(transform->rotation);
-                sprite->texture.draw({transform->position.x, transform->position.y});
+                sprite->_texture.setScale(transform->_scale);
+                sprite->_texture.setRotation(transform->_rotation);
+                sprite->_texture.draw({transform->_position.x, transform->_position.y});
             }
         }
     }
