@@ -28,13 +28,14 @@ namespace Otter::Core {
         ref.add_component(e, Otter::Games::RType::Components::Transform(0.1, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
-        ref.add_component(e, Otter::Games::RType::Components::Velocity(0, {1, 1}));
+        ref.add_component(e, Otter::Games::RType::Components::Velocity(10, {1, 1}));
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
         ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
         ref.registerSystem(Otter::Games::RType::System::Event::PollEvent, Otter::Core::SystemManager::preEvent);
+        ref.registerSystem(Otter::Games::RType::System::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(Otter::Games::RType::System::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(Otter::Games::RType::System::Sprite::Draw, Otter::Core::SystemManager::draw);

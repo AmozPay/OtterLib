@@ -9,6 +9,7 @@
 #define RTYPE_SYSTEM_HPP
 
 #include "EventSystem.hpp"
+#include "MoveSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "WindowSystem.hpp"
 
