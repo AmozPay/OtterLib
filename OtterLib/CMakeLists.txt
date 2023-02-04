@@ -67,13 +67,13 @@ file(GLOB CORE_FILES core/src/*.cpp)
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
-target_include_directories(OtterCore PUBLIC core/include)
+target_include_directories(OtterCore PUBLIC core/include ../games/rtype/include/System/)
 
 # OtterCore tests
 file(GLOB CORE_TESTS core/tests/*.cpp)
 add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
 target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-target_include_directories(OtterCoreTests PUBLIC core/include)
+target_include_directories(OtterCoreTests PUBLIC core/include ../games/rtype/include/System/)
 target_link_libraries(OtterCoreTests gtest_main)
 add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 

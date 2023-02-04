@@ -9,5 +9,6 @@
 #define RTYPE_SYSTEM_HPP
 
 #include "WindowSystem.hpp"
+#include "SpriteSystem.hpp"
 
 #endif // RTYPE_SYSTEM_HPP

@@ -113,8 +113,21 @@ namespace Otter::Games::RType::Components {
      * @var texture: An instance of the RaylibTexture class
      */
     struct Texture {
-        std::string path;
-        Otter::Graphic::Raylib::RaylibTexture& texture;
+        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
+        {
+            _path = path;
+        };
+        ~Texture() = default;
+
+        Texture& operator=(const Texture& other)
+        {
+            _path = other._path;
+            _texture = other._texture;
+            return *this;
+        }
+
+        std::string _path;
+        Otter::Graphic::Raylib::RaylibTexture _texture;
     };
 
     /**
@@ -126,9 +139,14 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Otter::Games::RType::Utils::Vector2 position;
-        float rotation;
-        float scale;
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position): _position(position) {
+                _scale = scale;
+                _rotation = rotation;
+        }
+        ~Transform() = default;
+        Otter::Games::RType::Utils::Vector2 _position;
+        float _rotation;
+        float _scale;
     };
 
     /**
