@@ -29,6 +29,15 @@ namespace Otter::Graphic::Raylib {
          */
         ~RaylibKeyboard();
 
+        enum RaylibKey {
+            LEFT = KEY_LEFT,
+            RIGHT = KEY_RIGHT,
+            UP = KEY_UP,
+            DOWN = KEY_DOWN,
+            SPACE = KEY_SPACE,
+            ESCAPE = KEY_ESCAPE
+        };
+
         /**
          * @brief Set the key to check
          * @param key: The key to check
