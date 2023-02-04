@@ -8,7 +8,7 @@
 #ifndef ENTITYMANAGER_HPP_
 #define ENTITYMANAGER_HPP_
 #include <cstdint>
-#include <queue>
+#include <set>
 #include <stdexcept>
 
 namespace Otter::Core {

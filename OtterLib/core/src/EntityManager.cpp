@@ -10,7 +10,6 @@
 namespace Otter::Core {
     EntityManager::EntityManager()
     {
-        _livingEntityCount = 0;
         for (Entity it = 1; it < MAX_ENTITY; it++)
             _availableEntity.insert(it);
     }
@@ -19,13 +18,12 @@ namespace Otter::Core {
 
     Entity EntityManager::CreateEntity()
     {
-        Entity enti;
-
+        
         if (_availableEntity.max_size() >= MAX_ENTITY) {
             throw std::runtime_error("too much entities");
         }
-        enti = _availableEntity.extract(_availableEntity.begin());
-        return (enti);
+        auto enti = _availableEntity.extract(_availableEntity.begin());
+        return (enti.value());
     }
 
     void EntityManager::destroyEntity(Entity entity)
