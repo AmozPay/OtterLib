@@ -23,15 +23,14 @@ namespace Otter::Core {
         Entity e1 = ref.createEntity();
         ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
 
-        //        Otter::Graphic::Raylib::RaylibTexture texture("../assets/image.png");
         Entity e = ref.createEntity();
         ref.add_component(e, Otter::Games::RType::Components::Texture(
-                                 "../assets/image.png", Otter::Graphic::Raylib::RaylibTexture("../assets/image.png")));
+                                 "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
         ref.add_component(e, Otter::Games::RType::Components::Render());
-        ref.add_component(e, Otter::Games::RType::Components::Transform(0.1, 0, {200, 200}));
+        ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
-        ref.add_component(e, Otter::Games::RType::Components::Velocity(10, {1, 1}));
+        ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
