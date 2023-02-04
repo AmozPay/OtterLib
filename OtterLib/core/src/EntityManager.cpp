@@ -12,7 +12,7 @@ namespace Otter::Core {
     {
         _livingEntityCount = 0;
         for (Entity it = 1; it < MAX_ENTITY; it++)
-            _availableEntity.push(it);
+            _availableEntity.insert(it);
     }
 
     EntityManager::~EntityManager() {}
@@ -21,12 +21,10 @@ namespace Otter::Core {
     {
         Entity enti;
 
-        if (_livingEntityCount >= MAX_ENTITY) {
+        if (_availableEntity.max_size() >= MAX_ENTITY) {
             throw std::runtime_error("too much entities");
         }
-        enti = _availableEntity.front();
-        _availableEntity.pop();
-        _livingEntityCount += 1;
+        enti = _availableEntity.extract(_availableEntity.begin());
         return (enti);
     }
 
@@ -35,7 +33,6 @@ namespace Otter::Core {
         if (entity < 0) {
             throw std::runtime_error("Entity not in range");
         }
-        _availableEntity.push(entity);
-        _livingEntityCount -= 1;
+        _availableEntity.insert(entity);
     }
 } // namespace Otter::Core
