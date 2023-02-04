@@ -23,7 +23,34 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {
+    struct Render {};
+
+    /**
+     * @brief Component for the window
+     * @details The window component is used to create & manage a window
+     * @struct Window
+     * @var width: The width of the window
+     * @var height: The height of the window
+     * @var title: The title of the window
+     * @var fps: The target framerate of the window
+     * @var window: An instance of the RaylibWindow class
+     */
+    struct Window {
+        Window(int width, int height, const std::string& title, int fps)
+            : _window(Otter::Graphic::Raylib::RaylibWindow(height, width, title))
+        {
+            _width = width;
+            _height = height;
+            _title = title;
+            _fps = fps;
+        };
+        ~Window() = default;
+
+        int _width;
+        int _height;
+        std::string _title;
+        int _fps;
+        Otter::Graphic::Raylib::RaylibWindow _window;
     };
 
     /**
@@ -112,8 +139,21 @@ namespace Otter::Games::RType::Components {
      * @var texture: An instance of the RaylibTexture class
      */
     struct Texture {
-        std::string path;
-        Otter::Graphic::Raylib::RaylibTexture& texture;
+        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
+        {
+            _path = path;
+        };
+        ~Texture() = default;
+
+        Texture& operator=(const Texture& other)
+        {
+            _path = other._path;
+            _texture = other._texture;
+            return *this;
+        }
+
+        std::string _path;
+        Otter::Graphic::Raylib::RaylibTexture _texture;
     };
 
     /**
@@ -125,9 +165,14 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Otter::Games::RType::Utils::Vector2 position;
-        float rotation;
-        float scale;
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position): _position(position) {
+                _scale = scale;
+                _rotation = rotation;
+        }
+        ~Transform() = default;
+        Otter::Games::RType::Utils::Vector2 _position;
+        float _rotation;
+        float _scale;
     };
 
     /**
