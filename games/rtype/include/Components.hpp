@@ -23,7 +23,34 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {
+    struct Render {};
+
+    /**
+     * @brief Component for the window
+     * @details The window component is used to create & manage a window
+     * @struct Window
+     * @var width: The width of the window
+     * @var height: The height of the window
+     * @var title: The title of the window
+     * @var fps: The target framerate of the window
+     * @var window: An instance of the RaylibWindow class
+     */
+    struct Window {
+        Window(int width, int height, const std::string& title, int fps)
+            : _window(Otter::Graphic::Raylib::RaylibWindow(height, width, title))
+        {
+            _width = width;
+            _height = height;
+            _title = title;
+            _fps = fps;
+        };
+        ~Window() = default;
+
+        int _width;
+        int _height;
+        std::string _title;
+        int _fps;
+        Otter::Graphic::Raylib::RaylibWindow _window;
     };
 
     /**

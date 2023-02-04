@@ -11,7 +11,7 @@
 ** Types
 */
 
-//#define ENGINE_LOG
+// #define ENGINE_LOG
 #include <array>
 #include <bitset>
 #include <iostream>
