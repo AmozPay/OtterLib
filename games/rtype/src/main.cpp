@@ -6,6 +6,9 @@
 #include "System.hpp"
 
 namespace Otter::Core {
+
+    void createEntityObj(Otter::Core::Orchestrator&) {}
+
     void registerComponents(Otter::Core::Orchestrator& ref)
     {
         ref.register_component<Otter::Games::RType::Components::Window>();
