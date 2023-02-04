@@ -19,7 +19,7 @@ namespace Otter::Core {
     Entity EntityManager::CreateEntity()
     {
         
-        if (_availableEntity.max_size() >= MAX_ENTITY) {
+      if (_availableEntity.size() == 0) {
             throw std::runtime_error("too much entities");
         }
         auto enti = _availableEntity.extract(_availableEntity.begin());
