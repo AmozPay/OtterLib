@@ -23,7 +23,8 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {};
+    struct Render {
+    };
 
     /**
      * @brief Component for the window
@@ -51,6 +52,19 @@ namespace Otter::Games::RType::Components {
         std::string _title;
         int _fps;
         Otter::Graphic::Raylib::RaylibWindow _window;
+    };
+
+    /**
+     * @brief Component for the keyboard
+     * @details The keyboard component is used to manage the keyboard events
+     * @struct Keyboard
+     * @var keyboard: An instance of the RaylibKeyboard class
+     */
+    struct Keyboard {
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        ~Keyboard() = default;
+
+        Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
     };
 
     /**
@@ -139,9 +153,10 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position): _position(position) {
-                _scale = scale;
-                _rotation = rotation;
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+        {
+            _scale = scale;
+            _rotation = rotation;
         }
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
@@ -154,11 +169,20 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
-     * @var acceleration: A vector of float for the acceleration of the entity
+     * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
+     * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
+     * no acceleration and 1 is for the right or down
      */
     struct Velocity {
-        float speed;
-        Otter::Games::RType::Utils::Vector2 acceleration;
+        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection)
+        {
+            _speed = speed;
+        };
+        ~Velocity() = default;
+
+        float _speed;
+        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -169,8 +193,15 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
-        int id;
-        std::string tag;
+        Player(int id, const std::string& tag)
+        {
+            _id = id;
+            _tag = tag;
+        };
+        ~Player() = default;
+
+        int _id;
+        std::string _tag;
     };
 
     /**

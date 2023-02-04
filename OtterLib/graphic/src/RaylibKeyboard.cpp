@@ -22,4 +22,6 @@ namespace Otter::Graphic::Raylib {
     bool RaylibKeyboard::isKeyReleased() const { return IsKeyReleased(_key); }
 
     bool RaylibKeyboard::isKeyUp() const { return IsKeyUp(_key); }
+
+    int RaylibKeyboard::getKeyPressed() { return GetKeyPressed(); }
 } // namespace Otter::Graphic::Raylib

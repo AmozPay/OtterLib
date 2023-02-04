@@ -8,7 +8,8 @@
 #ifndef RTYPE_SYSTEM_HPP
 #define RTYPE_SYSTEM_HPP
 
-#include "WindowSystem.hpp"
+#include "EventSystem.hpp"
 #include "SpriteSystem.hpp"
+#include "WindowSystem.hpp"
 
 #endif // RTYPE_SYSTEM_HPP
