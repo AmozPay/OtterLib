@@ -5,7 +5,8 @@ namespace Otter::Core {
     {
         registerComponents(this->_data);
         registerSystems(this->_systems);
-	createEntityObj(this->_data);
+	 createEntityObj(this->_data);
+				      
         /// call factory
     }
 
