@@ -17,10 +17,10 @@ namespace Otter::Games::RType::System::Move {
             auto& transform = transforms[i];
             auto& velocity = velocities[i];
             if (transform && velocity) {
-                transform->position.x += velocity->accelerationDirection.x * velocity->speed;
-                transform->position.y += velocity->accelerationDirection.y * velocity->speed;
-                velocity->accelerationDirection.x = 0;
-                velocity->accelerationDirection.y = 0;
+                transform->_position.x += velocity->_accelerationDirection.x * velocity->_speed;
+                transform->_position.y += velocity->_accelerationDirection.y * velocity->_speed;
+                velocity->_accelerationDirection.x = 0;
+                velocity->_accelerationDirection.y = 0;
             }
         }
     }
