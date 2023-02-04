@@ -31,6 +31,15 @@ namespace Otter::Graphic::Raylib {
         void draw(Vector2 position);
 
         /**
+         * @brief Check if a point is inside a texture
+         * @details Check if a point is inside a texture
+         * @param position: The position of the point
+         * @return True if the point is inside the texture, false otherwise
+         */
+        bool checkCollisionRecs(const Rectangle rec1, const Rectangle rec2);
+
+
+        /**
          * @brief Set the texture to use
          * @param texturePath: The path to the texture to use
          * @return Nothing
