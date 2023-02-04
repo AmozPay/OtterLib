@@ -14,12 +14,12 @@ namespace Otter::Games::RType::System::Collision {
                                           const Otter::Games::RType::Components::Transform trans1,
                                           const Otter::Games::RType::Components::Transform trans2)
     {
-        if (trans1.position.x + col1.width < trans2.position.x + col2.width &&
-            trans1.position.x + col1.width > trans2.position.x) {
+        if (trans1._position.x + col1.width < trans2._position.x + col2.width &&
+            trans1._position.x + col1.width > trans2._position.x) {
             return CollisionDirection::RIGHT;
-        } else if (trans1.position.x < trans2.position.x + col2.width && trans1.position.x > trans2.position.x) {
+        } else if (trans1._position.x < trans2._position.x + col2.width && trans1._position.x > trans2._position.x) {
             return CollisionDirection::LEFT;
-        } else if (trans1.position.y < trans2.position.y + col2.height && trans1.position.y > trans2.position.y) {
+        } else if (trans1._position.y < trans2._position.y + col2.height && trans1._position.y > trans2._position.y) {
             return CollisionDirection::TOP;
         } else {
             return CollisionDirection::BOTTOM;
@@ -35,11 +35,11 @@ namespace Otter::Games::RType::System::Collision {
             health.hp = 0;
             // reset pos
         } else if (direction == LEFT) {
-            trans.position.x = trans2.position.x + col2.width;
+            trans._position.x = trans2._position.x + col2.width;
         } else if (direction == TOP) {
-            trans.position.y = trans2.position.y + col2.height;
+            trans._position.y = trans2._position.y + col2.height;
         } else {
-            trans.position.y = trans2.position.y - col2.height;
+            trans._position.y = trans2._position.y - col2.height;
         }
     }
 
@@ -65,9 +65,9 @@ namespace Otter::Games::RType::System::Collision {
                 auto const& helthJ = health[j];
                 if (transI && transJ && colI && colJ && texI && texJ) {
                     if (playerI || playerJ) {
-                        bool collision = texI->texture.checkCollisionRecs(
-                            {transI->position.x, transI->position.y, colI->width, colI->height},
-                            {transJ->position.x, transJ->position.y, colJ->width, colJ->height});
+                        bool collision = texI->_texture.checkCollisionRecs(
+                            {transI->_position.x, transI->_position.y, colI->width, colI->height},
+                            {transJ->_position.x, transJ->_position.y, colJ->width, colJ->height});
                         if (collision) {
                             CollisionDirection side = collisionDirection(*colI, *colJ, *transI, *transJ);
                             if (playerI) {
