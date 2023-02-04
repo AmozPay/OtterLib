@@ -5,6 +5,35 @@ OtterLib is our game engine library developped for an Epitech project called R-T
 It consists of different modules: "Otter Core", "Otter Network" [...]
 
 
+## Building Rtype Games
+
+```bash
+cmake -S . -B build
+cmake --build build --target r-type
+```
+
+The built files are located in  `build/games/rtype/bin`
+
+## Building OtterLib
+
+```bash
+cmake -S . -B build
+cmake --build build --target OtterLib
+```
+
+The built files are located in  `OtterLib/build/lib`
+
+## Building and running tests
+
+### OtterLibTests
+
+```bash
+cmake -S . -B build
+cmake --build build --target OtterLibTests
+```
+
+The built files are located in  `OtterLib/build/lib`
+
 ## Contributing
 
 Contributions are always welcome!

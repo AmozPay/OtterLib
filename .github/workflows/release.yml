@@ -165,3 +165,36 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+  docker_publish:
+    runs-on: ubuntu-latest
+    if: github.repository == 'AmozPay/OtterLib'
+    needs: create_release
+    steps:
+      - uses: actions/checkout@v2
+      - name: build image
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          docker build \
+            -t build_image \
+            -f Containerfile \
+            --label "org.opencontainers.image.source=${{ env.REPO_NAME }}" \
+            --label "org.opencontainers.image.description=Server backend for OtterLib team's rtype project" \
+            --label "org.opencontainers.image.licenses=MIT"\
+            .
+      - name: tag image to latest
+        env:
+          TAG: ${{ needs.create_release.outputs.version }}
+        run: |
+          docker image tag build_image ghcr.io/amozpay/rtype-server:latest
+          docker image tag build_image ghcr.io/amozpay/rtype-server:${{ env.TAG }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: push images
+        run: docker image push --all-tags ghcr.io/amozpay/rtype-server

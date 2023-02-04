@@ -52,9 +52,11 @@ endif()
 # Add google tests
 include(FetchContent)
 FetchContent_Declare(
-  googletest
-  # Specify the commit you depend on and update it regularly.
-  URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+    googletest
+
+    # Specify the commit you depend on and update it regularly.
+    URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -104,8 +106,16 @@ file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
 add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
 target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
 target_include_directories(OtterGraphicTests PUBLIC graphic/include)
-target_link_libraries(OtterGraphicTests gtest_main raylib)
+target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
 add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
+
+# Does not compile tests
+add_custom_target(OtterLib)
+add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
+
+# Compile tests only
+add_custom_target(OtterLibTests)
+add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
@@ -113,11 +123,12 @@ file(GLOB NETWORK_HEADERS network/include/*.hpp)
 file(GLOB GRAPHIC_HEADERS graphic/include/*.hpp)
 
 # Add headers to installed elements
-install(FILES 
+install(FILES
     ${GRAPHIC_HEADERS}
     ${NETWORK_HEADERS}
     ${CORE_HEADERS}
-    DESTINATION "include")
+    DESTINATION "include"
+)
 
 # Add static libraries to installed elements
 # Export them for use in other CMakes

@@ -13,7 +13,8 @@ namespace Otter::Graphic::Raylib {
         InitWindow(width, height, title.c_str());
     }
 
-    RaylibWindow::~RaylibWindow() { CloseWindow(); }
+    RaylibWindow::~RaylibWindow() = default;
+    //    RaylibWindow::~RaylibWindow() { CloseWindow(); }
 
     void RaylibWindow::setFramerateLimit(const int& framerate) { SetTargetFPS(framerate); }
 

@@ -26,6 +26,47 @@ namespace Otter::Games::RType::Components {
     struct Render {};
 
     /**
+     * @brief Component for the window
+     * @details The window component is used to create & manage a window
+     * @struct Window
+     * @var width: The width of the window
+     * @var height: The height of the window
+     * @var title: The title of the window
+     * @var fps: The target framerate of the window
+     * @var window: An instance of the RaylibWindow class
+     */
+    struct Window {
+        Window(int width, int height, const std::string& title, int fps)
+            : _window(Otter::Graphic::Raylib::RaylibWindow(height, width, title))
+        {
+            _width = width;
+            _height = height;
+            _title = title;
+            _fps = fps;
+        };
+        ~Window() = default;
+
+        int _width;
+        int _height;
+        std::string _title;
+        int _fps;
+        Otter::Graphic::Raylib::RaylibWindow _window;
+    };
+
+    /**
+     * @brief Component for the keyboard
+     * @details The keyboard component is used to manage the keyboard events
+     * @struct Keyboard
+     * @var keyboard: An instance of the RaylibKeyboard class
+     */
+    struct Keyboard {
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        ~Keyboard() = default;
+
+        Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
+    };
+
+    /**
      * @brief Component for the collision
      * @details The collision component is used to check if an entity is colliding with another entity
      * @struct Collision
@@ -85,8 +126,21 @@ namespace Otter::Games::RType::Components {
      * @var texture: An instance of the RaylibTexture class
      */
     struct Texture {
-        std::string path;
-        Otter::Graphic::Raylib::RaylibTexture& texture;
+        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
+        {
+            _path = path;
+        };
+        ~Texture() = default;
+
+        Texture& operator=(const Texture& other)
+        {
+            _path = other._path;
+            _texture = other._texture;
+            return *this;
+        }
+
+        std::string _path;
+        Otter::Graphic::Raylib::RaylibTexture _texture;
     };
 
     /**
@@ -98,9 +152,15 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Otter::Games::RType::Utils::Vector2 position;
-        float rotation;
-        float scale;
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+        {
+            _scale = scale;
+            _rotation = rotation;
+        }
+        ~Transform() = default;
+        Otter::Games::RType::Utils::Vector2 _position;
+        float _rotation;
+        float _scale;
     };
 
     /**
@@ -108,11 +168,20 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
-     * @var acceleration: A vector of float for the acceleration of the entity
+     * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
+     * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
+     * no acceleration and 1 is for the right or down
      */
     struct Velocity {
-        float speed;
-        Otter::Games::RType::Utils::Vector2 acceleration;
+        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection)
+        {
+            _speed = speed;
+        };
+        ~Velocity() = default;
+
+        float _speed;
+        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -123,8 +192,15 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
-        int id;
-        std::string tag;
+        Player(int id, const std::string& tag)
+        {
+            _id = id;
+            _tag = tag;
+        };
+        ~Player() = default;
+
+        int _id;
+        std::string _tag;
     };
 
     /**
@@ -168,7 +244,7 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
-        uint hp;
+        unsigned int hp;
     };
 
     /**
@@ -178,7 +254,7 @@ namespace Otter::Games::RType::Components {
      * @var damage: The damage of the entity
      */
     struct Damage {
-        uint damage;
+        unsigned int damage;
     };
 
     /**
