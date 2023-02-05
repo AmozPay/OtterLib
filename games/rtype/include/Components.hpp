@@ -157,6 +157,7 @@ namespace Otter::Games::RType::Components {
      * @details The transform component is used to store the position, rotation and scale of an entity
      * @struct Transform
      * @var position: A vector of float for the position of the entity
+     * @var lastPosition: A vector of float for the last position of the entity
      * @var rotation: The rotation of the entity
      * @var scale: The scale of the entity
      */
