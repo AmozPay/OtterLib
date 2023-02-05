@@ -26,7 +26,6 @@ namespace Otter::Graphic::Raylib {
      * @brief Destructor of the RaylibTexture class
      */
     RaylibTexture::~RaylibTexture() = default;
-
     //    RaylibTexture::~RaylibTexture() { UnloadTexture(_texture); }
 
     /**
@@ -34,6 +33,17 @@ namespace Otter::Graphic::Raylib {
      * @return Nothing
      */
     void RaylibTexture::draw(Vector2 position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
+
+    /**
+     * @brief Check if the texture is colliding with another texture
+     * @param rec1: First rectangle
+     * @param rec2: second rectangle
+     * @return bool
+     */
+    bool RaylibTexture::checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const
+    {
+        return CheckCollisionRecs(rec1, rec2);
+    }
 
     /**
      * @brief Set the texture

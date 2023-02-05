@@ -29,6 +29,15 @@ namespace Otter::Graphic::Raylib {
          */
         ~RaylibKeyboard();
 
+        enum RaylibKey {
+            LEFT = KEY_LEFT,
+            RIGHT = KEY_RIGHT,
+            UP = KEY_UP,
+            DOWN = KEY_DOWN,
+            SPACE = KEY_SPACE,
+            ESCAPE = KEY_ESCAPE
+        };
+
         /**
          * @brief Set the key to check
          * @param key: The key to check
@@ -42,25 +51,31 @@ namespace Otter::Graphic::Raylib {
         void setExitKey() const;
 
         /**
-         * @brief Check if the key is pressed
+         * @brief Check if a key has been pressed once
          * @return True if the key is pressed, false otherwise
          */
         [[nodiscard]] bool isKeyPressed() const;
         /**
-         * @brief Check if the key is down
+         * @brief Check if a key is being pressed
          * @return True if the key is down, false otherwise
          */
         [[nodiscard]] bool isKeyDown() const;
         /**
-         * @brief Check if the key is up
+         * @brief Check if a key has been released once
          * @return True if the key is up, false otherwise
          */
         [[nodiscard]] bool isKeyReleased() const;
         /**
-         * @brief Check if the key is up
+         * @brief Check if a key is NOT being pressed
          * @return True if the key is up, false otherwise
          */
         [[nodiscard]] bool isKeyUp() const;
+        /**
+         * @brief Get key pressed (keycode)
+         * @details Call it multiple times for keys queued
+         * @return The keycode of the key pressed, 0 if the queue is empty
+         */
+        static int getKeyPressed();
 
       private:
         int _key;

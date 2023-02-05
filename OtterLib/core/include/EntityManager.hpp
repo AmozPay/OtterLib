@@ -8,7 +8,7 @@
 #ifndef ENTITYMANAGER_HPP_
 #define ENTITYMANAGER_HPP_
 #include <cstdint>
-#include <queue>
+#include <set>
 #include <stdexcept>
 
 namespace Otter::Core {
@@ -44,9 +44,10 @@ namespace Otter::Core {
 
       protected:
       private:
-        std::queue<Entity> _availableEntity;
+      std::set<Entity> _availableEntity;
+      // std::queue<Entity> _availableEntity;
         // queue set with all id possible, assure the good balance of the id
-        std::size_t _livingEntityCount;
+      //        std::size_t _livingEntityCount;
     };
 } // namespace Otter::Core
 #endif /* !ENTITYMANAGER_HPP_ */

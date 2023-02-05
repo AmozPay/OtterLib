@@ -55,15 +55,36 @@ namespace Otter::Games::RType::Components {
     };
 
     /**
-     * @brief Component for the collision
-     * @details The collision component is used to check if an entity is colliding with another entity
-     * @struct Collision
-     * @var origin: The origin of the collision rectangle
-     * @var end: The end of the collision rectangle
+     * @brief Component for the keyboard
+     * @details The keyboard component is used to manage the keyboard events
+     * @struct Keyboard
+     * @var keyboard: An instance of the RaylibKeyboard class
      */
-    struct Collision {
-        Otter::Games::RType::Utils::Vector2 origin;
-        Otter::Games::RType::Utils::Vector2 end;
+    struct Keyboard {
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        ~Keyboard() = default;
+
+        Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
+    };
+
+    /**
+     * @brief Component for the box collider
+     * @details The box collider component is used to store the size of the hitbox of an entity, in order to detect
+     * collision
+     * @struct BoxCollider
+     * @var width: The width of the box collider rectangle
+     * @var height: The height of the box collider rectangle
+     */
+    struct BoxCollider {
+        BoxCollider(float width, float height)
+        {
+            _width = width;
+            _height = height;
+        }
+        ~BoxCollider() = default;
+
+        float _width;
+        float _height;
     };
 
     /**
@@ -137,11 +158,14 @@ namespace Otter::Games::RType::Components {
      * @details The transform component is used to store the position, rotation and scale of an entity
      * @struct Transform
      * @var position: A vector of float for the position of the entity
+     * @var lastPosition: A vector of float for the last position of the entity
      * @var rotation: The rotation of the entity
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
+            : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
@@ -149,6 +173,7 @@ namespace Otter::Games::RType::Components {
 
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
+        Otter::Games::RType::Utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -158,11 +183,20 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
-     * @var acceleration: A vector of float for the acceleration of the entity
+     * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
+     * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
+     * no acceleration and 1 is for the right or down
      */
     struct Velocity {
-        float speed;
-        Otter::Games::RType::Utils::Vector2 acceleration;
+        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection)
+        {
+            _speed = speed;
+        };
+        ~Velocity() = default;
+
+        float _speed;
+        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -173,8 +207,15 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
-        int id;
-        std::string tag;
+        Player(int id, const std::string& tag)
+        {
+            _id = id;
+            _tag = tag;
+        };
+        ~Player() = default;
+
+        int _id;
+        std::string _tag;
     };
 
     /**
@@ -200,13 +241,13 @@ namespace Otter::Games::RType::Components {
     enum ObstacleType { WALL, BULLET, POWERUP };
 
     /**
-     * @brief Component for the box collider
+     * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
-     * @struct BoxCollider
+     * @struct Obstacle
      * @var type: The type of the box
      * @var tag: The tag of the box
      */
-    struct BoxCollider {
+    struct Obstacle {
         ObstacleType type;
         std::string tag;
     };
@@ -218,7 +259,10 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
-        uint hp;
+        explicit Health(unsigned int hp) { _hp = hp; };
+        ~Health() = default;
+
+        unsigned int _hp;
     };
 
     /**
@@ -228,7 +272,7 @@ namespace Otter::Games::RType::Components {
      * @var damage: The damage of the entity
      */
     struct Damage {
-        uint damage;
+        unsigned int damage;
     };
 
     /**
