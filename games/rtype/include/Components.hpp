@@ -21,6 +21,7 @@ namespace Otter::Games::RType::Components {
     /**
      * @brief Component for the rendering
      * @details The render component is used to render an entity
+     * You need to add the render component to an entity to be able to render it
      * @struct Render
      */
     struct Render {
@@ -180,19 +181,26 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
+     * @var constantSpeed: The constant speed of the entity
      * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
+     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same as the accelerationDirection
      */
     struct Velocity {
-        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
-            : _accelerationDirection(accelerationDirection)
+        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
+                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection),
+              _constantAccelerationDirection(constantAccelerationDirection)
         {
             _speed = speed;
+            _constantSpeed = constantSpeed;
         };
         ~Velocity() = default;
 
         float _speed;
+        float _constantSpeed;
+        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
         Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
@@ -329,6 +337,15 @@ namespace Otter::Games::RType::Components {
         explicit Shot(int shooterId) { _shooterId = shooterId; };
         ~Shot() = default;
         int _shooterId;
+    };
+
+    /**
+     * @brief Component for the dispawnable
+     * @details The dispawnable component is used to know if an entity is dispawnable. If it is, it will be destroyed
+     * You need to add the component to the entity to be able to dispawn it
+     * @struct Render
+     */
+    struct Dispawnable {
     };
 
 } // namespace Otter::Games::RType::Components

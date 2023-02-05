@@ -44,7 +44,7 @@ namespace Otter::Games::RType::System::Event {
             auto const& transform = transforms[playerIndex];
             auto& texture = textures[playerIndex];
             auto& shooter = shooters[playerIndex];
-            if (shooter->_shotNbr > 0 && shooter->_canShoot) {
+            if ((shooter->_shotNbr > 0 || shooter->_shotNbr == -1 ) && shooter->_canShoot) {
                 Otter::Core::Entity shot = ref.createEntity();
                 ref.add_component(shot, Otter::Games::RType::Components::Texture(
                                             "../assets/projectile.gif",
@@ -56,8 +56,9 @@ namespace Otter::Games::RType::System::Event {
                                        transform->_position.y}));
                 ref.add_component(shot, Otter::Games::RType::Components::Render());
                 ref.add_component(shot, Otter::Games::RType::Components::Shot(playerIndex));
-                ref.add_component(shot, Otter::Games::RType::Components::Velocity(50, {1, 0}));
-                shooter->_shotNbr -= 1;
+                ref.add_component(shot, Otter::Games::RType::Components::Velocity(0, 5, {1, 0}, {1, 0}));
+                if (shooter->_shotNbr != -1)
+                    shooter->_shotNbr -= 1;
                 // TODO: need to update the other fields into shooter component
             }
         }
