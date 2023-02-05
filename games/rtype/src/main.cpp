@@ -7,14 +7,13 @@
 
 namespace Otter::Core {
 
-    void createEntityObj(Otter::Core::Orchestrator& ref)
-    {
+    void createEntityObj(Otter::Core::Orchestrator& ref) {
         // TODO: need to be cleaned
-#if defined(TARGET_CLIENT)
+        #if defined(TARGET_CLIENT)
 
         Entity e1 = ref.createEntity();
         ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
-#endif
+        #endif
 
         Entity e = ref.createEntity();
         Entity entities[12];
@@ -22,7 +21,7 @@ namespace Otter::Core {
             entity = ref.createEntity();
         }
 
-#if defined(TARGET_CLIENT)
+        #if defined(TARGET_CLIENT)
         ref.add_component(
             e, Otter::Games::RType::Components::Texture(
                    "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
@@ -34,7 +33,7 @@ namespace Otter::Core {
                             "../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
             ref.add_component(entity, Otter::Games::RType::Components::Render());
         }
-#endif
+        #endif
 
         ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
