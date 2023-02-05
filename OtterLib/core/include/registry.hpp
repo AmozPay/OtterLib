@@ -1,4 +1,5 @@
 
+
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
@@ -35,7 +36,39 @@ namespace Otter::Core {
                                      { m.get_components<C>().erase(entity); });
             }
             container_t<C>* test = std::any_cast<container_t<C>>(&(_type_map[std::type_index(typeid(C))]));
+
             return *test;
+        }
+
+        template <class T>
+        void register_abstract()
+        {
+            _index_map.try_emplace(std::type_index(typeid(T)),
+                                   std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>());
+
+            for (auto& [Key, Value] : _type_map) {
+                auto opt = testHeritance<T>(Value);
+                if (opt.has_value()) {
+                    auto& map = _index_map[std::type_index(typeid(T))];
+                    map.insert({map.size() + 1, {Key, Value}});
+                }
+            }
+        }
+
+        template <class T>
+        std::optional<container_t<T>> testHeritance(const std::any& arr)
+        {
+            if (const container_t<T>* v = std::any_cast<container_t<T>>(&arr))
+                return std::optional<container_t<T>>(*v);
+            else
+                return std::nullopt;
+        }
+
+        template <class C, class T>
+        void register_type_id()
+        {
+            auto& map = _index_map[std::type_index(typeid(T))];
+            map.insert({map.size() + 1, {std::type_index(typeid(C)), _type_map[std::type_index(typeid(C))]}});
         }
 
         template <class C>
@@ -82,9 +115,17 @@ namespace Otter::Core {
             }
         }
 
+        template <class T>
+        std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>& get_map_fromBase()
+        {
+            return _index_map[std::type_index(typeid(T))];
+        }
+
       private:
         std::unordered_map<std::type_index, std::any> _type_map; // std::any_cast
         std::unordered_map<std::type_index, std::function<void(ComponentManager&, Entity const&)>> _destroy_map;
+        std::unordered_map<std::type_index, std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>>
+            _index_map;
     };
 } // namespace Otter::Core
 #endif /*COMPONENTMANAGER_H */

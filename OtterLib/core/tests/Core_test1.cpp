@@ -48,31 +48,54 @@ TEST(registry, test_remove)
     EXPECT_TRUE(!(tmp[3]));
 }
 
+/*
+TEST(registry_index, get_component_index)
+{
+    Otter::Core::ComponentManager reg;
+    auto const& tmp = reg.register_component<intTest>();
+    auto const& tmp2 = reg.register_component<float>();
+    auto const& tmp3 = reg.register_component<std::string>();
 
+    reg.add_component<float>(2, 25.5);
+    reg.add_component<intTest>(1, intTest(5));
+    reg.add_component<intTest>(2, intTest(10));
+
+    auto idx1 = reg.get_index_type<intTest>();
+    auto idx2 = reg.get_index_type<float>();
+    auto idx3 = reg.get_index_type<std::string>();
+
+    auto tm = get_component_index(idx1);
+    EXPECT_EQ(tm.size(), tmp.size());
+    auto tm1 = get_component_index(idx2);
+    EXPECT_EQ(tm1.size(), tmp2.size());
+    auto tm2 = get_component_index(idx3);
+    EXPECT_EQ(tm2.size(), tmp3.size());
+}
+*/
 TEST(registry_advanced, test_multipl_comp)
 {
-  Otter::Core::ComponentManager reg;
+    Otter::Core::ComponentManager reg;
 
-auto const &tmp = reg.register_component<intTest>();
-auto const &tmp2 = reg.register_component<float>();
-  auto const &tmp3 = reg.register_component<std::string>();
+    auto const& tmp = reg.register_component<intTest>();
+    auto const& tmp2 = reg.register_component<float>();
+    auto const& tmp3 = reg.register_component<std::string>();
 
-  reg.add_component<float>(0, 5.3);
-  reg.add_component<float>(2, 25.5);
-  
-  reg.add_component<intTest>(1,intTest(5));
-  reg.add_component<intTest>(2, intTest(10));
-  reg.add_component<intTest>(3, intTest(15));
+    reg.add_component<float>(0, 5.3);
+    reg.add_component<float>(2, 25.5);
 
-  reg.add_component(0, std::string("un"));
-  reg.add_component(2, std::string("deux"));
+    reg.add_component<intTest>(1, intTest(5));
+    reg.add_component<intTest>(2, intTest(10));
+    reg.add_component<intTest>(3, intTest(15));
+
+    reg.add_component(0, std::string("un"));
+    reg.add_component(2, std::string("deux"));
 
     EXPECT_EQ(tmp.size(), 4);
     EXPECT_EQ(tmp2.size(), 3);
     EXPECT_EQ(tmp3.size(), 3);
 
     EXPECT_TRUE(tmp[1]);
-  reg.remove_component<intTest>(1);
+    reg.remove_component<intTest>(1);
     EXPECT_FALSE(tmp[1]);
     EXPECT_TRUE(tmp[2]);
     EXPECT_TRUE(tmp2[2]);
@@ -84,5 +107,5 @@ auto const &tmp2 = reg.register_component<float>();
 
     EXPECT_TRUE(tmp[3]);
     reg.remove_entity(3);
-    EXPECT_FALSE(tmp[3]);    
+    EXPECT_FALSE(tmp[3]);
 }

@@ -45,6 +45,7 @@ namespace Otter::Games::RType::Components {
             _title = title;
             _fps = fps;
         };
+
         ~Window() = default;
 
         int _width;
@@ -139,6 +140,7 @@ namespace Otter::Games::RType::Components {
         {
             _path = path;
         };
+
         ~Texture() = default;
 
         Texture& operator=(const Texture& other)
@@ -162,12 +164,14 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
+
         Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
             : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
         }
+
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
         Otter::Games::RType::Utils::Vector2 _lastPosition;

@@ -14,6 +14,7 @@ namespace Otter::Core {
 
         Entity e1 = ref.createEntity();
         ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
+
 #endif
 
         Entity e = ref.createEntity();
