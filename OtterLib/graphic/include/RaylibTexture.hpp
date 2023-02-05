@@ -38,7 +38,6 @@ namespace Otter::Graphic::Raylib {
          */
         bool checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const;
 
-
         /**
          * @brief Set the texture to use
          * @param texturePath: The path to the texture to use

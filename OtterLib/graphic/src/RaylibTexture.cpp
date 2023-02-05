@@ -41,8 +41,9 @@ namespace Otter::Graphic::Raylib {
      * @return bool
      */
     bool RaylibTexture::checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const
-    { return CheckCollisionRecs(rec1, rec2); }
-
+    {
+        return CheckCollisionRecs(rec1, rec2);
+    }
 
     /**
      * @brief Set the texture
