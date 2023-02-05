@@ -27,6 +27,10 @@ namespace Otter::Core {
 #endif
 
         Entity e = ref.createEntity();
+        Entity entities[12];
+        for (unsigned int& entity : entities) {
+            entity = ref.createEntity();
+        }
 
 #if defined(TARGET_CLIENT)
         ref.add_component(
@@ -34,11 +38,29 @@ namespace Otter::Core {
                    "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
         ref.add_component(e, Otter::Games::RType::Components::Render());
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
+        for (unsigned int& entity : entities) {
+            ref.add_component(
+                entity, Otter::Games::RType::Components::Texture(
+                            "../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+            ref.add_component(entity, Otter::Games::RType::Components::Render());
+        }
 #endif
 
         ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
         ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
+
+        for (int i = 0; i < 7; i++) {
+            ref.add_component(entities[i],
+                              Otter::Games::RType::Components::Transform(4, 180, {static_cast<float>(248 * i), 96}));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+        }
+        for (int i = 0; i < 6; i++) {
+            ref.add_component(entities[i + 6],
+                              Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+        }
+
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
