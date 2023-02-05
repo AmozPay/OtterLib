@@ -8,6 +8,7 @@
 #ifndef RTYPE_SYSTEM_HPP
 #define RTYPE_SYSTEM_HPP
 
+#include "CollisionSystem.hpp"
 #include "EventSystem.hpp"
 #include "MoveSystem.hpp"
 #include "SpriteSystem.hpp"
