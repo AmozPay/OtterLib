@@ -18,11 +18,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Build OtterLib Tests
         run: |
+          cd OtterLib
           sudo pip install conan
           conan profile new --detect default
           cmake -S . -B build
-          cd build
-          cmake --build . --target OtterLibTests
+          cmake --build build --target OtterLibTests
       - name: Run OtterCore Tests
         if: always()
         run: |
