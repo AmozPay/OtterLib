@@ -7,19 +7,9 @@
 
 namespace Otter::Core {
 
-    void createEntityObj(Otter::Core::Orchestrator&) {}
-
-    void registerComponents(Otter::Core::Orchestrator& ref)
+    void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        ref.register_component<Otter::Games::RType::Components::Window>();
-        ref.register_component<Otter::Games::RType::Components::Texture>();
-        ref.register_component<Otter::Games::RType::Components::Render>();
-        ref.register_component<Otter::Games::RType::Components::Keyboard>();
-        ref.register_component<Otter::Games::RType::Components::Transform>();
-        ref.register_component<Otter::Games::RType::Components::Player>();
-        ref.register_component<Otter::Games::RType::Components::Velocity>();
-
-// TODO: need to be cleaned
+        // TODO: need to be cleaned
 #if defined(TARGET_CLIENT)
 
         Entity e1 = ref.createEntity();
@@ -67,6 +57,17 @@ namespace Otter::Core {
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.ESCAPE, Otter::Games::RType::Utils::EventState::CLOSE);
+    }
+
+    void registerComponents(Otter::Core::Orchestrator& ref)
+    {
+        ref.register_component<Otter::Games::RType::Components::Window>();
+        ref.register_component<Otter::Games::RType::Components::Texture>();
+        ref.register_component<Otter::Games::RType::Components::Render>();
+        ref.register_component<Otter::Games::RType::Components::Keyboard>();
+        ref.register_component<Otter::Games::RType::Components::Transform>();
+        ref.register_component<Otter::Games::RType::Components::Player>();
+        ref.register_component<Otter::Games::RType::Components::Velocity>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
