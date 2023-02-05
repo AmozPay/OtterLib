@@ -10,6 +10,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  packages: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -50,18 +51,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: install conan
+        run: |
+          sudo pip install conan
+          conan profile new --detect default
       - name: build and pack OtterLib
         run: |
           cd $GITHUB_WORKSPACE/OtterLib
-          mkdir build && cd build
-          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake ..
-          cpack --config CPackConfig.cmake
+          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake -S . -B build
+          cmake --build build --target OtterLib --config Release
+          cpack --config build/CPackConfig.cmake
       - name: build and pack rtype
         run: |
           cd $GITHUB_WORKSPACE/games/rtype
-          mkdir build && cd build
-          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake ..
-          cpack --config CPackConfig.cmake
+          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake -S . -B build
+          cpack --config build/CPackConfig.cmake
           ls
       - name: upload OtterLib artifact
         uses: actions/upload-release-asset@v1
@@ -69,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: OtterLib/build/OtterLib-${{ needs.create_release.outputs.version }}-Linux.tar.gz
+          asset_path: OtterLib/OtterLib-${{ needs.create_release.outputs.version }}-Linux.tar.gz
           asset_name: OtterLib-${{ needs.create_release.outputs.version }}-Linux.tar.gz
           asset_content_type: application/gzip
       - name: upload RType artifact
@@ -78,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: games/rtype/build/RType-${{ needs.create_release.outputs.version }}-Linux-release.tar.gz
+          asset_path: games/rtype/RType-${{ needs.create_release.outputs.version }}-Linux-release.tar.gz
           asset_name: RType-${{ needs.create_release.outputs.version }}-Linux.tar.gz
           asset_content_type: application/gzip
   create_bundles_windows:
@@ -87,16 +91,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: install conan
+        run: |
+          pip install conan
+          conan profile new --detect default
       - name: build and pack OtterLib
         env:
           PROJECT_VERSION: ${{ needs.create_release.outputs.version }}
         run: |
           cd OtterLib
           ls
-          mkdir build && cd build
-          cmake ..
-          cmake --build . --config Release
-          cpack --config CPackConfig.cmake
+          cmake -S . -B build
+          cpack --config build/CPackConfig.cmake
           ls
           cd ../..
       - name: build and pack rtype
@@ -104,10 +110,8 @@ jobs:
           PROJECT_VERSION: ${{ needs.create_release.outputs.version }}
         run: |
           cd games\rtype
-          mkdir build && cd build
-          cmake ..
-          cmake --build . --config Release
-          cpack --config CPackConfig.cmake
+          cmake -S . -B build
+          cpack --config build/CPackConfig.cmake
           ls
           cd ../..
       - name: upload OtterLib artifact
@@ -165,3 +169,35 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+  docker_publish:
+    runs-on: ubuntu-latest
+    if: github.repository == 'AmozPay/OtterLib'
+    needs: create_release
+    steps:
+      - uses: actions/checkout@v2
+      - name: build image
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          docker build \
+            -t build_image \
+            --label "org.opencontainers.image.source=${{ env.REPO_NAME }}" \
+            --label "org.opencontainers.image.description=Server backend for OtterLib team's rtype project" \
+            --label "org.opencontainers.image.licenses=MIT"\
+            .
+      - name: tag image to latest
+        env:
+          TAG: ${{ needs.create_release.outputs.version }}
+        run: |
+          docker image tag build_image ghcr.io/amozpay/rtype-server:latest
+          docker image tag build_image ghcr.io/amozpay/rtype-server:${{ env.TAG }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: push images
+        run: docker image push --all-tags ghcr.io/amozpay/rtype-server
