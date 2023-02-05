@@ -76,8 +76,15 @@ namespace Otter::Games::RType::Components {
      * @var height: The height of the box collider rectangle
      */
     struct BoxCollider {
-        float width;
-        float height;
+        BoxCollider(float width, float height)
+        {
+            _width = width;
+            _height = height;
+        }
+        ~BoxCollider() = default;
+
+        float _width;
+        float _height;
     };
 
     /**
@@ -154,13 +161,15 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
+            : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
         }
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
+        Otter::Games::RType::Utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -246,7 +255,10 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
-        unsigned int hp;
+        explicit Health(unsigned int hp) { _hp = hp; };
+        ~Health() = default;
+
+        unsigned int _hp;
     };
 
     /**
