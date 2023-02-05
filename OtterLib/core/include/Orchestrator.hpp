@@ -25,7 +25,7 @@ namespace Otter::Core {
          * @details A basic constructor
          *
          */
-        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), _builder(fac), _list_abstract_lib() {}
+        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), _builder(fac) {}
 
         /**
          * @brief create a entity

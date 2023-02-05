@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void compoTest(Otter::Core::Orchestrator& data, Otter::Core::sparse_array<testcomponent>& ref)
+/*void compoTest(Otter::Core::Orchestrator& data, Otter::Core::sparse_array<testcomponent>& ref)
 {
     int id = 1;
 
@@ -64,20 +64,20 @@ void logging_system ( registry & r ) {
         vy << " } " << std :: endl ;
     }
   }
-  }*/
+  }
 
 void print(Otter::Core::Orchestrator&) { std::cout << "workjn" << std::endl; }
 
 void test_system(auto& data)
 {
-    /*    Otter::Core::SystemManager sysTest;
+        Otter::Core::SystemManager sysTest;
       sysTest.register_system(&print);
-      sysTest.run_systems(data);*/
+      sysTest.run_systems(data);
 }
 
 int& fun(int& b) { return b; }
 
-/*
+
 int main(int argc, char* argv[])
 {
     //    Otter::Core::Orchestrator data;
@@ -89,7 +89,8 @@ int main(int argc, char* argv[])
     //  void SYS_NAME(Orchestrator &data);
     //}
     return 0;
-    }*/
+    }
+
 
 int& converte_any(int* var)
 {
@@ -109,3 +110,4 @@ void test_ptr_to_ref()
     std::cout << var << std::endl;  // expected 8
     std::cout << var2 << std::endl; // expected 8
 }
+*/
