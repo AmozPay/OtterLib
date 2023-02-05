@@ -303,11 +303,32 @@ namespace Otter::Games::RType::Components {
      * @var lastShotTimestamp: The timestamp of the last shot
      */
     struct Shooter {
-        ShotDirection direction;
-        bool canShoot;
-        int shotNbr;
-        int reloadTime;
-        std::time_t lastShotTimestamp;
+        Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
+        {
+            _direction = direction;
+            _canShoot = canShoot;
+            _shotNbr = shotNbr;
+            _reloadTime = reloadTime;
+            _lastShotTimestamp = 0;
+        }
+        ~Shooter() = default;
+        ShotDirection _direction;
+        bool _canShoot;
+        int _shotNbr;
+        int _reloadTime;
+        std::time_t _lastShotTimestamp;
+    };
+
+    /**
+     * @brief Component for the shot
+     * @details The shot component is used to know if an entity is a shot. If it is, it will be able to act as a shot
+     * @struct Shot
+     * @var shooterId: The id of the shooter
+     */
+    struct Shot {
+        explicit Shot(int shooterId) { _shooterId = shooterId; };
+        ~Shot() = default;
+        int _shooterId;
     };
 
 } // namespace Otter::Games::RType::Components
