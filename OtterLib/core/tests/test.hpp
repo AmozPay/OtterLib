@@ -3,6 +3,7 @@
 #include "OtterCore.hpp"
 
 #include <gtest/gtest.h>
+
 class intTest {
   public:
     intTest(int dt) { _dt = dt; }
@@ -35,22 +36,29 @@ class sparse_arrayTest : public ::testing::Test {
 };
 
 class SystTest : public ::testing::Test {
-protected:
-  void SetUp() override
-  {
-    s2.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s2.init" << std::endl;}), Otter::Core::SystemManager::Phase::init);
+  protected:
+    void SetUp() override
+    {
+        s2.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s2.init" << std::endl; }),
+                          Otter::Core::SystemManager::Phase::init);
 
-    s3.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s3.init" << std::endl;}), Otter::Core::SystemManager::Phase::init);
-    s3.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s3.update" << std::endl;}), Otter::Core::SystemManager::Phase::update);
+        s3.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s3.init" << std::endl; }),
+                          Otter::Core::SystemManager::Phase::init);
+        s3.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s3.update" << std::endl; }),
+                          Otter::Core::SystemManager::Phase::update);
 
-    s4.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s4.first";}), Otter::Core::SystemManager::Phase::init);
-    s4.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s4.third";}), Otter::Core::SystemManager::Phase::init);
-s4.registerSystem(([](Otter::Core::Orchestrator& reg){std::cout << "s4.second";}), Otter::Core::SystemManager::Phase::update);
-  }
-  Otter::Core::SystemManager s1;
-  Otter::Core::SystemManager s2;
-  Otter::Core::SystemManager s3;
-  Otter::Core::SystemManager s4;
+        s4.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s4.first"; }),
+                          Otter::Core::SystemManager::Phase::init);
+        s4.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s4.third"; }),
+                          Otter::Core::SystemManager::Phase::init);
+        s4.registerSystem(([](Otter::Core::Orchestrator& reg) { std::cout << "s4.second"; }),
+                          Otter::Core::SystemManager::Phase::update);
+    }
+
+    Otter::Core::SystemManager s1;
+    Otter::Core::SystemManager s2;
+    Otter::Core::SystemManager s3;
+    Otter::Core::SystemManager s4;
 };
 
 #endif /* TEST_HPP */

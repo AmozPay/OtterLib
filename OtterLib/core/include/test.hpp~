@@ -1,0 +1,36 @@
+class Itest
+{
+  ~Itest() = default;
+  void is_alive() = 0;
+};
+
+class lib1 : public Itest
+{
+  lib1(){};
+    void is_alive() {
+    std::cout << "tttt" << std::endl;
+  }
+};
+
+
+class lib2 : public Itest
+{
+  lib1(){};
+    void is_alive() {
+    std::cout << aaa" << std::endl;
+  }
+};
+
+
+
+class compo : public lib1
+  {
+    compo(){};
+    
+  };
+
+class compo2 : public lib2
+  {
+    compo(){};
+    
+  };
