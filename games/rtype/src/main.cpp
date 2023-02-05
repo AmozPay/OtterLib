@@ -41,6 +41,8 @@ namespace Otter::Core {
         ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
         ref.add_component(e, Otter::Games::RType::Components::BoxCollider(96, 42));
         ref.add_component(e, Otter::Games::RType::Components::Health(100));
+        ref.add_component(e, Otter::Games::RType::Components::Shooter(
+                                 Otter::Games::RType::Components::ShotDirection::RIGHT, true, 10, 0));
 
         for (int i = 0; i < 7; i++) {
             ref.add_component(entities[i],
@@ -56,7 +58,6 @@ namespace Otter::Core {
         }
 
         Entity invisibleWall = ref.createEntity();
-        ;
 
         ref.add_component(invisibleWall, Otter::Games::RType::Components::BoxCollider(10, 720));
         ref.add_component(invisibleWall, Otter::Games::RType::Components::Texture(
@@ -69,7 +70,7 @@ namespace Otter::Core {
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.ESCAPE, Otter::Games::RType::Utils::EventState::CLOSE);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.SHIFT, Otter::Games::RType::Utils::EventState::SHOOT);
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -83,6 +84,8 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Health>();
         ref.register_component<Otter::Games::RType::Components::Player>();
         ref.register_component<Otter::Games::RType::Components::Velocity>();
+        ref.register_component<Otter::Games::RType::Components::Shot>();
+        ref.register_component<Otter::Games::RType::Components::Shooter>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
