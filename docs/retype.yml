@@ -6,8 +6,11 @@ branding:
   label: Docs
 links:
 - text: OtterLib Api Reference
-  link: http://localhost:5000/AmozPay/OtterLib/api-reference/index.html
+  link: http://localhost:8080/api-reference/index.html
+- text: OtterNetwork Protocol RFC specifiation
+  link: http://localhost:8080/rfc/index.html
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
 exclude:
   - doxygen*
+  - rfc

@@ -77,6 +77,7 @@ target_compile_features(OtterGraphic PUBLIC cxx_std_20)
 target_include_directories(OtterGraphic PUBLIC graphic/include)
 
 include(CTest)
+option(BUILD_TESTING ON)
 if(BUILD_TESTING) # ... CMake code to create tests ...
     # Add google tests
     include(FetchContent)
