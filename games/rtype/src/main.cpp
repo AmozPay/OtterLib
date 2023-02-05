@@ -7,7 +7,70 @@
 
 namespace Otter::Core {
 
-    void createEntityObj(Otter::Core::Orchestrator&) {}
+    void createEntityObj(Otter::Core::Orchestrator& ref)
+    {
+// TODO: need to be cleaned
+#if defined(TARGET_CLIENT)
+
+        Entity e1 = ref.createEntity();
+        ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
+#endif
+
+        Entity e = ref.createEntity();
+        Entity entities[12];
+        for (unsigned int& entity : entities) {
+            entity = ref.createEntity();
+        }
+
+#if defined(TARGET_CLIENT)
+        ref.add_component(
+            e, Otter::Games::RType::Components::Texture(
+                   "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
+        ref.add_component(e, Otter::Games::RType::Components::Render());
+        ref.add_component(e, Otter::Games::RType::Components::Keyboard());
+        for (unsigned int& entity : entities) {
+            ref.add_component(
+                entity, Otter::Games::RType::Components::Texture(
+                            "../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+            ref.add_component(entity, Otter::Games::RType::Components::Render());
+        }
+#endif
+
+        ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
+        ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
+        ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
+        ref.add_component(e, Otter::Games::RType::Components::BoxCollider(96, 42));
+        ref.add_component(e, Otter::Games::RType::Components::Health(100));
+
+        for (int i = 0; i < 7; i++) {
+            ref.add_component(entities[i],
+                              Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 0}));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(entities[i], Otter::Games::RType::Components::BoxCollider(248, 96));
+        }
+        for (int i = 0; i < 6; i++) {
+            ref.add_component(entities[i + 6],
+                              Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
+        }
+
+        Entity invisibleWall = ref.createEntity();
+        ;
+
+        ref.add_component(invisibleWall, Otter::Games::RType::Components::BoxCollider(10, 720));
+        ref.add_component(invisibleWall, Otter::Games::RType::Components::Texture(
+                                             "../assets/obstacle.gif",
+                                             Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+        ref.add_component(invisibleWall, Otter::Games::RType::Components::Transform(1, 0, {-10, 0}));
+
+        auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.ESCAPE, Otter::Games::RType::Utils::EventState::CLOSE);
+    }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
     {
@@ -20,39 +83,6 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Health>();
         ref.register_component<Otter::Games::RType::Components::Player>();
         ref.register_component<Otter::Games::RType::Components::Velocity>();
-
-// TODO: need to be cleaned
-#if defined(TARGET_CLIENT)
-
-        Entity e1 = ref.createEntity();
-        ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
-#endif
-        
-        Entity e = ref.createEntity();
-        Entity e2 = ref.createEntity();
-
-#if defined(TARGET_CLIENT)
-        ref.add_component(e, Otter::Games::RType::Components::Texture(
-                                 "../assets/image.png", Otter::Graphic::Raylib::RaylibTexture("../assets/image.png")));
-        ref.add_component(e, Otter::Games::RType::Components::Render());
-        ref.add_component(e, Otter::Games::RType::Components::Keyboard());
-        
-        ref.add_component(e2, Otter::Games::RType::Components::Texture(
-                                  "../assets/image.png", Otter::Graphic::Raylib::RaylibTexture("../assets/image.png")));
-        ref.add_component(e2, Otter::Games::RType::Components::Render());
-        ref.add_component(e2, Otter::Games::RType::Components::Keyboard());
-#endif
-
-        ref.add_component(e, Otter::Games::RType::Components::Transform(0.05, 0, {200, 410}));
-        ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
-        ref.add_component(e, Otter::Games::RType::Components::Velocity(10, {1, 1}));
-        ref.add_component(e, Otter::Games::RType::Components::BoxCollider(200, 200));
-        ref.add_component(e, Otter::Games::RType::Components::Health(100));
-        
-        ref.add_component(e2, Otter::Games::RType::Components::Transform(0.05, 0, {200, 200}));
-        ref.add_component(e2, Otter::Games::RType::Components::Velocity(10, {1, 1}));
-        ref.add_component(e2, Otter::Games::RType::Components::BoxCollider(200, 200));
-        ref.add_component(e2, Otter::Games::RType::Components::Health(100));
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)

@@ -21,6 +21,9 @@ namespace Otter::Games::RType::Utils {
         float x;
         float y;
     };
+
+    enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE };
+
 } // namespace Otter::Games::RType::Utils
 
 #endif // RTYPE_UTILS_HPP

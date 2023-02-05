@@ -21,14 +21,23 @@ namespace Otter::Graphic::Raylib {
       public:
         /**
          * @brief Construct a new Keyboard object
-         * @param key: The key to check
          */
-        explicit RaylibKeyboard(const int& key);
+        RaylibKeyboard();
         /**
          * @brief Destroy the Keyboard object
          */
         ~RaylibKeyboard();
 
+        /**
+         * @brief The Raylib key enum
+         * @details The Raylib key enum
+         * @enum RaylibKey::LEFT: The left key
+         * @enum RaylibKey::RIGHT: The right key
+         * @enum RaylibKey::UP: The up key
+         * @enum RaylibKey::DOWN: The down key
+         * @enum RaylibKey::SPACE: The space key
+         * @enum RaylibKey::ESCAPE: The escape key
+         */
         enum RaylibKey {
             LEFT = KEY_LEFT,
             RIGHT = KEY_RIGHT,
@@ -39,37 +48,51 @@ namespace Otter::Graphic::Raylib {
         };
 
         /**
-         * @brief Set the key to check
-         * @param key: The key to check
+         * @brief Add a key to the map
+         * @param raylibKey: The Raylib key associated, the one
+         * @param state: The state of the key (no sense in this lib, but used by the game)
          * @return Nothing
          */
-        void setKey(const int& key);
+        void setKey(RaylibKey raylibKey, const int& state);
+
+        /**
+         * @brief Remove a key from the map
+         * @param raylibKey: The Raylib key associated
+         * @return Nothing
+         */
+        void removeKey(RaylibKey raylibKey);
+
         /**
          * @brief Set the exit key
+         * @param raylibKey: The Raylib key associated
          * @return Nothing
          */
-        void setExitKey() const;
+        void setExitKey(RaylibKey raylibKey) const;
 
         /**
          * @brief Check if a key has been pressed once
+         * @param key: The Raylib key to check
          * @return True if the key is pressed, false otherwise
          */
-        [[nodiscard]] bool isKeyPressed() const;
+        [[nodiscard]] bool isKeyPressed(RaylibKey key) const;
         /**
          * @brief Check if a key is being pressed
+         * @param key: The Raylib key to check
          * @return True if the key is down, false otherwise
          */
-        [[nodiscard]] bool isKeyDown() const;
+        [[nodiscard]] bool isKeyDown(RaylibKey key) const;
         /**
          * @brief Check if a key has been released once
+         * @param key: The Raylib key to check
          * @return True if the key is up, false otherwise
          */
-        [[nodiscard]] bool isKeyReleased() const;
+        [[nodiscard]] bool isKeyReleased(RaylibKey key) const;
         /**
          * @brief Check if a key is NOT being pressed
+         * @param key: The Raylib key to check
          * @return True if the key is up, false otherwise
          */
-        [[nodiscard]] bool isKeyUp() const;
+        [[nodiscard]] bool isKeyUp(RaylibKey key) const;
         /**
          * @brief Get key pressed (keycode)
          * @details Call it multiple times for keys queued
@@ -77,8 +100,20 @@ namespace Otter::Graphic::Raylib {
          */
         static int getKeyPressed();
 
+        /**
+         * @brief Get the begin iterator of the key map
+         * @return The begin iterator of the key map
+         */
+        std::map<RaylibKey, int>::iterator begin();
+
+        /**
+         * @brief Get the end iterator of the key map
+         * @return The end iterator of the key map
+         */
+        std::map<RaylibKey, int>::iterator end();
+
       private:
-        int _key;
+        std::map<RaylibKey, int> _keyMap;
     };
 } // namespace Otter::Graphic::Raylib
 
