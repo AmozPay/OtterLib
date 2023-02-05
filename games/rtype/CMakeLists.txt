@@ -15,21 +15,31 @@ else()
     )
 endif()
 
+option(BUILD_RELEASE OFF)
+if(BUILD_RELEASE) # when overriden by cli
+    message(WARNING "Building project for release")
+    set(CONFIG_VALUE "--config Release")
+    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
+else()
+    set(CONFIG_VALUE "")
+    set(BUILD_TESTING "")
+endif()
+
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
-file(MAKE_DIRECTORY ${OTTERLIB_DIR}/build)
 execute_process(
-    COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} ..
+    COMMAND ${CMAKE_COMMAND} ${BUILD_TESTING} -S . -B build -G ${CMAKE_GENERATOR}
     RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
+    WORKING_DIRECTORY ${OTTERLIB_DIR}
 )
 
 if(result)
     message(FATAL_ERROR "CMake step for deps failed: ${result}")
 endif()
 
+
 execute_process(
-    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib
+    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib ${CONFIG_VALUE}
     RESULT_VARIABLE result
     WORKING_DIRECTORY ${OTTERLIB_DIR}/build
 )

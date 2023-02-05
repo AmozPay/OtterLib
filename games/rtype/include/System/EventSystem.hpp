@@ -9,6 +9,7 @@
 #define RTYPE_EVENTSYSTEM_HPP
 
 #include "OtterCore.hpp"
+#include "Utils.hpp"
 
 namespace Otter::Games::RType::System::Event {
 
@@ -24,10 +25,12 @@ namespace Otter::Games::RType::System::Event {
      * @brief Manage the player movement
      * @details Manage the player movement with the velocity and the key pressed to move in the right direction
      * @param velocity: The velocity of the player (x and y)
-     * @param keyPressed: The key pressed
+     * @param state: The state of the event (forward, backward, up, down => see Otter::Games::RType::Utils::EventState)
      * @return void
      */
-    void PlayerMovementEvent(auto& velocity, int keyPressed);
+    void PlayerMovementEvent(auto& velocity, Otter::Games::RType::Utils::EventState state);
+
+    void EventHandler(auto& velocity, auto& player, Otter::Games::RType::Utils::EventState state);
 } // namespace Otter::Games::RType::System::Event
 
 #endif // RTYPE_EVENTSYSTEM_HPP

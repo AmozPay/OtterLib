@@ -1,6 +1,11 @@
+#packages
+*.zip
+*.exe
+*.gz
+
 #cmake
 build/
-
+_CPack_Packages
 # docs
 .retype
 node_modules

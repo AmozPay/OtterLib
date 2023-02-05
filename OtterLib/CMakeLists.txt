@@ -49,19 +49,7 @@ else()
     endif()
 endif()
 
-# Add google tests
-include(FetchContent)
-FetchContent_Declare(
-    googletest
 
-    # Specify the commit you depend on and update it regularly.
-    URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
-    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-enable_testing()
 
 # CREATE STATIC LIBRARIES
 # OtterCore
@@ -71,13 +59,7 @@ add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/
 target_compile_features(OtterCore PUBLIC cxx_std_20)
 target_include_directories(OtterCore PUBLIC core/include)
 
-# OtterCore tests
-file(GLOB CORE_TESTS core/tests/*.cpp)
-add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
-target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-target_include_directories(OtterCoreTests PUBLIC core/include)
-target_link_libraries(OtterCoreTests gtest_main)
-add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
+
 
 # OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
@@ -86,13 +68,6 @@ add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(OtterNetwork PUBLIC network/include)
 
-# OtterNetwork tests
-file(GLOB NETWORK_TESTS network/tests/*.cpp)
-add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
-target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
-target_include_directories(OtterNetworkTests PUBLIC network/include)
-target_link_libraries(OtterNetworkTests gtest_main)
-add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
 
 
 # OtterGraphic
@@ -101,21 +76,59 @@ add_library(OtterGraphic STATIC ${GRAPHIC_FILES} graphic/include)
 target_compile_features(OtterGraphic PUBLIC cxx_std_20)
 target_include_directories(OtterGraphic PUBLIC graphic/include)
 
-# OtterGraphic tests
-file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
-add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
-target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
-target_include_directories(OtterGraphicTests PUBLIC graphic/include)
-target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
-add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
+include(CTest)
+option(BUILD_TESTING ON)
+if(BUILD_TESTING) # ... CMake code to create tests ...
+    # Add google tests
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+
+        # Specify the commit you depend on and update it regularly.
+        URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+    enable_testing()
+
+    # OtterGraphic tests
+    file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
+    add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
+    target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
+    target_include_directories(OtterGraphicTests PUBLIC graphic/include)
+    target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
+    add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
+
+    # OtterNetwork tests
+    file(GLOB NETWORK_TESTS network/tests/*.cpp)
+    add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
+    target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
+    target_include_directories(OtterNetworkTests PUBLIC network/include)
+    target_link_libraries(OtterNetworkTests gtest_main)
+    add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
+
+    # OtterCore tests
+    file(GLOB CORE_TESTS core/tests/*.cpp)
+    add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
+    target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
+    target_include_directories(OtterCoreTests PUBLIC core/include)
+    target_link_libraries(OtterCoreTests gtest_main)
+    add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
+
+    # Compile tests only
+    add_custom_target(OtterLibTests)
+    add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+endif()
+
+
 
 # Does not compile tests
 add_custom_target(OtterLib)
 add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
 
-# Compile tests only
-add_custom_target(OtterLibTests)
-add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
@@ -142,9 +155,12 @@ install(TARGETS
 
 if(WIN32)
     set(CPACK_GENERATOR "ZIP")
+    # target_link_options(OtterCore PUBLIC "-NODEFAULTLIB:library")
 else()
     set(CPACK_GENERATOR "TGZ")
 endif()
 
 # Bundle output with cpack
 include(CPack)
+
+

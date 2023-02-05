@@ -56,15 +56,20 @@ jobs:
           sudo pip install conan
           conan profile new --detect default
       - name: build and pack OtterLib
+        env:
+          PROJECT_VERSION: ${{ needs.create_release.outputs.version }}
         run: |
           cd $GITHUB_WORKSPACE/OtterLib
-          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake -S . -B build
+          cmake -DBUILD_TESTING=OFF -S . -B build
           cmake --build build --target OtterLib --config Release
           cpack --config build/CPackConfig.cmake
       - name: build and pack rtype
+        env:
+          PROJECT_VERSION: ${{ needs.create_release.outputs.version }}
         run: |
           cd $GITHUB_WORKSPACE/games/rtype
-          PROJECT_VERSION=${{ needs.create_release.outputs.version }} cmake -S . -B build
+          cmake -DBUILD_RELEASE=ON -S . -B build
+          cmake --build build --target r-type --config Release
           cpack --config build/CPackConfig.cmake
           ls
       - name: upload OtterLib artifact
@@ -101,7 +106,7 @@ jobs:
         run: |
           cd OtterLib
           ls
-          cmake -S . -B build -G "Visual Studio 17 2022"
+          cmake -DBUILD_TESTING=OFF -S . -B build -G "Visual Studio 17 2022"
           cmake --build build --target OtterLib --config Release
           cpack --config build/CPackConfig.cmake
           ls
@@ -111,8 +116,9 @@ jobs:
           PROJECT_VERSION: ${{ needs.create_release.outputs.version }}
         run: |
           cd games\rtype
-          cmake -S . -B build -G "Visual Studio 17 2022"
-          cpack --config build/CPackConfig.cmake --target r-type --config Release
+          cmake -DBUILD_RELEASE=ON -S . -B build -G "Visual Studio 17 2022"
+          cmake --build build --target r-type --config Release
+          cpack --config build/CPackConfig.cmake
           ls
           cd ../..
       - name: upload OtterLib artifact
@@ -121,7 +127,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: OtterLib/OtterLib/OtterLib-${{ needs.create_release.outputs.version }}-win64.zip
+          asset_path: OtterLib/OtterLib-${{ needs.create_release.outputs.version }}-win64.zip
           asset_name: OtterLib-${{ needs.create_release.outputs.version }}-Windows-64bits.zip
           asset_content_type: application/zip
       - name: upload RType artifact

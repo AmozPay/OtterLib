@@ -12,24 +12,34 @@
 
 namespace Otter::Games::RType::System::Event {
 
-    void PlayerMovementEvent(auto& velocity, int keyPressed)
+    void PlayerMovementEvent(auto& velocity, Otter::Games::RType::Utils::EventState state)
     {
-        if (keyPressed == Otter::Graphic::Raylib::RaylibKeyboard::RaylibKey::LEFT) {
+        // TODO: clean the state do not use RaylibKey::XX but a custom enum of the state of the player like FORWARD,
+        // BACKWARD...
+        if (state == Otter::Games::RType::Utils::EventState::BACKWARD) {
             velocity->_accelerationDirection.x += -1;
             std::cout << "LEFT Key" << std::endl;
         }
-        if (keyPressed == Otter::Graphic::Raylib::RaylibKeyboard::RaylibKey::RIGHT) {
+        if (state == Otter::Games::RType::Utils::EventState::FORWARD) {
             velocity->_accelerationDirection.x += 1;
             std::cout << "RIGHT Key" << std::endl;
         }
-        if (keyPressed == Otter::Graphic::Raylib::RaylibKeyboard::RaylibKey::UP) {
+        if (state == Otter::Games::RType::Utils::EventState::UP) {
             velocity->_accelerationDirection.y += -1;
             std::cout << "UP Key" << std::endl;
         }
-        if (keyPressed == Otter::Graphic::Raylib::RaylibKeyboard::RaylibKey::DOWN) {
+        if (state == Otter::Games::RType::Utils::EventState::DOWN) {
             velocity->_accelerationDirection.y += 1;
             std::cout << "DOWN Key" << std::endl;
         }
+    }
+
+    void EventHandler(auto& velocity, auto& player, Otter::Games::RType::Utils::EventState state)
+    {
+        if (player)
+            PlayerMovementEvent(velocity, state);
+        //        if (state == Otter::Games::RType::Utils::CLOSE)
+        // TODO: close the window if this key is pressed
     }
 
     void PollEvent(Otter::Core::Orchestrator& ref)
@@ -42,14 +52,14 @@ namespace Otter::Games::RType::System::Event {
             auto& velocity = velocities[i];
             auto& keyboard = keyboards[i];
             if (velocity && keyboard) {
-                int keyPressed = 0;
-                while ((keyPressed = keyboard->_keyboard.getKeyPressed()) != 0) {
-                    if (player)
-                        PlayerMovementEvent(velocity, keyPressed);
+                for (auto it = keyboard->_keyboard.begin(); it != keyboard->_keyboard.end(); it++) {
+                    if (keyboard->_keyboard.isKeyDown(it->first)) {
+                        EventHandler(velocity, player, (Otter::Games::RType::Utils::EventState)it->second);
+                        // TODO: add keyboard management for other entities
+                    }
                 }
             }
         }
     }
 
 } // namespace Otter::Games::RType::System::Event
-  // namespace Otter::Game::RType::System::Event

@@ -23,7 +23,8 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {};
+    struct Render {
+    };
 
     /**
      * @brief Component for the window
@@ -61,7 +62,7 @@ namespace Otter::Games::RType::Components {
      * @var keyboard: An instance of the RaylibKeyboard class
      */
     struct Keyboard {
-        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
 
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
