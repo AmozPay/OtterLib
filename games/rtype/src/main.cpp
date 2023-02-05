@@ -4,6 +4,9 @@
 #include "Components.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
+#include "NetworkComponent.hpp"
+#include "NetworkSystem.hpp"
+#include <iostream>
 
 namespace Otter::Core {
 
@@ -99,6 +102,8 @@ namespace Otter::Core {
 #endif
     }
 
+    #if defined(TARGET_CLIENT)
+
     void registerComponents(Otter::Core::Orchestrator& ref)
     {
         ref.register_component<Otter::Games::RType::Components::Render>();
@@ -121,10 +126,40 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Dispawnable>();
         ref.register_component<Otter::Games::RType::Components::Parallax>();
         ref.register_component<Otter::Games::RType::Components::EventNetwork>();
+
+	/*        std::cout << "Hi im a client !" << std::endl;
+
+        ref.register_component<Otter::Network::NetworkComponent>();
+
+        Entity e1 = ref.createEntity();
+        ref.add_component(e1, Otter::Network::NetworkComponent(9000, 9001));
+
+        std::cout << "Hi im a client !" << std::endl;
+
+	*/
     }
+
+    #elif defined(TARGET_SERVER)
+
+    void registerComponents(Otter::Core::Orchestrator& ref)
+    {
+        std::cout << "Hi im a server !" << std::endl;
+
+        ref.register_component<Otter::Network::NetworkComponent>();
+
+        Entity e1 = ref.createEntity();
+        ref.add_component(e1, Otter::Network::NetworkComponent(9001, 9000));
+
+        std::cout << "Hi im a server !" << std::endl;
+    }
+
+    #endif
+
+     #if defined(TARGET_CLIENT)
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
+
 #if defined(TARGET_CLIENT)
         ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
         ref.registerSystem(Otter::Games::RType::System::Window::WindowShouldClose,
@@ -143,5 +178,27 @@ namespace Otter::Core {
 #elif defined(TARGET_SERVER)
         std::cout << "Server here" << std::endl;
 #endif
+	/*        ref.registerSystem(
+                Otter::Games::RType::System::Network::getAllNetworkUpdatedValue,
+                Otter::Core::SystemManager::preDraw);
+        // ref.registerSystem(
+        //         Otter::Games::RType::System::Network::sendAllNetworkUpdatedValue,
+        //         Otter::Core::SystemManager::preDraw);
+*/
+	  }
+
+    #elif defined(TARGET_SERVER)
+
+    void registerSystems(Otter::Core::SystemManager& ref)
+    {
+        // ref.registerSystem(
+        //         Otter::Games::RType::System::Network::getAllNetworkUpdatedValue,
+        //         Otter::Core::SystemManager::preDraw);
+        ref.registerSystem(
+                Otter::Games::RType::System::Network::sendAllNetworkUpdatedValue,
+                Otter::Core::SystemManager::preDraw);
     }
+
+    #endif
+
 } // namespace Otter::Core

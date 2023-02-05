@@ -51,6 +51,8 @@ endif()
 
 
 
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
 # CREATE STATIC LIBRARIES
 # OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
@@ -69,6 +71,7 @@ target_include_directories(
     OtterNetwork
     PUBLIC
     network/include
+    network/include/Component
     network/include/Deserializer
     network/include/Networkable
     network/include/Serializable

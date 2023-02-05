@@ -33,87 +33,85 @@ using IdUpdateAndUpdatedFuncMap = std::unordered_map<std::string, UpdateAndUpdat
         this->setNewNetworkableVariable<decltype(value)>(#newtworkVariable, newtworkVariable);                         \
     }
 
-namespace Network {
-    namespace Networkable {
-        class Class {
-          public:
-            Class(){};
-            ~Class(){};
+namespace Otter::Network::Networkable {
+    class Class {
+        public:
+        Class(){};
+        ~Class(){};
 
-            void updateNetworkableVariables(std::stringstream& stream)
-            {
-                std::stringstream::pos_type endStreamPos = stream.tellp();
-                std::string id;
+        void updateNetworkableVariables(std::stringstream& stream)
+        {
+            std::stringstream::pos_type endStreamPos = stream.tellp();
+            std::string id;
 
-                while (stream.tellg() < endStreamPos) {
-                    id = Deserializer::loadArchive<std::string>(stream);
-                    updateNetworkableVariable(id, stream);
-                }
+            while (stream.tellg() < endStreamPos) {
+                id = Deserializer::loadArchive<std::string>(stream);
+                updateNetworkableVariable(id, stream);
             }
+        }
 
-            std::optional<std::stringstream> getUpdatedNetworkableVariable(const std::size_t& componentId)
-            {
-                std::stringstream stream;
-                std::stringstream::pos_type streamWriteBegin;
-                IdUpdateAndUpdatedFuncMap::iterator it;
+        std::optional<std::stringstream> getUpdatedNetworkableVariable(const std::size_t& componentId)
+        {
+            std::stringstream stream;
+            std::stringstream::pos_type streamWriteBegin;
+            IdUpdateAndUpdatedFuncMap::iterator it;
 
-                Serializer::saveArchive(stream, componentId);
-                streamWriteBegin = stream.tellp();
-                for (auto& [key, value] : _idObjectMap) {
-                    it = _idUpdateAndUpdatedFuncMap.find(key);
-                    if (it == _idUpdateAndUpdatedFuncMap.end())
-                        break;
-                    it->second.second(key, value, stream);
-                }
-                if (streamWriteBegin == stream.tellp())
-                    return std::nullopt;
-                return stream;
+            Serializer::saveArchive(stream, componentId);
+            streamWriteBegin = stream.tellp();
+            for (auto& [key, value] : _idObjectMap) {
+                it = _idUpdateAndUpdatedFuncMap.find(key);
+                if (it == _idUpdateAndUpdatedFuncMap.end())
+                    break;
+                it->second.second(key, value, stream);
             }
+            if (streamWriteBegin == stream.tellp())
+                return std::nullopt;
+            return stream;
+        }
 
-          protected:
-            template <class T>
-            void setNewNetworkableVariable(std::string id, Variable<T>& variable)
+        protected:
+        template <class T>
+        void setNewNetworkableVariable(std::string id, Variable<T>& variable)
+        {
+            std::any value = std::make_any<Variable<T>*>(&variable);
+
+            UpdateFunc updateFunc = [](std::stringstream& stream, std::any object)
             {
-                std::any value = std::make_any<Variable<T>*>(&variable);
+                Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
 
-                UpdateFunc updateFunc = [](std::stringstream& stream, std::any object)
-                {
-                    Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
+                *networkVariable = Network::Deserializer::loadArchive<Variable<T>>(stream);
+                networkVariable->resetStatus();
+            };
 
-                    *networkVariable = Network::Deserializer::loadArchive<Variable<T>>(stream);
+            UpdatedFunc updatedFunc = [](const std::string& id, std::any& object, std::stringstream& stream)
+            {
+                Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
+
+                if (networkVariable->getStatus() == VariableStatusEnum::UPDATED) {
+                    Network::Serializer::saveArchive<std::string>(stream, id);
+                    Network::Serializer::saveArchive<Variable<T>>(stream, *networkVariable);
                     networkVariable->resetStatus();
-                };
-
-                UpdatedFunc updatedFunc = [](const std::string& id, std::any& object, std::stringstream& stream)
-                {
-                    Variable<T>* networkVariable = std::any_cast<Variable<T>*>(object);
-
-                    if (networkVariable->getStatus() == VariableStatusEnum::UPDATED) {
-                        Network::Serializer::saveArchive<std::string>(stream, id);
-                        Network::Serializer::saveArchive<Variable<T>>(stream, *networkVariable);
-                        networkVariable->resetStatus();
-                    }
-                };
-                _idObjectMap.insert({id, value});
-                _idUpdateAndUpdatedFuncMap.try_emplace(id, std::pair<UpdateFunc, UpdatedFunc>(updateFunc, updatedFunc));
-            };
-
-          private:
-            void updateNetworkableVariable(const std::string& id, std::stringstream& stream)
-            {
-                IdObjectMap::iterator idObjectIt = _idObjectMap.find(id);
-                IdUpdateAndUpdatedFuncMap::iterator updateFuncIt = _idUpdateAndUpdatedFuncMap.find(id);
-
-                if (idObjectIt == _idObjectMap.end() || updateFuncIt == _idUpdateAndUpdatedFuncMap.end()) {
-                    return;
                 }
-                updateFuncIt->second.first(stream, idObjectIt->second);
             };
-
-            IdObjectMap _idObjectMap;
-            IdUpdateAndUpdatedFuncMap _idUpdateAndUpdatedFuncMap;
+            _idObjectMap.insert({id, value});
+            _idUpdateAndUpdatedFuncMap.try_emplace(id, std::pair<UpdateFunc, UpdatedFunc>(updateFunc, updatedFunc));
         };
-    } // namespace Networkable
-} // namespace Network
+
+        private:
+        void updateNetworkableVariable(const std::string& id, std::stringstream& stream)
+        {
+            IdObjectMap::iterator idObjectIt = _idObjectMap.find(id);
+            IdUpdateAndUpdatedFuncMap::iterator updateFuncIt = _idUpdateAndUpdatedFuncMap.find(id);
+
+            if (idObjectIt == _idObjectMap.end() || updateFuncIt == _idUpdateAndUpdatedFuncMap.end()) {
+                return;
+            }
+            updateFuncIt->second.first(stream, idObjectIt->second);
+        };
+
+        IdObjectMap _idObjectMap;
+        IdUpdateAndUpdatedFuncMap _idUpdateAndUpdatedFuncMap;
+    };
+}
 
 #endif /* !NETWORKABLECLASS_HPP_ */

@@ -11,7 +11,7 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <sstream>
 
-namespace Network {
+namespace Otter::Network {
     class Deserializer {
       public:
         Deserializer(){};

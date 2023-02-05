@@ -54,6 +54,8 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
 file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp)
 file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp)
 

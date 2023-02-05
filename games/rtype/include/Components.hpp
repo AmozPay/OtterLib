@@ -11,6 +11,7 @@
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
 #include "Utils.hpp"
+#include "NetChannel.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
@@ -611,7 +612,6 @@ namespace Otter::Games::RType::Components {
 
         int _data;
     };
-
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP
