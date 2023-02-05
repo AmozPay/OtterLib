@@ -17,6 +17,7 @@ namespace Otter::Games::RType::System::Move {
             auto& transform = transforms[i];
             auto& velocity = velocities[i];
             if (transform && velocity) {
+                transform->_lastPosition = transform->_position;
                 transform->_position.x += velocity->_accelerationDirection.x * velocity->_speed;
                 transform->_position.y += velocity->_accelerationDirection.y * velocity->_speed;
                 velocity->_accelerationDirection.x = 0;
