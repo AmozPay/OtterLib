@@ -23,7 +23,8 @@ namespace Otter::Games::RType::Components {
      * @details The render component is used to render an entity
      * @struct Render
      */
-    struct Render {};
+    struct Render {
+    };
 
     /**
      * @brief Component for the window

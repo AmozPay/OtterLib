@@ -29,13 +29,14 @@ namespace Otter::Core {
         Entity e = ref.createEntity();
 
 #if defined(TARGET_CLIENT)
-        ref.add_component(e, Otter::Games::RType::Components::Texture(
-                                 "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
+        ref.add_component(
+            e, Otter::Games::RType::Components::Texture(
+                   "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
         ref.add_component(e, Otter::Games::RType::Components::Render());
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
 #endif
 
-        ref.add_component(e, Otter::Games::RType::Components::Transform(0.1, 0, {200, 200}));
+        ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
         ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
