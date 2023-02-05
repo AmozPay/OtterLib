@@ -43,10 +43,16 @@ namespace Otter::Core {
         template <class C>
         Core::sparse_array<C>& register_component()
         {
-            register_facto<C>();
+	  register_facto<C>();
             return _components.register_component<C>();
         }
 
+      /**
+       * @brief register abstract class
+       * @details register a component base who will register independantly all component who can be donwgraded to HImself
+       * 
+       * @params Template of type base
+       */
         template <class T>
         void register_abstract()
         {
@@ -69,7 +75,6 @@ namespace Otter::Core {
             std::cout << "class << " << typeid(T).name() << " no buildre" << std::endl;
             return false;
         }
-
 
       /**
        * @brief get_map_fromBase
