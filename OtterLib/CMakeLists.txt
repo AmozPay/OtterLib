@@ -52,9 +52,11 @@ endif()
 # Add google tests
 include(FetchContent)
 FetchContent_Declare(
-  googletest
-  # Specify the commit you depend on and update it regularly.
-  URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+    googletest
+
+    # Specify the commit you depend on and update it regularly.
+    URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -67,13 +69,13 @@ file(GLOB CORE_FILES core/src/*.cpp)
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
-target_include_directories(OtterCore PUBLIC core/include ../games/rtype/include/System/)
+target_include_directories(OtterCore PUBLIC core/include)
 
 # OtterCore tests
 file(GLOB CORE_TESTS core/tests/*.cpp)
 add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
 target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-target_include_directories(OtterCoreTests PUBLIC core/include ../games/rtype/include/System/)
+target_include_directories(OtterCoreTests PUBLIC core/include)
 target_link_libraries(OtterCoreTests gtest_main)
 add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 
