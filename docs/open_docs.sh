@@ -1,3 +1,4 @@
 #!/bin/sh
 ./generate_docs.sh
-npx retype watch
+cd .retype
+npx http-server
