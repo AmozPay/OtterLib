@@ -7,7 +7,6 @@
 
 #include "Components.hpp"
 #include "OtterCore.hpp"
-#include "OtterGraphic.hpp"
 
 namespace Otter::Games::RType::System::Sprite {
 
