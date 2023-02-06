@@ -34,10 +34,47 @@ namespace Otter::Games::RType::System::Event {
         }
     }
 
-    void EventHandler(auto& velocity, auto& player, Otter::Games::RType::Utils::EventState state)
+    void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex)
+    {
+        auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
+        auto& textures = ref.get_components<Otter::Games::RType::Components::Texture>();
+        auto& shooters = ref.get_components<Otter::Games::RType::Components::Shooter>();
+        if (playerIndex < transforms.size() && playerIndex < textures.size() && playerIndex < shooters.size() &&
+            transforms[playerIndex] && textures[playerIndex] && shooters[playerIndex]) {
+            auto const& transform = transforms[playerIndex];
+            auto& texture = textures[playerIndex];
+            auto& shooter = shooters[playerIndex];
+            // TODO: add cooldown shot handler
+            if ((shooter->_shotNbr > 0 || shooter->_shotNbr == -1 ) && shooter->_canShoot) {
+                Otter::Core::Entity shot = ref.createEntity();
+                ref.add_component(shot, Otter::Games::RType::Components::Texture(
+                                            "../assets/projectile.gif",
+                                            Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")));
+                ref.add_component(shot,
+                                  Otter::Games::RType::Components::Transform(
+                                      3, 0,
+                                      {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
+                                       transform->_position.y}));
+                ref.add_component(shot, Otter::Games::RType::Components::Render());
+                ref.add_component(shot, Otter::Games::RType::Components::Shot(playerIndex));
+                ref.add_component(shot, Otter::Games::RType::Components::Velocity(0, 5, {1, 0}, {1, 0}));
+                ref.add_component(shot, Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::BULLET, "bullet"));
+                if (shooter->_shotNbr != -1)
+                    shooter->_shotNbr -= 1;
+                // TODO: need to update the other fields into shooter component
+            }
+        }
+    }
+
+    void EventHandler(Otter::Core::Orchestrator& ref, size_t playerIndex, auto& velocity, auto& player,
+                      Otter::Games::RType::Utils::EventState state)
     {
         if (player)
             PlayerMovementEvent(velocity, state);
+        std::cout << state << std::endl;
+        if (player && state == Otter::Games::RType::Utils::EventState::SHOOT) {
+            CreateShot(ref, playerIndex);
+        }
         //        if (state == Otter::Games::RType::Utils::CLOSE)
         // TODO: close the window if this key is pressed
     }
@@ -54,7 +91,7 @@ namespace Otter::Games::RType::System::Event {
             if (velocity && keyboard) {
                 for (auto it = keyboard->_keyboard.begin(); it != keyboard->_keyboard.end(); it++) {
                     if (keyboard->_keyboard.isKeyDown(it->first)) {
-                        EventHandler(velocity, player, (Otter::Games::RType::Utils::EventState)it->second);
+                        EventHandler(ref, i, velocity, player, (Otter::Games::RType::Utils::EventState)it->second);
                         // TODO: add keyboard management for other entities
                     }
                 }

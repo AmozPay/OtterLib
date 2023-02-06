@@ -39,25 +39,28 @@ namespace Otter::Core {
 
         ref.add_component(e, Otter::Games::RType::Components::Transform(3, 0, {200, 200}));
         ref.add_component(e, Otter::Games::RType::Components::Player(20, "test"));
-        ref.add_component(e, Otter::Games::RType::Components::Velocity(5, {1, 1}));
+        ref.add_component(e, Otter::Games::RType::Components::Velocity(5, 0, {1, 1}, {1, 1}));
         ref.add_component(e, Otter::Games::RType::Components::BoxCollider(96, 42));
         ref.add_component(e, Otter::Games::RType::Components::Health(100));
+        ref.add_component(e, Otter::Games::RType::Components::Shooter(
+                                 Otter::Games::RType::Components::ShotDirection::RIGHT, true, -1, 0));
 
         for (int i = 0; i < 7; i++) {
             ref.add_component(entities[i],
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 0}));
-            ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::BoxCollider(248, 96));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
         for (int i = 0; i < 6; i++) {
             ref.add_component(entities[i + 6],
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
-            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
 
         Entity invisibleWall = ref.createEntity();
-        ;
 
         ref.add_component(invisibleWall, Otter::Games::RType::Components::BoxCollider(10, 720));
         ref.add_component(invisibleWall, Otter::Games::RType::Components::Texture(
@@ -70,7 +73,7 @@ namespace Otter::Core {
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.ESCAPE, Otter::Games::RType::Utils::EventState::CLOSE);
+        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.SHIFT, Otter::Games::RType::Utils::EventState::SHOOT);
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -84,12 +87,16 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Health>();
         ref.register_component<Otter::Games::RType::Components::Player>();
         ref.register_component<Otter::Games::RType::Components::Velocity>();
+        ref.register_component<Otter::Games::RType::Components::Shot>();
+        ref.register_component<Otter::Games::RType::Components::Shooter>();
+        ref.register_component<Otter::Games::RType::Components::Obstacle>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
 #if defined(TARGET_CLIENT)
         ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
+        ref.registerSystem(Otter::Games::RType::System::Window::WindowShouldClose, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Collision::EntityCollision, Otter::Core::SystemManager::update);

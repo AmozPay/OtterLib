@@ -10,6 +10,7 @@
 
 
 #include "CollisionSystem.hpp"
+#include "DispawnableSystem.hpp"
 #include "EventSystem.hpp"
 #include "MoveSystem.hpp"
 #include "SpriteSystem.hpp"

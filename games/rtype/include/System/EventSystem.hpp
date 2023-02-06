@@ -30,7 +30,10 @@ namespace Otter::Games::RType::System::Event {
      */
     void PlayerMovementEvent(auto& velocity, Otter::Games::RType::Utils::EventState state);
 
-    void EventHandler(auto& velocity, auto& player, Otter::Games::RType::Utils::EventState state);
+    void EventHandler(Otter::Core::Orchestrator& ref, size_t playerIndex, auto& velocity, auto& player,
+                      Otter::Games::RType::Utils::EventState state);
+
+    void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex);
 } // namespace Otter::Games::RType::System::Event
 
 #endif // RTYPE_EVENTSYSTEM_HPP

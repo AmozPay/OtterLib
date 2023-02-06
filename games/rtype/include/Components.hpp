@@ -21,6 +21,7 @@ namespace Otter::Games::RType::Components {
     /**
      * @brief Component for the rendering
      * @details The render component is used to render an entity
+     * You need to add the render component to an entity to be able to render it
      * @struct Render
      */
     struct Render {
@@ -184,19 +185,26 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
+     * @var constantSpeed: The constant speed of the entity
      * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
+     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same as the accelerationDirection
      */
     struct Velocity {
-        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
-            : _accelerationDirection(accelerationDirection)
+        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
+                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection),
+              _constantAccelerationDirection(constantAccelerationDirection)
         {
             _speed = speed;
+            _constantSpeed = constantSpeed;
         };
         ~Velocity() = default;
 
         float _speed;
+        float _constantSpeed;
+        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
         Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
@@ -245,12 +253,17 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
      * @struct Obstacle
-     * @var type: The type of the box
-     * @var tag: The tag of the box
+     * @var type: The type of the obstacl
+     * @var tag: The tag of the obstacle
      */
     struct Obstacle {
-        ObstacleType type;
-        std::string tag;
+        Obstacle(ObstacleType type, std::string tag) {
+            _type = type;
+            _tag = tag;
+        };
+        ~Obstacle() = default;
+        ObstacleType _type;
+        std::string _tag;
     };
 
     /**
@@ -307,11 +320,41 @@ namespace Otter::Games::RType::Components {
      * @var lastShotTimestamp: The timestamp of the last shot
      */
     struct Shooter {
-        ShotDirection direction;
-        bool canShoot;
-        int shotNbr;
-        int reloadTime;
-        std::time_t lastShotTimestamp;
+        Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
+        {
+            _direction = direction;
+            _canShoot = canShoot;
+            _shotNbr = shotNbr;
+            _reloadTime = reloadTime;
+            _lastShotTimestamp = 0;
+        }
+        ~Shooter() = default;
+        ShotDirection _direction;
+        bool _canShoot;
+        int _shotNbr;
+        int _reloadTime;
+        std::time_t _lastShotTimestamp;
+    };
+
+    /**
+     * @brief Component for the shot
+     * @details The shot component is used to know if an entity is a shot. If it is, it will be able to act as a shot
+     * @struct Shot
+     * @var shooterId: The id of the shooter
+     */
+    struct Shot {
+        explicit Shot(int shooterId) { _shooterId = shooterId; };
+        ~Shot() = default;
+        int _shooterId;
+    };
+
+    /**
+     * @brief Component for the dispawnable
+     * @details The dispawnable component is used to know if an entity is dispawnable. If it is, it will be destroyed
+     * You need to add the component to the entity to be able to dispawn it
+     * @struct Render
+     */
+    struct Dispawnable {
     };
 
 } // namespace Otter::Games::RType::Components

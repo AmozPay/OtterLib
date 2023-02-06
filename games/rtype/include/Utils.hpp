@@ -22,7 +22,7 @@ namespace Otter::Games::RType::Utils {
         float y;
     };
 
-    enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE };
+    enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE, SHOOT };
 
 } // namespace Otter::Games::RType::Utils
 
