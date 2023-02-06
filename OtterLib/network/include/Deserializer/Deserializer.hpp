@@ -27,6 +27,6 @@ namespace Otter::Network {
             return loadedData;
         };
     };
-} // namespace Network
+} // namespace Otter::Network
 
 #endif /* !DESERIALIZER_HPP_ */

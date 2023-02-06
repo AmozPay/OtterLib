@@ -8,10 +8,10 @@
 #ifndef RTYPE_COMPONENTS_HPP
 #define RTYPE_COMPONENTS_HPP
 
+#include "NetChannel.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
 #include "Utils.hpp"
-#include "NetChannel.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>

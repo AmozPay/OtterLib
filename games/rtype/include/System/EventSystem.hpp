@@ -11,6 +11,8 @@
 #include "OtterCore.hpp"
 #include "Utils.hpp"
 
+//#include "Class.hpp"
+
 namespace Otter::Games::RType::System::Event {
 
     /**

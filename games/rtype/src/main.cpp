@@ -2,10 +2,11 @@
 // #include "OtterNetwork.hpp"
 
 #include "Components.hpp"
-#include "OtterCore.hpp"
-#include "System.hpp"
 #include "NetworkComponent.hpp"
 #include "NetworkSystem.hpp"
+#include "OtterCore.hpp"
+#include "System.hpp"
+
 #include <iostream>
 
 namespace Otter::Core {
@@ -133,18 +134,14 @@ namespace Otter::Core {
 
         Entity e1 = ref.createEntity();
         ref.add_component(e1, Otter::Network::NetworkComponent(9000, 9001));
-
-        std::cout << "Hi im a client !" << std::endl;
-
-	*/
     }
 
-    #elif defined(TARGET_SERVER)
+#elif defined(TARGET_SERVER)
 
     void registerComponents(Otter::Core::Orchestrator& ref)
     {
         std::cout << "Hi im a server !" << std::endl;
-
+        //	loop_func_server();
         ref.register_component<Otter::Network::NetworkComponent>();
 
         Entity e1 = ref.createEntity();
@@ -153,9 +150,9 @@ namespace Otter::Core {
         std::cout << "Hi im a server !" << std::endl;
     }
 
-    #endif
+#endif
 
-     #if defined(TARGET_CLIENT)
+#if defined(TARGET_CLIENT)
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
@@ -181,24 +178,28 @@ namespace Otter::Core {
 	/*        ref.registerSystem(
                 Otter::Games::RType::System::Network::getAllNetworkUpdatedValue,
                 Otter::Core::SystemManager::preDraw);
+        ref.registerSystem(Otter::Games::RType::System::Network::initNetwork, Otter::Core::SystemManager::init);
+
+        ref.registerSystem(Otter::Games::RType::System::Network::getAllNetworkUpdatedValue,
+                           Otter::Core::SystemManager::preDraw);
         // ref.registerSystem(
         //         Otter::Games::RType::System::Network::sendAllNetworkUpdatedValue,
         //         Otter::Core::SystemManager::preDraw);
 */
 	  }
 
-    #elif defined(TARGET_SERVER)
+#elif defined(TARGET_SERVER)
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
+        ref.registerSystem(Otter::Games::RType::System::Network::initNetwork, Otter::Core::SystemManager::init);
         // ref.registerSystem(
         //         Otter::Games::RType::System::Network::getAllNetworkUpdatedValue,
         //         Otter::Core::SystemManager::preDraw);
-        ref.registerSystem(
-                Otter::Games::RType::System::Network::sendAllNetworkUpdatedValue,
-                Otter::Core::SystemManager::preDraw);
+        ref.registerSystem(Otter::Games::RType::System::Network::sendAllNetworkUpdatedValue,
+                           Otter::Core::SystemManager::preDraw);
     }
 
-    #endif
+#endif
 
 } // namespace Otter::Core

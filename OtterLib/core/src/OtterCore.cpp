@@ -6,7 +6,8 @@ namespace Otter::Core {
         registerComponents(this->_data);
         registerSystems(this->_systems);
         createEntityObj(this->_data);
-        _scriptingManager.enableScripting("../scripts/main.lua");
+
+	_scriptingManager.enableScripting("../scripts/main.lua");
         /// call factory
     }
 

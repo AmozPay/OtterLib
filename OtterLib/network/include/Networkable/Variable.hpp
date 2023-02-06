@@ -18,7 +18,7 @@ namespace Otter::Network::Networkable {
 
     template <class T>
     class Variable : public Serializable {
-        public:
+      public:
         Variable() {}
 
         Variable(const T& newValue)
@@ -90,10 +90,10 @@ namespace Otter::Network::Networkable {
 
         void resetStatus() { _status = VariableStatusEnum::NOT_UPDATED; };
 
-        private:
+      private:
         T _value;
         VariableStatusEnum _status;
     };
-}
+} // namespace Otter::Network::Networkable
 
 #endif /* !NETWORKABLEVARIABLE_HPP_ */

@@ -25,6 +25,6 @@ namespace Otter::Network {
             oa << classToArchive;
         };
     };
-} // namespace Network
+} // namespace Otter::Network
 
 #endif /* !SERIALIZER_HPP_ */

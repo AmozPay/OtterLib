@@ -6,15 +6,27 @@
 */
 
 #include "NetworkSystem.hpp"
+
 #include "Components.hpp"
 #include "Deserializer.hpp"
-#include "Serializer.hpp"
 #include "NetworkComponent.hpp"
+#include "Serializer.hpp"
+
 #include <iostream>
 #include <random>
 #include <unistd.h>
 
 namespace Otter::Games::RType::System::Network {
+
+    void initNetwork(Otter::Core::Orchestrator& ref)
+    {
+        auto& net = ref.get_components<Otter::Network::NetworkComponent>();
+
+        for (int i = 0; i < net.size(); i++) {
+            if (net[i])
+                net[i]->init();
+        }
+    }
 
     void getAllNetworkUpdatedValue(Otter::Core::Orchestrator& ref)
     {
@@ -23,7 +35,7 @@ namespace Otter::Games::RType::System::Network {
 
         if (!component)
             return;
-        
+
         std::stringstream data;
         int test = 0;
 
@@ -44,7 +56,7 @@ namespace Otter::Games::RType::System::Network {
 
         if (!component)
             return;
-        
+
         std::stringstream data;
         int range = 1000 - 0 + 1;
         int num = std::rand() % range;
@@ -57,4 +69,4 @@ namespace Otter::Games::RType::System::Network {
 
         sleep(3);
     }
-} // namespace Otter::Games::RType::System::Event}
+} // namespace Otter::Games::RType::System::Network

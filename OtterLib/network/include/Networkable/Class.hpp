@@ -35,7 +35,7 @@ using IdUpdateAndUpdatedFuncMap = std::unordered_map<std::string, UpdateAndUpdat
 
 namespace Otter::Network::Networkable {
     class Class {
-        public:
+      public:
         Class(){};
         ~Class(){};
 
@@ -69,7 +69,7 @@ namespace Otter::Network::Networkable {
             return stream;
         }
 
-        protected:
+      protected:
         template <class T>
         void setNewNetworkableVariable(std::string id, Variable<T>& variable)
         {
@@ -97,7 +97,7 @@ namespace Otter::Network::Networkable {
             _idUpdateAndUpdatedFuncMap.try_emplace(id, std::pair<UpdateFunc, UpdatedFunc>(updateFunc, updatedFunc));
         };
 
-        private:
+      private:
         void updateNetworkableVariable(const std::string& id, std::stringstream& stream)
         {
             IdObjectMap::iterator idObjectIt = _idObjectMap.find(id);
@@ -112,6 +112,6 @@ namespace Otter::Network::Networkable {
         IdObjectMap _idObjectMap;
         IdUpdateAndUpdatedFuncMap _idUpdateAndUpdatedFuncMap;
     };
-}
+} // namespace Otter::Network::Networkable
 
 #endif /* !NETWORKABLECLASS_HPP_ */

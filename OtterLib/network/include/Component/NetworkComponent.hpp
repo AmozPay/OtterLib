@@ -9,19 +9,23 @@
 #define NETWORKCOMPONENT_HPP_
 
 #include "NetChannel.hpp"
+
 #include <boost/asio.hpp>
 
 namespace Otter::Network {
     struct NetworkComponent {
-        NetworkComponent(int port, int portToSend): channel(port)
-        { 
+        NetworkComponent(int port, int portToSend) : channel(nullptr)
+        {
             this->port = port;
             this->portToSend = portToSend;
         };
+
+        void init() { channel = std::make_shared<Otter::Network::NetChannel>(port); }
+
         int port;
         int portToSend;
-        NetChannel::NetChannel channel;
+        std::shared_ptr<Otter::Network::NetChannel> channel;
     };
-}
+} // namespace Otter::Network
 
 #endif /* !NETWORKCOMPONENT_HPP_ */
