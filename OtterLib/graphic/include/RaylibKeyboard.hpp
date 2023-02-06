@@ -44,7 +44,8 @@ namespace Otter::Graphic::Raylib {
             UP = KEY_UP,
             DOWN = KEY_DOWN,
             SPACE = KEY_SPACE,
-            ESCAPE = KEY_ESCAPE
+            ESCAPE = KEY_ESCAPE,
+            SHIFT = KEY_RIGHT_SHIFT,
         };
 
         /**
