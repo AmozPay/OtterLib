@@ -6,6 +6,7 @@
 #include "NetworkSystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
+#include "Class.hpp"
 
 #include <iostream>
 
@@ -133,7 +134,8 @@ namespace Otter::Core {
         ref.register_component<Otter::Network::NetworkComponent>();
 
         Entity e1 = ref.createEntity();
-        ref.add_component(e1, Otter::Network::NetworkComponent(9000, 9001));
+        ref.add_component(e1, Otter::Network::NetworkComponent(9000, 9001)); // 
+        ref.register_abstract<Otter::Network::Networkable::Class>();
     }
 
 #elif defined(TARGET_SERVER)

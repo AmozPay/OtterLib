@@ -8,10 +8,9 @@
 #ifndef RTYPE_EVENTSYSTEM_HPP
 #define RTYPE_EVENTSYSTEM_HPP
 
+#include "Class.hpp"
 #include "OtterCore.hpp"
 #include "Utils.hpp"
-
-#include "Class.hpp"
 
 namespace Otter::Games::RType::System::Event {
 
