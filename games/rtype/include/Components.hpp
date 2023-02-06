@@ -249,12 +249,17 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
      * @struct Obstacle
-     * @var type: The type of the box
-     * @var tag: The tag of the box
+     * @var type: The type of the obstacl
+     * @var tag: The tag of the obstacle
      */
     struct Obstacle {
-        ObstacleType type;
-        std::string tag;
+        Obstacle(ObstacleType type, std::string tag) {
+            _type = type;
+            _tag = tag;
+        };
+        ~Obstacle() = default;
+        ObstacleType _type;
+        std::string _tag;
     };
 
     /**

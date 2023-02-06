@@ -49,12 +49,14 @@ namespace Otter::Core {
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::BoxCollider(248, 96));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
         for (int i = 0; i < 6; i++) {
             ref.add_component(entities[i + 6],
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
 
         Entity invisibleWall = ref.createEntity();
@@ -86,6 +88,7 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Velocity>();
         ref.register_component<Otter::Games::RType::Components::Shot>();
         ref.register_component<Otter::Games::RType::Components::Shooter>();
+        ref.register_component<Otter::Games::RType::Components::Obstacle>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
