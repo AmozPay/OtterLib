@@ -43,12 +43,14 @@ namespace Otter::Core {
             auto& key = it.first;
             auto& value = it.second;
             if (_initializers.find(key) == _initializers.end()) {
-                core.remove_entity(e);
-                throw std::runtime_error("No initializing method found for component: " + key);
+                std::cout << "No initializing method found for component: " <<  key << std::endl;
+                continue;
             }
             initializer = _initializers.at(key);
             initializer(e, core, value);
+            std::cout << "successfully initialized: '" << root.get<std::string>("name") << "'." << it.first << std::endl;
         }
+        std::cout << "Initialized entity from " << path << std::endl;
         return e;
     }
 

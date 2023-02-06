@@ -15,6 +15,10 @@
 #include <functional>
 #include <map>
 
+#define COMPONENT_BUILDER(name) \
+    inline static std::string __tag = #name;\
+    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& core, pt::ptree json)
+
 namespace Otter::Core {
     class Orchestrator;
 
@@ -26,7 +30,7 @@ namespace Otter::Core {
     concept buildable = requires(T b, Entity e, Orchestrator& core, pt::ptree t) {
                             b.__initialise(e, core, t);
                             {
-                                T::Tag
+                                T::__tag
                             };
                         };
 

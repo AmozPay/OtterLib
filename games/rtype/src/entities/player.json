@@ -1,0 +1,37 @@
+{
+    "name": "Player 1",
+    "components": {
+        "NoBuilder": {},
+        "Texture": {
+            "path": "../assets/spaceship.gif"
+        },
+        "Render": {},
+        "Keyboard": {},
+        "Transform": {
+            "scale": 3,
+            "rotation": 0,
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        "Player": {
+            "id": 1,
+            "tag": "Colonel Reyel"
+        },
+        "Velocity": {
+            "speed": 5,
+            "accelerationDirection": {
+                "x": 1,
+                "y": 1
+            }
+        },
+        "BoxCollider": {
+            "width": 96,
+            "height": 42
+        },
+        "Health": {
+            "hp": 100
+        }
+    }
+}

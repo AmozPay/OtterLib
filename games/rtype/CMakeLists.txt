@@ -69,6 +69,7 @@ target_link_libraries(r-type_client
 )
 
 file(COPY src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # build server
 add_executable(r-type_server ${SERVER_FILES})

@@ -10,13 +10,18 @@
 
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
+#include <boost/property_tree/ptree.hpp>
 #include "Utils.hpp"
+
 
 #include <chrono>
 #include <memory>
 #include <string>
 
 namespace Otter::Games::RType::Components {
+    namespace pt = boost::property_tree;
+
+    Otter::Games::RType::Utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     /**
      * @brief Component for the rendering
@@ -25,6 +30,8 @@ namespace Otter::Games::RType::Components {
      * @struct Render
      */
     struct Render {
+        COMPONENT_BUILDER(Render)
+        {}
     };
 
     /**
@@ -63,6 +70,10 @@ namespace Otter::Games::RType::Components {
      * @var keyboard: An instance of the RaylibKeyboard class
      */
     struct Keyboard {
+        COMPONENT_BUILDER(Keyboard)
+        {
+            core.add_component(e, Keyboard());
+        }
         Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
 
@@ -78,6 +89,10 @@ namespace Otter::Games::RType::Components {
      * @var height: The height of the box collider rectangle
      */
     struct BoxCollider {
+        COMPONENT_BUILDER(BoxCollider)
+        {
+            core.add_component(e, BoxCollider(json.get<float>("width"), json.get<float>("height")));
+        }
         BoxCollider(float width, float height)
         {
             _width = width;
@@ -137,12 +152,25 @@ namespace Otter::Games::RType::Components {
      * @var texture: An instance of the RaylibTexture class
      */
     struct Texture {
+        COMPONENT_BUILDER(Texture)
+        {
+            #if defined(TARGET_CLIENT)
+                std::cout << "init texture" << std::endl;
+                auto path = json.get<std::string>("path");
+                std::cout << "init texture 2" << std::endl;
+                core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
+                std::cout << "init texture 3" << std::endl;
+            #endif
+        }
+
         Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
         {
             _path = path;
         };
 
         ~Texture() = default;
+
+
 
         Texture& operator=(const Texture& other)
         {
@@ -165,6 +193,12 @@ namespace Otter::Games::RType::Components {
      * @var scale: The scale of the entity
      */
     struct Transform {
+        COMPONENT_BUILDER(Transform)
+        {
+            float scale = json.get<float>("scale");
+            float rotation = json.get<float>("rotation");
+            core.add_component(e, Transform(scale, rotation, getVector2(json, "position")));
+        }
 
         Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
             : _position(position), _lastPosition(position)
@@ -193,6 +227,13 @@ namespace Otter::Games::RType::Components {
      * as the accelerationDirection
      */
     struct Velocity {
+        COMPONENT_BUILDER(Velocity)
+        {
+            float speed = json.get<float>("speed");
+            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
+            // TODO: Add constantAccelerationDirection
+        }
+
         Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
                  Otter::Games::RType::Utils::Vector2 accelerationDirection)
             : _accelerationDirection(accelerationDirection),
@@ -217,6 +258,12 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
+        COMPONENT_BUILDER(Player)
+        {
+            int id = json.get<int>("id");
+            std::string tag = json.get<std::string>("tag");
+            core.add_component(e, Player(id, tag));
+        }
         Player(int id, const std::string& tag)
         {
             _id = id;
@@ -236,6 +283,12 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the enemy
      */
     struct Enemy {
+        COMPONENT_BUILDER(Enemy)
+        {
+            int id = json.get<int>("id");
+            std::string tag = json.get<std::string>("tag");
+            core.add_component(e, Enemy(id, tag));
+        }
         int id;
         std::string tag;
     };
@@ -258,8 +311,16 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the obstacle
      */
     struct Obstacle {
-        Obstacle(ObstacleType type, std::string tag)
+        COMPONENT_BUILDER(Obstacle)
         {
+            auto str_to_enum = std::map<std::string, ObstacleType>();
+            str_to_enum["WALL"] = WALL;
+            str_to_enum["BULLET"] = BULLET;
+            str_to_enum["POWERUP"] = POWERUP;
+
+            core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag"));
+        }
+        Obstacle(ObstacleType type, std::string tag) {
             _type = type;
             _tag = tag;
         };
@@ -275,6 +336,10 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
+        COMPONENT_BUILDER(Health)
+        {
+            core.add_component(e, Health(json.get<unsigned int>("hp")));
+        }
         explicit Health(unsigned int hp) { _hp = hp; };
         ~Health() = default;
 
@@ -288,6 +353,10 @@ namespace Otter::Games::RType::Components {
      * @var damage: The damage of the entity
      */
     struct Damage {
+        COMPONENT_BUILDER(Damage)
+        {
+            core.add_component(e, Damage(json.get<unsigned int>("damage")));
+        }
         unsigned int damage;
     };
 
