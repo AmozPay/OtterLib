@@ -66,10 +66,12 @@ namespace Otter::Core {
         Entity invisibleWall = ref.createEntity();
 
         ref.add_component(invisibleWall, Otter::Games::RType::Components::BoxCollider(10, 720));
+        ref.add_component(invisibleWall, Otter::Games::RType::Components::Transform(1, 0, {-10, 0}));
+
+#if defined(TARGET_CLIENT)
         ref.add_component(invisibleWall, Otter::Games::RType::Components::Texture(
                                              "../assets/obstacle.gif",
                                              Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
-        ref.add_component(invisibleWall, Otter::Games::RType::Components::Transform(1, 0, {-10, 0}));
 
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
@@ -77,6 +79,7 @@ namespace Otter::Core {
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
         keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.SHIFT, Otter::Games::RType::Utils::EventState::SHOOT);
+#endif
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)

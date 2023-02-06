@@ -230,7 +230,7 @@ namespace Otter::Games::RType::Components {
         COMPONENT_BUILDER(Velocity)
         {
             float speed = json.get<float>("speed");
-            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
+//            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
             // TODO: Add constantAccelerationDirection
         }
 
@@ -318,7 +318,7 @@ namespace Otter::Games::RType::Components {
             str_to_enum["BULLET"] = BULLET;
             str_to_enum["POWERUP"] = POWERUP;
 
-            core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag"));
+            core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag")));
         }
         Obstacle(ObstacleType type, std::string tag) {
             _type = type;
