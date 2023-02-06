@@ -35,4 +35,6 @@ namespace Otter::Graphic::Raylib {
     void RaylibWindow::endDrawing() { EndDrawing(); }
 
     void RaylibWindow::clearBackground() { ClearBackground(BLACK); }
+
+    void RaylibWindow::closeWindow() { CloseWindow(); }
 } // namespace Otter::Graphic::Raylib

@@ -89,6 +89,12 @@ namespace Otter::Graphic::Raylib {
          * @return Nothing
          */
         static void clearBackground();
+
+        /**
+         * @brief Close the window
+         * @return Nothing
+         */
+        static void closeWindow();
     };
 } // namespace Otter::Graphic::Raylib
 

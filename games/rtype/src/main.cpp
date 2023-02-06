@@ -95,6 +95,7 @@ namespace Otter::Core {
     {
 #if defined(TARGET_CLIENT)
         ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
+        ref.registerSystem(Otter::Games::RType::System::Window::WindowShouldClose, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Collision::EntityCollision, Otter::Core::SystemManager::update);
