@@ -25,7 +25,7 @@ namespace Otter::Core {
          * @details A basic constructor
          *
          */
-        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), _builder(fac) {}
+        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), builder(fac) {}
 
         /**
          * @brief create a entity
@@ -63,8 +63,8 @@ namespace Otter::Core {
         template <buildable B>
         bool register_facto()
         {
-            std::cout << "class << " << typeid(B).name() << " have buidler" << std::endl;
-            _builder.addComponentSerializer(typeid(B).name(),
+            std::cout << "class << " << B::__tag << " have buidler" << std::endl;
+            builder.addComponentSerializer(B::__tag,
                                             std::function<void(Entity, Orchestrator&, pt::ptree)>(&B::__initialise));
             return true;
         }
@@ -72,7 +72,7 @@ namespace Otter::Core {
         template <class T>
         bool register_facto()
         {
-            std::cout << "class << " << typeid(T).name() << " no buildre" << std::endl;
+            std::cout << "class << " << typeid(T).name() << " no builder" << std::endl;
             return false;
         }
 
@@ -161,10 +161,10 @@ namespace Otter::Core {
             _entity.destroyEntity(addr);
         }
 
+        Factory& builder;
       private:
         ComponentManager _components;
         EntityManager _entity;
-        Factory& _builder;
     };
 
 } // namespace Otter::Core
