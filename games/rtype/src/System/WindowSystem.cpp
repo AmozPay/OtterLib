@@ -86,7 +86,7 @@ namespace Otter::Games::RType::System::Window {
             auto& window = windows[i];
             if (window) {
                 if (!window->_window.isOpen())
-                        window->_window.closeWindow();
+                    window->_window.closeWindow();
             }
         }
     }

@@ -29,6 +29,7 @@ namespace Otter::Core {
                    "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
         ref.add_component(e, Otter::Games::RType::Components::Render());
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
+        ref.add_component(e, Otter::Games::RType::Components::EventNetwork());
         for (unsigned int& entity : entities) {
             ref.add_component(
                 entity, Otter::Games::RType::Components::Texture(
@@ -50,14 +51,16 @@ namespace Otter::Core {
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::BoxCollider(248, 96));
-            ref.add_component(entities[i], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
+            ref.add_component(entities[i], Otter::Games::RType::Components::Obstacle(
+                                               Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
         for (int i = 0; i < 6; i++) {
             ref.add_component(entities[i + 6],
                               Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
-            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Obstacle(Otter::Games::RType::Components::ObstacleType::WALL, "test"));
+            ref.add_component(entities[i + 6], Otter::Games::RType::Components::Obstacle(
+                                                   Otter::Games::RType::Components::ObstacleType::WALL, "test"));
         }
 
         Entity invisibleWall = ref.createEntity();
@@ -90,14 +93,17 @@ namespace Otter::Core {
         ref.register_component<Otter::Games::RType::Components::Shot>();
         ref.register_component<Otter::Games::RType::Components::Shooter>();
         ref.register_component<Otter::Games::RType::Components::Obstacle>();
+        ref.register_component<Otter::Games::RType::Components::EventNetwork>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
 #if defined(TARGET_CLIENT)
         ref.registerSystem(Otter::Games::RType::System::Window::SetTargetFPS, Otter::Core::SystemManager::init);
-        ref.registerSystem(Otter::Games::RType::System::Window::WindowShouldClose, Otter::Core::SystemManager::preEvent);
+        ref.registerSystem(Otter::Games::RType::System::Window::WindowShouldClose,
+                           Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Event::PollEvent, Otter::Core::SystemManager::preEvent);
+        ref.registerSystem(Otter::Games::RType::System::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(Otter::Games::RType::System::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Window::BeginDraw, Otter::Core::SystemManager::preDraw);

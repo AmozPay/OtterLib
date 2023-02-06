@@ -189,7 +189,8 @@ namespace Otter::Games::RType::Components {
      * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
-     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same as the accelerationDirection
+     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
+     * as the accelerationDirection
      */
     struct Velocity {
         Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
@@ -257,7 +258,8 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the obstacle
      */
     struct Obstacle {
-        Obstacle(ObstacleType type, std::string tag) {
+        Obstacle(ObstacleType type, std::string tag)
+        {
             _type = type;
             _tag = tag;
         };
@@ -355,6 +357,13 @@ namespace Otter::Games::RType::Components {
      * @struct Render
      */
     struct Dispawnable {
+    };
+
+    struct EventNetwork {
+        EventNetwork() { _data = -1; }
+        ~EventNetwork() = default;
+
+        int _data;
     };
 
 } // namespace Otter::Games::RType::Components
