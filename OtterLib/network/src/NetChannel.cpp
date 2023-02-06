@@ -3,17 +3,6 @@
 #include <iostream>
 
 namespace Otter::Network {
-  /*
-  NetChannel::NetChannel(void) : _io(), _socket(_io, udp::endpoint(udp::v4(), 8080)), _stream(), _buff() {
-    this->start_recv();
-    _buff = std::make_shared<std::string>('\0', 1024);
-
-    
-    //std::jthread _job = std::jthread([this]() {std::cout << "ICE" << std::endl; _io.run(); std::cout << "endllop" << std::endl;});
-
-    std::cout << "construct" << std::endl;
-    }*/
-
 
   void NetChannel::start_recv(void)
   {
@@ -27,23 +16,20 @@ namespace Otter::Network {
 
   void NetChannel::handle_recv(const boost::system::error_code& err, std::size_t rcvd, std::shared_ptr<std::string> data)
 {
-      std::cout << "recieving dt:" << rcvd<< std::endl;
       if (!err) {
-	std::cout << "reci no error " << std::endl;
+	std::cout << "recieving byte:" << rcvd<< "| stream" << data <<std::endl;
       } else {
             std::cerr << err << std::endl;
         }
-      //  start_recv();
+    start_recv();
     }
 
-  void NetChannel::recv(std::stringstream& data) { data << "recieve"; }
+  void NetChannel::recv(std::stringstream& data) { data << "some _data to return"; }
 
   void NetChannel::handle_send(const boost::system::error_code& err, std::size_t rcvd, std::shared_ptr<std::string> data)
 {
-      std::cout << data << std::endl;
         if (!err) {
-         std::cout << "sending dt:" << rcvd << std::endl;
-
+	  std::cout << "sending byte:" << rcvd << "| stream:" << data <<std::endl;
         } else {
             std::cerr << err << std::endl;
         }

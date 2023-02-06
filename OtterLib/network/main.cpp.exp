@@ -19,12 +19,27 @@ int main()
     while (1) {
 
 
-      std::cout << "loop" << std::endl;
+      std::cout << "-------------loop" << std::endl;
       tmp.send(tests, dt);
       std::cout << "sending  " << dt.str() << std::endl;
       sleep(3);
       tmp.recv(ress);
 
-      std::cout <<"reciev dt  " << ress.str() << std::endl;
+      std::cout <<"get  " << ress.str() << std::endl;
   } 
 }
+
+
+
+/*
+compile with this
+
+g++ main.cpp src/NetChannel.cpp -Iinclude -std=c++20 -lboost_system -pthread
+
+the program send a mesage a the port 8080 and recieve a the same mesage port 8080
+all byte transfer
+data realy transfered
+
+
+
+*/
