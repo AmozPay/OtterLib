@@ -54,6 +54,13 @@ namespace Otter::Games::RType::System::Window {
      * @param ref
      */
     void ClearBackground(Otter::Core::Orchestrator& ref);
+
+    /**
+     * @brief Check if the window should close
+     * @details Check if the window should close, if so, remove the component (to close
+     * @param ref
+     */
+    void WindowShouldClose(Otter::Core::Orchestrator& ref);
 } // namespace Otter::Games::RType::System::Window
 
 #endif // RTYPE_WINDOWSYSTEM_HPP

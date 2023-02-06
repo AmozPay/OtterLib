@@ -79,4 +79,16 @@ namespace Otter::Games::RType::System::Window {
         }
     }
 
+    void WindowShouldClose(Otter::Core::Orchestrator& ref)
+    {
+        auto& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        for (size_t i = 0; i < windows.size(); i++) {
+            auto& window = windows[i];
+            if (window) {
+                if (!window->_window.isOpen())
+                    window->_window.closeWindow();
+            }
+        }
+    }
+
 } // namespace Otter::Games::RType::System::Window

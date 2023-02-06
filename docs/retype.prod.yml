@@ -7,7 +7,10 @@ branding:
 links:
 - text: OtterLib Api Reference
   link: https://amozpay.github.io/OtterLib/api-reference/index.html
+- text: OtterNetwork Protocol RFC specifiation
+  link: https://amozpay.github.io/OtterLib/rfc/index.html
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
 exclude:
   - doxygen*
+  - rfc

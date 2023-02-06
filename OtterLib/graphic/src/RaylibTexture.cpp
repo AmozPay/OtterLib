@@ -35,6 +35,17 @@ namespace Otter::Graphic::Raylib {
     void RaylibTexture::draw(Vector2 position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
 
     /**
+     * @brief Check if the texture is colliding with another texture
+     * @param rec1: First rectangle
+     * @param rec2: second rectangle
+     * @return bool
+     */
+    bool RaylibTexture::checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const
+    {
+        return CheckCollisionRecs(rec1, rec2);
+    }
+
+    /**
      * @brief Set the texture
      * @param texturePath: Path of the texture to load
      * @return Nothing
@@ -89,5 +100,9 @@ namespace Otter::Graphic::Raylib {
      * @return Color
      */
     Color RaylibTexture::getColor() const { return _color; }
+
+    int RaylibTexture::getWidth() const { return _texture.width; }
+
+    int RaylibTexture::getHeight() const { return _texture.height; }
 
 } // namespace Otter::Graphic::Raylib

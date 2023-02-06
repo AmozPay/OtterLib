@@ -5,68 +5,8 @@
 #include "registry.hpp"
 
 #include <iostream>
+#include <optional>
 #include <string>
-
-class testcomponent {
-  public:
-    testcomponent(int var)
-    {
-        std::cout << "construct" << std::endl;
-        this->dt = var;
-    };
-
-    ~testcomponent(){
-        //      std::cout << "destruct test" << std::endl;
-    };
-
-    testcomponent(testcomponent const& source) { dt = source.dt; }
-
-    testcomponent(testcomponent const&& source) noexcept { dt = std::move(source.dt); }
-
-    testcomponent& operator=(testcomponent const other)
-    {
-        dt = other.dt;
-        return *this;
-    }
-
-    testcomponent& operator=(testcomponent const&& source) noexcept
-    {
-        dt = std::move(source.dt);
-        return *this;
-    }
-
-    void yolo() { std::cout << dt; }
-
-    int getdata() { return dt; }
-
-  private:
-    int dt;
-};
-
-class test_str {
-  public:
-    test_str(int i, std::string toto = "") : name(toto)
-    {
-        _i = i;
-        std::cout << "construct str" << std::endl;
-    }
-
-    ~test_str()
-    {
-        //  std::cout << "destruct" << std::endl;
-    }
-
-    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& t, Otter::Core::pt::ptree p)
-    {
-        std::cout << "i am beeing builded" << std::endl;
-    }
-
-    inline static std::string Tag = "test_str";
-
-  private:
-    int _i;
-    std::string name;
-};
 
 namespace Otter::Core {
 
@@ -85,7 +25,7 @@ namespace Otter::Core {
          * @details A basic constructor
          *
          */
-        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), _builder(fac) {}
+        Orchestrator(Otter::Core::Factory& fac) : _components(), _entity(), builder(fac) {}
 
         /**
          * @brief create a entity
@@ -103,17 +43,28 @@ namespace Otter::Core {
         template <class C>
         Core::sparse_array<C>& register_component()
         {
-
-            register_facto<C>();
-
+	  register_facto<C>();
             return _components.register_component<C>();
+        }
+
+      /**
+       * @brief register abstract class
+       * @details register a component base who will register independantly all component who can be donwgraded to HImself
+       * 
+       * @params Template of type base
+       */
+        template <class T>
+        void register_abstract()
+        {
+            auto& tmp = _components.register_abstract<T>();
+            return tmp;
         }
 
         template <buildable B>
         bool register_facto()
         {
-            std::cout << "class << " << typeid(B).name() << " have buidler" << std::endl;
-            _builder.addComponentSerializer(typeid(B).name(),
+            std::cout << "class << " << B::__tag << " have buidler" << std::endl;
+            builder.addComponentSerializer(B::__tag,
                                             std::function<void(Entity, Orchestrator&, pt::ptree)>(&B::__initialise));
             return true;
         }
@@ -121,9 +72,23 @@ namespace Otter::Core {
         template <class T>
         bool register_facto()
         {
-            std::cout << "class << " << typeid(T).name() << " no buildre" << std::endl;
+            std::cout << "class << " << typeid(T).name() << " no builder" << std::endl;
             return false;
         }
+
+      /**
+       * @brief get_map_fromBase
+       * @details a map with all the component with base of T
+       * @params Template of type base
+       * @return map of (index of component, pair(type_index, any)
+       *
+       */
+        template <class T>
+        std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>& get_map_fromBase()
+        {
+	  return _components.get_map_fromBase<T>();
+        }
+
 
         /**
          * @brief Get component
@@ -196,10 +161,10 @@ namespace Otter::Core {
             _entity.destroyEntity(addr);
         }
 
+        Factory& builder;
       private:
         ComponentManager _components;
         EntityManager _entity;
-        Factory& _builder;
     };
 
 } // namespace Otter::Core

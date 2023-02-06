@@ -31,6 +31,14 @@ namespace Otter::Graphic::Raylib {
         void draw(Vector2 position);
 
         /**
+         * @brief Check if a point is inside a texture
+         * @details Check if a point is inside a texture
+         * @param position: The position of the point
+         * @return True if the point is inside the texture, false otherwise
+         */
+        bool checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const;
+
+        /**
          * @brief Set the texture to use
          * @param texturePath: The path to the texture to use
          * @return Nothing
@@ -81,6 +89,18 @@ namespace Otter::Graphic::Raylib {
          * @return The color of the texture
          */
         [[nodiscard]] Color getColor() const;
+
+        /**
+         * @brief Get the width of the texture
+         * @return The width of the texture
+         */
+        [[nodiscard]] int getWidth() const;
+
+        /**
+         * @brief Get the height of the texture
+         * @return The height of the texture
+         */
+        [[nodiscard]] int getHeight() const;
 
       private:
         Texture2D _texture;

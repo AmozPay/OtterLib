@@ -10,20 +10,29 @@
 
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
+#include <boost/property_tree/ptree.hpp>
 #include "Utils.hpp"
+
 
 #include <chrono>
 #include <memory>
 #include <string>
 
 namespace Otter::Games::RType::Components {
+    namespace pt = boost::property_tree;
+
+    Otter::Games::RType::Utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     /**
      * @brief Component for the rendering
      * @details The render component is used to render an entity
+     * You need to add the render component to an entity to be able to render it
      * @struct Render
      */
-    struct Render {};
+    struct Render {
+        COMPONENT_BUILDER(Render)
+        {}
+    };
 
     /**
      * @brief Component for the window
@@ -44,6 +53,7 @@ namespace Otter::Games::RType::Components {
             _title = title;
             _fps = fps;
         };
+
         ~Window() = default;
 
         int _width;
@@ -60,22 +70,38 @@ namespace Otter::Games::RType::Components {
      * @var keyboard: An instance of the RaylibKeyboard class
      */
     struct Keyboard {
-        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard(0)){};
+        COMPONENT_BUILDER(Keyboard)
+        {
+            core.add_component(e, Keyboard());
+        }
+        Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
 
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
     };
 
     /**
-     * @brief Component for the collision
-     * @details The collision component is used to check if an entity is colliding with another entity
-     * @struct Collision
-     * @var origin: The origin of the collision rectangle
-     * @var end: The end of the collision rectangle
+     * @brief Component for the box collider
+     * @details The box collider component is used to store the size of the hitbox of an entity, in order to detect
+     * collision
+     * @struct BoxCollider
+     * @var width: The width of the box collider rectangle
+     * @var height: The height of the box collider rectangle
      */
-    struct Collision {
-        Otter::Games::RType::Utils::Vector2 origin;
-        Otter::Games::RType::Utils::Vector2 end;
+    struct BoxCollider {
+        COMPONENT_BUILDER(BoxCollider)
+        {
+            core.add_component(e, BoxCollider(json.get<float>("width"), json.get<float>("height")));
+        }
+        BoxCollider(float width, float height)
+        {
+            _width = width;
+            _height = height;
+        }
+        ~BoxCollider() = default;
+
+        float _width;
+        float _height;
     };
 
     /**
@@ -126,11 +152,25 @@ namespace Otter::Games::RType::Components {
      * @var texture: An instance of the RaylibTexture class
      */
     struct Texture {
+        COMPONENT_BUILDER(Texture)
+        {
+            #if defined(TARGET_CLIENT)
+                std::cout << "init texture" << std::endl;
+                auto path = json.get<std::string>("path");
+                std::cout << "init texture 2" << std::endl;
+                core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
+                std::cout << "init texture 3" << std::endl;
+            #endif
+        }
+
         Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
         {
             _path = path;
         };
+
         ~Texture() = default;
+
+
 
         Texture& operator=(const Texture& other)
         {
@@ -148,17 +188,28 @@ namespace Otter::Games::RType::Components {
      * @details The transform component is used to store the position, rotation and scale of an entity
      * @struct Transform
      * @var position: A vector of float for the position of the entity
+     * @var lastPosition: A vector of float for the last position of the entity
      * @var rotation: The rotation of the entity
      * @var scale: The scale of the entity
      */
     struct Transform {
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position) : _position(position)
+        COMPONENT_BUILDER(Transform)
+        {
+            float scale = json.get<float>("scale");
+            float rotation = json.get<float>("rotation");
+            core.add_component(e, Transform(scale, rotation, getVector2(json, "position")));
+        }
+
+        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
+            : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
         }
+
         ~Transform() = default;
         Otter::Games::RType::Utils::Vector2 _position;
+        Otter::Games::RType::Utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -168,19 +219,34 @@ namespace Otter::Games::RType::Components {
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
      * @var speed: The speed of the entity
+     * @var constantSpeed: The constant speed of the entity
      * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
+     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
+     * as the accelerationDirection
      */
     struct Velocity {
-        Velocity(float speed, Otter::Games::RType::Utils::Vector2 accelerationDirection)
-            : _accelerationDirection(accelerationDirection)
+        COMPONENT_BUILDER(Velocity)
+        {
+            float speed = json.get<float>("speed");
+//            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
+            // TODO: Add constantAccelerationDirection
+        }
+
+        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
+                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+            : _accelerationDirection(accelerationDirection),
+              _constantAccelerationDirection(constantAccelerationDirection)
         {
             _speed = speed;
+            _constantSpeed = constantSpeed;
         };
         ~Velocity() = default;
 
         float _speed;
+        float _constantSpeed;
+        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
         Otter::Games::RType::Utils::Vector2 _accelerationDirection;
     };
 
@@ -192,6 +258,12 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the player
      */
     struct Player {
+        COMPONENT_BUILDER(Player)
+        {
+            int id = json.get<int>("id");
+            std::string tag = json.get<std::string>("tag");
+            core.add_component(e, Player(id, tag));
+        }
         Player(int id, const std::string& tag)
         {
             _id = id;
@@ -211,6 +283,12 @@ namespace Otter::Games::RType::Components {
      * @var tag: The tag of the enemy
      */
     struct Enemy {
+        COMPONENT_BUILDER(Enemy)
+        {
+            int id = json.get<int>("id");
+            std::string tag = json.get<std::string>("tag");
+            core.add_component(e, Enemy(id, tag));
+        }
         int id;
         std::string tag;
     };
@@ -226,15 +304,29 @@ namespace Otter::Games::RType::Components {
     enum ObstacleType { WALL, BULLET, POWERUP };
 
     /**
-     * @brief Component for the box collider
+     * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
-     * @struct BoxCollider
-     * @var type: The type of the box
-     * @var tag: The tag of the box
+     * @struct Obstacle
+     * @var type: The type of the obstacl
+     * @var tag: The tag of the obstacle
      */
-    struct BoxCollider {
-        ObstacleType type;
-        std::string tag;
+    struct Obstacle {
+        COMPONENT_BUILDER(Obstacle)
+        {
+            auto str_to_enum = std::map<std::string, ObstacleType>();
+            str_to_enum["WALL"] = WALL;
+            str_to_enum["BULLET"] = BULLET;
+            str_to_enum["POWERUP"] = POWERUP;
+
+            core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag")));
+        }
+        Obstacle(ObstacleType type, std::string tag) {
+            _type = type;
+            _tag = tag;
+        };
+        ~Obstacle() = default;
+        ObstacleType _type;
+        std::string _tag;
     };
 
     /**
@@ -244,7 +336,14 @@ namespace Otter::Games::RType::Components {
      * @var hp: The health point of the entity
      */
     struct Health {
-        unsigned int hp;
+        COMPONENT_BUILDER(Health)
+        {
+            core.add_component(e, Health(json.get<unsigned int>("hp")));
+        }
+        explicit Health(unsigned int hp) { _hp = hp; };
+        ~Health() = default;
+
+        unsigned int _hp;
     };
 
     /**
@@ -254,6 +353,10 @@ namespace Otter::Games::RType::Components {
      * @var damage: The damage of the entity
      */
     struct Damage {
+        COMPONENT_BUILDER(Damage)
+        {
+            core.add_component(e, Damage(json.get<unsigned int>("damage")));
+        }
         unsigned int damage;
     };
 
@@ -288,11 +391,48 @@ namespace Otter::Games::RType::Components {
      * @var lastShotTimestamp: The timestamp of the last shot
      */
     struct Shooter {
-        ShotDirection direction;
-        bool canShoot;
-        int shotNbr;
-        int reloadTime;
-        std::time_t lastShotTimestamp;
+        Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
+        {
+            _direction = direction;
+            _canShoot = canShoot;
+            _shotNbr = shotNbr;
+            _reloadTime = reloadTime;
+            _lastShotTimestamp = 0;
+        }
+        ~Shooter() = default;
+        ShotDirection _direction;
+        bool _canShoot;
+        int _shotNbr;
+        int _reloadTime;
+        std::time_t _lastShotTimestamp;
+    };
+
+    /**
+     * @brief Component for the shot
+     * @details The shot component is used to know if an entity is a shot. If it is, it will be able to act as a shot
+     * @struct Shot
+     * @var shooterId: The id of the shooter
+     */
+    struct Shot {
+        explicit Shot(int shooterId) { _shooterId = shooterId; };
+        ~Shot() = default;
+        int _shooterId;
+    };
+
+    /**
+     * @brief Component for the dispawnable
+     * @details The dispawnable component is used to know if an entity is dispawnable. If it is, it will be destroyed
+     * You need to add the component to the entity to be able to dispawn it
+     * @struct Render
+     */
+    struct Dispawnable {
+    };
+
+    struct EventNetwork {
+        EventNetwork() { _data = -1; }
+        ~EventNetwork() = default;
+
+        int _data;
     };
 
 } // namespace Otter::Games::RType::Components

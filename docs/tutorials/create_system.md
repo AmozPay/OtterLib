@@ -73,7 +73,7 @@ After, you will need to register system, so implement the fonction :
 in this fonction you will be able to register systems in the core
 
 
-![](./integration.png) _see some exemple of implemnetation of the 2 fonction_
+![](../assets/images/integration.png) _see some exemple of implemnetation of the 2 fonction_
 
 > The fonction for register are all listed in the doc of Orchstrator.
 
