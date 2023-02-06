@@ -62,6 +62,7 @@ namespace Otter::Games::RType::System::Network {
 
     void initNetwork(Otter::Core::Orchestrator& ref)
     {
+        std::cout << "initNetwork" << std::endl;
         auto& net = ref.get_components<Otter::Network::NetworkComponent>();
 
         for (int i = 0; i < net.size(); i++) {
@@ -72,9 +73,9 @@ namespace Otter::Games::RType::System::Network {
 
     void getAllNetworkUpdatedValue(Otter::Core::Orchestrator& ref)
     {
+        std::cout << "getAllNetworkUpdatedValue" << std::endl;
         std::stringstream data;
         auto& networkComps = ref.get_components<Otter::Network::NetworkComponent>();
-        auto& networkComp = networkComps[1];
 
 
 	/*        component->channel.recv(data);
@@ -95,23 +96,12 @@ namespace Otter::Games::RType::System::Network {
 
     void sendAllNetworkUpdatedValue(Otter::Core::Orchestrator& ref)
     {
+        std::cout << "sendAllNetworkUpdatedValue" << std::endl;
         auto& networkComps = ref.get_components<Otter::Network::NetworkComponent>();
-        auto& networkComp = networkComps[1];
+        auto& networkComp = networkComps[0];
 
         if (!networkComp)
             return;
-
-	/*        std::stringstream data;
-        int range = 1000 - 0 + 1;
-        int num = std::rand() % range;
-
-        Otter::Network::Serializer::saveArchive(data, num);
-
-        component->channel.send(component->portToSend, data);
-
-        std::cout << "Before sending = " << num << std::endl;
-
-        sleep(3);
         getLocalNetworkableVariableUpdates(ref, *networkComp);
 	*/
     }

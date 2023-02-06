@@ -76,7 +76,7 @@ namespace Otter::Games::RType::System::EventNetwork {
             auto const& player = players[i];
             auto& velocity = velocities[i];
             if (player)
-                PlayerMovementEvent(velocity, (Otter::Games::RType::Utils::EventState)eventNetwork->_data);
+                PlayerMovementEvent(velocity, (Otter::Games::RType::Utils::EventState)eventNetwork->_data._value);
             if (player && eventNetwork->_data == Otter::Games::RType::Utils::EventState::SHOOT)
                 CreateShot(ref, i);
             eventNetwork->_data = -1;

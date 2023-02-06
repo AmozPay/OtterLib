@@ -49,6 +49,14 @@ namespace Otter::Network::Networkable {
             _status = VariableStatusEnum::UPDATED;
         };
 
+        bool operator==(const T& value) const {
+            return _value == value;
+        }
+
+        bool operator!=(const T& value) const {
+            return _value != value;
+        }
+
         Variable<T> operator+(Variable<T> otherVariable) const
         {
             return Variable<T>(this->_value + otherVariable.getValue());

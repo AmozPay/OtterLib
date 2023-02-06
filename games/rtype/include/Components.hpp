@@ -289,8 +289,7 @@ namespace Otter::Games::RType::Components {
         Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
             : _position(position), _lastPosition(position)
         {
-            _position = position;                                                                                      \
-            this->setNewNetworkableVariable<Otter::Games::RType::Utils::Vector2>("couille", _position);
+            SET_NETWORKABLE_VARIABLE(_position, position);
             _scale = scale;
             _rotation = rotation;
         }
@@ -614,7 +613,7 @@ namespace Otter::Games::RType::Components {
 
         ~EventNetwork() = default;
 
-        int _data;
+        Otter::Network::Networkable::Variable<int> _data;
     };
 } // namespace Otter::Games::RType::Components
 
