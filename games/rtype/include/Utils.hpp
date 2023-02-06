@@ -8,6 +8,8 @@
 #ifndef RTYPE_UTILS_HPP
 #define RTYPE_UTILS_HPP
 
+#include "Serializable.hpp"
+
 namespace Otter::Games::RType::Utils {
 
     /**
@@ -17,13 +19,35 @@ namespace Otter::Games::RType::Utils {
      * @var x: The x value of the vector
      * @var y: The y value of the vector
      */
-    struct Vector2 {
+    struct Vector2: public Otter::Network::Serializable {
         float x;
         float y;
+
+        Vector2() {};
+
+        Vector2(int x, int y) {
+            this->x = x;
+            this->y = y;
+        };
+
+        boost::archive::binary_oarchive& operator&(
+            boost::archive::binary_oarchive& archive
+        ) {
+            archive & x;
+            archive & y;
+            return archive;
+        }
+
+        boost::archive::binary_iarchive& operator&(
+            boost::archive::binary_iarchive& archive
+        ) {
+            archive & x;
+            archive & y;
+            return archive;
+        }
     };
 
     enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE, SHOOT };
-
 } // namespace Otter::Games::RType::Utils
 
 #endif // RTYPE_UTILS_HPP

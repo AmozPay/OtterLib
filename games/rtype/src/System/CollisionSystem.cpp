@@ -12,7 +12,7 @@ namespace Otter::Games::RType::System::Collision {
     void ApplyChange(auto& health, auto& transform)
     {
         // The entity is moving to the right
-        if (transform->_position.x - transform->_lastPosition.x > 0) {
+        if (transform->_position->x - transform->_lastPosition.x > 0) {
             health->_hp = 0;
             std::cout << "RIGHT COLLISION" << std::endl;
             // reset pos
@@ -45,9 +45,9 @@ namespace Otter::Games::RType::System::Collision {
                 if (collisionsSecond && transformSecond && textureSecond) {
                     if (playerFirst) {
                         bool collision = textureFirst->_texture.checkCollisionRecs(
-                            {transformFirst->_position.x, transformFirst->_position.y, collisionFirst->_width,
+                            {transformFirst->_position->x, transformFirst->_position->y, collisionFirst->_width,
                              collisionFirst->_height},
-                            {transformSecond->_position.x, transformSecond->_position.y, collisionsSecond->_width,
+                            {transformSecond->_position->x, transformSecond->_position->y, collisionsSecond->_width,
                              collisionsSecond->_height});
                         if (collision) {
                             if (playerFirst) {

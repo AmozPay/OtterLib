@@ -8,10 +8,12 @@
 #ifndef RTYPE_COMPONENTS_HPP
 #define RTYPE_COMPONENTS_HPP
 
+#include "Utils.hpp"
 #include "NetChannel.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
-#include "Utils.hpp"
+#include "Class.hpp"
+#include "Variable.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
@@ -287,11 +289,13 @@ namespace Otter::Games::RType::Components {
         Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
             : _position(position), _lastPosition(position)
         {
+            _position = position;                                                                                      \
+            this->setNewNetworkableVariable<Otter::Games::RType::Utils::Vector2>("couille", _position);
             _scale = scale;
             _rotation = rotation;
         }
         ~Transform() = default;
-
+      
         Otter::Games::RType::Utils::Vector2 _position;
         Otter::Games::RType::Utils::Vector2 _lastPosition;
         float _rotation;

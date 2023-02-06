@@ -104,7 +104,105 @@ namespace Otter::Core {
 #endif
     }
 
-    #if defined(TARGET_CLIENT)
+    void createObstacles(Otter::Core::Orchestrator& ref)
+    {
+        Otter::Core::Entity obstacles[12];
+        for (unsigned int& entity : obstacles) {
+            entity = ref.createEntity();
+            #if defined(TARGET_CLIENT)
+                ref.add_component(
+                    entity, Otter::Games::RType::Components::Texture(
+                                "../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+                ref.add_component(entity, Otter::Games::RType::Components::Render());
+            #endif
+        }
+
+        for (int i = 0; i < 7; i++) {
+            ref.add_component(obstacles[i],
+                              Otter::Games::RType::Components::Transform(4, 0,  Otter::Games::RType::Utils::Vector2(248 * i, 0)));
+            ref.add_component(obstacles[i], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(obstacles[i], Otter::Games::RType::Components::BoxCollider(248, 96));
+        }
+
+        for (int i = 0; i < 6; i++) {
+            ref.add_component(obstacles[i + 6],
+                              Otter::Games::RType::Components::Transform(4, 0, Otter::Games::RType::Utils::Vector2(248 * i, 624)));
+            ref.add_component(obstacles[i + 6], Otter::Games::RType::Components::Velocity(0, {0, 0}));
+            ref.add_component(obstacles[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
+        }
+    }
+
+    void createNetwork(Otter::Core::Orchestrator& ref)
+    {
+
+        Otter::Core::Entity networkEntity = ref.createEntity();
+        #if defined(TARGET_CLIENT)
+            ref.add_component(networkEntity, Otter::Network::NetworkComponent(9000, 9001));
+            std::cout << "Hi im a client !" << std::endl;
+        #elif defined(TARGET_SERVER)
+            ref.add_component(networkEntity, Otter::Network::NetworkComponent(9001, 9000));
+            std::cout << "Hi im a server !" << std::endl;
+        #endif
+    }
+
+    void createEntityObj(Otter::Core::Orchestrator& ref)
+    {
+        // TODO: need to be cleaned
+        #if defined(TARGET_CLIENT)
+            Entity e1 = ref.createEntity();
+            ref.add_component(e1, Otter::Games::RType::Components::Window(1280, 720, "title", 60));
+        #endif
+
+        createInvisibleWall(ref);
+        createObstacles(ref);
+        createPlayer(ref);
+        createNetwork(ref);
+    }
+
+    // void loop_func_client()
+    // {
+
+    //     Otter::Network::NetworkComponent tmp(9001, 9000);
+    //     tmp.init();
+    //     while (1) {
+    //         std::stringstream data;
+    //         int test = 0;
+
+    //         tmp.channel->recv(data);
+    //         if (data.tellp() == 0)
+    //             continue;
+
+    //         test = Otter::Network::Deserializer::loadArchive<int>(data);
+    //         std::cout << "After receive = " << test << std::endl;
+    //         data.str("");
+    //     }
+    //     std::cout << "End of fun" << std::endl;
+    // }
+
+    // void loop_func_server()
+    // {
+
+    //     Otter::Network::NetworkComponent tmp(9000, 9001);
+
+    //     tmp.init();
+    //     std::cout << "cl after init" << std::endl;
+    //     while (1) {
+    //         std::stringstream data;
+    //         int range = 1000 - 0 + 1;
+    //         int num = std::rand() % range;
+
+    //         Otter::Network::Serializer::saveArchive(data, num);
+
+    //         tmp.channel->send(tmp.portToSend, data);
+
+    //         std::cout << "Before sending = " << num << std::endl;
+
+    //         sleep(3);
+    //     }
+    //     std::cout << "End of fun" << std::endl;
+    // }
+
+>>>>>>> 223462a (WIP)
 
     void registerComponents(Otter::Core::Orchestrator& ref)
     {

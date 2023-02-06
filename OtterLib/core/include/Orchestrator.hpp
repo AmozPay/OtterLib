@@ -57,8 +57,7 @@ namespace Otter::Core {
         template <class T>
         void register_abstract()
         {
-            auto& tmp = _components.register_abstract<T>();
-            return tmp;
+            _components.register_abstract<T>();
         }
 
         template <buildable B>

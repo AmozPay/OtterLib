@@ -10,6 +10,7 @@
 
 #include "Deserializer.hpp"
 #include "Serializer.hpp"
+#include "Class.hpp"
 #include "Variable.hpp"
 
 #include <any>
