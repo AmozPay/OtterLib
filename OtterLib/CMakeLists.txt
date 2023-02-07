@@ -63,11 +63,15 @@ target_include_directories(OtterCore PUBLIC core/include)
 
 # OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
-list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(OtterNetwork PUBLIC network/include)
 
+# OtterScript
+file(GLOB SCRIPT_FILES script/src/*.cpp)
+add_library(OtterScript STATIC ${SCRIPT_FILES})
+target_compile_features(OtterScript PUBLIC cxx_std_20)
+target_include_directories(OtterScript PUBLIC script/include)
 
 
 # OtterGraphic
@@ -118,6 +122,16 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
     target_link_libraries(OtterCoreTests gtest_main)
     add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 
+    # OtterScript tests
+    file(GLOB SCRIPT_TESTS script/tests/*.cpp)
+    add_executable(OtterScriptTests ${SCRIPT_FILES} ${SCRIPT_TESTS})
+    target_compile_features(OtterScriptTests PUBLIC cxx_std_20)
+    target_include_directories(OtterScriptTests PUBLIC script/include)
+    target_link_libraries(OtterScriptTests gtest_main lua)
+    add_test(NAME OtterScriptTests COMMAND OtterScriptTests)
+    file(COPY script/tests/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+
     # Compile tests only
     add_custom_target(OtterLibTests)
     add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
@@ -127,19 +141,21 @@ endif()
 
 # Does not compile tests
 add_custom_target(OtterLib)
-add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
+add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic OtterScript)
 
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
 file(GLOB NETWORK_HEADERS network/include/*.hpp)
 file(GLOB GRAPHIC_HEADERS graphic/include/*.hpp)
+file(GLOB SCRIPT_HEADERS script/include/*.hpp)
 
 # Add headers to installed elements
 install(FILES
     ${GRAPHIC_HEADERS}
     ${NETWORK_HEADERS}
     ${CORE_HEADERS}
+    ${SCRIPT_HEADERS}
     DESTINATION "include"
 )
 
@@ -148,6 +164,7 @@ install(FILES
 install(TARGETS
     OtterGraphic
     OtterNetwork
+    OtterScript
     OtterCore
     EXPORT OtterLib
     DESTINATION lib
