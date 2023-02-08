@@ -13,10 +13,12 @@ extern "C"
 #include <map>
 #include <cstdarg>
 #include <stdexcept>
+#include <algorithm>
 
 namespace Otter::Script {
 
-    using luaTypes = std::variant<long long, double, bool, std::string>;
+    using luaTypes = std::variant<long long, double, bool, std::string, void *>;
+    #define LUA_ERR_WRAP(expr) if ((expr) != LUA_OK && (expr) != LUA_YIELD) throw LuaError::create(L)
 
     class Lua {
         public:
@@ -32,6 +34,12 @@ namespace Otter::Script {
                     {
                         return _what;
                     }
+
+                    static LuaError create(lua_State *L)
+                    {
+                        std::string error = lua_tostring(L, -1);
+                        return LuaError(error);
+                    }
                 private:
                     const std::string _what;
             };
@@ -40,13 +48,13 @@ namespace Otter::Script {
              * @brief Execute a Lua script file
              * @param path the path to the script file
              */
-            int doFile(std::string path);
+            void doFile(std::string path);
 
             /**
              * @brief Execute a string as a lua script
              * @param luaString valid lua script as a string
              */
-            int doString(std::string luaString);
+            void doString(std::string luaString);
 
 
             /**
@@ -62,7 +70,7 @@ namespace Otter::Script {
 
             /**
              * @brief call a lua function
-             * @details valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string
+             * @details valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string, p -> void *
              * @details valid args types in string: b -> bool, d -> double, l -> long long, s -> std::string, n -> nil, p -> void *
              * @details if nil is specified, you must pass 0 at the same index of the variadic argument
              * @param returnTypes a string indicating the lua types of the return values
@@ -87,33 +95,38 @@ namespace Otter::Script {
                     switch (i)
                     {
                         case 'b':
-                            returnValues.emplace_back(static_cast<bool>(lua_toboolean(_lua, -1)));
+                            LUA_ERR_WRAP(lua_isboolean(L, -1));
+                            returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -1)));
                             break;
                         case 'd':
-                            returnValues.emplace_back(lua_tonumber(_lua, -1));
+                            LUA_ERR_WRAP(lua_isnumber(L, -1));
+                            returnValues.emplace_back(lua_tonumber(L, -1));
                             break;
                         case 's':
-                            returnValues.emplace_back(lua_tostring(_lua, -1));
+                            LUA_ERR_WRAP(lua_isstring(L, -1));
+                            returnValues.emplace_back(lua_tostring(L, -1));
                             break;
-                        case 'i':
-                            returnValues.emplace_back(lua_tointeger(_lua, -1));
+                        case 'l':
+                            LUA_ERR_WRAP(lua_isinteger(L, -1));
+                            returnValues.emplace_back(lua_tointeger(L, -1));
+                            break;
+                        case 'p':
+                            LUA_ERR_WRAP(lua_isuserdata(L, -1));
+                            returnValues.emplace_back(lua_touserdata(L, -1));
                             break;
                         default:
                             throw std::invalid_argument("Invalid fmt string");
                             break;
                     }
-                    lua_pop(_lua, 1);
+                    lua_pop(L, 1);
                 }
-
+                std::reverse(returnValues.begin(), returnValues.end());
                 return returnValues;
             }
 
-            void loadFile(std::string path);
-
         private:
-            lua_State *_lua;
+            lua_State *L;
 
-            void _error(void);
             bool _callFn(std::string name, std::string argsTypes, va_list, unsigned int nb_return_vals);
     };
 }

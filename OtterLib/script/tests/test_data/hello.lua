@@ -1,7 +1,7 @@
 
 
 function printHello()
-    print("Hello\n")
+    print("Hello")
 end
 
 printHello()
