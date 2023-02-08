@@ -12,7 +12,7 @@ using luaTypes = std::variant<long long, double, bool, std::string, void *>;
 
 TEST(doFile, should_load)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/hello.lua");
 }
@@ -20,14 +20,14 @@ TEST(doFile, should_load)
 
 TEST(doFile, should_throw_runtime_error)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     EXPECT_THROW(ctx.doFile("build/test_data/doesNotExists.lua"), std::runtime_error);
 }
 
 TEST(callFn, shouldAdd)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
     long long sum = std::get<long long>(ctx.callFn("add", "l", "ll", 1, 1)[0]);
@@ -36,7 +36,7 @@ TEST(callFn, shouldAdd)
 
 TEST(callFn, shouldReturn2longs)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
     std::vector<luaTypes> retVals = ctx.callFn("tuple_of_2s", "ll");
@@ -46,7 +46,7 @@ TEST(callFn, shouldReturn2longs)
 
 TEST(callFn, shouldReturn3strings)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
     std::vector<luaTypes> retVals = ctx.callFn("return_3_string", "sss");
@@ -57,7 +57,7 @@ TEST(callFn, shouldReturn3strings)
 
 TEST(callFn, shouldReturnSelf)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     const struct st_my_struct my_struct = {.nb = 5, .str = "hi from fonseca"};
     ctx.doString("function returnSelf(i) return i end");
@@ -68,15 +68,15 @@ TEST(callFn, shouldReturnSelf)
 
 TEST(callFn, shouldThrowErr)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
-    EXPECT_THROW(ctx.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Script::LuaError);
+    EXPECT_THROW(ctx.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Scripting::LuaError);
 }
 
 TEST(stdOutChecks, should_print_hello)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     testing::internal::CaptureStdout();
     ctx.doString("print(\"Hello\")");
@@ -97,7 +97,7 @@ TEST(stdOutChecks, should_print_hello)
 TEST(bind, bindAddShouldAdd)
 {
 
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doString("function add(x, y) return x + y end");
     auto addFromLua = ctx.bind<int, int>("add", "l", "ll");
@@ -108,7 +108,7 @@ TEST(bind, bindAddShouldAdd)
 
 TEST(luaValues, getGlobalVariableAsInteger)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doString("a = 5");
     EXPECT_EQ(ctx["a"].toInteger(), 5);
@@ -116,7 +116,7 @@ TEST(luaValues, getGlobalVariableAsInteger)
 
 TEST(luaValues, getGlobalVariableAsString)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doString("a = 'coucou'");
     EXPECT_EQ(ctx["a"].toString(), "coucou");
@@ -124,11 +124,11 @@ TEST(luaValues, getGlobalVariableAsString)
 
 TEST(luaValues, getValueInTable)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doString("a = {}\na['foo'] = 'bar'");
-    Otter::Script::LuaValue a = ctx["a"];
-    Otter::Script::LuaValue foo = a["foo"];
+    Otter::Scripting::LuaValue a = ctx["a"];
+    Otter::Scripting::LuaValue foo = a["foo"];
     EXPECT_EQ(ctx["a"]["foo"].toString(), "bar");
     EXPECT_EQ(a["foo"].toString(), "bar");
     EXPECT_EQ(foo.toString(), "bar");
@@ -136,16 +136,16 @@ TEST(luaValues, getValueInTable)
 
 TEST(luaValues, getValueInTableNested)
 {
-    Otter::Script::LuaContext ctx;
+    Otter::Scripting::LuaContext ctx;
 
     ctx.doString("foo = {}");
     ctx.doString("foo['bar'] = 'baz'");
     ctx.doString("a = {}\na['foo'] = foo");
     EXPECT_TRUE(ctx["foo"].isTable());
     EXPECT_EQ(ctx["a"]["foo"]["bar"].toString(), "baz");
-    Otter::Script::LuaValue a = ctx["a"];
-    Otter::Script::LuaValue foo = a["foo"];
-    Otter::Script::LuaValue bar = foo["bar"];
+    Otter::Scripting::LuaValue a = ctx["a"];
+    Otter::Scripting::LuaValue foo = a["foo"];
+    Otter::Scripting::LuaValue bar = foo["bar"];
     EXPECT_EQ(a["foo"]["bar"].toString(), "baz");
     EXPECT_EQ(foo["bar"].toString(), "baz");
     EXPECT_EQ(bar.toString(), "baz");

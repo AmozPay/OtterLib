@@ -16,7 +16,7 @@ extern "C"
 #include <algorithm>
 #include <functional>
 
-namespace Otter::Script {
+namespace Otter::Scripting {
 
     using luaTypes = std::variant<long long, double, bool, std::string, void *>;
     #define LUA_ERR_WRAP(expr) if ((expr) != LUA_OK && (expr) != LUA_YIELD) throw LuaError::create(L)

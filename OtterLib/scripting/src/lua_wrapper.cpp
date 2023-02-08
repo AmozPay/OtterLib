@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <iostream>
 
-namespace Otter::Script {
+namespace Otter::Scripting {
 
     LuaContext::LuaContext():
     L(luaL_newstate())
