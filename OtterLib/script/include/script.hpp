@@ -14,6 +14,7 @@ extern "C"
 #include <cstdarg>
 #include <stdexcept>
 #include <algorithm>
+#include <functional>
 
 namespace Otter::Script {
 
@@ -122,6 +123,20 @@ namespace Otter::Script {
                 }
                 std::reverse(returnValues.begin(), returnValues.end());
                 return returnValues;
+            }
+
+            /**
+             * @brief bind a lua function to C
+             * @tparam Args the parameters types of the created function
+             * @param name name of the lua function to call
+             * @param returnTypes valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string, p -> void *
+             * @param argsTypes valid args types in string: b -> bool, d -> double, l -> long long, s -> std::string, n -> nil, p -> void *
+             * @return std::function<std::vector<luaTypes>(Args...)> A callable function which wraps a lua function
+             */
+            template<typename... Args>
+            std::function<std::vector<luaTypes>(Args...)> bind(const std::string name, const std::string returnTypes, const std::string argsTypes)
+            {
+                return [this, name, returnTypes, argsTypes](Args... args) { return this->callFn(name, returnTypes, argsTypes, args...); };
             }
 
         private:

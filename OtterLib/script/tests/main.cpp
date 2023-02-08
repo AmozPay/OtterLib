@@ -105,3 +105,15 @@ TEST(stdOutChecks, should_print_hello)
     output = testing::internal::GetCapturedStdout();
     EXPECT_EQ(output, std::string("Hello\n"));
 }
+
+TEST(bind, bindAddShouldAdd)
+{
+
+    Otter::Script::Lua lua;
+
+    lua.doString("function add(x, y) return x + y end");
+    auto addFromLua = lua.bind<int, int>("add", "l", "ll");
+    auto res = addFromLua(1, 2);
+    std::vector<luaTypes> retVals = addFromLua(1, 2);
+    EXPECT_EQ(std::get<long long>(retVals[0]), 3);
+}
