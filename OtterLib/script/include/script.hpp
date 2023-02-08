@@ -21,29 +21,51 @@ namespace Otter::Script {
     using luaTypes = std::variant<long long, double, bool, std::string, void *>;
     #define LUA_ERR_WRAP(expr) if ((expr) != LUA_OK && (expr) != LUA_YIELD) throw LuaError::create(L)
 
+    class LuaError: public std::exception {
+        public:
+            LuaError(std::string str): _what(str) {}
+            ~LuaError() = default;
+            const std::string what()
+            {
+                return _what;
+            }
+
+            static LuaError create(lua_State *L)
+            {
+                std::string error = lua_tostring(L, -1);
+                return LuaError(error);
+            }
+        private:
+            const std::string _what;
+    };
+
+    class LuaValue {
+        public:
+            LuaValue(lua_State *state, std::string key);
+            LuaValue(lua_State *state, std::vector<std::string> keys, std::string key);
+            ~LuaValue() = default;
+            bool toBool();
+            long long toInteger();
+            double toDouble();
+            void *toVoidPtr();
+            std::string toString();
+            LuaValue operator[](std::string key);
+            void printPath();
+            bool isTable();
+        private:
+            lua_State *L;
+            std::vector<std::string> _keys;
+
+            void _traverseTable(void);
+            void _cleanup(void);
+    };
+
     class Lua {
         public:
 
             Lua();
             ~Lua();
 
-            class LuaError: public std::exception {
-                public:
-                    LuaError(std::string str): _what(str) {}
-                    ~LuaError() = default;
-                    const std::string what()
-                    {
-                        return _what;
-                    }
-
-                    static LuaError create(lua_State *L)
-                    {
-                        std::string error = lua_tostring(L, -1);
-                        return LuaError(error);
-                    }
-                private:
-                    const std::string _what;
-            };
 
             /**
              * @brief Execute a Lua script file
@@ -139,9 +161,10 @@ namespace Otter::Script {
                 return [this, name, returnTypes, argsTypes](Args... args) { return this->callFn(name, returnTypes, argsTypes, args...); };
             }
 
+            LuaValue operator[](std::string key);
+
         private:
             lua_State *L;
-
             bool _callFn(std::string name, std::string argsTypes, va_list, unsigned int nb_return_vals);
     };
 }

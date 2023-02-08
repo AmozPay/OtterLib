@@ -83,7 +83,7 @@ TEST(callFn, shouldThrowErr)
     Otter::Script::Lua lua;
 
     lua.doFile("build/test_data/functions.lua");
-    EXPECT_THROW(lua.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Script::Lua::LuaError);
+    EXPECT_THROW(lua.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Script::LuaError);
 }
 
 TEST(stdOutChecks, should_print_hello)
@@ -116,4 +116,49 @@ TEST(bind, bindAddShouldAdd)
     auto res = addFromLua(1, 2);
     std::vector<luaTypes> retVals = addFromLua(1, 2);
     EXPECT_EQ(std::get<long long>(retVals[0]), 3);
+}
+
+TEST(luaValues, getGlobalVariableAsInteger)
+{
+    Otter::Script::Lua lua;
+
+    lua.doString("a = 5");
+    EXPECT_EQ(lua["a"].toInteger(), 5);
+}
+
+TEST(luaValues, getGlobalVariableAsString)
+{
+    Otter::Script::Lua lua;
+
+    lua.doString("a = 'coucou'");
+    EXPECT_EQ(lua["a"].toString(), "coucou");
+}
+
+TEST(luaValues, getValueInTable)
+{
+    Otter::Script::Lua lua;
+
+    lua.doString("a = {}\na['foo'] = 'bar'");
+    Otter::Script::LuaValue a = lua["a"];
+    Otter::Script::LuaValue foo = a["foo"];
+    EXPECT_EQ(lua["a"]["foo"].toString(), "bar");
+    EXPECT_EQ(a["foo"].toString(), "bar");
+    EXPECT_EQ(foo.toString(), "bar");
+}
+
+TEST(luaValues, getValueInTableNested)
+{
+    Otter::Script::Lua lua;
+
+    lua.doString("foo = {}");
+    lua.doString("foo['bar'] = 'baz'");
+    lua.doString("a = {}\na['foo'] = foo");
+    EXPECT_TRUE(lua["foo"].isTable());
+    EXPECT_EQ(lua["a"]["foo"]["bar"].toString(), "baz");
+    Otter::Script::LuaValue a = lua["a"];
+    Otter::Script::LuaValue foo = a["foo"];
+    Otter::Script::LuaValue bar = foo["bar"];
+    EXPECT_EQ(a["foo"]["bar"].toString(), "baz");
+    EXPECT_EQ(foo["bar"].toString(), "baz");
+    EXPECT_EQ(bar.toString(), "baz");
 }

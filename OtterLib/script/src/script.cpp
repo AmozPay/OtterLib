@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <filesystem>
+#include <iostream>
 
 namespace Otter::Script {
 
@@ -73,5 +74,111 @@ namespace Otter::Script {
         }
         lua_call(L, nb_args, nb_return_vals);
         return true;
+    }
+
+    LuaValue Lua::operator[](std::string name)
+    {
+        return LuaValue(L, name);
+    }
+
+    LuaValue::LuaValue(lua_State *state, std::string key):
+    L(state)
+    {
+        _keys.emplace_back(key);
+    }
+
+    LuaValue::LuaValue(lua_State *state, std::vector<std::string> keys, std::string key):
+    L(state), _keys(keys)
+    {
+        _keys.emplace_back(key);
+    }
+
+    LuaValue LuaValue::operator[](std::string key)
+    {
+        return LuaValue(L, _keys, key);
+    }
+
+    void LuaValue::_traverseTable(void)
+    {
+        if (_keys.size() == 1)
+            return;
+        for (unsigned int i = 1; i < _keys.size(); i++) {
+            lua_pushstring(L, _keys[i].c_str());
+            LUA_ERR_WRAP(lua_istable(L, -2));
+            lua_gettable(L, -2);
+        }
+    }
+
+    void LuaValue::_cleanup(void)
+    {
+        lua_pop(L, -1);
+        for (unsigned int i = 1; i < _keys.size(); i++) {
+            lua_pop(L, -1);
+            lua_pop(L, -1);
+        }
+    }
+
+    bool LuaValue::toBool()
+    {
+        bool res;
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        LUA_ERR_WRAP(lua_isboolean(L, -1));
+        res = lua_toboolean(L, -1);
+        _cleanup();
+        return res;
+    }
+
+    long long LuaValue::toInteger()
+    {
+        long long res;
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        LUA_ERR_WRAP(lua_isinteger(L, -1));
+        res = lua_tointeger(L, -1);
+        _cleanup();
+        return res;
+    }
+
+    double LuaValue::toDouble()
+    {
+        double res;
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        LUA_ERR_WRAP(lua_isnumber(L, -1));
+        res = lua_tonumber(L, -1);
+        _cleanup();
+        return res;
+    }
+
+    void *LuaValue::toVoidPtr()
+    {
+        void *res;
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        LUA_ERR_WRAP(lua_islightuserdata(L, -1));
+        res = lua_touserdata(L, -1);
+        _cleanup();
+        return res;
+    }
+
+    std::string LuaValue::toString()
+    {
+        std::string res;
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        LUA_ERR_WRAP(lua_isstring(L, -1));
+        res = lua_tostring(L, -1);
+        _cleanup();
+        return res;
+    }
+
+    bool LuaValue::isTable()
+    {
+        lua_getglobal(L, _keys[0].c_str());
+        _traverseTable();
+        bool res = lua_istable(L, -1);
+        _cleanup();
+        return res;
     }
 }
