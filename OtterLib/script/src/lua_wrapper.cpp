@@ -1,4 +1,4 @@
-#include "script.hpp"
+#include "lua_wrapper.hpp"
 
 #include <stdexcept>
 #include <filesystem>
@@ -6,18 +6,18 @@
 
 namespace Otter::Script {
 
-    Lua::Lua():
+    LuaContext::LuaContext():
     L(luaL_newstate())
     {
         luaL_openlibs(L);
     }
 
-    Lua::~Lua()
+    LuaContext::~LuaContext()
     {
         lua_close(L);
     }
 
-    void Lua::doFile(std::string path)
+    void LuaContext::doFile(std::string path)
     {
         if (!std::filesystem::is_regular_file(path)) {
             throw std::runtime_error("Invalid file path");
@@ -25,12 +25,12 @@ namespace Otter::Script {
         LUA_ERR_WRAP(luaL_dofile(L, path.c_str()));
     }
 
-    void Lua::doString(std::string luaString)
+    void LuaContext::doString(std::string luaString)
     {
         LUA_ERR_WRAP(luaL_dostring(L, luaString.c_str()));
     }
 
-    bool Lua::_callFn(std::string name, std::string argsTypes, va_list args, unsigned int nb_return_vals)
+    bool LuaContext::_callFn(std::string name, std::string argsTypes, va_list args, unsigned int nb_return_vals)
     {
 
         unsigned int nb_args = 0;
@@ -76,7 +76,7 @@ namespace Otter::Script {
         return true;
     }
 
-    LuaValue Lua::operator[](std::string name)
+    LuaValue LuaContext::operator[](std::string name)
     {
         return LuaValue(L, name);
     }

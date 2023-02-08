@@ -39,6 +39,9 @@ namespace Otter::Script {
             const std::string _what;
     };
 
+    /**
+     * @brief A container that holds a lua value that can be accessed globally
+     */
     class LuaValue {
         public:
             LuaValue(lua_State *state, std::string key);
@@ -49,9 +52,9 @@ namespace Otter::Script {
             double toDouble();
             void *toVoidPtr();
             std::string toString();
+            bool isTable();
             LuaValue operator[](std::string key);
             void printPath();
-            bool isTable();
         private:
             lua_State *L;
             std::vector<std::string> _keys;
@@ -60,15 +63,15 @@ namespace Otter::Script {
             void _cleanup(void);
     };
 
-    class Lua {
+    class LuaContext {
         public:
 
-            Lua();
-            ~Lua();
+            LuaContext();
+            ~LuaContext();
 
 
             /**
-             * @brief Execute a Lua script file
+             * @brief Execute a LuaContext script file
              * @param path the path to the script file
              */
             void doFile(std::string path);
@@ -109,7 +112,7 @@ namespace Otter::Script {
                 va_end(args);
 
                 if (!success) {
-                    throw LuaError("Request Lua function does not exist!");
+                    throw LuaError("Request LuaContext function does not exist!");
                 }
 
                 std::vector<luaTypes> returnValues;
