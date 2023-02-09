@@ -1,22 +1,23 @@
-#include <gtest/gtest.h>
 #include "lua_wrapper.hpp"
+
+#include <gtest/gtest.h>
 #include <string>
 
 struct st_my_struct {
     int nb;
-    char const *str;
+    char const* str;
 };
-
-using luaTypes = std::variant<long long, double, bool, std::string, void *>;
 
 
 TEST(doFile, should_load)
 {
     Otter::Scripting::LuaContext ctx;
 
+    testing::internal::CaptureStdout();
     ctx.doFile("build/test_data/hello.lua");
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_EQ(output, "Hello\n");
 }
-
 
 TEST(doFile, should_throw_runtime_error)
 {
@@ -39,7 +40,7 @@ TEST(callFn, shouldReturn2longs)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
-    std::vector<luaTypes> retVals = ctx.callFn("tuple_of_2s", "ll");
+    std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("tuple_of_2s", "ll");
     EXPECT_EQ(std::get<long long>(retVals[0]), 2);
     EXPECT_EQ(std::get<long long>(retVals[1]), 2);
 }
@@ -49,10 +50,10 @@ TEST(callFn, shouldReturn3strings)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("build/test_data/functions.lua");
-    std::vector<luaTypes> retVals = ctx.callFn("return_3_string", "sss");
-    EXPECT_EQ(std::get<std::string>(retVals[0]), "foo");
-    EXPECT_EQ(std::get<std::string>(retVals[1]), "bar");
-    EXPECT_EQ(std::get<std::string>(retVals[2]), "baz");
+    std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("return_3_string", "sss");
+    EXPECT_EQ(std::string(std::get<char const *>(retVals[0])), "foo");
+    EXPECT_EQ(std::string(std::get<char const *>(retVals[1])), "bar");
+    EXPECT_EQ(std::string(std::get<char const *>(retVals[2])), "baz");
 }
 
 TEST(callFn, shouldReturnSelf)
@@ -61,9 +62,9 @@ TEST(callFn, shouldReturnSelf)
 
     const struct st_my_struct my_struct = {.nb = 5, .str = "hi from fonseca"};
     ctx.doString("function returnSelf(i) return i end");
-    std::vector<luaTypes> retVals = ctx.callFn("returnSelf", "p", "p", &my_struct);
+    std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("returnSelf", "p", "p", &my_struct);
 
-    EXPECT_EQ(&my_struct, std::get<void *>(retVals[0]));
+    EXPECT_EQ(&my_struct, std::get<void*>(retVals[0]));
 }
 
 TEST(callFn, shouldThrowErr)
@@ -102,9 +103,21 @@ TEST(bind, bindAddShouldAdd)
     ctx.doString("function add(x, y) return x + y end");
     auto addFromLua = ctx.bind<int, int>("add", "l", "ll");
     auto res = addFromLua(1, 2);
-    std::vector<luaTypes> retVals = addFromLua(1, 2);
+    std::vector<Otter::Scripting::luaTypes> retVals = addFromLua(1, 2);
     EXPECT_EQ(std::get<long long>(retVals[0]), 3);
 }
+
+TEST(bind, bindShouldConcatStrings)
+{
+
+    Otter::Scripting::LuaContext ctx;
+
+    ctx.doString("function concat(str1, str2) return str1 .. str2 end");
+    auto concatFromLua = ctx.bind<char const *, char const *>("concat", "s", "ss");
+    auto retVals = concatFromLua("hello ", "world");
+    EXPECT_EQ(std::string(std::get<char const *>(retVals[0])), "hello world");
+}
+
 
 TEST(luaValues, getGlobalVariableAsInteger)
 {
@@ -120,6 +133,14 @@ TEST(luaValues, getGlobalVariableAsString)
 
     ctx.doString("a = 'coucou'");
     EXPECT_EQ(ctx["a"].toString(), "coucou");
+}
+
+TEST(luaValues, getGlobalVariableAsDouble)
+{
+    Otter::Scripting::LuaContext ctx;
+
+    ctx.doString("a = 3.14");
+    EXPECT_EQ(ctx["a"].toDouble(), 3.14);
 }
 
 TEST(luaValues, getValueInTable)
@@ -149,4 +170,12 @@ TEST(luaValues, getValueInTableNested)
     EXPECT_EQ(a["foo"]["bar"].toString(), "baz");
     EXPECT_EQ(foo["bar"].toString(), "baz");
     EXPECT_EQ(bar.toString(), "baz");
+}
+
+TEST(getTableLen, shouldReturnTableLen)
+{
+    Otter::Scripting::LuaContext ctx;
+
+    ctx.doString("foo = {bar = {1,2,3,4,5}}");
+    EXPECT_EQ(ctx["foo"]["bar"].getTableLength(), 5);
 }

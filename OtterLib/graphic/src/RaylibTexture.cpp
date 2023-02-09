@@ -26,6 +26,7 @@ namespace Otter::Graphic::Raylib {
      * @brief Destructor of the RaylibTexture class
      */
     RaylibTexture::~RaylibTexture() = default;
+
     //    RaylibTexture::~RaylibTexture() { UnloadTexture(_texture); }
 
     /**

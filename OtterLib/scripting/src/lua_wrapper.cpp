@@ -1,21 +1,16 @@
 #include "lua_wrapper.hpp"
 
-#include <stdexcept>
 #include <filesystem>
 #include <iostream>
+#include <stdexcept>
 
 namespace Otter::Scripting {
 
-    LuaContext::LuaContext():
-    L(luaL_newstate())
-    {
-        luaL_openlibs(L);
-    }
+    LuaContext::LuaContext() : L(luaL_newstate()), _isOriginal(true) { luaL_openlibs(L); }
 
-    LuaContext::~LuaContext()
-    {
-        lua_close(L);
-    }
+    LuaContext::LuaContext(lua_State *state): L(state), _isOriginal(false) {}
+
+    LuaContext::~LuaContext() { if (_isOriginal) lua_close(L); }
 
     void LuaContext::doFile(std::string path)
     {
@@ -25,10 +20,7 @@ namespace Otter::Scripting {
         LUA_ERR_WRAP(luaL_dofile(L, path.c_str()));
     }
 
-    void LuaContext::doString(std::string luaString)
-    {
-        LUA_ERR_WRAP(luaL_dostring(L, luaString.c_str()));
-    }
+    void LuaContext::doString(std::string luaString) { LUA_ERR_WRAP(luaL_dostring(L, luaString.c_str())); }
 
     bool LuaContext::_callFn(std::string name, std::string argsTypes, va_list args, unsigned int nb_return_vals)
     {
@@ -41,34 +33,30 @@ namespace Otter::Scripting {
             return false;
         }
 
-        for (auto i: argsTypes) {
-            switch (i)
-            {
-                case 'b':
-                    lua_pushboolean(L, static_cast<bool>(va_arg(args, int)));
-                    break;
-                case 'd':
-                    lua_pushnumber(L, va_arg(args, double));
-                    break;
-                case 's':
-                    {
-                        const std::string str(va_arg(args, const char *));
-                        lua_pushstring(L, str.c_str());
-                    }
-                    break;
-                case 'n':
-                    lua_pushnil(L);
-                    va_arg(args, int);
-                    break;
-                case 'p':
-                    lua_pushlightuserdata(L, va_arg(args, void *));
-                    break;
-                case 'l':
-                    lua_pushinteger(L, va_arg(args, long long));
-                    break;
-                default:
-                    throw std::invalid_argument("Invalid fmt string");
-                    break;
+        for (auto i : argsTypes) {
+            switch (i) {
+            case 'b':
+                lua_pushboolean(L, static_cast<bool>(va_arg(args, int)));
+                break;
+            case 'd':
+                lua_pushnumber(L, va_arg(args, double));
+                break;
+            case 's': {
+                lua_pushstring(L, va_arg(args, const char*));
+            } break;
+            case 'n':
+                lua_pushnil(L);
+                va_arg(args, int);
+                break;
+            case 'p':
+                lua_pushlightuserdata(L, va_arg(args, void*));
+                break;
+            case 'l':
+                lua_pushinteger(L, va_arg(args, long long));
+                break;
+            default:
+                throw std::invalid_argument("Invalid fmt string");
+                break;
             }
             nb_args++;
         }
@@ -76,27 +64,23 @@ namespace Otter::Scripting {
         return true;
     }
 
-    LuaValue LuaContext::operator[](std::string name)
+    void LuaContext::registerFunction(std::string name, lua_CFunction function)
     {
-        return LuaValue(L, name);
+        lua_pushcfunction(L, function);
+        lua_setglobal(L, name.c_str());
     }
 
-    LuaValue::LuaValue(lua_State *state, std::string key):
-    L(state)
+
+    LuaValue LuaContext::operator[](std::string name) { return LuaValue(L, name); }
+
+    LuaValue::LuaValue(lua_State* state, std::string key) : L(state) { _keys.emplace_back(key); }
+
+    LuaValue::LuaValue(lua_State* state, std::vector<std::string> keys, std::string key) : L(state), _keys(keys)
     {
         _keys.emplace_back(key);
     }
 
-    LuaValue::LuaValue(lua_State *state, std::vector<std::string> keys, std::string key):
-    L(state), _keys(keys)
-    {
-        _keys.emplace_back(key);
-    }
-
-    LuaValue LuaValue::operator[](std::string key)
-    {
-        return LuaValue(L, _keys, key);
-    }
+    LuaValue LuaValue::operator[](std::string key) { return LuaValue(L, _keys, key); }
 
     void LuaValue::_traverseTable(void)
     {
@@ -151,9 +135,9 @@ namespace Otter::Scripting {
         return res;
     }
 
-    void *LuaValue::toVoidPtr()
+    void* LuaValue::toVoidPtr()
     {
-        void *res;
+        void* res;
         lua_getglobal(L, _keys[0].c_str());
         _traverseTable();
         LUA_ERR_WRAP(lua_islightuserdata(L, -1));
@@ -181,4 +165,19 @@ namespace Otter::Scripting {
         _cleanup();
         return res;
     }
-}
+
+    unsigned long long LuaValue::getTableLength()
+    {
+        std::string path = _keys[0];
+        for (unsigned int i = 1; i < _keys.size(); i++) {
+            path += "." + _keys[i];
+        }
+        LuaContext ctx(L);
+        std::string getLen = "function __getTableLen()\n return " "#" + path + " \nend \n";
+        ctx.doString(getLen);
+        auto retVals = ctx.callFn("__getTableLen", "l");
+        unsigned long long len = std::get<long long>(retVals[0]);
+        return len;
+    }
+
+} // namespace Otter::Scripting
