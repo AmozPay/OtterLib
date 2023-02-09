@@ -1,9 +1,9 @@
 #pragma once
 
 extern "C" {
-#include "lauxlib.h"
-#include "lua.h"
-#include "lualib.h"
+    #include "lauxlib.h"
+    #include "lua.h"
+    #include "lualib.h"
 }
 
 #include <algorithm>
@@ -180,6 +180,11 @@ namespace Otter::Scripting {
         LuaValue operator[](std::string key);
 
         void registerFunction(std::string name, lua_CFunction);
+        void setGlobal(std::string name, void *ptr);
+        void setGlobal(std::string name, long long integer);
+        void setGlobal(std::string name, double number);
+        void setGlobal(std::string name, char const *str);
+        void setGlobal(std::string name, bool boolean);
 
       private:
         lua_State* L;

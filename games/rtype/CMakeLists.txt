@@ -65,10 +65,12 @@ target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
     OtterGraphic
+    OtterScripting
     ${CONAN_LIBS}
 )
 
 file(COPY src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY src/scripts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # build server
@@ -79,6 +81,7 @@ target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
     OtterGraphic
+    OtterScripting
     ${CONAN_LIBS}
 )
 

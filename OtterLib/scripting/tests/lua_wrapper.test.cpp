@@ -13,24 +13,21 @@ TEST(doFile, should_load)
 {
     Otter::Scripting::LuaContext ctx;
 
-    testing::internal::CaptureStdout();
-    ctx.doFile("build/test_data/hello.lua");
-    std::string output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "Hello\n");
+    ctx.doFile("test_data/hello.lua");
 }
 
 TEST(doFile, should_throw_runtime_error)
 {
     Otter::Scripting::LuaContext ctx;
 
-    EXPECT_THROW(ctx.doFile("build/test_data/doesNotExists.lua"), std::runtime_error);
+    EXPECT_THROW(ctx.doFile("test_data/doesNotExists.lua"), std::runtime_error);
 }
 
 TEST(callFn, shouldAdd)
 {
     Otter::Scripting::LuaContext ctx;
 
-    ctx.doFile("build/test_data/functions.lua");
+    ctx.doFile("test_data/functions.lua");
     long long sum = std::get<long long>(ctx.callFn("add", "l", "ll", 1, 1)[0]);
     EXPECT_EQ(sum, 2);
 }
@@ -39,7 +36,7 @@ TEST(callFn, shouldReturn2longs)
 {
     Otter::Scripting::LuaContext ctx;
 
-    ctx.doFile("build/test_data/functions.lua");
+    ctx.doFile("test_data/functions.lua");
     std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("tuple_of_2s", "ll");
     EXPECT_EQ(std::get<long long>(retVals[0]), 2);
     EXPECT_EQ(std::get<long long>(retVals[1]), 2);
@@ -49,7 +46,7 @@ TEST(callFn, shouldReturn3strings)
 {
     Otter::Scripting::LuaContext ctx;
 
-    ctx.doFile("build/test_data/functions.lua");
+    ctx.doFile("test_data/functions.lua");
     std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("return_3_string", "sss");
     EXPECT_EQ(std::string(std::get<char const *>(retVals[0])), "foo");
     EXPECT_EQ(std::string(std::get<char const *>(retVals[1])), "bar");
@@ -71,7 +68,7 @@ TEST(callFn, shouldThrowErr)
 {
     Otter::Scripting::LuaContext ctx;
 
-    ctx.doFile("build/test_data/functions.lua");
+    ctx.doFile("test_data/functions.lua");
     EXPECT_THROW(ctx.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Scripting::LuaError);
 }
 
@@ -85,7 +82,7 @@ TEST(stdOutChecks, should_print_hello)
     EXPECT_EQ(output, std::string("Hello\n"));
 
     testing::internal::CaptureStdout();
-    ctx.doFile("build/test_data/hello.lua");
+    ctx.doFile("test_data/hello.lua");
     output = testing::internal::GetCapturedStdout();
     EXPECT_EQ(output, std::string("Hello\n"));
 

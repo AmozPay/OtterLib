@@ -13,6 +13,8 @@ namespace Otter::Scripting {
         _luaContext.doString(luaCallScripts);
         std::cout << "[OtterLib] Scripts loaded" << std::endl;
 
+        _luaContext.setGlobal("__orchestrator", &_orchestrator);
+
 
         auto callScripts = _luaContext.bind<char const *>("__callScripts", "", "s");
         // REGISTER_SYSTEM(init);

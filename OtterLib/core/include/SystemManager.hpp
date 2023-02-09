@@ -37,7 +37,7 @@ namespace Otter::Core {
       public:
         SystemManager() : _systems()
         {
-            for (int i = 0; i != Phase::end; i++) {
+            for (int i = 0; i <= Phase::end; i++) {
                 _systems.push_back(sysList());
             }
         };

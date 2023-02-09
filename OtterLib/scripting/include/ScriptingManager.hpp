@@ -29,11 +29,12 @@ namespace Otter::Scripting {
 
     class ScriptingManager {
         public:
-            ScriptingManager(Otter::Core::SystemManager &systemManager): _luaContext(), _systemManager(systemManager) {}
+            ScriptingManager(Otter::Core::SystemManager &systemManager, Otter::Core::Orchestrator orchestrator): _luaContext(), _systemManager(systemManager), _orchestrator(orchestrator) {}
             ~ScriptingManager() = default;
             void enableScripting(const std::string scriptingEntrypointFile);
         private:
             LuaContext _luaContext;
             Otter::Core::SystemManager &_systemManager;
+            Otter::Core::Orchestrator &_orchestrator;
     };
 }

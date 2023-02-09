@@ -22,6 +22,7 @@ namespace Otter::Core {
             _systems(_data, SystemManager::draw);
             _systems(_data, SystemManager::subDraw);
         }
+        _systems(_data, SystemManager::end);
     }
 
     int OtterCore::engineStart()

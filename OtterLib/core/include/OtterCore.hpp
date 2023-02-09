@@ -12,7 +12,7 @@ namespace Otter::Core {
 
     class OtterCore {
       public:
-        OtterCore() : _factory(), _systems(), _scriptingManager(_systems), _data(_factory) { _isRunning = true; };
+        OtterCore() : _factory(), _systems(), _data(_factory), _scriptingManager(_systems, _data)  { _isRunning = true; };
 
         ~OtterCore(){};
 
@@ -30,7 +30,7 @@ namespace Otter::Core {
 
         Factory _factory;
         SystemManager _systems;
-        Otter::Scripting::ScriptingManager _scriptingManager;
         Orchestrator _data;
+        Otter::Scripting::ScriptingManager _scriptingManager;
     };
 } // namespace Otter::Core

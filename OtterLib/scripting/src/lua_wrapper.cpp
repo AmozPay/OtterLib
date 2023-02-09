@@ -70,6 +70,36 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
+    void LuaContext::setGlobal(std::string name, void *value)
+    {
+        lua_pushlightuserdata(L, value);
+        lua_setglobal(L, name.c_str());
+    }
+
+    void LuaContext::setGlobal(std::string name, char const *value)
+    {
+        lua_pushstring(L, value);
+        lua_setglobal(L, name.c_str());
+    }
+
+    void LuaContext::setGlobal(std::string name, long long value)
+    {
+        lua_pushinteger(L, value);
+        lua_setglobal(L, name.c_str());
+    }
+
+    void LuaContext::setGlobal(std::string name, double value)
+    {
+        lua_pushnumber(L, value);
+        lua_setglobal(L, name.c_str());
+    }
+
+    void LuaContext::setGlobal(std::string name, bool value)
+    {
+        lua_pushboolean(L, value);
+        lua_setglobal(L, name.c_str());
+    }
+
 
     LuaValue LuaContext::operator[](std::string name) { return LuaValue(L, name); }
 
