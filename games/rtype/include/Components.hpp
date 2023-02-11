@@ -74,10 +74,17 @@ namespace Otter::Games::RType::Components {
         {
             core.add_component(e, Keyboard());
         }
+
         Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
-
+        void setKey(Otter::Graphic::IKeyboard::KeyType raylibKey, const int& state) { _keyMap[raylibKey] = state; };
+        void removeKey(Otter::Graphic::IKeyboard::KeyType raylibKey) { _keyMap.erase(raylibKey); };
+        std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator begin() { return _keyMap.begin(); };
+        std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator end() { return _keyMap.end(); };
+ 
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
+        std::map<Otter::Graphic::IKeyboard::KeyType, int> _keyMap;
+
     };
 
     /**
