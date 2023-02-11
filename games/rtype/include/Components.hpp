@@ -10,10 +10,9 @@
 
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
-#include <boost/property_tree/ptree.hpp>
 #include "Utils.hpp"
 
-
+#include <boost/property_tree/ptree.hpp>
 #include <chrono>
 #include <memory>
 #include <string>
@@ -30,21 +29,34 @@ namespace Otter::Games::RType::Components {
      * @struct Render
      */
     struct Render {
-        COMPONENT_BUILDER(Render)
-        {}
+        COMPONENT_BUILDER(Render) { core.add_component(e, Render()); }
+        Render() = default;
+        ~Render() = default;
     };
 
     /**
      * @brief Component for the window
      * @details The window component is used to create & manage a window
      * @struct Window
-     * @var width: The width of the window
-     * @var height: The height of the window
-     * @var title: The title of the window
-     * @var fps: The target framerate of the window
-     * @var window: An instance of the RaylibWindow class
+     * @var _width: The width of the window
+     * @var _height: The height of the window
+     * @var _title: The title of the window
+     * @var _fps: The target framerate of the window
+     * @var _window: An instance of the RaylibWindow class
      */
     struct Window {
+        COMPONENT_BUILDER(Window)
+        {
+            core.add_component(e, Window(json.get<int>("width"), json.get<int>("height"),
+                                         json.get<std::string>("title"), json.get<int>("fps")));
+        }
+        /**
+         * @brief Constructor of the Window component
+         * @param width: The width of the window
+         * @param height: The height of the window
+         * @param title: The title of the window
+         * @param fps: The target framerate of the window
+         */
         Window(int width, int height, const std::string& title, int fps)
             : _window(Otter::Graphic::Raylib::RaylibWindow(height, width, title))
         {
@@ -53,7 +65,6 @@ namespace Otter::Games::RType::Components {
             _title = title;
             _fps = fps;
         };
-
         ~Window() = default;
 
         int _width;
@@ -67,13 +78,13 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the keyboard
      * @details The keyboard component is used to manage the keyboard events
      * @struct Keyboard
-     * @var keyboard: An instance of the RaylibKeyboard class
+     * @var _keyboard: An instance of the RaylibKeyboard class
      */
     struct Keyboard {
-        COMPONENT_BUILDER(Keyboard)
-        {
-            core.add_component(e, Keyboard());
-        }
+        COMPONENT_BUILDER(Keyboard) { core.add_component(e, Keyboard()); }
+        /**
+         * @brief Constructor of the Keyboard component
+         */
         Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
 
@@ -85,14 +96,19 @@ namespace Otter::Games::RType::Components {
      * @details The box collider component is used to store the size of the hitbox of an entity, in order to detect
      * collision
      * @struct BoxCollider
-     * @var width: The width of the box collider rectangle
-     * @var height: The height of the box collider rectangle
+     * @var _width: The width of the box collider rectangle
+     * @var _height: The height of the box collider rectangle
      */
     struct BoxCollider {
         COMPONENT_BUILDER(BoxCollider)
         {
             core.add_component(e, BoxCollider(json.get<float>("width"), json.get<float>("height")));
         }
+        /**
+         * @brief Constructor of the BoxCollider component
+         * @param width: The width of the box collider rectangle
+         * @param height: The height of the box collider rectangle
+         */
         BoxCollider(float width, float height)
         {
             _width = width;
@@ -118,59 +134,112 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the sound
      * @details The sound component is different from the music component because music is looping
      * @struct Sound
-     * @var path: The path to the sound
-     * @var volume: The volume of the sound
-     * @var status: The status of the sound
+     * @var _path: The path to the sound
+     * @var _volume: The volume of the sound
+     * @var _status: The status of the sound
      */
     struct Sound {
-        std::string path;
-        float volume;
-        SoundStatus status;
+        COMPONENT_BUILDER(Sound)
+        {
+            auto str_to_enum = std::map<std::string, SoundStatus>();
+            str_to_enum["PLAYING"] = PLAYING;
+            str_to_enum["PAUSED"] = PAUSED;
+            str_to_enum["STOPPED"] = STOPPED;
+
+            core.add_component(e, Sound(json.get<std::string>("path"), json.get<float>("volume"),
+                                        str_to_enum[json.get<std::string>("status")]));
+        }
+        /**
+         * @brief Constructor of the Sound component
+         * @param path: The path to the sound
+         * @param volume: The volume of the sound
+         * @param status: The status of the sound
+         */
+        Sound(const std::string& path, float volume, SoundStatus status)
+        {
+            _path = path;
+            _volume = volume;
+            _status = status;
+        };
+        ~Sound() = default;
+
+        std::string _path;
+        float _volume;
+        SoundStatus _status;
     };
 
     /**
      * @brief Component for the music
      * @details The music component is different from the sound component because music is looping
      * @struct Music
-     * @var path: The path to the music
-     * @var volume: The volume of the music
-     * @var isLooping: If the music is looping
-     * @var status: The status of the music
+     * @var _path: The path to the music
+     * @var _volume: The volume of the music
+     * @var _isLooping: If the music is looping
+     * @var _status: The status of the music
      */
     struct Music {
-        std::string path;
-        float volume;
-        bool isLooping;
-        SoundStatus status;
+        COMPONENT_BUILDER(Music)
+        {
+            auto str_to_enum = std::map<std::string, SoundStatus>();
+            str_to_enum["PLAYING"] = PLAYING;
+            str_to_enum["PAUSED"] = PAUSED;
+            str_to_enum["STOPPED"] = STOPPED;
+
+            core.add_component(e, Music(json.get<std::string>("path"), json.get<float>("volume"),
+                                        json.get<bool>("isLooping"), str_to_enum[json.get<std::string>("status")]));
+        }
+        /**
+         * @brief Constructor of the Music component
+         * @param path: The path to the music
+         * @param volume: The volume of the music
+         * @param isLooping: If the music is looping
+         * @param status: The status of the music
+         */
+        Music(const std::string& path, float volume, bool isLooping, SoundStatus status)
+        {
+            _path = path;
+            _volume = volume;
+            _isLooping = isLooping;
+            _status = status;
+        }
+        ~Music() = default;
+
+        std::string _path;
+        float _volume;
+        bool _isLooping;
+        SoundStatus _status;
     };
 
     /**
      * @brief Component for the texture
      * @details The texture component is used to store the path to the texture and the texture itself
      * @struct Texture
-     * @var path: The path to the texture
-     * @var texture: An instance of the RaylibTexture class
+     * @var _path: The path to the texture
+     * @var _texture: An instance of the RaylibTexture class
      */
     struct Texture {
         COMPONENT_BUILDER(Texture)
         {
-            #if defined(TARGET_CLIENT)
-                std::cout << "init texture" << std::endl;
-                auto path = json.get<std::string>("path");
-                std::cout << "init texture 2" << std::endl;
-                core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
-                std::cout << "init texture 3" << std::endl;
-            #endif
+#if defined(TARGET_CLIENT)
+            std::cout << "init texture" << std::endl;
+            auto path = json.get<std::string>("path");
+            std::cout << "init texture 2" << std::endl;
+            core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
+            std::cout << "init texture 3" << std::endl;
+#endif
         }
 
+        /**
+         * @brief Constructor of the Texture component
+         * @param path: The path to the texture
+         * @param texture: An instance of the RaylibTexture class
+         */
         Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
         {
             _path = path;
         };
 
         ~Texture() = default;
-
-
 
         Texture& operator=(const Texture& other)
         {
@@ -187,27 +256,33 @@ namespace Otter::Games::RType::Components {
      * @brief Component transform
      * @details The transform component is used to store the position, rotation and scale of an entity
      * @struct Transform
-     * @var position: A vector of float for the position of the entity
-     * @var lastPosition: A vector of float for the last position of the entity
-     * @var rotation: The rotation of the entity
-     * @var scale: The scale of the entity
+     * @var _position: A vector of float for the position of the entity
+     * @var _lastPosition: A vector of float for the last position of the entity
+     * @var _rotation: The rotation of the entity
+     * @var _scale: The scale of the entity
      */
     struct Transform {
         COMPONENT_BUILDER(Transform)
         {
-            float scale = json.get<float>("scale");
-            float rotation = json.get<float>("rotation");
+            auto scale = json.get<float>("scale");
+            auto rotation = json.get<float>("rotation");
             core.add_component(e, Transform(scale, rotation, getVector2(json, "position")));
         }
 
+        /**
+         * @brief Constructor of the Transform component
+         * @param scale: The scale of the entity
+         * @param rotation: The rotation of the entity
+         * @param position: A vector of float for the position of the entity
+         */
         Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
             : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
         }
-
         ~Transform() = default;
+
         Otter::Games::RType::Utils::Vector2 _position;
         Otter::Games::RType::Utils::Vector2 _lastPosition;
         float _rotation;
@@ -218,22 +293,29 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the velocity
      * @details The velocity component is used to store the speed and acceleration of an entity
      * @struct Velocity
-     * @var speed: The speed of the entity
-     * @var constantSpeed: The constant speed of the entity
-     * @var accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
+     * @var _speed: The speed of the entity
+     * @var _constantSpeed: The constant speed of the entity
+     * @var _accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
-     * @var constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
+     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
      * as the accelerationDirection
      */
     struct Velocity {
         COMPONENT_BUILDER(Velocity)
         {
-            float speed = json.get<float>("speed");
-//            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
+            auto speed = json.get<float>("speed");
+            //            core.add_component(e, Velocity(speed, getVector2(json, "accelerationDirection")));
             // TODO: Add constantAccelerationDirection
         }
 
+        /**
+         * @brief Constructor of the Velocity componen
+         * @param speed: The speed of the entity
+         * @param constantSpeed: The constant speed of the entity
+         * @param constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity
+         * @param accelerationDirection: A vector of float for the acceleration direction of the entity
+         */
         Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
                  Otter::Games::RType::Utils::Vector2 accelerationDirection)
             : _accelerationDirection(accelerationDirection),
@@ -254,16 +336,21 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the player
      * @details The player component is used to store the id and the tag of the player
      * @struct Player
-     * @var id: The id of the player
-     * @var tag: The tag of the player
+     * @var _id: The id of the player
+     * @var _tag: The tag of the player
      */
     struct Player {
         COMPONENT_BUILDER(Player)
         {
             int id = json.get<int>("id");
-            std::string tag = json.get<std::string>("tag");
+            auto tag = json.get<std::string>("tag");
             core.add_component(e, Player(id, tag));
         }
+        /**
+         * @brief Constructor of the Player component
+         * @param id: The id of the player
+         * @param tag: The tag of the player
+         */
         Player(int id, const std::string& tag)
         {
             _id = id;
@@ -279,18 +366,30 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the enemy
      * @details The enemy component is used to store the id and the tag of the enemy
      * @struct Enemy
-     * @var id: The id of the enemy
-     * @var tag: The tag of the enemy
+     * @var _id: The id of the enemy
+     * @var _tag: The tag of the enemy
      */
     struct Enemy {
         COMPONENT_BUILDER(Enemy)
         {
             int id = json.get<int>("id");
-            std::string tag = json.get<std::string>("tag");
+            auto tag = json.get<std::string>("tag");
             core.add_component(e, Enemy(id, tag));
         }
-        int id;
-        std::string tag;
+        /**
+         * @brief Constructor of the Enemy component
+         * @param id: The id of the enemy
+         * @param tag: The tag of the enemy
+         */
+        Enemy(int id, const std::string& tag)
+        {
+            _id = id;
+            _tag = tag;
+        }
+        ~Enemy() = default;
+
+        int _id;
+        std::string _tag;
     };
 
     /**
@@ -307,8 +406,8 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the Obstacle
      * @details The box collider component is used to store the type and the tag of the box
      * @struct Obstacle
-     * @var type: The type of the obstacl
-     * @var tag: The tag of the obstacle
+     * @var _type: The type of the obstacl
+     * @var _tag: The tag of the obstacle
      */
     struct Obstacle {
         COMPONENT_BUILDER(Obstacle)
@@ -320,11 +419,18 @@ namespace Otter::Games::RType::Components {
 
             core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag")));
         }
-        Obstacle(ObstacleType type, std::string tag) {
+        /**
+         * @brief Constructor of the Obstacle component
+         * @param type: The type of the obstacle
+         * @param tag: The tag of the obstacle
+         */
+        Obstacle(ObstacleType type, std::string tag)
+        {
             _type = type;
             _tag = tag;
         };
         ~Obstacle() = default;
+
         ObstacleType _type;
         std::string _tag;
     };
@@ -333,13 +439,14 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the health
      * @details The health component is used to store the health point of an entity
      * @struct Health
-     * @var hp: The health point of the entity
+     * @var _hp: The health point of the entity
      */
     struct Health {
-        COMPONENT_BUILDER(Health)
-        {
-            core.add_component(e, Health(json.get<unsigned int>("hp")));
-        }
+        COMPONENT_BUILDER(Health) { core.add_component(e, Health(json.get<unsigned int>("hp"))); }
+        /**
+         * @brief Constructor of the Health component
+         * @param hp: The health point of the entity
+         */
         explicit Health(unsigned int hp) { _hp = hp; };
         ~Health() = default;
 
@@ -350,14 +457,18 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the damage
      * @details The damage component is used to store the damage of an entity
      * @struct Damage
-     * @var damage: The damage of the entity
+     * @var _damage: The damage of the entity
      */
     struct Damage {
-        COMPONENT_BUILDER(Damage)
-        {
-            core.add_component(e, Damage(json.get<unsigned int>("damage")));
-        }
-        unsigned int damage;
+        COMPONENT_BUILDER(Damage) { core.add_component(e, Damage(json.get<unsigned int>("damage"))); }
+        /**
+         * @brief Constructor of the Damage component
+         * @param damage: The damage of the entity
+         */
+        Damage(unsigned int damage) { _damage = damage; }
+        ~Damage() = default;
+
+        unsigned int _damage;
     };
 
     /**
@@ -365,10 +476,18 @@ namespace Otter::Games::RType::Components {
      * @details The destructible component is used to know if an entity is destructible. If it is, it will be destroyed
      * when it will have 0 hp
      * @struct Destructible
-     * @var isDestructible: If the entity is destructible: true, otherwise: false
+     * @var _isDestructible: If the entity is destructible: true, otherwise: false
      */
     struct Destructible {
-        bool isDestructible;
+        COMPONENT_BUILDER(Destructible) { core.add_component(e, Destructible(json.get<bool>("isDestructible"))); }
+        /**
+         * @brief Constructor of the Destructible component
+         * @param isDestructible: If the entity is destructible: true, otherwise: false
+         */
+        Destructible(bool isDestructible) { _isDestructible = isDestructible; }
+        ~Destructible() = default;
+
+        bool _isDestructible;
     };
 
     /**
@@ -384,13 +503,28 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the shooter
      * @details The shooter component is used to know if an entity is a shooter. If it is, it will be able to shoot
      * @struct Shooter
-     * @var direction: The direction of the shot
-     * @var canShoot: If the entity can shoot: true, otherwise: false
-     * @var shotNbr: The number of shot, -1 if infinite
-     * @var reloadTime: The reload time of the shot, -1 if infinite
-     * @var lastShotTimestamp: The timestamp of the last shot
+     * @var _direction: The direction of the shot
+     * @var _canShoot: If the entity can shoot: true, otherwise: false
+     * @var _shotNbr: The number of shot, -1 if infinite
+     * @var _reloadTime: The reload time of the shot, -1 if infinite
+     * @var _lastShotTimestamp: The timestamp of the last shot
      */
     struct Shooter {
+        COMPONENT_BUILDER(Shooter)
+        {
+            auto str_to_enum = std::map<std::string, ShotDirection>();
+            str_to_enum["LEFT"] = LEFT;
+            str_to_enum["RIGHT"] = RIGHT;
+            core.add_component(e, Shooter(str_to_enum[json.get<std::string>("direction")], json.get<bool>("canShoot"),
+                                          json.get<int>("shotNbr"), json.get<int>("reloadTime")));
+        }
+        /**
+         * @brief Constructor of the Shooter component
+         * @param direction: The direction of the shot
+         * @param canShoot: If the entity can shoot: true, otherwise: false
+         * @param shotNbr: The number of shot, -1 if infinite
+         * @param reloadTime: The reload time of the shot, -1 if infinite
+         */
         Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
         {
             _direction = direction;
@@ -400,6 +534,7 @@ namespace Otter::Games::RType::Components {
             _lastShotTimestamp = 0;
         }
         ~Shooter() = default;
+
         ShotDirection _direction;
         bool _canShoot;
         int _shotNbr;
@@ -411,11 +546,17 @@ namespace Otter::Games::RType::Components {
      * @brief Component for the shot
      * @details The shot component is used to know if an entity is a shot. If it is, it will be able to act as a shot
      * @struct Shot
-     * @var shooterId: The id of the shooter
+     * @var _shooterId: The id of the shooter
      */
     struct Shot {
+        COMPONENT_BUILDER(Shot) { core.add_component(e, Shot(json.get<int>("shooterId"))); }
+        /**
+         * @brief Constructor of the Shot component
+         * @param shooterId: The id of the shooter
+         */
         explicit Shot(int shooterId) { _shooterId = shooterId; };
         ~Shot() = default;
+
         int _shooterId;
     };
 
@@ -426,9 +567,27 @@ namespace Otter::Games::RType::Components {
      * @struct Render
      */
     struct Dispawnable {
+        COMPONENT_BUILDER(Dispawnable) { core.add_component(e, Dispawnable()); }
+        Dispawnable() = default;
+        ~Dispawnable() = default;
     };
 
+    /**
+     * @brief Component for the parallax
+     * @details The parallax component is used to know if an entity is a parallax. If it is, it will be able to act as a parallax
+     * @struct Parallax
+     */
+    struct Parallax {
+        COMPONENT_BUILDER(Parallax) { core.add_component(e, Parallax()); }
+        Parallax() = default;
+        ~Parallax() = default;
+    };
+
+    /**
+     * @brief Component for the network
+     */
     struct EventNetwork {
+        COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
         EventNetwork() { _data = -1; }
         ~EventNetwork() = default;
 
