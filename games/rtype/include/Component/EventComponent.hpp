@@ -17,18 +17,29 @@
 #include "OtterCore.hpp"
 
 namespace Otter::Games::RType::Components {
-    using Orchestrator = Otter::Core::Orchestrator;
-    using ComponentIdVector = std::vector<std::string>;
-    using EventSystemFunc = std::function<void(Orchestrator&, ComponentIdVector&)>;
-    using EventHandlerPair = std::pair<EventTypes, EventSystemFunc>;
-    using EventHandlerPairList = std::list<EventHandlerPair>;
-    using EventHandlerMap = std::unordered_map<EventTypes, EventSystemFunc>;
-
+     /**
+     * @brief Custom events types
+     * @enum EventTypes
+     */
     enum EventTypes {
         COLISION,
         DEATH,
     };
 
+    using Orchestrator = Otter::Core::Orchestrator;
+    using ComponentIdVector = std::vector<std::string>;
+    using EventSystemFunc = std::function<void(Orchestrator&, ComponentIdVector&)>;
+    using EventHandlerMap = std::unordered_map<EventTypes, EventSystemFunc>;
+    using EventPair = std::pair<EventTypes, std::vector<std::string>>;
+    using EventPairList = std::list<EventPair>;
+
+    /**
+     * @brief Component for handling events
+     * @details The goal of this component is to register
+     * handling function for custom events type. Be carfull
+     * This component need to be registered only one time.
+     * @struct EventHandlerComponent
+     */
     struct EventHandlerComponent
     {
         EventHandlerComponent(const EventHandlerMap &eventHandlerMap)
@@ -36,9 +47,11 @@ namespace Otter::Games::RType::Components {
             this->eventHandlerMap = eventHandlerMap;
         };
 
+        ~EventHandlerComponent() = default;
+
         void handleEvent(
-            const EventTypes &eventType,
             Orchestrator& ref,
+            const EventTypes &eventType,
             ComponentIdVector& componentIdVector
         )
         {
@@ -51,6 +64,22 @@ namespace Otter::Games::RType::Components {
 
         EventHandlerMap eventHandlerMap;
     };
+
+    /**
+     * @brief Component for saving new Event
+     * @details The goal of this component is to register
+     * events when you need to trigger it. Be carfull
+     * This component need to be registered only one time.
+     * @struct EventComponent
+     */
+    struct EventComponent
+    {
+        EventComponent() = default;
+        ~EventComponent() = default;
+
+        EventPairList events;
+    };
+    
 }
 
 
