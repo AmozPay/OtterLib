@@ -27,10 +27,10 @@ namespace Otter::Games::RType::Components {
     };
 
     using Orchestrator = Otter::Core::Orchestrator;
-    using ComponentIdVector = std::vector<std::string>;
+    using ComponentIdVector = std::vector<std::size_t>;
     using EventSystemFunc = std::function<void(Orchestrator&, ComponentIdVector&)>;
     using EventHandlerMap = std::unordered_map<EventTypes, EventSystemFunc>;
-    using EventPair = std::pair<EventTypes, std::vector<std::string>>;
+    using EventPair = std::pair<EventTypes, ComponentIdVector>;
     using EventPairList = std::list<EventPair>;
 
     /**
