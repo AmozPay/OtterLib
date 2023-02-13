@@ -58,7 +58,8 @@ namespace Otter::Core {
                                  Otter::Games::RType::Components::ShotDirection::RIGHT, true, -1, 0));
 
         for (int i = 0; i < 7; i++) {
-            ref.add_component(entities[i], Otter::Games::RType::Components::Transform(4, 0, {(float)(248 * i), 0}));
+            ref.add_component(entities[i],
+                              Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i], Otter::Games::RType::Components::BoxCollider(248, 96));
             ref.add_component(entities[i], Otter::Games::RType::Components::Obstacle(
@@ -66,7 +67,7 @@ namespace Otter::Core {
         }
         for (int i = 0; i < 6; i++) {
             ref.add_component(entities[i + 6],
-                              Otter::Games::RType::Components::Transform(4, 0, {(float)(248 * i), 624}));
+                              Otter::Games::RType::Components::Transform(4, 0, {static_cast<float>(248 * i), 624}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::Velocity(0, 0, {0, 0}, {0, 0}));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::BoxCollider(248, 96));
             ref.add_component(entities[i + 6], Otter::Games::RType::Components::Obstacle(
@@ -74,7 +75,8 @@ namespace Otter::Core {
         }
 
         for (int i = 0; i < 2; i++) {
-            ref.add_component(parallaxes[i], Otter::Games::RType::Components::Transform(1, 0, {(float)(i * 1226), 0}));
+            ref.add_component(parallaxes[i],
+                              Otter::Games::RType::Components::Transform(1, 0, {static_cast<float>(i * 1226), 0}));
             ref.add_component(parallaxes[i], Otter::Games::RType::Components::Velocity(0, 5, {-1, 0}, {0, 0}));
         }
 
@@ -129,7 +131,7 @@ namespace Otter::Core {
                            Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Games::RType::System::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
-        ref.registerSystem(Otter::Games::RType::System::Parallax::ParallaxMovement,
+        ref.registerSystem(Otter::Games::RType::System::Parallax::ParallaxHandler,
                            Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(Otter::Games::RType::System::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(Otter::Games::RType::System::Collision::EntityCollision, Otter::Core::SystemManager::update);

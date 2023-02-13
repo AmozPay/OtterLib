@@ -8,7 +8,7 @@
 
 namespace Otter::Games::RType::System::Parallax {
 
-    void ParallaxMovement(Otter::Core::Orchestrator& ref)
+    void ParallaxHandler(Otter::Core::Orchestrator& ref)
     {
         auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
         auto& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
@@ -18,8 +18,8 @@ namespace Otter::Games::RType::System::Parallax {
             auto& transform = transforms[i];
             auto const& texture = textures[i];
             if (parallax && transform && texture) {
-                if (transform->_position.x < -(float)texture->_texture.getWidth())
-                    transform->_position.x = (float)texture->_texture.getWidth();
+                if (transform->_position.x < -static_cast<float>(texture->_texture.getWidth()))
+                    transform->_position.x = static_cast<float>(texture->_texture.getWidth());
             }
         }
     }
