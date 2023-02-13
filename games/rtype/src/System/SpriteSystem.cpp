@@ -18,11 +18,12 @@ namespace Otter::Games::RType::System::Sprite {
         auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size() && i < parallaxes.size();
              i++) {
+            if (!parallaxes[i])
+                continue;
             auto& sprite = sprites[i];
             auto const& transform = transforms[i];
             auto const& render = renders[i];
-            auto const& parallax = parallaxes[i];
-            if (sprite && transform && render && parallax) {
+            if (sprite && transform && render) {
                 sprite->_texture.setScale(transform->_scale);
                 sprite->_texture.setRotation(transform->_rotation);
                 sprite->_texture.draw({transform->_position.x, transform->_position.y});
@@ -37,11 +38,12 @@ namespace Otter::Games::RType::System::Sprite {
         auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
         auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
+            if (parallaxes[i])
+                continue;
             auto& sprite = sprites[i];
             auto const& transform = transforms[i];
             auto const& render = renders[i];
-            auto const& parallax = parallaxes[i];
-            if (sprite && transform && render && !parallax) {
+            if (sprite && transform && render) {
                 sprite->_texture.setScale(transform->_scale);
                 sprite->_texture.setRotation(transform->_rotation);
                 sprite->_texture.draw({transform->_position.x, transform->_position.y});
