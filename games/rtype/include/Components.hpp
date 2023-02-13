@@ -300,6 +300,8 @@ namespace Otter::Games::RType::Components {
      * no acceleration and 1 is for the right or down
      * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
      * Same as the accelerationDirection
+     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
+     * as the accelerationDirection
      */
     struct Velocity {
         COMPONENT_BUILDER(Velocity)
