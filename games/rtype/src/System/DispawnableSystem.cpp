@@ -20,7 +20,7 @@ namespace Otter::Games::RType::System::Dispawnable {
             auto& dispawnable = dispawnables[i];
             if (transform && dispawnable && texture) {
                 // TODO: need to check if the entity is out of the screen (up, down, right)
-                if (transform->_position.x < -((float)texture->_texture.getWidth() * transform->_scale))
+                if (transform->_position.x < -(static_cast<float>(texture->_texture.getWidth()) * transform->_scale))
                     ref.remove_entity(i);
             }
         }

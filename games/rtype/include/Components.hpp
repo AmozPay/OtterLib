@@ -298,6 +298,8 @@ namespace Otter::Games::RType::Components {
      * @var _accelerationDirection: A vector of float for the acceleration direction of the entity. The first value is
      * the x axis and the second value is the y axis. The value can be -1, 0 or 1. -1 is for the left or up, 0 is for
      * no acceleration and 1 is for the right or down
+     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
+     * Same as the accelerationDirection
      * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
      * as the accelerationDirection
      */
@@ -572,12 +574,21 @@ namespace Otter::Games::RType::Components {
         ~Dispawnable() = default;
     };
 
+    /**
+     * @brief Component for the parallax
+     * @details The parallax component is used to know if an entity is a parallax. If it is, it will be able to act as a
+     * parallax
+     * @struct Parallax
+     */
     struct Parallax {
         COMPONENT_BUILDER(Parallax) { core.add_component(e, Parallax()); }
         Parallax() = default;
         ~Parallax() = default;
     };
 
+    /**
+     * @brief Component for the network
+     */
     struct EventNetwork {
         COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
         EventNetwork() { _data = -1; }
