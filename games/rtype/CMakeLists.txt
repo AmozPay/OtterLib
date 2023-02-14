@@ -60,7 +60,7 @@ file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp)
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
-target_include_directories(r-type_client PUBLIC include/ include/System)
+target_include_directories(r-type_client PUBLIC include/ include/Component include/System)
 target_link_libraries(r-type_client
     OtterCore
     OtterNetwork
@@ -74,7 +74,7 @@ file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
-target_include_directories(r-type_server PUBLIC include/ include/System)
+target_include_directories(r-type_server PUBLIC include/ include/Component include/System)
 target_link_libraries(r-type_server
     OtterCore
     OtterNetwork
