@@ -24,7 +24,7 @@ namespace Otter::Games::RType::System::Event {
             auto& keyboard = keyboards[i];
             auto& eventNetwork = eventNetworks[i];
             if (velocity && keyboard) {
-                for (auto it = keyboard->_keyboard.begin(); it != keyboard->_keyboard.end(); it++) {
+                for (auto it = keyboard->begin(); it != keyboard->end(); it++) {
                     if (keyboard->_keyboard.isKeyDown(it->first)) {
                         eventNetwork->_data = it->second;
                         //                        EventHandler(ref, i, velocity, player,

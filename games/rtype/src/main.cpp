@@ -91,11 +91,11 @@ namespace Otter::Core {
                                              Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
 
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
-        keyboards[e]->_keyboard.setKey(keyboards[e]->_keyboard.SHIFT, Otter::Games::RType::Utils::EventState::SHOOT);
+        keyboards[e]->setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);
+        keyboards[e]->setKey(keyboards[e]->_keyboard.RIGHT, Otter::Games::RType::Utils::EventState::FORWARD);
+        keyboards[e]->setKey(keyboards[e]->_keyboard.UP, Otter::Games::RType::Utils::EventState::UP);
+        keyboards[e]->setKey(keyboards[e]->_keyboard.DOWN, Otter::Games::RType::Utils::EventState::DOWN);
+        keyboards[e]->setKey(keyboards[e]->_keyboard.SHIFT, Otter::Games::RType::Utils::EventState::SHOOT);
 #endif
     }
 
