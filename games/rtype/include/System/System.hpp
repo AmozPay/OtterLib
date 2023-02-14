@@ -13,6 +13,7 @@
 #include "EventNetworkSystem.hpp"
 #include "EventSystem.hpp"
 #include "MoveSystem.hpp"
+#include "ParallaxSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "WindowSystem.hpp"
 
