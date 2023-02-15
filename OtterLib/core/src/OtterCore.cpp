@@ -12,7 +12,9 @@ namespace Otter::Core {
 
     void OtterCore::loop()
     {
-        _systems(_data, SystemManager::init);
+      std::cout << "enter init" <<  std::endl;
+      _systems(_data, SystemManager::init);
+      std::cout << "end init" <<  std::endl;
         while (this->_isRunning) {
             _systems(_data, SystemManager::preEvent);
             _systems(_data, SystemManager::event);

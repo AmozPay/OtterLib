@@ -52,7 +52,8 @@ namespace Otter::Core {
         template <typename F>
         void registerSystem(F&& function, SystemManager::Phase phase)
         {
-            auto f = [&function](Core::Orchestrator& reg) { function(reg); };
+	  std::cout << "registering system" << std::endl;
+	  auto f = [function](Core::Orchestrator& reg) { function(reg); };
             _systems[phase].push_back(std::function(f));
         }
 
@@ -66,6 +67,7 @@ namespace Otter::Core {
         void operator()(Otter::Core::Orchestrator& ref, SystemManager::Phase phase)
         {
             for (auto const& it : _systems[phase]) {
+	      std::cout << "exec system" <<  std::endl;
                 it(ref);
             }
         }

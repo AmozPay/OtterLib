@@ -1,7 +1,7 @@
 #include "ScriptingManager.hpp"
 
 
-#define REGISTER_SYSTEM(phase) _systemManager.registerSystem([&callScripts](Otter::Core::Orchestrator &o){callScripts(#phase);}, Otter::Core::SystemManager::phase)
+#define REGISTER_SYSTEM(phase) _systemManager.registerSystem([callScripts](Otter::Core::Orchestrator &o){callScripts(#phase);}, Otter::Core::SystemManager::phase)
 
 namespace Otter::Scripting {
     // static const std::string getTableLenght
@@ -17,7 +17,9 @@ namespace Otter::Scripting {
 
 
         auto callScripts = _luaContext.bind<char const *>("__callScripts", "", "s");
-        // REGISTER_SYSTEM(init);
+        _systemManager.registerSystem(std::function([callScripts](Otter::Core::Orchestrator &o){std::cout << "silenzio bruno" << std::endl;  callScripts("init");}), Otter::Core::SystemManager::init);
+
+	  //REGISTER_SYSTEM(init);
         // REGISTER_SYSTEM(preEvent);
         // REGISTER_SYSTEM(event);
         // REGISTER_SYSTEM(preUpdate);
