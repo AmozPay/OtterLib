@@ -121,6 +121,7 @@ namespace Otter::Games::RType::Components {
             _width = width;
             _height = height;
         }
+
         ~BoxCollider() = default;
 
         float _width;
@@ -333,6 +334,7 @@ namespace Otter::Games::RType::Components {
             _speed = speed;
             _constantSpeed = constantSpeed;
         };
+
         ~Velocity() = default;
 
         float _speed;
@@ -365,6 +367,7 @@ namespace Otter::Games::RType::Components {
             _id = id;
             _tag = tag;
         };
+
         ~Player() = default;
 
         int _id;
@@ -438,6 +441,7 @@ namespace Otter::Games::RType::Components {
             _type = type;
             _tag = tag;
         };
+
         ~Obstacle() = default;
 
         ObstacleType _type;
@@ -457,6 +461,7 @@ namespace Otter::Games::RType::Components {
          * @param hp: The health point of the entity
          */
         explicit Health(unsigned int hp) { _hp = hp; };
+
         ~Health() = default;
 
         unsigned int _hp;
@@ -542,6 +547,7 @@ namespace Otter::Games::RType::Components {
             _reloadTime = reloadTime;
             _lastShotTimestamp = 0;
         }
+
         ~Shooter() = default;
 
         ShotDirection _direction;
@@ -564,6 +570,7 @@ namespace Otter::Games::RType::Components {
          * @param shooterId: The id of the shooter
          */
         explicit Shot(int shooterId) { _shooterId = shooterId; };
+
         ~Shot() = default;
 
         int _shooterId;
@@ -599,6 +606,7 @@ namespace Otter::Games::RType::Components {
     struct EventNetwork {
         COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
         EventNetwork() { _data = -1; }
+
         ~EventNetwork() = default;
 
         int _data;

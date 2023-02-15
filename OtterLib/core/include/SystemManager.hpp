@@ -37,7 +37,7 @@ namespace Otter::Core {
       public:
         SystemManager() : _systems()
         {
-            for (int i = 0; i != Phase::end; i++) {
+            for (int i = 0; i <= Phase::end; i++) {
                 _systems.push_back(sysList());
             }
         };
@@ -52,7 +52,7 @@ namespace Otter::Core {
         template <typename F>
         void registerSystem(F&& function, SystemManager::Phase phase)
         {
-            auto f = [&function](Core::Orchestrator& reg) { function(reg); };
+            auto f = [function](Core::Orchestrator& reg) { function(reg); };
             _systems[phase].push_back(std::function(f));
         }
 

@@ -2,6 +2,7 @@
 
 #include "Orchestrator.hpp"
 #include "SystemManager.hpp"
+#include "ScriptingManager.hpp"
 
 namespace Otter::Core {
 
@@ -11,7 +12,7 @@ namespace Otter::Core {
 
     class OtterCore {
       public:
-        OtterCore() : _factory(), _data(_factory), _systems() { _isRunning = true; };
+        OtterCore() : _factory(), _systems(), _data(_factory), _scriptingManager(_systems, _data)  { _isRunning = true; };
 
         ~OtterCore(){};
 
@@ -26,8 +27,10 @@ namespace Otter::Core {
         void init();
 
         bool _isRunning;
+
         Factory _factory;
-        Orchestrator _data;
         SystemManager _systems;
+        Orchestrator _data;
+        Otter::Scripting::ScriptingManager _scriptingManager;
     };
 } // namespace Otter::Core

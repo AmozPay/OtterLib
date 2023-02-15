@@ -126,7 +126,7 @@ git flow feature start 14-create-variadic-template
 Commit messages should follow this pattern:
 
 "Type: message"
-Accepted types: Add, Delete, Fix, WIP (work in progress), Feat, Docs, Tests
+Accepted types: Add, Delete, Fix, WIP (work in progress), Feat, Docs, Tests, Style, Refacto
 
 eg: "Add: Makefile related files", "WIP: adding templating"
 
