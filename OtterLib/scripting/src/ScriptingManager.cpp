@@ -17,7 +17,6 @@ namespace Otter::Scripting {
 
         _luaContext.setGlobal("__orchestrator", &_orchestrator);
 
-        auto callScripts = _luaContext.bind<char const*>("__callScripts", "", "s");
         REGISTER_SYSTEM(init);
         REGISTER_SYSTEM(preEvent);
         REGISTER_SYSTEM(event);
