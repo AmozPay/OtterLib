@@ -19,7 +19,14 @@ namespace Otter::Network {
 
             void send(const udp::endpoint& dest, const std::string& data);
 
-            Otter::Network::Session *get_session(void) { return &(*_sessions.begin()).second; }
+            std::vector<Otter::Network::Session*> get_session(void) {
+		  std::vector<Otter::Network::Session *> tmp;
+       
+	  	 for (auto &it : _sessions) {
+		   tmp.insert(tmp.end(), &(it.second));
+                }
+		 return tmp;
+	   }
 
         protected:
         private:

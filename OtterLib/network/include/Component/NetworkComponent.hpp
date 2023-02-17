@@ -13,18 +13,18 @@
 #include <boost/asio.hpp>
 
 namespace Otter::Network {
-    struct NetworkComponent {
-        NetworkComponent(int port, int portToSend) : channel(nullptr)
+    struct SocketComponent {
+        SocketComponent(int port, int portToSend) : channel(nullptr)
         {
             this->port = port;
             this->portToSend = portToSend;
         };
 
-        void init() { channel = std::make_shared<Otter::Network::NetChannel>(port); }
+        void init() { channel = std::make_shared<Otter::Network::Socket>(port); }
 
         int port;
         int portToSend;
-        std::shared_ptr<Otter::Network::NetChannel> channel;
+        std::shared_ptr<Otter::Network::Socket> channel;
     };
 } // namespace Otter::Network
 
