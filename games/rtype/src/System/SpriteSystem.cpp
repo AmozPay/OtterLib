@@ -38,7 +38,7 @@ namespace Otter::Games::RType::System::Sprite {
         auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
         auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
-            if (parallaxes[i])
+            if (i < parallaxes.size() && parallaxes[i])
                 continue;
             auto& sprite = sprites[i];
             auto const& transform = transforms[i];
