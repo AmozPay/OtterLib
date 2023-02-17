@@ -8,6 +8,7 @@
 #ifndef RTYPE_COMPONENTS_HPP
 #define RTYPE_COMPONENTS_HPP
 
+#include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
 #include "Utils.hpp"
@@ -19,8 +20,9 @@
 
 namespace Otter::Games::RType::Components {
     namespace pt = boost::property_tree;
+    namespace utils = Otter::Games::RType::Utils;
 
-    Otter::Games::RType::Utils::Vector2 getVector2(pt::ptree json, std::string key);
+    utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     /**
      * @brief Component for the rendering
@@ -92,10 +94,9 @@ namespace Otter::Games::RType::Components {
         void removeKey(Otter::Graphic::IKeyboard::KeyType raylibKey) { _keyMap.erase(raylibKey); };
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator begin() { return _keyMap.begin(); };
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator end() { return _keyMap.end(); };
- 
+
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
         std::map<Otter::Graphic::IKeyboard::KeyType, int> _keyMap;
-
     };
 
     /**
@@ -123,6 +124,18 @@ namespace Otter::Games::RType::Components {
         }
 
         ~BoxCollider() = default;
+
+        /**
+         * @brief Check if two rectangles are colliding
+         * @param rec1: The first rectangle
+         * @param rec2: The second rectangle
+         * @return True if the rectangles are colliding, false otherwise
+         */
+        bool CheckCollisionRecs(utils::Rectangle rec1, utils::Rectangle rec2)
+        {
+            return ((rec1.x < (rec2.x + rec2.width) && (rec1.x + rec1.width) > rec2.x) &&
+                    (rec1.y < (rec2.y + rec2.height) && (rec1.y + rec1.height) > rec2.y));
+        }
 
         float _width;
         float _height;
@@ -283,16 +296,15 @@ namespace Otter::Games::RType::Components {
          * @param rotation: The rotation of the entity
          * @param position: A vector of float for the position of the entity
          */
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
-            : _position(position), _lastPosition(position)
+        Transform(float scale, float rotation, utils::Vector2 position) : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
         }
         ~Transform() = default;
 
-        Otter::Games::RType::Utils::Vector2 _position;
-        Otter::Games::RType::Utils::Vector2 _lastPosition;
+        utils::Vector2 _position;
+        utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -308,8 +320,8 @@ namespace Otter::Games::RType::Components {
      * no acceleration and 1 is for the right or down
      * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
      * Same as the accelerationDirection
-     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
-     * as the accelerationDirection
+     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
+     * Same as the accelerationDirection
      */
     struct Velocity {
         COMPONENT_BUILDER(Velocity)
@@ -326,8 +338,8 @@ namespace Otter::Games::RType::Components {
          * @param constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity
          * @param accelerationDirection: A vector of float for the acceleration direction of the entity
          */
-        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
-                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+        Velocity(float speed, float constantSpeed, utils::Vector2 constantAccelerationDirection,
+                 utils::Vector2 accelerationDirection)
             : _accelerationDirection(accelerationDirection),
               _constantAccelerationDirection(constantAccelerationDirection)
         {
@@ -339,8 +351,8 @@ namespace Otter::Games::RType::Components {
 
         float _speed;
         float _constantSpeed;
-        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
-        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
+        utils::Vector2 _constantAccelerationDirection;
+        utils::Vector2 _accelerationDirection;
     };
 
     /**
