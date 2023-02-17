@@ -10,6 +10,9 @@
 #include "Components.hpp"
 
 namespace Otter::Games::RType::System::EventNetwork {
+    namespace components = Otter::Games::RType::Components;
+    namespace utils = Otter::Games::RType::Utils;
+    namespace raylib = Otter::Graphic::Raylib;
 
     void PlayerMovementEvent(auto& velocity, Otter::Games::RType::Utils::EventState state)
     {
@@ -35,9 +38,9 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex)
     {
-        auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
-        auto& textures = ref.get_components<Otter::Games::RType::Components::Texture>();
-        auto& shooters = ref.get_components<Otter::Games::RType::Components::Shooter>();
+        auto const& transforms = ref.get_components<components::Transform>();
+        auto& textures = ref.get_components<components::Texture>();
+        auto& shooters = ref.get_components<components::Shooter>();
         if (playerIndex < transforms.size() && playerIndex < textures.size() && playerIndex < shooters.size() &&
             transforms[playerIndex] && textures[playerIndex] && shooters[playerIndex]) {
             auto const& transform = transforms[playerIndex];
@@ -46,19 +49,16 @@ namespace Otter::Games::RType::System::EventNetwork {
             // TODO: add cooldown shot handler
             if ((shooter->_shotNbr > 0 || shooter->_shotNbr == -1) && shooter->_canShoot) {
                 Otter::Core::Entity shot = ref.createEntity();
-                ref.add_component(shot, Otter::Games::RType::Components::Texture(
-                                            "../assets/projectile.gif",
-                                            Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")));
-                ref.add_component(shot,
-                                  Otter::Games::RType::Components::Transform(
-                                      3, 0,
-                                      {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
-                                       transform->_position.y}));
-                ref.add_component(shot, Otter::Games::RType::Components::Render());
-                ref.add_component(shot, Otter::Games::RType::Components::Shot(playerIndex));
-                ref.add_component(shot, Otter::Games::RType::Components::Velocity(0, 5, {1, 0}, {1, 0}));
-                ref.add_component(shot, Otter::Games::RType::Components::Obstacle(
-                                            Otter::Games::RType::Components::ObstacleType::BULLET, "bullet"));
+                ref.add_component(shot, components::Texture("../assets/projectile.gif",
+                                                            raylib::RaylibTexture("../assets/projectile.gif")));
+                ref.add_component(shot, components::Transform(3, 0,
+                                                              {transform->_position.x +
+                                                                   (texture->_texture.getWidth() * transform->_scale),
+                                                               transform->_position.y}));
+                ref.add_component(shot, components::Render());
+                ref.add_component(shot, components::Shot(playerIndex));
+                ref.add_component(shot, components::Velocity(0, 5, {1, 0}, {1, 0}));
+                ref.add_component(shot, components::Obstacle(components::ObstacleType::BULLET, "bullet"));
                 if (shooter->_shotNbr != -1)
                     shooter->_shotNbr -= 1;
                 // TODO: need to update the other fields into shooter component
@@ -68,9 +68,9 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void EventHandler(Otter::Core::Orchestrator& ref)
     {
-        auto const& players = ref.get_components<Otter::Games::RType::Components::Player>();
-        auto& eventNetworks = ref.get_components<Otter::Games::RType::Components::EventNetwork>();
-        auto& velocities = ref.get_components<Otter::Games::RType::Components::Velocity>();
+        auto const& players = ref.get_components<components::Player>();
+        auto& eventNetworks = ref.get_components<components::EventNetwork>();
+        auto& velocities = ref.get_components<components::Velocity>();
         for (size_t i = 0; i < eventNetworks.size() && i < players.size() && i < velocities.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
             auto const& player = players[i];
