@@ -7,28 +7,18 @@
 
 #include "CollisionSystem.hpp"
 
+#include "EnemyCollisionSystem.hpp"
+#include "ObstacleCollisionSystem.hpp"
 #include "PlayerCollisionSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
 
-    void ApplyChange(auto& health, auto& transform)
-    {
-        // The entity is moving to the right
-        if (transform->_position.x - transform->_lastPosition.x > 0) {
-            health->_hp = 0;
-            std::cout << "RIGHT COLLISION" << std::endl;
-            // reset pos
-        }
-        transform->_position = transform->_lastPosition;
-    }
-
-    void NonPlayerCollisionHandler(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId) {}
-
     void HandleCollision(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
         auto const& players = ref.get_components<components::Player>();
+        auto const& enemies = ref.get_components<components::Enemy>();
 
         // At least one of the entities is a player
         if (vectorId.size() == 2) {
@@ -36,8 +26,12 @@ namespace Otter::Games::RType::System::Collision {
                 Player::PlayerCollisionHandler(ref, vectorId[0], vectorId[1]);
             else if (vectorId[1] < players.size() && players[vectorId[1]])
                 Player::PlayerCollisionHandler(ref, vectorId[1], vectorId[0]);
+            else if (vectorId[0] < enemies.size() && enemies[vectorId[0]])
+                Enemy::EnemyCollisionHandler(ref, vectorId[0], vectorId[1]);
+            else if (vectorId[1] < enemies.size() && enemies[vectorId[1]])
+                Enemy::EnemyCollisionHandler(ref, vectorId[1], vectorId[0]);
             else
-                NonPlayerCollisionHandler(ref, vectorId);
+                Obstacle::ObstacleCollisionHandler(ref, vectorId);
         }
     }
 

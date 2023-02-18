@@ -65,7 +65,8 @@ namespace Otter::Core {
         ref.add_component(player, components::Velocity(5, 0, {1, 10}, {1, 1}));
         ref.add_component(player, components::BoxCollider(96, 42));
         ref.add_component(player, components::Health(100));
-        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, -1));
+        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 1));
+        ref.add_component(player, components::Damage(10));
 
         ref.add_component(invisibleWall, components::BoxCollider(10, 720));
         ref.add_component(invisibleWall, components::Transform(1, 0, {-10, 0}));
@@ -81,6 +82,7 @@ namespace Otter::Core {
         ref.add_component(mobs, components::Enemy(25, "test"));
         ref.add_component(mobs, components::BoxCollider(64, 58));
         ref.add_component(mobs, components::Damage(20));
+        ref.add_component(mobs, components::Health(100));
 
         for (int i = 0; i < 2; i++) {
             ref.add_component(parallaxes[i], components::Transform(1, 0, {static_cast<float>(i * 1226), 0}));

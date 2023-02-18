@@ -48,8 +48,11 @@ namespace Otter::Games::RType::System::Collision::Player {
         auto const& damages = ref.get_components<components::Damage>();
 
         if (playerIndex < healths.size() && healths[playerIndex] && entityIndex < damages.size() &&
-            damages[entityIndex] && healths[playerIndex]->_hp > 0) {
-            healths[playerIndex]->_hp -= damages[entityIndex]->_damage;
+            damages[entityIndex]) {
+            if (healths[playerIndex]->_hp - damages[entityIndex]->_damage > 0)
+                healths[playerIndex]->_hp -= damages[entityIndex]->_damage;
+            else
+                healths[playerIndex]->_hp = 0;
         }
         std::cout << "Player to Enemy" << std::endl;
     }

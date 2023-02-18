@@ -14,26 +14,47 @@ namespace Otter::Games::RType::System::EventNetwork {
     namespace utils = Otter::Games::RType::Utils;
     namespace raylib = Otter::Graphic::Raylib;
 
-    void PlayerMovementEvent(auto& velocity, Otter::Games::RType::Utils::EventState state)
+    void PlayerMovementEvent(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
-        // TODO: clean the state do not use RaylibKey::XX but a custom enum of the state of the player like FORWARD,
-        // BACKWARD...
-        if (state == Otter::Games::RType::Utils::EventState::BACKWARD) {
-            velocity->_accelerationDirection.x += -1;
-            std::cout << "LEFT Key" << std::endl;
+        auto& velocities = ref.get_components<components::Velocity>();
+        if (playerIndex < velocities.size() && velocities[playerIndex]) {
+            auto& velocity = velocities[playerIndex];
+            if (state == utils::EventState::BACKWARD)
+                velocity->_accelerationDirection.x += -1;
+            if (state == utils::EventState::FORWARD)
+                velocity->_accelerationDirection.x += 1;
+            if (state == utils::EventState::UP)
+                velocity->_accelerationDirection.y += -1;
+            if (state == utils::EventState::DOWN)
+                velocity->_accelerationDirection.y += 1;
         }
-        if (state == Otter::Games::RType::Utils::EventState::FORWARD) {
-            velocity->_accelerationDirection.x += 1;
-            std::cout << "RIGHT Key" << std::endl;
-        }
-        if (state == Otter::Games::RType::Utils::EventState::UP) {
-            velocity->_accelerationDirection.y += -1;
-            std::cout << "UP Key" << std::endl;
-        }
-        if (state == Otter::Games::RType::Utils::EventState::DOWN) {
-            velocity->_accelerationDirection.y += 1;
-            std::cout << "DOWN Key" << std::endl;
-        }
+    }
+
+    void CreateShotEntity(Otter::Core::Orchestrator& ref, size_t playerIndex, auto const& transform, auto& texture,
+                          auto& shooter)
+    {
+        Otter::Core::Entity newShot = ref.createEntity();
+#if defined(TARGET_CLIENT)
+        ref.add_component(newShot, components::Texture("../assets/projectile.gif",
+                                                       raylib::RaylibTexture("../assets/projectile.gif")));
+        ref.add_component(newShot, components::Render());
+#endif
+        ref.add_component(
+            newShot, components::Transform(3, 0,
+                                           {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
+                                            transform->_position.y}));
+
+        ref.add_component(newShot, components::Shot(playerIndex));
+        if (shooter->_direction == components::LEFT)
+            ref.add_component(newShot, components::Velocity(0, 5, {-1, 0}, {0, 0}));
+        if (shooter->_direction == components::RIGHT)
+            ref.add_component(newShot, components::Velocity(0, 5, {1, 0}, {0, 0}));
+        ref.add_component(newShot, components::Obstacle(components::ObstacleType::BULLET, "bullet"));
+        ref.add_component(newShot, components::BoxCollider(48, 36));
+
+        if (shooter->_shotNbr != -1)
+            shooter->_shotNbr -= 1;
+        shooter->_lastShotTimestamp = std::time(nullptr);
     }
 
     void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex)
@@ -41,28 +62,29 @@ namespace Otter::Games::RType::System::EventNetwork {
         auto const& transforms = ref.get_components<components::Transform>();
         auto& textures = ref.get_components<components::Texture>();
         auto& shooters = ref.get_components<components::Shooter>();
-        if (playerIndex < transforms.size() && playerIndex < textures.size() && playerIndex < shooters.size() &&
-            transforms[playerIndex] && textures[playerIndex] && shooters[playerIndex]) {
+
+        if (playerIndex < transforms.size() && playerIndex < textures.size() && playerIndex < shooters.size()) {
             auto const& transform = transforms[playerIndex];
             auto& texture = textures[playerIndex];
             auto& shooter = shooters[playerIndex];
-            // TODO: add cooldown shot handler
-            if ((shooter->_shotNbr > 0 || shooter->_shotNbr == -1) && shooter->_canShoot) {
-                Otter::Core::Entity shot = ref.createEntity();
-                ref.add_component(shot, components::Texture("../assets/projectile.gif",
-                                                            raylib::RaylibTexture("../assets/projectile.gif")));
-                ref.add_component(shot, components::Transform(3, 0,
-                                                              {transform->_position.x +
-                                                                   (texture->_texture.getWidth() * transform->_scale),
-                                                               transform->_position.y}));
-                ref.add_component(shot, components::Render());
-                ref.add_component(shot, components::Shot(playerIndex));
-                ref.add_component(shot, components::Velocity(0, 5, {1, 0}, {1, 0}));
-                ref.add_component(shot, components::Obstacle(components::ObstacleType::BULLET, "bullet"));
-                if (shooter->_shotNbr != -1)
-                    shooter->_shotNbr -= 1;
-                // TODO: need to update the other fields into shooter component
+
+            if (transform && texture && shooter) {
+                std::time_t now = std::time(nullptr);
+                if (shooter->_canShoot && (shooter->_shotNbr > 0 || shooter->_shotNbr == -1) &&
+                    (shooter->_reloadTime == -1 || (now - shooter->_lastShotTimestamp) > shooter->_reloadTime)) {
+                    CreateShotEntity(ref, playerIndex, transform, texture, shooter);
+                }
             }
+        }
+    }
+
+    void EventDetection(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
+    {
+        PlayerMovementEvent(ref, playerIndex, state);
+        if (state == utils::SHOOT)
+            CreateShot(ref, playerIndex);
+        if (state == utils::CLOSE) {
+            // DO NOTHING FOR THE MOMENT
         }
     }
 
@@ -70,15 +92,13 @@ namespace Otter::Games::RType::System::EventNetwork {
     {
         auto const& players = ref.get_components<components::Player>();
         auto& eventNetworks = ref.get_components<components::EventNetwork>();
-        auto& velocities = ref.get_components<components::Velocity>();
-        for (size_t i = 0; i < eventNetworks.size() && i < players.size() && i < velocities.size(); i++) {
+
+        for (size_t i = 0; i < eventNetworks.size() && i < players.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
             auto const& player = players[i];
-            auto& velocity = velocities[i];
-            if (player)
-                PlayerMovementEvent(velocity, (Otter::Games::RType::Utils::EventState)eventNetwork->_data);
-            if (player && eventNetwork->_data == Otter::Games::RType::Utils::EventState::SHOOT)
-                CreateShot(ref, i);
+
+            if (player && eventNetwork)
+                EventDetection(ref, i, static_cast<utils::EventState>(eventNetwork->_data));
             eventNetwork->_data = -1;
         }
     }
