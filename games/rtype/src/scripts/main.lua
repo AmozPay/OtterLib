@@ -1,14 +1,14 @@
-
-tps = 10
-tick = 0
-
-function logger()
-    if (tick % tps == 0)
-    then
-        print("[" .. tick .. "] hi dude")
-    end
-    tick = tick + 1
+local function createAndDeleteEntity()
+    local a = OtterLib.orchestrator.createEntity()
+    print("Entity created: ")
+    print(a)
+    OtterLib.orchestrator.removeEntity(a)
+    print("Entity deleted")
 end
 
-table.insert(OtterSystems.init, logger)
 
+
+
+
+table.insert(OtterLib.systems.update, createAndDeleteEntity)
+-- table.insert(OtterLib.systems.update, createSingleEntity)

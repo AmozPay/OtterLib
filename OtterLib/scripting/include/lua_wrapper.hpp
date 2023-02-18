@@ -125,39 +125,16 @@ namespace Otter::Scripting {
                 throw LuaError("Request LuaContext function does not exist!");
             }
 
-            std::vector<luaTypes> returnValues;
-
-            for (auto i : returnTypes) {
-                switch (i) {
-                case 'b':
-                    LUA_ERR_WRAP(lua_isboolean(L, -1));
-                    returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -1)));
-                    break;
-                case 'd':
-                    LUA_ERR_WRAP(lua_isnumber(L, -1));
-                    returnValues.emplace_back(lua_tonumber(L, -1));
-                    break;
-                case 's':
-                    LUA_ERR_WRAP(lua_isstring(L, -1));
-                    returnValues.emplace_back(lua_tostring(L, -1));
-                    break;
-                case 'l':
-                    LUA_ERR_WRAP(lua_isinteger(L, -1));
-                    returnValues.emplace_back(lua_tointeger(L, -1));
-                    break;
-                case 'p':
-                    LUA_ERR_WRAP(lua_isuserdata(L, -1));
-                    returnValues.emplace_back(lua_touserdata(L, -1));
-                    break;
-                default:
-                    throw std::invalid_argument("Invalid fmt string");
-                    break;
-                }
-                lua_pop(L, 1);
-            }
-            std::reverse(returnValues.begin(), returnValues.end());
-            return returnValues;
+            return this->getStackValues(returnTypes);
         }
+
+        /**
+         * @brief get function call parameters from lua or return values after function call
+         * @param types
+         * @return std::vector<luaTypes>
+         */
+        std::vector<luaTypes> getStackValues(const std::string typesFmt);
+
 
         /**
          * @brief bind a lua function to C
@@ -185,6 +162,13 @@ namespace Otter::Scripting {
         void setGlobal(std::string name, double number);
         void setGlobal(std::string name, char const *str);
         void setGlobal(std::string name, bool boolean);
+
+        void push(long long integer);
+        void push(double number);
+        void push(char const * str);
+        void push(bool boolean);
+        void push(void *ptr);
+
 
       private:
         lua_State* L;
