@@ -1,6 +1,6 @@
 #pragma once
-#include <memory>
 #include <boost/asio.hpp>
+#include <memory>
 
 namespace Otter::Network {
 
@@ -9,22 +9,23 @@ namespace Otter::Network {
     class Socket;
 
     class Session {
-        public:
-            friend class Socket;
+      public:
+        friend class Socket;
 
-            Session(const udp::endpoint& endpoint, Socket& socket);
+        Session(const udp::endpoint& endpoint, Socket& socket);
 
-            void send(const std::string& data);
-            void recv(std::stringstream& data);
+        void send(const std::string& data);
+        void recv(std::stringstream& data);
 
-            const udp::endpoint& get_endpoint(void) const;
+        const udp::endpoint& get_endpoint(void) const;
 
-        protected:
-        private:
-            Otter::Network::Socket& _socket;
-            udp::endpoint _endpoint;
-            std::stringstream _data;
-            std::shared_ptr<std::mutex> _data_lock;
+      protected:
+      private:
+        Otter::Network::Socket& _socket;
+        udp::endpoint _endpoint;
+        std::stringstream _data;
+        std::shared_ptr<std::mutex> _data_lock;
     };
+
     typedef std::shared_ptr<Session> SessionPtr;
-}
+} // namespace Otter::Network

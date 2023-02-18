@@ -14,16 +14,8 @@
 
 namespace Otter::Network {
     struct SocketComponent {
-        SocketComponent(int port, int portToSend) : channel(nullptr)
-        {
-            this->port = port;
-            this->portToSend = portToSend;
-        };
+        SocketComponent() : channel(nullptr){};
 
-        void init() { channel = std::make_shared<Otter::Network::Socket>(port); }
-
-        int port;
-        int portToSend;
         std::shared_ptr<Otter::Network::Socket> channel;
     };
 } // namespace Otter::Network

@@ -8,9 +8,9 @@
 #ifndef NETWORKABLECLASS_HPP_
 #define NETWORKABLECLASS_HPP_
 
+#include "Class.hpp"
 #include "Deserializer.hpp"
 #include "Serializer.hpp"
-#include "Class.hpp"
 #include "Variable.hpp"
 
 #include <any>

@@ -49,13 +49,9 @@ namespace Otter::Network::Networkable {
             _status = VariableStatusEnum::UPDATED;
         };
 
-        bool operator==(const T& value) const {
-            return _value == value;
-        }
+        bool operator==(const T& value) const { return _value == value; }
 
-        bool operator!=(const T& value) const {
-            return _value != value;
-        }
+        bool operator!=(const T& value) const { return _value != value; }
 
         Variable<T> operator+(Variable<T> otherVariable) const
         {
@@ -72,10 +68,7 @@ namespace Otter::Network::Networkable {
             return Variable<T>(this->_value * otherVariable.getValue());
         };
 
-        T operator*() const
-        {
-            return this->_value;
-        };
+        T operator*() const { return this->_value; };
 
         Variable<T> operator/(Variable<T> otherVariable) const
         {
@@ -87,10 +80,7 @@ namespace Otter::Network::Networkable {
             return Variable<T>(this->_value % otherVariable.getValue());
         };
 
-        T* operator->()
-        {
-            return &this->_value;
-        }
+        T* operator->() { return &this->_value; }
 
         BinaryOutputArchive& operator&(BinaryOutputArchive& archive)
         {
@@ -107,6 +97,7 @@ namespace Otter::Network::Networkable {
         };
 
         void resetStatus() { _status = VariableStatusEnum::NOT_UPDATED; };
+
         T _value;
 
       private:
