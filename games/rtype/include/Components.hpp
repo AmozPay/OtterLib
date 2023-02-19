@@ -273,6 +273,36 @@ namespace Otter::Games::RType::Components {
         Otter::Graphic::Raylib::RaylibTexture _texture;
     };
 
+    using TextureStorageMap = std::unordered_map<std::string, Otter::Graphic::Raylib::RaylibTexture>;
+
+    /**
+     * @brief Component for the texture storage
+     * @details The texture storage component is used to store all the textures of the game
+     * @struct TextureStorage
+     * @var textureData: A map of string and RaylibTexture
+     */
+    struct TextureStorage {
+        COMPONENT_BUILDER(TextureStorage)
+        {
+            // TODO: need to fill this builder
+        }
+
+        TextureStorage(const TextureStorageMap& textureStorageMap) { this->textureData = textureStorageMap; };
+        ~TextureStorage() = default;
+
+        Otter::Graphic::Raylib::RaylibTexture& findTextureByPath(const std::string& path)
+        {
+            TextureStorageMap::iterator it = textureData.find(path);
+
+            if (it == textureData.end())
+                throw std::runtime_error("Texture not found");
+            else
+                return it->second;
+        }
+
+        TextureStorageMap textureData;
+    };
+
     /**
      * @brief Component transform
      * @details The transform component is used to store the position, rotation and scale of an entity
@@ -551,7 +581,7 @@ namespace Otter::Games::RType::Components {
          * @param shotNbr: The number of shot, -1 if infinite
          * @param reloadTime: The reload time of the shot, -1 if infinite
          */
-        Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
+        Shooter(ShotDirection direction, bool canShoot, int shotNbr, double reloadTime)
         {
             _direction = direction;
             _canShoot = canShoot;
@@ -565,7 +595,7 @@ namespace Otter::Games::RType::Components {
         ShotDirection _direction;
         bool _canShoot;
         int _shotNbr;
-        int _reloadTime;
+        double _reloadTime;
         std::time_t _lastShotTimestamp;
     };
 
