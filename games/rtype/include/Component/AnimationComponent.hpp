@@ -16,6 +16,12 @@ namespace Otter::Games::RType::Components {
     using Animation = Otter::Games::RType::Utils::Animation;
     using IdAnimMap = std::unordered_map<std::size_t, Animation>;
 
+    /**
+     * @brief Component for handling animations
+     * @details The goal of this component is to register
+     * animations with their ids.
+     * @struct AnimationComponent
+     */
     struct AnimationComponent {
         AnimationComponent(const IdAnimMap &idAnimMap, const std::size_t &currentAnim)
         {
