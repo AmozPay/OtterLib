@@ -8,28 +8,27 @@
 #ifndef ANIMATIONCOMPONENT_HPP_
 #define ANIMATIONCOMPONENT_HPP_
 
-#include "Utils.hpp"
-#include <chrono>
+#include "Animation.hpp"
+#include <string>
 
 namespace Otter::Games::RType::Components {
-    using Rect = Otter::Games::RType::Utils::Rect;
-    using Clock = std::chrono::time_point<std::chrono::steady_clock>;
+
+    using Animation = Otter::Games::RType::Utils::Animation;
+    using IdAnimMap = std::unordered_map<std::size_t, Animation>;
 
     struct AnimationComponent {
-        AnimationComponent(Rect animRect, Rect moveRect, float delay) {
-            this->animRect = animRect;
-            this->moveRect = moveRect;
-            this->delay = delay;
-            this->lastTime = std::chrono::steady_clock::now();
+        AnimationComponent(const IdAnimMap &idAnimMap, const std::size_t &currentAnim)
+        {
+            this->idAnimMap = idAnimMap;
+            this->currentAnim = currentAnim;
         };
 
         ~AnimationComponent() = default;
 
-        Rect animRect;
-        Rect moveRect;
-        Clock lastTime;
-        float delay;
+        IdAnimMap idAnimMap;
+        std::size_t currentAnim;
     };
+    
 };
 
 #endif /* !ANIMATIONCOMPONENT_HPP_ */
