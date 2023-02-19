@@ -38,6 +38,7 @@ namespace Otter::Games::RType::System::Collision::Enemy {
                 std::cout << healths[enemyIndex]->_hp << std::endl;
             }
         }
+        // TODO: need to delete the entity
         ref.remove_component<components::Render>(bulletIndex);
         ref.remove_component<components::BoxCollider>(bulletIndex);
         std::cout << "Enemy to Bullet" << std::endl;

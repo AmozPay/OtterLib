@@ -49,7 +49,7 @@ namespace Otter::Games::RType::System::Collision::Player {
 
         if (playerIndex < healths.size() && healths[playerIndex] && entityIndex < damages.size() &&
             damages[entityIndex]) {
-            if (healths[playerIndex]->_hp - damages[entityIndex]->_damage > 0)
+            if (damages[entityIndex]->_damage < healths[playerIndex]->_hp)
                 healths[playerIndex]->_hp -= damages[entityIndex]->_damage;
             else
                 healths[playerIndex]->_hp = 0;
