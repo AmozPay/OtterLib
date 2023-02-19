@@ -22,6 +22,13 @@ namespace Otter::Games::RType::Utils {
         float y;
     };
 
+    struct Rect {
+        float x;
+        float y;
+        float width;
+        float height;
+    };
+
     enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE, SHOOT };
 
 } // namespace Otter::Games::RType::Utils
