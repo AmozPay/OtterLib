@@ -229,10 +229,17 @@ namespace Otter::Games::RType::Components {
         COMPONENT_BUILDER(Texture)
         {
 #if defined(TARGET_CLIENT)
-            std::cout << "init texture" << std::endl;
-            auto path = json.get<std::string>("path");
-            std::cout << "init texture 2" << std::endl;
-            core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
+            // std::cout << "init texture" << std::endl;
+            // auto path = json.get<std::string>("path");
+            // std::cout << "init texture 2" << std::endl;
+            // core.add_component(
+            //     e,
+            //     Texture(
+            //         path,
+            //         Otter::Graphic::Raylib::RaylibTexture(path),
+            //         Otter::Games::RType::Utils::Rect(0, 0, 10, 10)
+            //     )
+            // );
             std::cout << "init texture 3" << std::endl;
 #endif
         }
@@ -242,9 +249,14 @@ namespace Otter::Games::RType::Components {
          * @param path: The path to the texture
          * @param texture: An instance of the RaylibTexture class
          */
-        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
+        Texture(
+            const std::string& path,
+            Otter::Graphic::Raylib::RaylibTexture texture,
+            Otter::Games::RType::Utils::Rect rectangle
+        ) : _texture(texture)
         {
             _path = path;
+            _rectangle = rectangle;
         };
 
         ~Texture() = default;
@@ -253,11 +265,13 @@ namespace Otter::Games::RType::Components {
         {
             _path = other._path;
             _texture = other._texture;
+            _rectangle = other._rectangle;
             return *this;
         }
 
         std::string _path;
         Otter::Graphic::Raylib::RaylibTexture _texture;
+        Otter::Games::RType::Utils::Rect _rectangle;
     };
 
     /**

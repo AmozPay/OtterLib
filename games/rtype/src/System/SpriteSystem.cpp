@@ -26,7 +26,18 @@ namespace Otter::Games::RType::System::Sprite {
             if (sprite && transform && render) {
                 sprite->_texture.setScale(transform->_scale);
                 sprite->_texture.setRotation(transform->_rotation);
-                sprite->_texture.draw({transform->_position.x, transform->_position.y});
+                sprite->_texture.draw(
+                    Rectangle(
+                        sprite->_rectangle.x,
+                        sprite->_rectangle.y,
+                        sprite->_rectangle.width,
+                        sprite->_rectangle.height
+                    ),
+                    Vector2(
+                        transform->_position.x,
+                        transform->_position.y      
+                    )
+                );
             }
         }
     }
@@ -46,7 +57,18 @@ namespace Otter::Games::RType::System::Sprite {
             if (sprite && transform && render) {
                 sprite->_texture.setScale(transform->_scale);
                 sprite->_texture.setRotation(transform->_rotation);
-                sprite->_texture.draw({transform->_position.x, transform->_position.y});
+                sprite->_texture.draw(
+                    Rectangle(
+                        sprite->_rectangle.x,
+                        sprite->_rectangle.y,
+                        sprite->_rectangle.width,
+                        sprite->_rectangle.height
+                    ),
+                    Vector2(
+                        transform->_position.x,
+                        transform->_position.y
+                    )
+                );
             }
         }
     }

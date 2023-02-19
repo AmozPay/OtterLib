@@ -46,9 +46,14 @@ namespace Otter::Games::RType::System::EventNetwork {
             // TODO: add cooldown shot handler
             if ((shooter->_shotNbr > 0 || shooter->_shotNbr == -1) && shooter->_canShoot) {
                 Otter::Core::Entity shot = ref.createEntity();
-                ref.add_component(shot, Otter::Games::RType::Components::Texture(
-                                            "../assets/projectile.gif",
-                                            Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")));
+                ref.add_component(
+                    shot, 
+                    Otter::Games::RType::Components::Texture(
+                        "../assets/projectile.gif",
+                        Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif"),
+                        Otter::Games::RType::Utils::Rect(0, 0, 16, 12)
+                    )
+                );
                 ref.add_component(shot,
                                   Otter::Games::RType::Components::Transform(
                                       3, 0,

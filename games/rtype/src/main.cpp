@@ -30,20 +30,31 @@ namespace Otter::Core {
 #if defined(TARGET_CLIENT)
         ref.add_component(
             e, Otter::Games::RType::Components::Texture(
-                   "../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")));
+                   "../assets/spaceship.gif",
+                   Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif"),
+                   Otter::Games::RType::Utils::Rect(0, 0, 32, 14)
+                ));
         ref.add_component(e, Otter::Games::RType::Components::Render());
         ref.add_component(e, Otter::Games::RType::Components::Keyboard());
         ref.add_component(e, Otter::Games::RType::Components::EventNetwork());
         for (unsigned int& entity : entities) {
             ref.add_component(
-                entity, Otter::Games::RType::Components::Texture(
-                            "../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+                entity,
+                Otter::Games::RType::Components::Texture(
+                    "../assets/obstacle.gif",
+                    Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif"),
+                    Otter::Games::RType::Utils::Rect(0, 0, 62, 24)
+                ));
             ref.add_component(entity, Otter::Games::RType::Components::Render());
         }
         for (unsigned int& parallax : parallaxes) {
-            ref.add_component(parallax, Otter::Games::RType::Components::Texture(
-                                            "../assets/background.png",
-                                            Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")));
+            ref.add_component(
+                parallax,
+                Otter::Games::RType::Components::Texture(
+                    "../assets/background.png",
+                    Otter::Graphic::Raylib::RaylibTexture("../assets/background.png"),
+                    Otter::Games::RType::Utils::Rect(0, 0, 1226, 207)
+                ));
             ref.add_component(parallax, Otter::Games::RType::Components::Render());
             ref.add_component(parallax, Otter::Games::RType::Components::Parallax());
         }
@@ -86,9 +97,13 @@ namespace Otter::Core {
         ref.add_component(invisibleWall, Otter::Games::RType::Components::Transform(1, 0, {-10, 0}));
 
 #if defined(TARGET_CLIENT)
-        ref.add_component(invisibleWall, Otter::Games::RType::Components::Texture(
-                                             "../assets/obstacle.gif",
-                                             Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+        ref.add_component(
+            invisibleWall,
+            Otter::Games::RType::Components::Texture(
+                "../assets/obstacle.gif",
+                Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif"),
+                Otter::Games::RType::Utils::Rect(0, 0, 62, 24)
+            ));
 
         auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
         keyboards[e]->setKey(keyboards[e]->_keyboard.LEFT, Otter::Games::RType::Utils::EventState::BACKWARD);

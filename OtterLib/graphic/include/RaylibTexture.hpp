@@ -28,7 +28,7 @@ namespace Otter::Graphic::Raylib {
          * @param position: The position to draw the texture
          * @return Nothing
          */
-        void draw(Vector2 position);
+        void draw(Rectangle source, Vector2 position);
 
         /**
          * @brief Check if a point is inside a texture
