@@ -24,9 +24,8 @@ namespace Otter::Games::RType::System::Sprite {
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.setScale(transform->_scale);
-                sprite->_texture.setRotation(transform->_rotation);
-                sprite->_texture.draw({transform->_position.x, transform->_position.y});
+                sprite->_texture.draw({transform->_position.x, transform->_position.y}, transform->_rotation,
+                                      transform->_scale);
             }
         }
     }
@@ -44,9 +43,8 @@ namespace Otter::Games::RType::System::Sprite {
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.setScale(transform->_scale);
-                sprite->_texture.setRotation(transform->_rotation);
-                sprite->_texture.draw({transform->_position.x, transform->_position.y});
+                sprite->_texture.draw({transform->_position.x, transform->_position.y}, transform->_rotation,
+                                      transform->_scale);
             }
         }
     }

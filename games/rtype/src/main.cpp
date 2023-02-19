@@ -26,29 +26,42 @@ namespace Otter::Core {
 #if defined(TARGET_CLIENT)
 
         ref.add_component(baseEntity, components::Window(1280, 720, "title", 60));
+        ref.add_component(
+            baseEntity,
+            components::TextureStorage(components::TextureStorageMap(
+                {{"../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")},
+                 {"../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")},
+                 {"../assets/mobs.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/mobs.gif")},
+                 {"../assets/background.png", Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")},
+                 {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")}})));
 
-        ref.add_component(player, components::Texture("../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture(
-                                                                                     "../assets/spaceship.gif")));
+        auto& textureStorages = ref.get_components<components::TextureStorage>();
+
+        ref.add_component(
+            player, components::Texture("../assets/spaceship.gif",
+                                        textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif")));
         ref.add_component(player, components::Render());
         ref.add_component(player, components::Keyboard());
         ref.add_component(player, components::EventNetwork());
 
         ref.add_component(invisibleWall,
-                          components::Texture("../assets/obstacle.gif",
-                                              Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")));
+                          components::Texture("../assets/obstacle.gif", textureStorages[baseEntity]->findTextureByPath(
+                                                                            "../assets/obstacle.gif")));
 
-        ref.add_component(obstacle, components::Texture("../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture(
-                                                                                      "../assets/obstacle.gif")));
+        ref.add_component(
+            obstacle, components::Texture("../assets/obstacle.gif",
+                                          textureStorages[baseEntity]->findTextureByPath("../assets/obstacle.gif")));
         ref.add_component(obstacle, components::Render());
 
-        ref.add_component(mobs, components::Texture("../assets/mobs.gif",
-                                                    Otter::Graphic::Raylib::RaylibTexture("../assets/mobs.gif")));
+        ref.add_component(mobs,
+                          components::Texture("../assets/mobs.gif",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/mobs.gif")));
         ref.add_component(mobs, components::Render());
 
         for (unsigned int& parallax : parallaxes) {
-            ref.add_component(parallax,
-                              components::Texture("../assets/background.png",
-                                                  Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")));
+            ref.add_component(parallax, components::Texture("../assets/background.png",
+                                                            textureStorages[baseEntity]->findTextureByPath(
+                                                                "../assets/background.png")));
             ref.add_component(parallax, components::Render());
             ref.add_component(parallax, components::Parallax());
         }
@@ -65,7 +78,7 @@ namespace Otter::Core {
         ref.add_component(player, components::Velocity(5, 0, {1, 10}, {1, 1}));
         ref.add_component(player, components::BoxCollider(96, 42));
         ref.add_component(player, components::Health(100));
-        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 1));
+        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 0.001));
         ref.add_component(player, components::Damage(10));
 
         ref.add_component(invisibleWall, components::BoxCollider(10, 720));
@@ -123,6 +136,7 @@ namespace Otter::Core {
         ref.register_component<components::EventNetwork>();
         ref.register_component<components::EventHandlerComponent>();
         ref.register_component<components::EventComponent>();
+        ref.register_component<components::TextureStorage>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)

@@ -34,9 +34,19 @@ namespace Otter::Games::RType::System::EventNetwork {
                           auto& shooter)
     {
         Otter::Core::Entity newShot = ref.createEntity();
+
 #if defined(TARGET_CLIENT)
-        ref.add_component(newShot, components::Texture("../assets/projectile.gif",
-                                                       raylib::RaylibTexture("../assets/projectile.gif")));
+        auto& textureStorages = ref.get_components<components::TextureStorage>();
+
+        for (size_t i = 0; i < textureStorages.size(); i++) {
+            auto& textureStorage = textureStorages[i];
+
+            if (textureStorage) {
+                ref.add_component(newShot,
+                                  components::Texture("../assets/projectile.gif",
+                                                      textureStorage->findTextureByPath("../assets/projectile.gif")));
+            }
+        }
         ref.add_component(newShot, components::Render());
 #endif
         ref.add_component(
