@@ -12,10 +12,6 @@ namespace Otter::Network {
 
     class Server {
       public:
-        void broadCast_msg(Otter::Core::Orchestrator& ref, int msg) {}
-
-        void send_msg(Otter::Core::Orchestrator& ref, unint32_t id) {}
-
         void init(Otter::Core::Orchestrator& ref)
         {
             std::cout << "initNetwork" << std::endl;
@@ -48,83 +44,147 @@ namespace Otter::Network {
             std::stringstream data;
             for (auto& it : connection) {
                 it->recv(data);
-                if (test_connect(serv, data))
-                    // init /connect
-                    else
-                    {
-                        soc.disconnect(it->get_endpoint());
-                    }
+                std::uint32_t id = test_connect(serv, data);
+                if (id != -1) {
+                    ////////////// add a new clien
+                    id = add_toServ(serv, it->get_endpoint());
+                    add_client(ref, serv, id);
+                    ///// send a validation msg
+                    //////
+                } else {
+                    soc.disconnect(it->get_endpoint());
+                }
             }
         }
 
       private:
-        bool test_connect(Otter::Network::ServerCOmponent& serv, std::stringstream& dt) {}
-    };
+        std::uint32_t add_toServ(Otter::Network::ServerComponent& serv, udp::endpoint const& endp)
+        {
+            auto id = selecId(serv);
+            serv.netId.insert(id);
+            serv.playerId[endp] = id;
+            return id;
+        }
 
-    /*******************************************************************/
-    struct ServerComponent {
-        std::vector<int> mandatory_static;
-        std::vector<udp::endpoint> playerId;
+        void add_client(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::uint32_t id)
+        {
+            Entity& e = ref.createEntity();
+            ClientComponent tmp;
 
+            tmp.seq = 0;
+            tmp.id = id;
+            ref.add_component(e, tmp);
+        }
+
+        std::uint32_t selecId(Otter::Network::ServerComponent& serv)
+        {
+            std::uint32_t old = 0;
+
+            for (auto& it : serv.netId) {
+                if (*it > old + 1) {
+                    return old + 1;
+                }
+                old = *it;
+            }
+            return old + 1;
+        }
+
+        bool test_connect(Otter::Network::ServerCOmponent& serv, std::stringstream& dt)
+        {
+            if (!checMagic(dt))
+                return -1;
+            std::uint32_t seq = getUint(dt);
+            std::uint32_t id = getUint(dt);
+            if (id == 0 && seq == 0) {
+                return id;
+            } else if (id > 0 && seq > 0)
+                return id;
+        }
+
+        else return -1;
     }
 
-    struct ClientComponent {
+};
 
-        std::uint32_t seq;
-        std::uint32_t id;
-        std::queue<dtObj> msg_list;
-        std::queue<dtObj> mandatory_msg_list;
-        std::vector<dtObj> mandatory_buffer;
-    };
+/*******************************************************************/
+struct ServerComponent {
+    std::vector<int> mandatory_static;
+    std::map<udp::endpoint, std::uint32_t> playerId;
+    std::set<std::uint32_t> netId;
+}
 
-    /***********************************************************/
+struct ClientComponent {
+    ClientComponent() : msg_list(), mandatory_msg_list(), mandatory_buffer() {}
 
-    class Client {
-        void init(Otter::Core::Orchestrator& ref)
-        {
-            std::cout << "initNetwork" << std::endl;
-            auto& net = ref.get_components<Otter::Network::SocketComponent>();
+    std::uint32_t seq;
+    std::uint32_t id;
+    std::queue<dtObj> msg_list;
+    std::queue<dtObj> mandatory_msg_list;
+    std::vector<dtObj> mandatory_buffer;
+};
 
-            for (int i = 0; i < net.size(); i++) {
-                if (net[i])
-                    net[i]->channel = std::make_shared<Otter::Network::Socket>(8081);
-            }
+/***********************************************************/
+
+class Client {
+    void init(Otter::Core::Orchestrator& ref)
+    {
+        std::cout << "initNetwork" << std::endl;
+        auto& net = ref.get_components<Otter::Network::SocketComponent>();
+
+        for (int i = 0; i < net.size(); i++) {
+            if (net[i])
+                net[i]->channel = std::make_shared<Otter::Network::Socket>(8081);
         }
-    };
+    }
+};
 
-    // user developer interface for sending data through the server or cleint //
-    class Sender {
-        void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
-        void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
+/////////////////// header
+class header {
+  public:
+    extern std::uint32_t magicFunc();
 
-        bool isMandatory(Otter::Core::Orchestrator& ref, MsgCode msg);
-        void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);
-        dtObj&& convertDtObj(MsgCode msg, std::stringstream& dt);
-        std::stringstream convertDtObj(dtObj const& obj);
-    };
+    std::optional<std::uint32_t> checMagic(std::stringstream& ss);
+    std::uint32_t getUint(std::stringstream& ss);
+    std::uint8_t getChar(std::stringstream& ss);
+    dtObj getDt(std::stringstream& ss);
 
-    struct dtObj : public Otter::Network::Serializable {
+    void formatHeader(std::stringstream& ss, std::uint32_t seq, std::uint32_t id);
+};
 
-        dtObj(){};
-        ~dtObj(){};
+// user developer interface for sending data through the server or cleint //
+class Sender {
+  public:
+    void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
+    void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
+    dtObj&& convertDtObj(MsgCode msg, std::stringstream& dt);
+    std::stringstream convertDtObj(dtObj const& obj);
 
-        boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-        {
-            archive& len;
-            archive& ss;
-            return archive;
-        }
+    bool isMandatory(Otter::Core::Orchestrator& ref, MsgCode msg);
+    void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);
+};
 
-        boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-        {
-            archive& len;
-            archive& ss;
-            return archive;
-        }
+struct dtObj : public Otter::Network::Serializable {
 
-        std::uint32_t msgCode;
-        std::string ss;
-    };
+    dtObj(){};
+    ~dtObj(){};
+
+    boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
+    {
+        archive& len;
+        archive& ss;
+        return archive;
+    }
+
+    boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
+    {
+        archive& len;
+        archive& ss;
+        return archive;
+    }
+
+    std::uint32_t msgCode;
+    std::string ss;
+};
 
 } // namespace Otter::Network
 #endif /* OTTERNETWORK_H */
