@@ -1,9 +1,7 @@
 #include "OtterNetwork.hpp"
 
-namespace Otter::Network {
-
     /*************************** sender ***********/
-    namespace Sender {
+  namespace Otter::Network::Sender {
         void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt)
         {
             auto& clients = ref.get_components<Otter::Network::ClientComponent>();
@@ -22,7 +20,7 @@ namespace Otter::Network {
             }
         }
 
-        bool isMandatory(Otter::Core::Orchestrator& ref, MsgCode msg)
+    bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg)
         {
             auto& ser = ref.get_components<Otter::Network::ServerComponent>();
             std::optional<Otter::Network::ServerComponent> comp;
@@ -43,13 +41,12 @@ namespace Otter::Network {
         void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt)
         {
             auto& clients = ref.get_components<Otter::Network::ClientComponent>();
-            Otter::Network::ClientComponent& comp;
 
             for (int i = 0; i < clients.size(); i++) {
                 if (!clients)
                     continue;
                 if (clients[i].id == id) {
-                    comp = clients[i];
+            Otter::Network::ClientComponent& comp = clients[i];
                     break;
                 }
                 if (i + 1 == clients.size())
@@ -61,9 +58,9 @@ namespace Otter::Network {
         void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj)
         {
             if (isMandatory(ref, obj.msgCode)) {
-                clients->mandatory_msg_list.push(std::forward(obj));
+	      cl.mandatory_msg_list.push(obj);
             } else {
-                clients->msg_list.push(std::forward(obj));
+	      cl.msg_list.push(obj);
             }
         }
 
@@ -78,14 +75,16 @@ namespace Otter::Network {
 
         std::stringstream convertDtObj(dtObj const& obj) { return std::stringstream(obj.ss); }
     } // namespace Sender
+  
+std::uint32_t Otter::Network::Header::magicFunc() {return 42;};
 
-    namespace header {
+namespace Otter::Network::Header {
 
         bool checMagic(std::stringstream& ss)
         {
             std::uint32_t tmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
 
-            if (magicFunc() == tmp)
+            if (Header::magicFunc() == tmp)
                 return true;
             return false;
         }
@@ -98,7 +97,7 @@ namespace Otter::Network {
 
         void formatHeader(std::stringstream& ss, std::uint32_t seq, std::uint32_t id)
         {
-            Otter::Network::Serializer::saveArchive<std::uint32_t>(ss, this->magicFunc());
+	  Otter::Network::Serializer::saveArchive<std::uint32_t>(ss, Header::magicFunc());
             Otter::Network::Serializer::saveArchive(ss, seq);
             Otter::Network::Serializer::saveArchive(ss, id);
         }
@@ -106,6 +105,4 @@ namespace Otter::Network {
         //    ytmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
         // ztmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
 
-    } // namespace header
-
-} // namespace Otter::Network
+    } // namespace Header

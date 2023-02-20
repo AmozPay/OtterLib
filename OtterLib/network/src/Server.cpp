@@ -71,7 +71,7 @@ namespace Otter::Network {
         {
             std::uint32_t old = 0;
 
-            for (auto& it : serv.netId) {
+             for (auto& it : serv.netId) {
                 if (*it > old + 1) {
                     return old + 1;
                 }

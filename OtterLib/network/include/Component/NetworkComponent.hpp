@@ -8,7 +8,7 @@
 #ifndef NETWORKCOMPONENT_HPP_
 #define NETWORKCOMPONENT_HPP_
 
-#include "NetChannel.hpp"
+#include "Socket.hpp"
 
 #include <boost/asio.hpp>
 

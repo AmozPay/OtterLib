@@ -1,6 +1,5 @@
 #pragma once
 #include "Session.hpp"
-
 #include <boost/asio.hpp>
 #include <map>
 #include <memory>

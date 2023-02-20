@@ -7,20 +7,39 @@
 #include "Networkable.hpp"
 #include "Serializer.hpp"
 #include "Socket.hpp"
+#include <set>
+#include <queue>
+#include <iostream>
+#include <utility>
 
 namespace Otter::Network {
 
-    class Server {
-      public:
-        void init(Otter::Core::Orchestrator& ref);
-        void update(Otter::Core::Orchestrator& ref);
-        void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc);
+  enum MsgCode {
+    VAR,
+  };
+  /**********************************************/  
 
-      private:
-        std::uint32_t add_toServ(Otter::Network::ServerComponent& serv, udp::endpoint const& endp);
-        void add_client(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::uint32_t id);
-        std::uint32_t selecId(Otter::Network::ServerComponent& serv);
-        bool test_connect(Otter::Network::ServerCOmponent& serv, std::stringstream& dt);
+    struct dtObj : public Otter::Network::Serializable {
+
+        dtObj(){};
+        ~dtObj(){};
+
+        boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
+        {
+            archive& msgCode;
+            archive& ss;
+            return archive;
+        }
+
+        boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
+        {
+            archive& msgCode;
+            archive& ss;
+            return archive;
+        }
+
+        std::uint32_t msgCode;
+        std::string ss;
     };
 
     /*******************************************************************/
@@ -28,7 +47,7 @@ namespace Otter::Network {
         std::vector<int> mandatory_static;
         std::map<udp::endpoint, std::uint32_t> playerId;
         std::set<std::uint32_t> netId;
-    }
+    };
 
     struct ClientComponent {
         ClientComponent() : msg_list(), mandatory_msg_list(), mandatory_buffer() {}
@@ -41,6 +60,18 @@ namespace Otter::Network {
     };
 
     /***********************************************************/
+    class Server {
+      public:
+        void init(Otter::Core::Orchestrator& ref);
+        void update(Otter::Core::Orchestrator& ref);
+        void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc);
+
+      private:
+        std::uint32_t add_toServ(Otter::Network::ServerComponent& serv, udp::endpoint const& endp);
+        void add_client(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::uint32_t id);
+        std::uint32_t selecId(Otter::Network::ServerComponent& serv);
+        bool test_connect(Otter::Network::ServerComponent& serv, std::stringstream& dt);
+    };
 
     class Client {
         void init(Otter::Core::Orchestrator& ref)
@@ -56,9 +87,8 @@ namespace Otter::Network {
     };
 
     /////////////////// header
-    class header {
-      public:
-        extern std::uint32_t magicFunc();
+    namespace Header {
+      static std::uint32_t magicFunc();
 
         std::optional<std::uint32_t> checMagic(std::stringstream& ss);
         std::uint32_t getUint(std::stringstream& ss);
@@ -69,41 +99,17 @@ namespace Otter::Network {
     };
 
     // user developer interface for sending data through the server or cleint //
-    class Sender {
-      public:
+    namespace Sender {
+      bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg);
         void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
         void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
         dtObj&& convertDtObj(MsgCode msg, std::stringstream& dt);
         std::stringstream convertDtObj(dtObj const& obj);
 
-        bool isMandatory(Otter::Core::Orchestrator& ref, MsgCode msg);
         void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);
     };
 
-    struct dtObj : public Otter::Network::Serializable {
-
-        dtObj(){};
-        ~dtObj(){};
-
-        boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-        {
-            archive& len;
-            archive& ss;
-            return archive;
-        }
-
-        boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-        {
-            archive& len;
-            archive& ss;
-            return archive;
-        }
-
-        std::uint32_t msgCode;
-        std::string ss;
-    };
-
-} // namespace Otter::Network
+}// namespace Otter::Network
 #endif /* OTTERNETWORK_H */
 
 /*
