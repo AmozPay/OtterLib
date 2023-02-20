@@ -28,15 +28,18 @@ namespace Otter::Network {
          */
         void send(const udp::endpoint& dest, const std::string& data);
 
-        std::vector<Otter::Network::Session*> get_sessions(void)
-        {
-            std::vector<Otter::Network::Session*> tmp;
+        /**
+         * @brief Disconnects the session identified by dest.
+         * @details As the protocol is UDP based, "disconnecting" only means "removing from sessions list"
+         *
+         * @param dest The endpoint of the session to close.
+         * @return `true` if a session was closed `false` otherwise.
+         */
+        bool disconnect(const udp::endpoint &dest);
 
-            for (auto& it : _sessions) {
-                tmp.insert(tmp.end(), &(it.second));
-            }
-            return tmp;
-        }
+        std::vector<Otter::Network::Session*> get_sessions(void);
+
+        std::vector<Otter::Network::Session*> get_new_sessions(void);
 
       protected:
       private:
@@ -45,7 +48,9 @@ namespace Otter::Network {
         boost::asio::io_context _io;
         udp::socket _socket;
         std::unordered_map<udp::endpoint, Session> _sessions;
-        std::mutex _connections_lock;
+        std::mutex _sessions_lock;
+        std::vector<udp::endpoint> _new_sessions;
+        std::mutex _new_sessions_lock;
         std::jthread _job{[this] { this->_io.run(); }};
     };
 } // namespace Otter::Network

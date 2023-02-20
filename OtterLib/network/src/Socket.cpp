@@ -55,8 +55,10 @@ void Otter::Network::Socket::_recv(void)
                 auto con = this->_sessions.find(*source);
                 if (con == this->_sessions.end()) {
                     con = boost::with_lock_guard(
-                        _connections_lock,
+                        _sessions_lock,
                         [this, source] {
+                            std::scoped_lock lock(this->_new_sessions_lock);
+                            this->_new_sessions.push_back(*source);
                             return this->_sessions.insert({*source, Session(*source, *this)}).first;
                         });
                 }
@@ -67,4 +69,45 @@ void Otter::Network::Socket::_recv(void)
             this->_recv();
         });
     std::cout << "_recv registered" << std::endl;
+}
+
+bool Otter::Network::Socket::disconnect(const udp::endpoint &dest)
+{
+    std::scoped_lock lock(_sessions_lock, _new_sessions_lock);
+    auto session = this->_sessions.find(dest);
+
+    if (session == this->_sessions.end())
+        return false;
+    this->_sessions.erase(dest);
+    auto ep = std::find(_new_sessions.begin(), _new_sessions.end(), dest);
+    if (ep != _new_sessions.end())
+        _new_sessions.erase(ep);
+    return true;
+}
+
+std::vector<Otter::Network::Session*> Otter::Network::Socket::get_sessions(void)
+{
+    std::vector<Otter::Network::Session*> tmp;
+    std::scoped_lock lock(_sessions_lock, _new_sessions_lock);
+
+    for (auto& it : _sessions) {
+        if (std::find(_new_sessions.begin(), _new_sessions.end(), it.second._endpoint) == _new_sessions.end()) {
+            tmp.insert(tmp.end(), &(it.second));
+        }
+    }
+    return tmp;
+}
+
+std::vector<Otter::Network::Session*> Otter::Network::Socket::get_new_sessions(void)
+{
+    std::vector<Otter::Network::Session*> tmp;
+    std::scoped_lock lock(_sessions_lock, _new_sessions_lock);
+
+    for (auto& it : _sessions) {
+        auto ep = std::find(_new_sessions.begin(), _new_sessions.end(), it.second._endpoint);
+        if (ep != _new_sessions.end()) {
+            tmp.insert(tmp.end(), &(it.second));
+            _new_sessions.erase(ep);
+        }
+    }
 }
