@@ -156,7 +156,7 @@ namespace Otter::Scripting {
                 throw std::invalid_argument("Invalid fmt string");
                 break;
             }
-            lua_pop(L, -1);
+            lua_pop(L, 1);
         }
         std::reverse(returnValues.begin(), returnValues.end());
         return returnValues;

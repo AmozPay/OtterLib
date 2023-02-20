@@ -125,12 +125,13 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterScripting tests
     file(GLOB SCRIPTING_TESTS scripting/tests/*.cpp)
-    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${SCRIPTING_TESTS})
+    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${CORE_FILES} ${SCRIPTING_TESTS})
     target_compile_features(OtterScriptingTests PUBLIC cxx_std_20)
     target_include_directories(OtterScriptingTests PUBLIC scripting/include core/include)
     target_link_libraries(OtterScriptingTests gtest_main lua)
     add_test(NAME OtterScriptingTests COMMAND OtterScriptingTests)
     file(COPY scripting/tests/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/test_data)
 
 
     # Compile tests only
