@@ -7,6 +7,7 @@
 #include "Networkable.hpp"
 #include "Serializer.hpp"
 #include "Socket.hpp"
+#include "Orchestrator.hpp"
 
 #include <iostream>
 #include <queue>

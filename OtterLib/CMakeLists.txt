@@ -70,6 +70,7 @@ target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(
     OtterNetwork
     PUBLIC
+    core/include
     network/include
     network/include/Component
     network/include/Deserializer
@@ -121,7 +122,7 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
     file(GLOB NETWORK_TESTS network/tests/*.cpp)
     add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
     target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
-    target_include_directories(OtterNetworkTests PUBLIC network/include)
+    target_include_directories(OtterNetworkTests PUBLIC network/include core/include)
     target_link_libraries(OtterNetworkTests gtest_main)
     add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
 
