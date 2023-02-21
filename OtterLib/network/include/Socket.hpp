@@ -1,5 +1,6 @@
 #pragma once
 #include "Session.hpp"
+
 #include <boost/asio.hpp>
 #include <map>
 #include <memory>
@@ -34,7 +35,7 @@ namespace Otter::Network {
          * @param dest The endpoint of the session to close.
          * @return `true` if a session was closed `false` otherwise.
          */
-        bool disconnect(const udp::endpoint &dest);
+        bool disconnect(const udp::endpoint& dest);
 
         std::vector<Otter::Network::Session*> get_sessions(void);
 

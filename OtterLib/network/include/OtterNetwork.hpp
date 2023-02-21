@@ -7,17 +7,19 @@
 #include "Networkable.hpp"
 #include "Serializer.hpp"
 #include "Socket.hpp"
-#include <set>
-#include <queue>
+
 #include <iostream>
+#include <queue>
+#include <set>
 #include <utility>
 
 namespace Otter::Network {
 
-  enum MsgCode {
-    VAR,
-  };
-  /**********************************************/  
+    enum MsgCode {
+        VAR,
+    };
+
+    /**********************************************/
 
     struct dtObj : public Otter::Network::Serializable {
 
@@ -88,7 +90,7 @@ namespace Otter::Network {
 
     /////////////////// header
     namespace Header {
-      static std::uint32_t magicFunc();
+        static std::uint32_t magicFunc();
 
         std::optional<std::uint32_t> checMagic(std::stringstream& ss);
         std::uint32_t getUint(std::stringstream& ss);
@@ -96,20 +98,20 @@ namespace Otter::Network {
         dtObj getDt(std::stringstream& ss);
 
         void formatHeader(std::stringstream& ss, std::uint32_t seq, std::uint32_t id);
-    };
+    }; // namespace Header
 
     // user developer interface for sending data through the server or cleint //
     namespace Sender {
-      bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg);
+        bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg);
         void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
         void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
         dtObj&& convertDtObj(MsgCode msg, std::stringstream& dt);
         std::stringstream convertDtObj(dtObj const& obj);
 
         void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);
-    };
+    }; // namespace Sender
 
-}// namespace Otter::Network
+} // namespace Otter::Network
 #endif /* OTTERNETWORK_H */
 
 /*

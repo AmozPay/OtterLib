@@ -56,7 +56,8 @@ void Otter::Network::Socket::_recv(void)
                 if (con == this->_sessions.end()) {
                     con = boost::with_lock_guard(
                         _sessions_lock,
-                        [this, source] {
+                        [this, source]
+                        {
                             std::scoped_lock lock(this->_new_sessions_lock);
                             this->_new_sessions.push_back(*source);
                             return this->_sessions.insert({*source, Session(*source, *this)}).first;
@@ -71,7 +72,7 @@ void Otter::Network::Socket::_recv(void)
     std::cout << "_recv registered" << std::endl;
 }
 
-bool Otter::Network::Socket::disconnect(const udp::endpoint &dest)
+bool Otter::Network::Socket::disconnect(const udp::endpoint& dest)
 {
     std::scoped_lock lock(_sessions_lock, _new_sessions_lock);
     auto session = this->_sessions.find(dest);
