@@ -7,32 +7,32 @@ namespace Otter::Network::Sender {
         auto& clients = ref.get_components<Otter::Network::ClientComponent>();
 
         for (int i = 0; i < clients.size(); i++) {
-            if (!clients)
+            if (!clients[i])
                 continue;
             dtObj obj;
             obj.msgCode = msg;
             obj.ss = dt.str();
             if (isMandatory(ref, msg)) {
-                clients->mandatory_msg_list.push(obj);
+	      clients[i]->mandatory_msg_list.push(obj);
             } else {
-                clients->msg_list.push(obj);
+                clients[i]->msg_list.push(obj);
             }
         }
     }
 
     bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg)
     {
-        auto& ser = ref.get_components<Otter::Network::ServerComponent>();
+        auto& serv = ref.get_components<Otter::Network::ServerComponent>();
         std::optional<Otter::Network::ServerComponent> comp;
 
-        for (int i = 0; i < ser.size(); i++)
+        for (int i = 0; i < serv.size(); i++)
             if (serv[i]) {
-                comp = ser[i];
+                comp = serv[i];
                 break;
             }
 
-        for (auto& it : comp.mandatory_static.size()) {
-            if (*it == msg)
+        for (int i = 0; comp->mandatory_static.size() > i; i++) {
+	  if (comp->mandatory_static[i] == msg)
                 return true;
         }
         return false;
@@ -43,16 +43,15 @@ namespace Otter::Network::Sender {
         auto& clients = ref.get_components<Otter::Network::ClientComponent>();
 
         for (int i = 0; i < clients.size(); i++) {
-            if (!clients)
+            if (!clients[i])
                 continue;
-            if (clients[i].id == id) {
-                Otter::Network::ClientComponent& comp = clients[i];
+            if (clients[i]->id == id) {
+               queueDtObj(ref, *(clients[i]), convertDtObj(msg, dt));
                 break;
             }
             if (i + 1 == clients.size())
                 return;
         }
-        queueDtObj(ref, comp, std::forward(convertDtObj(msg, dt)));
     }
 
     void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj)
@@ -64,13 +63,13 @@ namespace Otter::Network::Sender {
         }
     }
 
-    dtObj&& convertDtObj(MsgCode msg, std::stringstream& dt)
+    dtObj convertDtObj(MsgCode msg, std::stringstream& dt)
     {
         dtObj obj;
 
         obj.msgCode = msg;
         obj.ss = dt.str();
-        return std::move(obj);
+        return obj;
     }
 
     std::stringstream convertDtObj(dtObj const& obj) { return std::stringstream(obj.ss); }

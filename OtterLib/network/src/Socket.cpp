@@ -111,4 +111,5 @@ std::vector<Otter::Network::Session*> Otter::Network::Socket::get_new_sessions(v
             _new_sessions.erase(ep);
         }
     }
+    return tmp;
 }
