@@ -5,9 +5,9 @@
 #include "Deserializer.hpp"
 #include "NetworkComponent.hpp"
 #include "Networkable.hpp"
+#include "Orchestrator.hpp"
 #include "Serializer.hpp"
 #include "Socket.hpp"
-#include "Orchestrator.hpp"
 
 #include <iostream>
 #include <queue>
@@ -71,8 +71,8 @@ namespace Otter::Network {
         std::uint32_t add_toServ(Otter::Network::ServerComponent& serv, udp::endpoint const& endp);
         void add_client(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::uint32_t id);
         std::uint32_t selecId(Otter::Network::ServerComponent& serv);
-        bool test_connect(Otter::Network::ServerComponent& serv, std::stringstream& dt);
-    };
+        int test_connect(Otter::Network::ServerComponent& serv, std::stringstream& dt);
+    }; // namespace Server
 
     class Client {
         void init(Otter::Core::Orchestrator& ref)
@@ -90,7 +90,7 @@ namespace Otter::Network {
     /////////////////// header
     namespace Header {
         static std::uint32_t magicFunc();
-      bool checMagic(std::stringstream& ss);
+        bool checMagic(std::stringstream& ss);
 
         std::uint32_t getUint(std::stringstream& ss);
         std::uint8_t getChar(std::stringstream& ss);

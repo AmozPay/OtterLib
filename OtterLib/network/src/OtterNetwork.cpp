@@ -13,7 +13,7 @@ namespace Otter::Network::Sender {
             obj.msgCode = msg;
             obj.ss = dt.str();
             if (isMandatory(ref, msg)) {
-	      clients[i]->mandatory_msg_list.push(obj);
+                clients[i]->mandatory_msg_list.push(obj);
             } else {
                 clients[i]->msg_list.push(obj);
             }
@@ -32,7 +32,7 @@ namespace Otter::Network::Sender {
             }
 
         for (int i = 0; comp->mandatory_static.size() > i; i++) {
-	  if (comp->mandatory_static[i] == msg)
+            if (comp->mandatory_static[i] == msg)
                 return true;
         }
         return false;
@@ -46,7 +46,7 @@ namespace Otter::Network::Sender {
             if (!clients[i])
                 continue;
             if (clients[i]->id == id) {
-               queueDtObj(ref, *(clients[i]), convertDtObj(msg, dt));
+                queueDtObj(ref, *(clients[i]), convertDtObj(msg, dt));
                 break;
             }
             if (i + 1 == clients.size())
