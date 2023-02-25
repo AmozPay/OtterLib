@@ -9,7 +9,6 @@
 #define RTYPE_COMPONENTS_HPP
 
 #include "Utils.hpp"
-#include "NetChannel.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
 #include "Class.hpp"
