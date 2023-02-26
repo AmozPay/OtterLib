@@ -2,6 +2,7 @@
 #ifndef OTTERNETWORK_H
 #define OTTERNETWORK_H
 
+#include "Client.hpp"
 #include "ClientComponent.hpp"
 #include "Deserializer.hpp"
 #include "NetworkComponent.hpp"
@@ -20,63 +21,8 @@
 namespace Otter::Network {
 
     enum MsgCode {
+        ACTIVATION,
         VAR,
-    };
-
-    /**********************************************/
-    /*
-      struct dtObj : public Otter::Network::Serializable {
-
-          dtObj(){};
-          ~dtObj(){};
-
-          boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-          {
-              archive& msgCode;
-              archive& ss;
-              return archive;
-          }
-
-          boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-          {
-              archive& msgCode;
-              archive& ss;
-              return archive;
-          }
-
-          std::uint32_t msgCode;
-          std::string ss;
-      };
-    */
-    /*******************************************************************/
-    /*    struct ServerComponent {
-          std::vector<std::uint32_t> mandatory_static;
-          std::map<udp::endpoint, std::uint32_t> playerId;
-          std::set<std::uint32_t> netId;
-          std::vector<std::function<Otter::Core::Orchestrator&, std::string&, int>> callBack;
-          };*/
-    /*
-      struct ClientComponent {
-          ClientComponent() : msg_list(), mandatory_msg_list(), mandatory_buffer() {}
-
-          std::uint32_t seq;
-          std::uint32_t id;
-          std::queue<dtObj> msg_list;
-          std::queue<dtObj> mandatory_msg_list;
-          std::vector<dtObj> mandatory_buffer;
-          };*/
-
-    class Client {
-        void init(Otter::Core::Orchestrator& ref)
-        {
-            std::cout << "initNetwork" << std::endl;
-            auto& net = ref.get_components<Otter::Network::SocketComponent>();
-
-            for (int i = 0; i < net.size(); i++) {
-                if (net[i])
-                    net[i]->channel = std::make_shared<Otter::Network::Socket>(8081);
-            }
-        }
     };
 
     /////////////////// header
@@ -102,12 +48,3 @@ namespace Otter::Network {
 
 } // namespace Otter::Network
 #endif /* OTTERNETWORK_H */
-
-/*
-
-server =  header + dtObj * X
-
-dtObj = msgcode + msgdt
-
-
- */

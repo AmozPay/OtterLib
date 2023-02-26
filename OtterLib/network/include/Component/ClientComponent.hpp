@@ -1,6 +1,7 @@
 #ifndef CLIENTCOMPONENT_H
 #define CLIENTCOMPONENT_H
 
+#include "Socket.hpp"
 #include "dtObj.hpp"
 
 #include <queue>

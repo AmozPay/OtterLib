@@ -6,8 +6,10 @@
 namespace Otter::Network::Server {
     void init(Otter::Core::Orchestrator& ref);
     void update(Otter::Core::Orchestrator& ref);
+
     void update_msg(Otter::Core::Orchestrator& ref, int index);
     void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc);
+    void update_recv(Otter::Core::Orchestrator& ref, int index);
 
     bool test_header(std::stringstream const& dt, int idRef, int seq);
 

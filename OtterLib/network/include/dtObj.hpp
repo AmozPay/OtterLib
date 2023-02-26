@@ -1,6 +1,8 @@
 #ifndef DTOBJ_H
 #define DTOBJ_H
 
+#include "Networkable.hpp"
+
 namespace Otter::Network {
     struct dtObj : public Otter::Network::Serializable {
 
