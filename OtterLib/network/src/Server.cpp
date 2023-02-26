@@ -1,21 +1,24 @@
+#include "Server.hpp"
+
 #include "OtterNetwork.hpp"
 
 namespace Otter::Network::Server {
 
     ///////////////////////////////Tools//////////////////////////////////////////
-    bool test_header(std::stringstream const& dt, int idRef, int seq)
+    bool test_header(std::stringstream const& dt, int idRef, int seqR)
     {
         std::stringstream ss(dt.str());
 
         if (!Otter::Network::Header::checMagic(ss))
             return false;
-        std::uint32_t seq = Otter::Network::Header::getUint(dt);
-        std::uint32_t id = Otter::Network::Header::getUint(dt);
-        std::uint8_t pac = Otter::Network::Header::getChar(dt);
+        std::uint32_t seq = Otter::Network::Header::getUint(ss);
+        std::uint32_t id = Otter::Network::Header::getUint(ss);
+        std::uint8_t pac = Otter::Network::Header::getChar(ss);
         if (id == 0 && seq == 0)
             return false;
         if (id != idRef)
             return false;
+
         return true;
     }
 
@@ -155,24 +158,24 @@ namespace Otter::Network::Server {
         auto& soc = ref.get_components<Otter::Network::SocketComponent>()[index];
         auto& serv = ref.get_components<Otter::Network::ServerComponent>()[index];
         auto& cl = ref.get_components<Otter::Network::ClientComponent>();
-        std::vector<Otter::Network::Session*> connection = soc.channel->get_sessions();
+        std::vector<Otter::Network::Session*> connection = soc->channel->get_sessions();
         int j = 0;
 
         for (int i = 0; cl.size() > i; i++) {
             if (!cl[i])
                 continue;
             for (j = 0; connection.size() > j; j++) {
-                if (serv.playerId[connection[j]->get_endpoint()] == cl[i]->id)
+                if (serv->playerId[connection[j]->get_endpoint()] == cl[i]->id)
                     break;
             }
-            tramSending(connection[j], *cl[i]);
-            cl.seq++;
+            tramSending(*connection[j], *cl[i]);
+            cl[i]->seq++;
         }
     }
 
     ////////////////////////////recieve update///////////////////////////////////
 
-    void computeTram(Otte::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
+    void computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
                      int index)
     {
         std::uint32_t magic = Otter::Network::Header::getUint(ss);
@@ -189,18 +192,18 @@ namespace Otter::Network::Server {
         }
     }
 
-    void update_msg(Otter::Core::Orchestrator& ref, int index)
+    void update_recv(Otter::Core::Orchestrator& ref, int index)
     {
         auto& soc = ref.get_components<Otter::Network::SocketComponent>()[index];
         auto& serv = ref.get_components<Otter::Network::ServerComponent>()[index];
         auto& cl = ref.get_components<Otter::Network::ClientComponent>();
-        std::vector<Otter::Network::Session*> connection = soc.channel->get_sessions();
+        std::vector<Otter::Network::Session*> connection = soc->channel->get_sessions();
         int j = -1;
-
         std::stringstream data;
+
         for (auto& it : connection) {
             for (j = -1; cl.size() > j + 1; j++) {
-                if (serv.playerId[it->get_endpoint()] == cl[j + 1]->id) {
+                if (serv->playerId[it->get_endpoint()] == cl[j + 1]->id) {
                     j = j + 1;
                     break;
                 }
@@ -212,7 +215,7 @@ namespace Otter::Network::Server {
                 continue;
             if (test_header(data, cl[j]->id, cl[j]->seq) == false)
                 continue;
-            computeTram(ref, serv, data, j);
+            computeTram(ref, *serv, data, j);
         }
     }
 

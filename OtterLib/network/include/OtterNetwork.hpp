@@ -2,11 +2,14 @@
 #ifndef OTTERNETWORK_H
 #define OTTERNETWORK_H
 
+#include "ClientComponent.hpp"
 #include "Deserializer.hpp"
 #include "NetworkComponent.hpp"
 #include "Networkable.hpp"
 #include "Orchestrator.hpp"
 #include "Serializer.hpp"
+#include "Server.hpp"
+#include "ServerComponent.hpp"
 #include "Socket.hpp"
 
 #include <iostream>
@@ -21,59 +24,47 @@ namespace Otter::Network {
     };
 
     /**********************************************/
+    /*
+      struct dtObj : public Otter::Network::Serializable {
 
-    struct dtObj : public Otter::Network::Serializable {
+          dtObj(){};
+          ~dtObj(){};
 
-        dtObj(){};
-        ~dtObj(){};
+          boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
+          {
+              archive& msgCode;
+              archive& ss;
+              return archive;
+          }
 
-        boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-        {
-            archive& msgCode;
-            archive& ss;
-            return archive;
-        }
+          boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
+          {
+              archive& msgCode;
+              archive& ss;
+              return archive;
+          }
 
-        boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-        {
-            archive& msgCode;
-            archive& ss;
-            return archive;
-        }
-
-        std::uint32_t msgCode;
-        std::string ss;
-    };
-
+          std::uint32_t msgCode;
+          std::string ss;
+      };
+    */
     /*******************************************************************/
-    struct ServerComponent {
-        std::vector<std::uint32_t> mandatory_static;
-        std::map<udp::endpoint, std::uint32_t> playerId;
-        std::set<std::uint32_t> netId;
-        std::vector<std::function<Otter::Core::Orchestrator&, std::string&, int>> callBack;
-    };
+    /*    struct ServerComponent {
+          std::vector<std::uint32_t> mandatory_static;
+          std::map<udp::endpoint, std::uint32_t> playerId;
+          std::set<std::uint32_t> netId;
+          std::vector<std::function<Otter::Core::Orchestrator&, std::string&, int>> callBack;
+          };*/
+    /*
+      struct ClientComponent {
+          ClientComponent() : msg_list(), mandatory_msg_list(), mandatory_buffer() {}
 
-    struct ClientComponent {
-        ClientComponent() : msg_list(), mandatory_msg_list(), mandatory_buffer() {}
-
-        std::uint32_t seq;
-        std::uint32_t id;
-        std::queue<dtObj> msg_list;
-        std::queue<dtObj> mandatory_msg_list;
-        std::vector<dtObj> mandatory_buffer;
-    };
-
-    /***********************************************************/
-    namespace Server {
-        void init(Otter::Core::Orchestrator& ref);
-        void update(Otter::Core::Orchestrator& ref);
-        void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc);
-
-        std::uint32_t add_toServ(Otter::Network::ServerComponent& serv, udp::endpoint const& endp);
-        void add_client(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::uint32_t id);
-        std::uint32_t selecId(Otter::Network::ServerComponent& serv);
-        int test_connect(Otter::Network::ServerComponent& serv, std::stringstream& dt);
-    }; // namespace Server
+          std::uint32_t seq;
+          std::uint32_t id;
+          std::queue<dtObj> msg_list;
+          std::queue<dtObj> mandatory_msg_list;
+          std::vector<dtObj> mandatory_buffer;
+          };*/
 
     class Client {
         void init(Otter::Core::Orchestrator& ref)
