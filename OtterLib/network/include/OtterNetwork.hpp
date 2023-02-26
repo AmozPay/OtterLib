@@ -50,7 +50,7 @@ namespace Otter::Network {
         std::vector<std::uint32_t> mandatory_static;
         std::map<udp::endpoint, std::uint32_t> playerId;
         std::set<std::uint32_t> netId;
-      std::vector<std::function<Otter::Core::Orchestrator &, std::string &, int>> callBack;
+        std::vector<std::function<Otter::Core::Orchestrator&, std::string&, int>> callBack;
     };
 
     struct ClientComponent {

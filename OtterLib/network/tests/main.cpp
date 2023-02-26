@@ -2,6 +2,7 @@
 #include "../include/Deserializer/Deserializer.hpp"
 #include "../include/Serializer/Serializer.hpp"
 #include "test.hpp"
+
 #include <iostream>
 #include <set>
 #include <sstream>
@@ -77,7 +78,7 @@ int main()
 int main()
 {
     std::stringstream ss;
-    std::stringstream ss1;    
+    std::stringstream ss1;
     uint32_t magic = 12;
     uint32_t seq = 1789456;
     uint32_t id = 0;
@@ -85,19 +86,19 @@ int main()
     dtObj dt;
     dt.msgCode = 1;
     dt.ss = "toto";
-    
+
     Otter::Network::Serializer::saveArchive(ss1, dt);
 
-    
+
     Otter::Network::Serializer::saveArchive(ss, magic);
     Otter::Network::Serializer::saveArchive(ss, seq);
     Otter::Network::Serializer::saveArchive(ss, id);
     Otter::Network::Serializer::saveArchive<uint8_t>(ss, len);
 
     std::cout << ss.str() << std::endl;
-    ss << ss1.str();    
+    ss << ss1.str();
     std::cout << ss.str() << std::endl;
-   
+
     uint32_t xtmp;
     uint32_t ytmp;
     uint32_t ztmp;
