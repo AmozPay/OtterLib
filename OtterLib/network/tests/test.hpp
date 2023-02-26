@@ -2,27 +2,29 @@
 
 #include <sstream>
 
-struct dtObj : public Otter::Network::Serializable {
-    dtObj(){};
-    ~dtObj(){};
+    struct dtObj : public Otter::Network::Serializable {
 
-    boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
-    {
-        archive& len;
-        archive& ss;
-        return archive;
-    }
+        dtObj(){};
+        ~dtObj(){};
 
-    boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
-    {
-        archive& len;
-        archive& ss;
-        return archive;
-    }
+        boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive)
+        {
+            archive& msgCode;
+            archive& ss;
+            return archive;
+        }
 
-    std::uint32_t len;
-    std::string ss;
-};
+        boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive)
+        {
+            archive& msgCode;
+            archive& ss;
+            return archive;
+        }
+
+        std::uint32_t msgCode;
+        std::string ss;
+    };
+
 
 struct msgObj : public Otter::Network::Serializable {
     msgObj(){};

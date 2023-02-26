@@ -72,7 +72,6 @@ namespace Otter::Network::Sender {
         return obj;
     }
 
-    std::stringstream convertDtObj(dtObj const& obj) { return std::stringstream(obj.ss); }
 } // namespace Otter::Network::Sender
 
 std::uint32_t Otter::Network::Header::magicFunc() { return 42; };

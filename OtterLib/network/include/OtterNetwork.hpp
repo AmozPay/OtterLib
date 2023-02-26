@@ -50,6 +50,7 @@ namespace Otter::Network {
         std::vector<std::uint32_t> mandatory_static;
         std::map<udp::endpoint, std::uint32_t> playerId;
         std::set<std::uint32_t> netId;
+      std::vector<std::function<Otter::Core::Orchestrator &, std::string &, int>> callBack;
     };
 
     struct ClientComponent {
@@ -91,7 +92,6 @@ namespace Otter::Network {
     namespace Header {
         static std::uint32_t magicFunc();
         bool checMagic(std::stringstream& ss);
-
         std::uint32_t getUint(std::stringstream& ss);
         std::uint8_t getChar(std::stringstream& ss);
         dtObj getDt(std::stringstream& ss);
@@ -105,7 +105,6 @@ namespace Otter::Network {
         void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
         void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
         dtObj convertDtObj(MsgCode msg, std::stringstream& dt);
-        std::stringstream convertDtObj(dtObj const& obj);
 
         void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);
     }; // namespace Sender

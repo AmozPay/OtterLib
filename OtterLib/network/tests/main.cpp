@@ -1,8 +1,7 @@
-/*
+
 #include "../include/Deserializer/Deserializer.hpp"
 #include "../include/Serializer/Serializer.hpp"
 #include "test.hpp"
-*/
 #include <iostream>
 #include <set>
 #include <sstream>
@@ -78,42 +77,42 @@ int main()
 int main()
 {
     std::stringstream ss;
+    std::stringstream ss1;    
     uint32_t magic = 12;
     uint32_t seq = 1789456;
     uint32_t id = 0;
+    uint8_t len = 48;
+    dtObj dt;
+    dt.msgCode = 1;
+    dt.ss = "toto";
+    
+    Otter::Network::Serializer::saveArchive(ss1, dt);
+
+    
     Otter::Network::Serializer::saveArchive(ss, magic);
     Otter::Network::Serializer::saveArchive(ss, seq);
     Otter::Network::Serializer::saveArchive(ss, id);
+    Otter::Network::Serializer::saveArchive<uint8_t>(ss, len);
 
-    dtObj dt;
-    dt.len = 18;
-
-    msgObj msg;
-    msg.ss = "my msg";
-    msg.msg = 2;
-    std::stringstream tmp;
-    Otter::Network::Serializer::saveArchive(tmp, msg);
-
-    dt.ss = tmp.str();
-    Otter::Network::Serializer::saveArchive(ss, dt);
     std::cout << ss.str() << std::endl;
-
+    ss << ss1.str();    
+    std::cout << ss.str() << std::endl;
+   
     uint32_t xtmp;
     uint32_t ytmp;
     uint32_t ztmp;
-
+    uint8_t atmp;
     xtmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
     ytmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
     ztmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
+    atmp = Otter::Network::Deserializer::loadArchive<uint8_t>(ss);
 
-    std::cout << xtmp << "|" << ytmp << "|" << ztmp << std::endl;
+    std::cout << xtmp << "|" << ytmp << "|" << ztmp << "|" << atmp << " end" << std::endl;
 
     dtObj dt_ = Otter::Network::Deserializer::loadArchive<dtObj>(ss);
-    std::stringstream yo(dt_.ss);
-    msgObj res = Otter::Network::Deserializer::loadArchive<msgObj>(yo);
 
-    std::cout << dt_.len << std::endl;
-    std::cout << res.msg << "|" << res.ss << std::endl;
+    std::cout << dt_.msgCode << std::endl;
+    std::cout << dt.ss << "|" << std::endl;
     return 0;
 }
 */
