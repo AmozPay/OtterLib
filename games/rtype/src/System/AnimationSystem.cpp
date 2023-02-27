@@ -5,8 +5,9 @@
 ** AnimationSystem
 */
 
-#include "Animation.hpp"
 #include "AnimationSystem.hpp"
+
+#include "Animation.hpp"
 #include "AnimationComponent.hpp"
 #include "EventComponent.hpp"
 
@@ -18,7 +19,7 @@ namespace Otter::Games::RType::System::Animation {
     using ComponentIdVector = Otter::Games::RType::Components::ComponentIdVector;
     using IdAnimMap = Otter::Games::RType::Components::IdAnimMap;
 
-    void computeAnimation(Animation &animation)
+    void computeAnimation(Animation& animation)
     {
         TimePoint newTime = std::chrono::steady_clock::now();
         std::chrono::duration<float> duration = (newTime - animation.lastTime) * 1000;
@@ -34,21 +35,20 @@ namespace Otter::Games::RType::System::Animation {
 
     void animate(Otter::Core::Orchestrator& ref)
     {
-        auto &animationsComponents = ref.get_components<AnimationComponent>();
+        auto& animationsComponents = ref.get_components<AnimationComponent>();
 
         for (size_t x = 0; x < animationsComponents.size(); x++) {
-            auto &animationComponent = animationsComponents[x];
-            
+            auto& animationComponent = animationsComponents[x];
+
             if (!animationComponent) {
                 continue;
             }
 
-            IdAnimMap::iterator anim = animationComponent
-            ->idAnimMap.find(animationComponent->currentAnim); 
+            IdAnimMap::iterator anim = animationComponent->idAnimMap.find(animationComponent->currentAnim);
 
             if (anim == animationComponent->idAnimMap.end()) {
                 computeAnimation(anim->second);
             }
         }
     }
-}
+} // namespace Otter::Games::RType::System::Animation

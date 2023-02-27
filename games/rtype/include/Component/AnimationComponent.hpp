@@ -9,6 +9,7 @@
 #define ANIMATIONCOMPONENT_HPP_
 
 #include "Animation.hpp"
+
 #include <string>
 #include <unordered_map>
 
@@ -24,7 +25,7 @@ namespace Otter::Games::RType::Components {
      * @struct AnimationComponent
      */
     struct AnimationComponent {
-        AnimationComponent(const IdAnimMap &idAnimMap, const std::size_t &currentAnim)
+        AnimationComponent(const IdAnimMap& idAnimMap, const std::size_t& currentAnim)
         {
             this->idAnimMap = idAnimMap;
             this->currentAnim = currentAnim;
@@ -35,7 +36,7 @@ namespace Otter::Games::RType::Components {
         IdAnimMap idAnimMap;
         std::size_t currentAnim;
     };
-    
-};
+
+}; // namespace Otter::Games::RType::Components
 
 #endif /* !ANIMATIONCOMPONENT_HPP_ */

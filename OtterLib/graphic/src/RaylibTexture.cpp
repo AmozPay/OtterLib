@@ -35,13 +35,8 @@ namespace Otter::Graphic::Raylib {
      */
     void RaylibTexture::draw(Rectangle source, Vector2 position, float rotation, float scale)
     {
-        Rectangle dest = { 
-            position.x,
-            position.y,
-            source.width * scale,
-            source.height * scale
-        };
-        Vector2 origin = { 0.0f, 0.0f };
+        Rectangle dest = {position.x, position.y, source.width * scale, source.height * scale};
+        Vector2 origin = {0.0f, 0.0f};
 
         DrawTextureTiled(_texture, source, dest, origin, rotation, scale, _color);
     }

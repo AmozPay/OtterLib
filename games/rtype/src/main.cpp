@@ -37,49 +37,36 @@ namespace Otter::Core {
 
         auto& textureStorages = ref.get_components<components::TextureStorage>();
 
-        ref.add_component(
-            player, components::Texture(
-                "../assets/spaceship.gif",
-                textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif"),
-                Otter::Games::RType::Utils::Rectangle(0, 0, 32, 14)
-            ));
+        ref.add_component(player,
+                          components::Texture("../assets/spaceship.gif",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif"),
+                                              Otter::Games::RType::Utils::Rectangle(0, 0, 32, 14)));
         ref.add_component(player, components::Render());
         ref.add_component(player, components::Keyboard());
         ref.add_component(player, components::EventNetwork());
 
         ref.add_component(invisibleWall,
-                          components::Texture(
-                            "../assets/obstacle.gif",
-                            textureStorages[baseEntity]->findTextureByPath("../assets/obstacle.gif"),
-                            Otter::Games::RType::Utils::Rectangle(0, 0, 62, 24)
-                        ));
+                          components::Texture("../assets/obstacle.gif",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/obstacle.gif"),
+                                              Otter::Games::RType::Utils::Rectangle(0, 0, 62, 24)));
 
-        ref.add_component(
-            obstacle,
-            components::Texture(
-                "../assets/obstacle.gif",
-                textureStorages[baseEntity]->findTextureByPath("../assets/obstacle.gif"),
-                Otter::Games::RType::Utils::Rectangle(0, 0, 62, 24)
-            ));
+        ref.add_component(obstacle,
+                          components::Texture("../assets/obstacle.gif",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/obstacle.gif"),
+                                              Otter::Games::RType::Utils::Rectangle(0, 0, 62, 24)));
         ref.add_component(obstacle, components::Render());
 
-        ref.add_component(
-            mobs,
-            components::Texture(
-                "../assets/mobs.gif",
-                textureStorages[baseEntity]->findTextureByPath("../assets/mobs.gif"),
-                Otter::Games::RType::Utils::Rectangle(0, 0, 32, 29)
-            ));
+        ref.add_component(mobs,
+                          components::Texture("../assets/mobs.gif",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/mobs.gif"),
+                                              Otter::Games::RType::Utils::Rectangle(0, 0, 32, 29)));
         ref.add_component(mobs, components::Render());
 
         for (unsigned int& parallax : parallaxes) {
-            ref.add_component(
-                parallax,
-                components::Texture(
-                    "../assets/background.png",
-                    textureStorages[baseEntity]->findTextureByPath("../assets/background.png"),
-                    Otter::Games::RType::Utils::Rectangle(0, 0, 1226, 207)
-                ));
+            ref.add_component(parallax, components::Texture(
+                                            "../assets/background.png",
+                                            textureStorages[baseEntity]->findTextureByPath("../assets/background.png"),
+                                            Otter::Games::RType::Utils::Rectangle(0, 0, 1226, 207)));
             ref.add_component(parallax, components::Render());
             ref.add_component(parallax, components::Parallax());
         }

@@ -42,13 +42,10 @@ namespace Otter::Games::RType::System::EventNetwork {
             auto& textureStorage = textureStorages[i];
 
             if (textureStorage) {
-                ref.add_component(
-                    newShot,
-                    components::Texture(
-                        "../assets/projectile.gif",
-                        textureStorage->findTextureByPath("../assets/projectile.gif"),
-                        Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)
-                    ));
+                ref.add_component(newShot,
+                                  components::Texture("../assets/projectile.gif",
+                                                      textureStorage->findTextureByPath("../assets/projectile.gif"),
+                                                      Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)));
             }
         }
         ref.add_component(newShot, components::Render());
