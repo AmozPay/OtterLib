@@ -75,7 +75,11 @@ namespace Otter::Network::Server {
         std::uint8_t nb = 0;
 
         Otter::Network::Header::formatHeader(ss, 0, id);
-        Otter::Network::Serializer::saveArchive(ss, 0);
+        Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, 1);
+	Otter::Network::dtObj obj;
+	obj.msgCode = Otter::Network::ACTIVATION;
+	obj.ss = "ORDER 66";
+	Otter::Network::Serializer::saveArchive(ss, obj);
         return ss.str();
     }
 
@@ -188,7 +192,9 @@ namespace Otter::Network::Server {
             return;
         for (int i = 0; pac > i; i++) {
             dt = Otter::Network::Header::getDt(ss);
-            serv.callBack[dt.msgCode](ref, dt.ss, index);
+	    if (dt.msgCode == Otter::Network::ACTIVATION)
+	      continue;
+	    serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
     }
 
