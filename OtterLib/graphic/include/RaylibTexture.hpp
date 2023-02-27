@@ -25,12 +25,13 @@ namespace Otter::Graphic::Raylib {
         /**
          * @brief Draw the texture
          * @details Draw the texture at the position given in parameter
+         * @param source: The position of the square texture
          * @param position: The position to draw the texture
          * @param rotation: The rotation of the texture
          * @param scale: The scale of the texture
          * @return Nothing
          */
-        void draw(Vector2 position, float rotation, float scale);
+        void draw(Rectangle source, Vector2 position, float rotation, float scale);
 
         /**
          * @brief Set the texture to use
