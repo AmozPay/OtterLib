@@ -19,7 +19,7 @@ jobs:
       - name: Build OtterLib Tests
         run: |
           cd OtterLib
-          sudo pip install conan
+          sudo pip install conan==1.57.0
           conan profile new --detect default
           cmake -S . -B build
           cmake --build build --target OtterLibTests
