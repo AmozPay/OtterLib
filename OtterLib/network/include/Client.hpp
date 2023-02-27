@@ -3,8 +3,17 @@
 #include "OtterNetwork.hpp"
 
 namespace Otter::Network::Client {
+  /**
+   * @brief function for start client
+   *
+   */
     void init(Otter::Core::Orchestrator& ref);
-    void update(Otter::Core::Orchestrator& ref);
+
+    /**
+   * @brief function for update client
+   *
+   */
+   void update(Otter::Core::Orchestrator& ref);
 
     void update_msg(Otter::Core::Orchestrator& ref, int index);
     void update_session(Otter::Core::Orchestrator& ref, int index);
