@@ -60,8 +60,20 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp src/System/Collisions/*.cpp)
-file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp src/System/Collisions/*.cpp)
+file(
+    GLOB CLIENT_FILES
+    src/*.cpp
+    src/Game/*.cpp
+    src/System/*.cpp
+    src/System/Collisions/*.cpp
+)
+file(
+    GLOB SERVER_FILES
+    src/*.cpp
+    src/Game/*.cpp
+    src/System/*.cpp
+    src/System/Collisions/*.cpp
+)
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
@@ -72,6 +84,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Game
     include/System
     include/System/Collisions
 )
@@ -96,6 +109,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Game
     include/System
     include/System/Collisions
 )
