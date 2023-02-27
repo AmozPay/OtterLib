@@ -1,7 +1,8 @@
 #ifndef CLIENT_H
 #define CLIENT_H
+#include "ClientComponent.hpp"
+#include "ServerComponent.hpp"
 #include "OtterNetwork.hpp"
-
 namespace Otter::Network::Client {
   /**
    * @brief function for start client

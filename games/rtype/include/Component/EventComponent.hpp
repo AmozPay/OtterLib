@@ -8,16 +8,17 @@
 #ifndef EVENTCOMPONENT_HPP_
 #define EVENTCOMPONENT_HPP_
 
-#include <list>
-#include <utility>
-#include <functional>
-#include <vector>
-#include <string>
-#include <unordered_map>
 #include "OtterCore.hpp"
 
+#include <functional>
+#include <list>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 namespace Otter::Games::RType::Components {
-     /**
+    /**
      * @brief Custom events types
      * @enum EventTypes
      */
@@ -40,20 +41,12 @@ namespace Otter::Games::RType::Components {
      * This component need to be registered only one time.
      * @struct EventHandlerComponent
      */
-    struct EventHandlerComponent
-    {
-        EventHandlerComponent(const EventHandlerMap &eventHandlerMap)
-        {
-            this->eventHandlerMap = eventHandlerMap;
-        };
+    struct EventHandlerComponent {
+        EventHandlerComponent(const EventHandlerMap& eventHandlerMap) { this->eventHandlerMap = eventHandlerMap; };
 
         ~EventHandlerComponent() = default;
 
-        void handleEvent(
-            Orchestrator& ref,
-            const EventTypes &eventType,
-            ComponentIdVector& componentIdVector
-        )
+        void handleEvent(Orchestrator& ref, const EventTypes& eventType, ComponentIdVector& componentIdVector)
         {
             EventHandlerMap::iterator it = eventHandlerMap.find(eventType);
 
@@ -72,15 +65,13 @@ namespace Otter::Games::RType::Components {
      * This component need to be registered only one time.
      * @struct EventComponent
      */
-    struct EventComponent
-    {
+    struct EventComponent {
         EventComponent() = default;
         ~EventComponent() = default;
 
         EventPairList events;
     };
-    
-}
 
+} // namespace Otter::Games::RType::Components
 
 #endif /* !EVENTCOMPONENT_HPP_ */

@@ -9,10 +9,9 @@
 #define RTYPE_COMPONENTS_HPP
 
 #include "Utils.hpp"
+#include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
-#include "Class.hpp"
-#include "Variable.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
@@ -21,8 +20,9 @@
 
 namespace Otter::Games::RType::Components {
     namespace pt = boost::property_tree;
+    namespace utils = Otter::Games::RType::Utils;
 
-    Otter::Games::RType::Utils::Vector2 getVector2(pt::ptree json, std::string key);
+    utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     /**
      * @brief Component for the rendering
@@ -94,10 +94,9 @@ namespace Otter::Games::RType::Components {
         void removeKey(Otter::Graphic::IKeyboard::KeyType raylibKey) { _keyMap.erase(raylibKey); };
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator begin() { return _keyMap.begin(); };
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator end() { return _keyMap.end(); };
- 
+
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
         std::map<Otter::Graphic::IKeyboard::KeyType, int> _keyMap;
-
     };
 
     /**
@@ -125,6 +124,18 @@ namespace Otter::Games::RType::Components {
         }
 
         ~BoxCollider() = default;
+
+        /**
+         * @brief Check if two rectangles are colliding
+         * @param rec1: The first rectangle
+         * @param rec2: The second rectangle
+         * @return True if the rectangles are colliding, false otherwise
+         */
+        bool CheckCollisionRecs(utils::Rectangle rec1, utils::Rectangle rec2)
+        {
+            return ((rec1.x < (rec2.x + rec2.width) && (rec1.x + rec1.width) > rec2.x) &&
+                    (rec1.y < (rec2.y + rec2.height) && (rec1.y + rec1.height) > rec2.y));
+        }
 
         float _width;
         float _height;
@@ -231,10 +242,17 @@ namespace Otter::Games::RType::Components {
         COMPONENT_BUILDER(Texture)
         {
 #if defined(TARGET_CLIENT)
-            std::cout << "init texture" << std::endl;
-            auto path = json.get<std::string>("path");
-            std::cout << "init texture 2" << std::endl;
-            core.add_component(e, Texture(path, Otter::Graphic::Raylib::RaylibTexture(path)));
+            // std::cout << "init texture" << std::endl;
+            // auto path = json.get<std::string>("path");
+            // std::cout << "init texture 2" << std::endl;
+            // core.add_component(
+            //     e,
+            //     Texture(
+            //         path,
+            //         Otter::Graphic::Raylib::RaylibTexture(path),
+            //         Otter::Games::RType::Utils::Rect(0, 0, 10, 10)
+            //     )
+            // );
             std::cout << "init texture 3" << std::endl;
 #endif
         }
@@ -244,9 +262,14 @@ namespace Otter::Games::RType::Components {
          * @param path: The path to the texture
          * @param texture: An instance of the RaylibTexture class
          */
-        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture) : _texture(texture)
+        Texture(
+            const std::string& path,
+            Otter::Graphic::Raylib::RaylibTexture texture,
+            Otter::Games::RType::Utils::Rectangle rectangle
+        ) : _texture(texture)
         {
             _path = path;
+            _rectangle = rectangle;
         };
 
         ~Texture() = default;
@@ -255,11 +278,43 @@ namespace Otter::Games::RType::Components {
         {
             _path = other._path;
             _texture = other._texture;
+            _rectangle = other._rectangle;
             return *this;
         }
 
         std::string _path;
         Otter::Graphic::Raylib::RaylibTexture _texture;
+        Otter::Games::RType::Utils::Rectangle _rectangle;
+    };
+
+    using TextureStorageMap = std::unordered_map<std::string, Otter::Graphic::Raylib::RaylibTexture>;
+
+    /**
+     * @brief Component for the texture storage
+     * @details The texture storage component is used to store all the textures of the game
+     * @struct TextureStorage
+     * @var textureData: A map of string and RaylibTexture
+     */
+    struct TextureStorage {
+        COMPONENT_BUILDER(TextureStorage)
+        {
+            // TODO: need to fill this builder
+        }
+
+        TextureStorage(const TextureStorageMap& textureStorageMap) { this->textureData = textureStorageMap; };
+        ~TextureStorage() = default;
+
+        Otter::Graphic::Raylib::RaylibTexture& findTextureByPath(const std::string& path)
+        {
+            TextureStorageMap::iterator it = textureData.find(path);
+
+            if (it == textureData.end())
+                throw std::runtime_error("Texture not found");
+            else
+                return it->second;
+        }
+
+        TextureStorageMap textureData;
     };
 
     /**
@@ -285,17 +340,15 @@ namespace Otter::Games::RType::Components {
          * @param rotation: The rotation of the entity
          * @param position: A vector of float for the position of the entity
          */
-        Transform(float scale, float rotation, Otter::Games::RType::Utils::Vector2 position)
-            : _position(position), _lastPosition(position)
+        Transform(float scale, float rotation, utils::Vector2 position) : _position(position), _lastPosition(position)
         {
-            SET_NETWORKABLE_VARIABLE(_position, position);
             _scale = scale;
             _rotation = rotation;
         }
         ~Transform() = default;
-      
-        Otter::Games::RType::Utils::Vector2 _position;
-        Otter::Games::RType::Utils::Vector2 _lastPosition;
+
+        utils::Vector2 _position;
+        utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -311,8 +364,8 @@ namespace Otter::Games::RType::Components {
      * no acceleration and 1 is for the right or down
      * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
      * Same as the accelerationDirection
-     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity. Same
-     * as the accelerationDirection
+     * @var _constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity.
+     * Same as the accelerationDirection
      */
     struct Velocity {
         COMPONENT_BUILDER(Velocity)
@@ -329,8 +382,8 @@ namespace Otter::Games::RType::Components {
          * @param constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity
          * @param accelerationDirection: A vector of float for the acceleration direction of the entity
          */
-        Velocity(float speed, float constantSpeed, Otter::Games::RType::Utils::Vector2 constantAccelerationDirection,
-                 Otter::Games::RType::Utils::Vector2 accelerationDirection)
+        Velocity(float speed, float constantSpeed, utils::Vector2 constantAccelerationDirection,
+                 utils::Vector2 accelerationDirection)
             : _accelerationDirection(accelerationDirection),
               _constantAccelerationDirection(constantAccelerationDirection)
         {
@@ -342,8 +395,8 @@ namespace Otter::Games::RType::Components {
 
         float _speed;
         float _constantSpeed;
-        Otter::Games::RType::Utils::Vector2 _constantAccelerationDirection;
-        Otter::Games::RType::Utils::Vector2 _accelerationDirection;
+        utils::Vector2 _constantAccelerationDirection;
+        utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -542,7 +595,7 @@ namespace Otter::Games::RType::Components {
          * @param shotNbr: The number of shot, -1 if infinite
          * @param reloadTime: The reload time of the shot, -1 if infinite
          */
-        Shooter(ShotDirection direction, bool canShoot, int shotNbr, int reloadTime)
+        Shooter(ShotDirection direction, bool canShoot, int shotNbr, double reloadTime)
         {
             _direction = direction;
             _canShoot = canShoot;
@@ -556,7 +609,7 @@ namespace Otter::Games::RType::Components {
         ShotDirection _direction;
         bool _canShoot;
         int _shotNbr;
-        int _reloadTime;
+        double _reloadTime;
         std::time_t _lastShotTimestamp;
     };
 
@@ -608,11 +661,12 @@ namespace Otter::Games::RType::Components {
      */
     struct EventNetwork {
         COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
-        EventNetwork() { _data = -1; }
+        EventNetwork() {}
+      //        EventNetwork() { _data = -1; }
 
         ~EventNetwork() = default;
+      //        Otter::Network::Networkable::Variable<int> _data;
 
-        Otter::Network::Networkable::Variable<int> _data;
     };
 } // namespace Otter::Games::RType::Components
 

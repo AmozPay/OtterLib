@@ -9,15 +9,8 @@
 namespace Otter::Graphic::Raylib {
     RaylibKeyboard::RaylibKeyboard()
     {
-        _keyTypeKeyCodeMap = {
-            { LEFT, KEY_LEFT },
-            { RIGHT, KEY_RIGHT },
-            { UP, KEY_UP},
-            { DOWN, KEY_DOWN },
-            { SPACE, KEY_SPACE},
-            { ESCAPE, KEY_ESCAPE },
-            { SHIFT, KEY_LEFT_SHIFT } 
-        };
+        _keyTypeKeyCodeMap = {{LEFT, KEY_LEFT},   {RIGHT, KEY_RIGHT},   {UP, KEY_UP},           {DOWN, KEY_DOWN},
+                              {SPACE, KEY_SPACE}, {ESCAPE, KEY_ESCAPE}, {SHIFT, KEY_LEFT_SHIFT}};
     };
 
     RaylibKeyboard::~RaylibKeyboard() = default;
@@ -34,7 +27,7 @@ namespace Otter::Graphic::Raylib {
 
     int RaylibKeyboard::getKeyPressed() { return GetKeyPressed(); }
 
-    int RaylibKeyboard::getKeyCode(const KeyType &keyType) const
+    int RaylibKeyboard::getKeyCode(const KeyType& keyType) const
     {
         KeyTypeKeyCodeMap::const_iterator it = _keyTypeKeyCodeMap.find(keyType);
 

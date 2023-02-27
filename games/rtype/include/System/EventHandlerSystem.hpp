@@ -20,6 +20,6 @@ namespace Otter::Games::RType::System::EventHandler {
      */
     void EventHandlerSystem(Otter::Core::Orchestrator& ref);
 
-} // namespace Otter::Games::RType::System::Collision
+} // namespace Otter::Games::RType::System::EventHandler
 
 #endif /* !EVENTHANDLERSYSTEM_HPP_ */

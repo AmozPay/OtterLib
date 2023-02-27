@@ -1,7 +1,8 @@
 #ifndef SERVER_H
 #define SERVER_H
+#include "ServerComponent.hpp"
+#include "ClientComponent.hpp"
 #include "OtterNetwork.hpp"
-
 /***********************************************************/
 namespace Otter::Network::Server {
 

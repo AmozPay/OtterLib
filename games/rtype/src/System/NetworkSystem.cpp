@@ -20,7 +20,7 @@
 namespace Otter::Games::RType::System::Network {
 
     using baseMap = std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>;
-
+  /*
     namespace {
 
         void getLocalNetworkableVariableUpdates(
@@ -91,18 +91,18 @@ namespace Otter::Games::RType::System::Network {
 
         networkComp->channel->recv(data);
         updateLocalNetworkableVariable(ref, data);
-	**/
+	
 	 }
-
-    void sendAllNetworkUpdatedValue(Otter::Core::Orchestrator& ref)
+  */
+/*    void sendAllNetworkUpdatedValue(Otter::Core::Orchestrator& ref)
     {
-        std::cout << "sendAllNetworkUpdatedValue" << std::endl;
+              std::cout << "sendAllNetworkUpdatedValue" << std::endl;
         auto& networkComps = ref.get_components<Otter::Network::NetworkComponent>();
         auto& networkComp = networkComps[0];
 
         if (!networkComp)
             return;
         getLocalNetworkableVariableUpdates(ref, *networkComp);
-	*/
-    }
+	
+	}*/
 } // namespace Otter::Games::RType::System::Network
