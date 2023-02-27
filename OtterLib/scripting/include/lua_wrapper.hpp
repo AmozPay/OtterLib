@@ -125,7 +125,7 @@ namespace Otter::Scripting {
                 throw LuaError("Request LuaContext function does not exist!");
             }
 
-            return this->getStackValues(returnTypes);
+            return this->getStackValues(returnTypes, true);
         }
 
         /**
@@ -133,7 +133,7 @@ namespace Otter::Scripting {
          * @param types
          * @return std::vector<luaTypes>
          */
-        std::vector<luaTypes> getStackValues(const std::string typesFmt);
+        std::vector<luaTypes> getStackValues(const std::string typesFmt, bool popValue);
 
 
         /**

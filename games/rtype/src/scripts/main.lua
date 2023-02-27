@@ -2,8 +2,8 @@ local function createAndDeleteEntity()
     local a = OtterLib.orchestrator.createEntity()
     print("Entity created: ")
     print(a)
-    OtterLib.orchestrator.removeEntity(a)
-    print("Entity deleted")
+    -- OtterLib.orchestrator.removeEntity(a)
+    -- print("Entity deleted")
 end
 
 

@@ -29,7 +29,7 @@ namespace Otter::Scripting {
         lua_getglobal(L, name.c_str());
 
         if (!lua_isfunction(L, -1)) {
-            lua_pop(L, -1);
+            lua_pop(L, 1);
             return false;
         }
 
@@ -126,7 +126,7 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
-    std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes)
+    std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes, bool popValue)
     {
         std::vector<luaTypes> returnValues;
 
@@ -156,7 +156,9 @@ namespace Otter::Scripting {
                 throw std::invalid_argument("Invalid fmt string");
                 break;
             }
-            lua_pop(L, 1);
+            if (popValue) {
+                lua_pop(L, 1);
+            }
         }
         std::reverse(returnValues.begin(), returnValues.end());
         return returnValues;
@@ -187,10 +189,10 @@ namespace Otter::Scripting {
 
     void LuaValue::_cleanup(void)
     {
-        lua_pop(L, -1);
+        lua_pop(L, 1);
         for (unsigned int i = 1; i < _keys.size(); i++) {
-            lua_pop(L, -1);
-            lua_pop(L, -1);
+            lua_pop(L, 1);
+            // lua_pop(L, 1); should work, dunno why it does this: PANIC: unprotected error in call to Lua API (attempt to call a nil value)
         }
     }
 

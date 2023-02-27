@@ -16,12 +16,10 @@ namespace Otter::Scripting::Bindings {
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-        std::cout << "Trying to remove an entity" << std::endl;
-        std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l");
-        std::cout << "Trying to remove an entity 2" << std::endl;
-        std::cout << " len = " << args.size() << std::endl;
+        std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);
         auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
-        std::cout << "Trying to remove an entity 3 " << entity << std::endl;
+        Otter::Core::Entity e = orchestrator->createEntity();
+        std::cout << e << std::endl;
         orchestrator->remove_entity(entity);
         return 0;
     }
