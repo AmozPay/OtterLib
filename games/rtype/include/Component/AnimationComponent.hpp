@@ -10,6 +10,7 @@
 
 #include "Animation.hpp"
 #include <string>
+#include <unordered_map>
 
 namespace Otter::Games::RType::Components {
 

@@ -24,19 +24,19 @@ namespace Otter::Games::RType::System::Sprite {
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.setScale(transform->_scale);
-                sprite->_texture.setRotation(transform->_rotation);
                 sprite->_texture.draw(
                     Rectangle(
-                        sprite->_rectangle.x,
+                        sprite->_rectangle.x, 
                         sprite->_rectangle.y,
                         sprite->_rectangle.width,
                         sprite->_rectangle.height
                     ),
-                    Vector2(
+                    {
                         transform->_position.x,
-                        transform->_position.y      
-                    )
+                        transform->_position.y
+                    },
+                    transform->_rotation,
+                    transform->_scale
                 );
             }
         }
@@ -49,25 +49,25 @@ namespace Otter::Games::RType::System::Sprite {
         auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
         auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
-            if (parallaxes[i])
+            if (i < parallaxes.size() && parallaxes[i])
                 continue;
             auto& sprite = sprites[i];
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.setScale(transform->_scale);
-                sprite->_texture.setRotation(transform->_rotation);
                 sprite->_texture.draw(
                     Rectangle(
-                        sprite->_rectangle.x,
+                        sprite->_rectangle.x, 
                         sprite->_rectangle.y,
                         sprite->_rectangle.width,
                         sprite->_rectangle.height
                     ),
-                    Vector2(
+                    {
                         transform->_position.x,
                         transform->_position.y
-                    )
+                    },
+                    transform->_rotation,
+                    transform->_scale
                 );
             }
         }

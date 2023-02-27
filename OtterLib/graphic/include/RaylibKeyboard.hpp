@@ -10,6 +10,7 @@
 
 #include "OtterGraphicKeyboard.hpp"
 #include "Raylib.hpp"
+
 #include <unordered_map>
 
 using KeyType = Otter::Graphic::IKeyboard::KeyType;
@@ -22,7 +23,7 @@ namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibKeyboard class for Raylib keyboard management
      */
-    class RaylibKeyboard: public Otter::Graphic::IKeyboard {
+    class RaylibKeyboard : public Otter::Graphic::IKeyboard {
       public:
         /**
          * @brief Construct a new Keyboard object
@@ -86,10 +87,9 @@ namespace Otter::Graphic::Raylib {
          */
         static int getKeyPressed();
 
-        private:
-          int getKeyCode(const KeyType &keyType) const;
-          KeyTypeKeyCodeMap _keyTypeKeyCodeMap;
-          
+      private:
+        int getKeyCode(const KeyType& keyType) const;
+        KeyTypeKeyCodeMap _keyTypeKeyCodeMap;
     };
 } // namespace Otter::Graphic::Raylib
 

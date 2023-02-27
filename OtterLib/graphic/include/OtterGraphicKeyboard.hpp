@@ -97,6 +97,6 @@ namespace Otter::Graphic {
          */
         static int getKeyPressed();
     };
-} // namespace Otter::Graphic::Raylib
+} // namespace Otter::Graphic
 
 #endif /* !OTTERGRAPHICKEYBOARD_HPP_ */

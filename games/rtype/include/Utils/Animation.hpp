@@ -13,9 +13,9 @@
 #include <vector>
 
 namespace Otter::Games::RType::Utils {
-    using Rect = Otter::Games::RType::Utils::Rect;
+    using Rectangle = Otter::Games::RType::Utils::Rectangle;
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
-    using AnimRectVect = std::vector<Rect>;
+    using AnimRectVect = std::vector<Rectangle>;
 
     struct Animation {
         Animation(const AnimRectVect &animVect, const float &delay)

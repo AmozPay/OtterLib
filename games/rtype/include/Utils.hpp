@@ -22,7 +22,16 @@ namespace Otter::Games::RType::Utils {
         float y;
     };
 
-    struct Rect {
+    /**
+     * @brief Struct for the rectangle
+     * @details The rectangle is used to store a 2D rectangle (float)
+     * @struct Rectangle
+     * @var x: The x value of the rectangle
+     * @var y: The y value of the rectangle
+     * @var width: The width value of the rectangle
+     * @var height: The height value of the rectangle
+     */
+    struct Rectangle {
         float x;
         float y;
         float width;
