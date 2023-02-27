@@ -111,9 +111,9 @@ namespace Otter::Games::RType::System::EventNetwork {
             auto& eventNetwork = eventNetworks[i];
             auto const& player = players[i];
 
-	    //            if (player && eventNetwork)
-	      //                EventDetection(ref, i, static_cast<utils::EventState>(eventNetwork->_data));
-	      //            eventNetwork->_data = -1;
+            if (player && eventNetwork)
+                EventDetection(ref, i, static_cast<utils::EventState>(eventNetwork->_data));
+            eventNetwork->_data = -1;
         }
     }
 

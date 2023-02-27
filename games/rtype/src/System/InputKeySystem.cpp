@@ -21,9 +21,9 @@ namespace Otter::Games::RType::System::Event {
             auto& eventNetwork = eventNetworks[i];
             if (keyboard && eventNetwork) {
                 for (auto it = keyboard->begin(); it != keyboard->end(); it++) {
-		  //if (keyboard->_keyboard.isKeyDown(it->first)) {
-		      // eventNetwork->_data = it->second;
-		  //                    }
+                    if (keyboard->_keyboard.isKeyDown(it->first)) {
+                        eventNetwork->_data = it->second;
+                    }
                 }
             }
         }

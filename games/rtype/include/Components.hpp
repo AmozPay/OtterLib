@@ -8,10 +8,10 @@
 #ifndef RTYPE_COMPONENTS_HPP
 #define RTYPE_COMPONENTS_HPP
 
-#include "Utils.hpp"
 #include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
+#include "Utils.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
@@ -661,13 +661,13 @@ namespace Otter::Games::RType::Components {
      */
     struct EventNetwork {
         COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
-        EventNetwork() {}
-      //        EventNetwork() { _data = -1; }
+        EventNetwork() { _data = -1; }
 
         ~EventNetwork() = default;
-      //        Otter::Network::Networkable::Variable<int> _data;
 
+        int _data;
     };
+
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP
