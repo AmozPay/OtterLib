@@ -46,6 +46,7 @@ namespace Otter::Scripting {
             ~ScriptingManager() = default;
             void enableScripting(const std::string scriptingEntrypointDirectory);
         private:
+            void setupComponentBindings(void);
             LuaContext _luaContext;
             Otter::Core::SystemManager &_systemManager;
             Otter::Core::Orchestrator &_orchestrator;
