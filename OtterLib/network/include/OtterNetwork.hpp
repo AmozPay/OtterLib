@@ -2,16 +2,16 @@
 #ifndef OTTERNETWORK_H
 #define OTTERNETWORK_H
 
+#include "Client.hpp"
+#include "ClientComponent.hpp"
 #include "Deserializer.hpp"
 #include "NetworkComponent.hpp"
 #include "Networkable.hpp"
 #include "Orchestrator.hpp"
 #include "Serializer.hpp"
-#include "Socket.hpp"
-#include "Client.hpp"
 #include "Server.hpp"
-#include "ClientComponent.hpp"
 #include "ServerComponent.hpp"
+#include "Socket.hpp"
 
 #include <iostream>
 #include <queue>

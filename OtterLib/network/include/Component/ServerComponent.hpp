@@ -1,7 +1,7 @@
 #ifndef SERVERCOMPONENT_H
 #define SERVERCOMPONENT_H
-#include "Socket.hpp"
 #include "Orchestrator.hpp"
+#include "Socket.hpp"
 #include "dtObj.hpp"
 
 #include <functional>
