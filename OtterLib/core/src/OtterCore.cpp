@@ -6,7 +6,7 @@ namespace Otter::Core {
         registerComponents(this->_data);
         registerSystems(this->_systems);
         createEntityObj(this->_data);
-        _scriptingManager.enableScripting("../scripts/main.lua");
+        _scriptingManager.enableScripting("../scripts");
         /// call factory
     }
 
@@ -22,7 +22,7 @@ namespace Otter::Core {
             _systems(_data, SystemManager::draw);
             _systems(_data, SystemManager::subDraw);
         }
-        _systems(_data, SystemManager::end);
+        _systems(_data, SystemManager::cleanup);
     }
 
     int OtterCore::engineStart()

@@ -44,6 +44,12 @@ execute_process(
     WORKING_DIRECTORY ${OTTERLIB_DIR}/build
 )
 
+execute_process(
+    COMMAND cp ${OTTERLIB_DIR}/build/lib/OtterLib.lua ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
+)
+
 add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
 # Check if conan dependencies are installed

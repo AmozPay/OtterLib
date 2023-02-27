@@ -29,7 +29,7 @@ namespace Otter::Scripting {
         lua_getglobal(L, name.c_str());
 
         if (!lua_isfunction(L, -1)) {
-            lua_pop(L, -1);
+            lua_pop(L, 1);
             return false;
         }
 
@@ -70,34 +70,98 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
+    void LuaContext::push(long long integer)
+    {
+        lua_pushinteger(L, integer);
+    }
+
+    void LuaContext::push(double number)
+    {
+        lua_pushnumber(L, number);
+    }
+
+    void LuaContext::push(char const *str)
+    {
+        lua_pushstring(L, str);
+    }
+
+    void LuaContext::push(bool boolean)
+    {
+        lua_pushboolean(L, boolean);
+    }
+
+    void LuaContext::push(void *ptr)
+    {
+        lua_pushlightuserdata(L, ptr);
+    }
+
+
     void LuaContext::setGlobal(std::string name, void *value)
     {
-        lua_pushlightuserdata(L, value);
+        this->push(value);
         lua_setglobal(L, name.c_str());
     }
 
     void LuaContext::setGlobal(std::string name, char const *value)
     {
-        lua_pushstring(L, value);
+        this->push(value);
         lua_setglobal(L, name.c_str());
     }
 
     void LuaContext::setGlobal(std::string name, long long value)
     {
-        lua_pushinteger(L, value);
+        this->push(value);
         lua_setglobal(L, name.c_str());
     }
 
     void LuaContext::setGlobal(std::string name, double value)
     {
-        lua_pushnumber(L, value);
+        this->push(value);
         lua_setglobal(L, name.c_str());
     }
 
     void LuaContext::setGlobal(std::string name, bool value)
     {
-        lua_pushboolean(L, value);
+        this->push(value);
         lua_setglobal(L, name.c_str());
+    }
+
+    std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes, bool popValue)
+    {
+        std::vector<luaTypes> returnValues;
+
+        for (auto i : returnTypes) {
+            switch (i) {
+            case 'b':
+                LUA_ERR_WRAP(lua_isboolean(L, -1));
+                returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -1)));
+                break;
+            case 'd':
+                LUA_ERR_WRAP(lua_isnumber(L, -1));
+                returnValues.emplace_back(lua_tonumber(L, -1));
+                break;
+            case 's':
+                LUA_ERR_WRAP(lua_isstring(L, -1));
+                returnValues.emplace_back(lua_tostring(L, -1));
+                break;
+            case 'l':
+                LUA_ERR_WRAP(lua_isinteger(L, -1));
+                returnValues.emplace_back(lua_tointeger(L, -1));
+                break;
+            case 'p':
+                LUA_ERR_WRAP(lua_isuserdata(L, -1));
+                returnValues.emplace_back(lua_touserdata(L, -1));
+                break;
+            default:
+                throw std::invalid_argument("Invalid fmt string");
+                break;
+            }
+            if (popValue) {
+                lua_pop(L, 1);
+            }
+        }
+        std::reverse(returnValues.begin(), returnValues.end());
+        return returnValues;
     }
 
 
@@ -125,10 +189,10 @@ namespace Otter::Scripting {
 
     void LuaValue::_cleanup(void)
     {
-        lua_pop(L, -1);
+        lua_pop(L, 1);
         for (unsigned int i = 1; i < _keys.size(); i++) {
-            lua_pop(L, -1);
-            lua_pop(L, -1);
+            lua_pop(L, 1);
+            // lua_pop(L, 1); should work, dunno why it does this: PANIC: unprotected error in call to Lua API (attempt to call a nil value)
         }
     }
 
@@ -209,5 +273,7 @@ namespace Otter::Scripting {
         unsigned long long len = std::get<long long>(retVals[0]);
         return len;
     }
+
+
 
 } // namespace Otter::Scripting

@@ -72,6 +72,7 @@ file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
 add_library(OtterScripting STATIC ${SCRIPTING_FILES})
 target_compile_features(OtterScripting PUBLIC cxx_std_20)
 target_include_directories(OtterScripting PUBLIC scripting/include core/include)
+file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 
 # OtterGraphic
@@ -124,17 +125,19 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterScripting tests
     file(GLOB SCRIPTING_TESTS scripting/tests/*.cpp)
-    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${SCRIPTING_TESTS})
+    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${CORE_FILES} ${SCRIPTING_TESTS})
     target_compile_features(OtterScriptingTests PUBLIC cxx_std_20)
     target_include_directories(OtterScriptingTests PUBLIC scripting/include core/include)
     target_link_libraries(OtterScriptingTests gtest_main lua)
     add_test(NAME OtterScriptingTests COMMAND OtterScriptingTests)
     file(COPY scripting/tests/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/test_data)
 
 
     # Compile tests only
     add_custom_target(OtterLibTests)
     add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+
 
     include(CTest)
     # include(CodeCoverage)
@@ -173,6 +176,12 @@ install(TARGETS
     OtterCore
     EXPORT OtterLib
     DESTINATION lib
+)
+
+install(FILES
+    scripting/OtterLib.lua
+    EXPORT OtterLib
+    DESTINATION lua
 )
 
 if(WIN32)
