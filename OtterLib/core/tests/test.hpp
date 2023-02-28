@@ -8,7 +8,6 @@ class intTest {
   public:
     intTest(int dt) { _dt = dt; }
 
-    ~intTest(){};
 
     int getDt() const { return _dt; };
 
