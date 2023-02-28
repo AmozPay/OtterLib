@@ -5,6 +5,7 @@
 ** CollisionSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "EnemyCollisionSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision::Enemy {
@@ -23,8 +24,8 @@ namespace Otter::Games::RType::System::Collision::Enemy {
 
     void EnemyToBulletCollision(Otter::Core::Orchestrator& ref, size_t enemyIndex, size_t bulletIndex)
     {
-        auto const& damages = ref.get_components<components::Damage>();
-        auto& healths = ref.get_components<components::Health>();
+        auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
         auto const& shots = ref.get_components<components::Shot>();
 
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
@@ -39,8 +40,8 @@ namespace Otter::Games::RType::System::Collision::Enemy {
             }
         }
         // TODO: need to delete the entity
-        ref.remove_component<components::Render>(bulletIndex);
-        ref.remove_component<components::BoxCollider>(bulletIndex);
+        ref.remove_component<Otter::Core::BaseComponents::Render>(bulletIndex);
+        ref.remove_component<Otter::Core::BaseComponents::BoxCollider>(bulletIndex);
         std::cout << "Enemy to Bullet" << std::endl;
     }
 
@@ -52,7 +53,7 @@ namespace Otter::Games::RType::System::Collision::Enemy {
     void EnemyCollisionHandler(Otter::Core::Orchestrator& ref, size_t enemyIndex, size_t entityIndex)
     {
         auto const& obstacles = ref.get_components<components::Obstacle>();
-        auto const& enemies = ref.get_components<components::Enemy>();
+        auto const& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
 
         if (entityIndex < enemies.size() && enemies[entityIndex])
             EnemyToEnemyCollision(ref, enemyIndex, entityIndex);

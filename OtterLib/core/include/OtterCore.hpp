@@ -29,6 +29,7 @@ namespace Otter::Core {
       private:
         void loop();
         void init();
+        void _registerBaseComponents(void);
 
         bool _isRunning;
 
