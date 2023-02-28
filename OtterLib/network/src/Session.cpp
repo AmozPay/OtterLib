@@ -16,7 +16,7 @@ void Otter::Network::Session::recv(std::stringstream& data)
     boost::with_lock_guard(*this->_data_lock,
                            [this, &data]
                            {
-                               data.write(_data.str().c_str(), 22);
+			     data.str(_data.str());
                                _data.str("");
                            });
 }

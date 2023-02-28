@@ -6,8 +6,8 @@
 
 Otter::Network::Socket::Socket(std::uint16_t port) : _socket(_io, udp::endpoint(udp::v4(), port))
 {
-    std::cout << "Socket bound to " << _socket.local_endpoint() << std::endl;
     this->_recv();
+    std::cout << "Socket bound to " << _socket.local_endpoint() << std::endl;
 }
 
 Otter::Network::Socket::Socket(boost::asio::ip::address addr, std::uint16_t port)

@@ -36,6 +36,7 @@ namespace Otter::Network::Client {
         if (connection.size() != 0) {
             std::stringstream data;
             connection[0]->recv(data);
+	    std::cout << connection.size() << " new connection to server" << data.str() << std::endl;
             std::uint32_t id = test_conect(*serv, data);
             if (id != -1) {
                 serv->netId.insert(id);
@@ -56,10 +57,20 @@ namespace Otter::Network::Client {
         auto& serv = ref.get_components<Otter::Network::ServerComponent>()[index];
         const udp::endpoint servAddr = serv->playerId.begin()->first;
         std::stringstream ss;
-
-        Otter::Network::Header::formatHeader(ss, 0, 0);
-        Otter::Network::Serializer::saveArchive(ss, 0);
+	static int nb = 0;
+	nb++;
+	if (nb < 1000)
+	  return;
+	nb = 0;
+	Otter::Network::Header::formatHeader(ss, 0, 0);
+        Otter::Network::Serializer::saveArchive<uint8_t>(ss, 1);
+	dtObj obj;
+	obj.msgCode = Otter::Network::ACTIVATION;
+	obj.ss = "Chancelor ?";
+        Otter::Network::Serializer::saveArchive(ss, obj);
         soc->channel->send(servAddr, ss.str());
+	std::cout << "msg send" << ss.str() << std::endl;
+ 
     }
 
     ///////////////////////////////send msg/////////////////////////////////
@@ -173,11 +184,16 @@ namespace Otter::Network::Client {
     {
         std::cout << "initNetwork" << std::endl;
         auto& net = ref.get_components<Otter::Network::SocketComponent>();
-
+        auto& serv = ref.get_components<Otter::Network::ServerComponent>();
+	
         for (int i = 0; i < net.size(); i++) {
-            if (net[i])
+	  if (net[i]) {
+	  std::cout << "socket created at index" << i << std::endl;
                 net[i]->channel = std::make_shared<Otter::Network::Socket>(8082);
-        }
+		serv[i]->playerId[udp::endpoint(udp::v4(), 8080)] = 0;
+      
+	  }
+	}
     }
 
     void update(Otter::Core::Orchestrator& ref)
@@ -187,7 +203,7 @@ namespace Otter::Network::Client {
 
         int index = -1;
 
-        for (int i = 0; sock.size(); i++) {
+        for (int i = 0; i < sock.size(); i++) {
             if (sock[i])
                 index = i;
         }
@@ -195,13 +211,19 @@ namespace Otter::Network::Client {
             return;
         /// if no connection try connect
 
-        if (sock[index]->channel->get_sessions().size() != 1) {
-            Otter::Network::Client::update_connection(ref, index);
+
+
+	///	std::cout << "gooing to update with index:" << index << std::endl;
+
+	if (sock[index]->channel->get_sessions().size() != 1) {
+	    Otter::Network::Client::update_connection(ref, index);
             Otter::Network::Client::update_session(ref, index);
         } else {
+        std::cout << "entering with serv" << std::endl;
             Otter::Network::Client::update_msg(ref, index);
             Otter::Network::Client::update_recv(ref, index);
         }
+	/// std::cout << "end update" << std::endl;
     }
 
     ///////////////////////////////////////////////

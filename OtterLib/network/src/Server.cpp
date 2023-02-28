@@ -91,8 +91,9 @@ namespace Otter::Network::Server {
 
         std::stringstream data;
         for (auto& it : connection) {
-            it->recv(data);
-            std::uint32_t id = test_connect(*serv, data);
+	  it->recv(data);
+	  std::cout << "new connection arrive " << data.str() << "|"  << std::endl;
+            std::uint32_t id = Otter::Network::Server::test_conect(*serv, data);
             if (id != -1) {
                 ////////////// add a new clien
                 id = add_toServ(*serv, it->get_endpoint());
@@ -100,7 +101,8 @@ namespace Otter::Network::Server {
                 it->send(connectMsg(id));
                 ///// send a validation msg
             } else {
-                soc.channel->disconnect(it->get_endpoint());
+	      std::cout << "socket disconnect" << std::endl;
+	      soc.channel->disconnect(it->get_endpoint());
             }
         }
     }
@@ -232,15 +234,19 @@ namespace Otter::Network::Server {
         auto& sock = ref.get_components<Otter::Network::SocketComponent>();
         int index = -1;
 
-        for (int i = 0; sock.size(); i++) {
-            if (sock[i])
+        for (int i = 0; i < sock.size(); i++) {
+	  if (sock[i])
                 index = i;
         }
         if (index == -1)
             return;
+	//std::cout << "gooing to update with index:" << index << std::endl;
         update_session(ref, *sock[index]);
-        update_msg(ref, index);
-        update_recv(ref, index);
+	//	std::cout << "entering msg" << std::endl;
+	//        update_msg(ref, index);
+	//std::cout << "entering recv" << std::endl;
+        //update_recv(ref, index);
+		//std::cout << "end update" << std::endl;
     }
 
     void init(Otter::Core::Orchestrator& ref)

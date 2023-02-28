@@ -3,13 +3,13 @@ cmake_minimum_required(VERSION 3.17)
 # define project version with CI build
 if(DEFINED ENV{PROJECT_VERSION})
     project(
-        NetworkSimulator
+        RType
         VERSION $ENV{PROJECT_VERSION}
         DESCRIPTION "Epitech Project"
     )
 else()
     project(
-        NetworkSimulator
+        RType
         VERSION 0.1.0
         DESCRIPTION "Epitech Project"
     )
@@ -27,24 +27,7 @@ endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
-execute_process(
-    COMMAND ${CMAKE_COMMAND} ${BUILD_TESTING} -S . -B build -G ${CMAKE_GENERATOR}
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}
-)
 
-if(result)
-    message(FATAL_ERROR "CMake step for deps failed: ${result}")
-endif()
-
-
-execute_process(
-    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib ${CONFIG_VALUE}
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
-)
-
-add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
 # Check if conan dependencies are installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -56,13 +39,23 @@ endif()
 
 add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 
-file(GLOB NETWORK_FILE src/*.cpp src/System/*.cpp)
+file(GLOB CLIENT_FILES src/*.cpp)
+file(GLOB SERVER_FILES src/*.cpp)
 
-# build SIMULATOR
-add_executable((networkSimulator ${NETWORK_FILE})
-target_compile_definitions(networkSimulator PUBLIC TARGET_CLIENT)
-target_include_directories(networkSimulator PUBLIC include/ include/Component include/System)
-target_link_libraries(networkSimulator
+
+# build client
+add_executable(simulator_client ${CLIENT_FILES})
+target_compile_definitions(simulator_client PUBLIC TARGET_CLIENT)
+target_include_directories(
+    simulator_client
+    PUBLIC
+    include/
+    include/Utils
+    include/Component
+    include/System
+    include/System/Collisions 
+)
+target_link_libraries(simulator_client
     OtterCore
     OtterNetwork
     OtterGraphic
@@ -74,14 +67,33 @@ file(COPY src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY src/scripts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+# build server
+add_executable(simulator_server ${SERVER_FILES})
+target_compile_definitions(simulator_server PUBLIC TARGET_SERVER)
+target_include_directories(
+    simulator_server
+    PUBLIC
+    include/
+    include/Utils
+    include/Component
+    include/System
+    include/System/Collisions
+)
+target_link_libraries(simulator_server
+    OtterCore
+    OtterNetwork
+    OtterGraphic
+    OtterScripting
+    ${CONAN_LIBS}
+)
 
 # Does not compile tests
-add_custom_target(simulator)
-add_dependencies(simulator networkSimulator)
+add_custom_target(NetworkSimulator)
+add_dependencies(NetworkSimulator simulator_server simulator_client)
 
 
 install(
-    TARGETS networkSimulator
+    TARGETS simulator_server simulator_client
     RUNTIME
     DESTINATION bin
     COMPONENT release

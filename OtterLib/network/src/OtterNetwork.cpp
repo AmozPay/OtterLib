@@ -80,16 +80,15 @@ namespace Otter::Network::Header {
 
     bool checMagic(std::stringstream& ss)
     {
-        std::uint32_t tmp = Otter::Network::Deserializer::loadArchive<uint32_t>(ss);
-
+      std::uint32_t tmp = Otter::Network::Deserializer::loadArchive<std::uint32_t>(ss);
         if (Header::magicFunc() == tmp)
             return true;
         return false;
     }
 
-    std::uint32_t getUint(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<uint32_t>(ss); }
+  std::uint32_t getUint(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<std::uint32_t>(ss); }
 
-    std::uint8_t getChar(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<uint8_t>(ss); }
+  std::uint8_t getChar(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<std::uint8_t>(ss); }
 
     dtObj getDt(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<dtObj>(ss); }
 
