@@ -19,12 +19,13 @@ namespace Otter::Games::RType::Utils {
     using AnimRectVect = std::vector<Rectangle>;
 
     struct Animation {
-        Animation(const AnimRectVect& animVect, const float& delay)
+        Animation(const AnimRectVect& animVect, const float& delay, bool isOneShot = false)
         {
             this->animVect = animVect;
             this->currentPos = 0;
             this->delay = delay;
             this->lastTime = std::chrono::steady_clock::now();
+            this->isOneShot = isOneShot;
         };
 
         ~Animation() = default;
@@ -33,6 +34,7 @@ namespace Otter::Games::RType::Utils {
         std::size_t currentPos;
         TimePoint lastTime;
         float delay;
+        bool isOneShot;
     };
 
 } // namespace Otter::Games::RType::Utils

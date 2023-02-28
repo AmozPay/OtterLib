@@ -21,12 +21,25 @@ namespace Otter::Games::RType::System::Animation {
     using ComponentIdVector = Otter::Games::RType::Components::ComponentIdVector;
     using IdAnimMap = Otter::Games::RType::Components::IdAnimMap;
 
+    bool checkOneShotEnd(
+        const bool &isOneShot,
+        const std::size_t &maxSize,
+        const std::size_t &currentPos
+    ) {
+        return isOneShot && (currentPos >= maxSize - 1);
+    }
+
     void computeAnimation(Animation& animation, Texture &texture)
     {
         TimePoint newTime = std::chrono::steady_clock::now();
         std::chrono::duration<float> duration = (newTime - animation.lastTime) * 1000;
+        bool oneShotEnd = checkOneShotEnd(
+            animation.isOneShot,
+            animation.animVect.size(),
+            animation.currentPos
+        );
 
-        if (duration.count() >= animation.delay) {
+        if (duration.count() >= animation.delay && !oneShotEnd) {
             animation.currentPos = animation.currentPos + 1;
             animation.lastTime = newTime;
             if (animation.currentPos >= animation.animVect.size()) {
@@ -57,5 +70,10 @@ namespace Otter::Games::RType::System::Animation {
                 );
             }
         }
+    }
+
+    void handleAnim(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
+    {
+        
     }
 } // namespace Otter::Games::RType::System::Animation
