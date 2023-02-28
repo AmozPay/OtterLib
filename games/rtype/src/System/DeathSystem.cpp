@@ -40,7 +40,6 @@ namespace Otter::Games::RType::System::Death {
 
     void HandleDeath(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
-        std::cout << "test" << std::endl;
         for (auto &id: vectorId) {
             auto &animationComp = ref.get_components<components::AnimationComponent>();
 
