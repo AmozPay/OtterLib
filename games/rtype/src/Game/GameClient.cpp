@@ -18,6 +18,7 @@ namespace Otter::Games::GameClient {
         Otter::Core::Entity invisibleWall = ref.createEntity();
         Otter::Core::Entity obstacle = ref.createEntity();
         Otter::Core::Entity mobs = ref.createEntity();
+        Otter::Core::Entity enemy = ref.createEntity();
         Otter::Core::Entity parallaxes[2];
 
         for (unsigned int& parallax : parallaxes) {
@@ -32,7 +33,8 @@ namespace Otter::Games::GameClient {
                  {"../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")},
                  {"../assets/mobs.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/mobs.gif")},
                  {"../assets/background.png", Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")},
-                 {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")}})));
+                 {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")},
+                 {"../assets/enemy1-34x34.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy1-34x34.png")}})));
 
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
@@ -60,6 +62,14 @@ namespace Otter::Games::GameClient {
                                               textureStorages[baseEntity]->findTextureByPath("../assets/mobs.gif"),
                                               Otter::Games::RType::Utils::Rectangle(0, 0, 32, 29)));
         ref.add_component(mobs, Otter::Core::BaseComponents::Render());
+
+
+        ref.add_component(enemy,
+                          Otter::Core::BaseComponents::Texture("../assets/enemy1-34x34.png",
+                                              textureStorages[baseEntity]->findTextureByPath("../assets/enemy1-34x34.png"),
+                                              Otter::Games::RType::Utils::Rectangle(0, 0, 34, 34)));
+        ref.add_component(enemy, Otter::Core::BaseComponents::Render());
+
 
         for (unsigned int& parallax : parallaxes) {
             ref.add_component(parallax, Otter::Core::BaseComponents::Texture(
@@ -99,6 +109,27 @@ namespace Otter::Games::GameClient {
         ref.add_component(mobs, Otter::Core::BaseComponents::Damage(20));
         ref.add_component(mobs, Otter::Core::BaseComponents::Health(100));
 
+        ref.add_component(enemy, Otter::Core::BaseComponents::Transform(2, 0, {800, 400}));
+        ref.add_component(enemy, Otter::Core::BaseComponents::Velocity(0, 0, {0, 0}, {0, 0}));
+        ref.add_component(enemy, Otter::Core::BaseComponents::Enemy(25, "test2"));
+        ref.add_component(enemy, Otter::Core::BaseComponents::BoxCollider(34, 34));
+        ref.add_component(enemy, Otter::Core::BaseComponents::Damage(20));
+        ref.add_component(enemy, Otter::Core::BaseComponents::Health(100));
+
+        utils::AnimRectVect animRectVect;
+
+        animRectVect.push_back(utils::Rectangle(0, 0, 34, 34));
+        animRectVect.push_back(utils::Rectangle(34, 0, 34, 34));
+        animRectVect.push_back(utils::Rectangle(34 * 2, 0, 34, 34));
+        animRectVect.push_back(utils::Rectangle(34 * 3, 0, 34, 34));
+
+        utils::Animation anim(animRectVect, 200);
+        components::IdAnimMap idAnimMap;
+
+        idAnimMap.emplace(1, anim);
+        ref.add_component(enemy, components::AnimationComponent(idAnimMap, 1));
+
+
         for (int i = 0; i < 2; i++) {
             ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Transform(1, 0, {static_cast<float>(i * 1226), 0}));
             ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
@@ -119,6 +150,8 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::Shot>();
         ref.register_component<components::EventHandlerComponent>();
         ref.register_component<components::EventComponent>();
+        ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
+        ref.register_component<components::AnimationComponent>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
@@ -132,6 +165,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Animation::animate, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Sprite::DrawParallax, Otter::Core::SystemManager::draw);

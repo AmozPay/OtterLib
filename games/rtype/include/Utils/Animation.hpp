@@ -22,7 +22,7 @@ namespace Otter::Games::RType::Utils {
         Animation(const AnimRectVect& animVect, const float& delay)
         {
             this->animVect = animVect;
-            this->currentPos = this->animVect.begin();
+            this->currentPos = 0;
             this->delay = delay;
             this->lastTime = std::chrono::steady_clock::now();
         };
@@ -30,7 +30,7 @@ namespace Otter::Games::RType::Utils {
         ~Animation() = default;
 
         AnimRectVect animVect;
-        AnimRectVect::iterator currentPos;
+        std::size_t currentPos;
         TimePoint lastTime;
         float delay;
     };

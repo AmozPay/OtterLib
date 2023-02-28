@@ -9,6 +9,8 @@
 #define GAMECLIENT_HPP_
 
 #include "Components.hpp"
+#include "AnimationComponent.hpp"
+#include "AnimationSystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
 
