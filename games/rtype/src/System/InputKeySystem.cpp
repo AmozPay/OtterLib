@@ -6,7 +6,7 @@
 */
 
 #include "InputKeySystem.hpp"
-
+#include "baseComponents.hpp"
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
 
@@ -14,8 +14,8 @@ namespace Otter::Games::RType::System::Event {
 
     void PollEvent(Otter::Core::Orchestrator& ref)
     {
-        auto& keyboards = ref.get_components<Otter::Games::RType::Components::Keyboard>();
-        auto& eventNetworks = ref.get_components<Otter::Games::RType::Components::EventNetwork>();
+        auto& keyboards = ref.get_components<Otter::Core::BaseComponents::Keyboard>();
+        auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
         for (size_t i = 0; i < keyboards.size() && i < eventNetworks.size(); i++) {
             auto& keyboard = keyboards[i];
             auto& eventNetwork = eventNetworks[i];

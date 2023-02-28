@@ -5,6 +5,7 @@
 ** CollisionSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "CollisionSystem.hpp"
 
 #include "EnemyCollisionSystem.hpp"
@@ -17,8 +18,8 @@ namespace Otter::Games::RType::System::Collision {
 
     void HandleCollision(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
-        auto const& players = ref.get_components<components::Player>();
-        auto const& enemies = ref.get_components<components::Enemy>();
+        auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto const& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
 
         // At least one of the entities is a player
         if (vectorId.size() == 2) {

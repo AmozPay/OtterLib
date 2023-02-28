@@ -5,6 +5,7 @@
 ** DeathSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "DeathSystem.hpp"
 
 namespace Otter::Games::RType::System::Death {
@@ -27,7 +28,7 @@ namespace Otter::Games::RType::System::Death {
 
     void EntityDeath(Otter::Core::Orchestrator& ref)
     {
-        auto const& healths = ref.get_components<components::Health>();
+        auto const& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
 
         for (size_t i = 0; i < healths.size(); i++) {
             auto const& health = healths[i];

@@ -6,13 +6,14 @@
 */
 
 #include "MoveSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Move {
 
     void EntityMovement(Otter::Core::Orchestrator& ref)
     {
-        auto& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
-        auto& velocities = ref.get_components<Otter::Games::RType::Components::Velocity>();
+        auto& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
+        auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
         for (size_t i = 0; i < transforms.size() && i < velocities.size(); i++) {
             auto& transform = transforms[i];
             auto& velocity = velocities[i];

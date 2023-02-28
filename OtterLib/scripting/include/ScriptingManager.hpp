@@ -48,7 +48,6 @@ namespace Otter::Scripting {
             void enableScripting(const std::string scriptingEntrypointDirectory);
         private:
             void setupComponentBindings(void);
-            void registerComponents(void);
             LuaContext _luaContext;
             Otter::Core::SystemManager &_systemManager;
             Otter::Core::Orchestrator &_orchestrator;

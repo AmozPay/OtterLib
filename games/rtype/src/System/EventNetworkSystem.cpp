@@ -7,6 +7,7 @@
 
 #include "EventNetworkSystem.hpp"
 
+#include "baseComponents.hpp"
 #include "Components.hpp"
 
 namespace Otter::Games::RType::System::EventNetwork {
@@ -16,7 +17,7 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void PlayerMovementEvent(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
-        auto& velocities = ref.get_components<components::Velocity>();
+        auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
         if (playerIndex < velocities.size() && velocities[playerIndex]) {
             auto& velocity = velocities[playerIndex];
             if (state == utils::EventState::BACKWARD)
@@ -36,32 +37,32 @@ namespace Otter::Games::RType::System::EventNetwork {
         Otter::Core::Entity newShot = ref.createEntity();
 
 #if defined(TARGET_CLIENT)
-        auto& textureStorages = ref.get_components<components::TextureStorage>();
+        auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
         for (size_t i = 0; i < textureStorages.size(); i++) {
             auto& textureStorage = textureStorages[i];
 
             if (textureStorage) {
                 ref.add_component(newShot,
-                                  components::Texture("../assets/projectile.gif",
+                                  Otter::Core::BaseComponents::Texture("../assets/projectile.gif",
                                                       textureStorage->findTextureByPath("../assets/projectile.gif"),
                                                       Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)));
             }
         }
-        ref.add_component(newShot, components::Render());
+        ref.add_component(newShot, Otter::Core::BaseComponents::Render());
 #endif
         ref.add_component(
-            newShot, components::Transform(3, 0,
+            newShot, Otter::Core::BaseComponents::Transform(3, 0,
                                            {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
                                             transform->_position.y}));
 
         ref.add_component(newShot, components::Shot(playerIndex));
         if (shooter->_direction == components::LEFT)
-            ref.add_component(newShot, components::Velocity(0, 5, {-1, 0}, {0, 0}));
+            ref.add_component(newShot, Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
         if (shooter->_direction == components::RIGHT)
-            ref.add_component(newShot, components::Velocity(0, 5, {1, 0}, {0, 0}));
+            ref.add_component(newShot, Otter::Core::BaseComponents::Velocity(0, 5, {1, 0}, {0, 0}));
         ref.add_component(newShot, components::Obstacle(components::ObstacleType::BULLET, "bullet"));
-        ref.add_component(newShot, components::BoxCollider(48, 36));
+        ref.add_component(newShot, Otter::Core::BaseComponents::BoxCollider(48, 36));
 
         if (shooter->_shotNbr != -1)
             shooter->_shotNbr -= 1;
@@ -70,8 +71,8 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex)
     {
-        auto const& transforms = ref.get_components<components::Transform>();
-        auto& textures = ref.get_components<components::Texture>();
+        auto const& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
+        auto& textures = ref.get_components<Otter::Core::BaseComponents::Texture>();
         auto& shooters = ref.get_components<components::Shooter>();
 
         if (playerIndex < transforms.size() && playerIndex < textures.size() && playerIndex < shooters.size()) {
@@ -101,8 +102,8 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void EventHandler(Otter::Core::Orchestrator& ref)
     {
-        auto const& players = ref.get_components<components::Player>();
-        auto& eventNetworks = ref.get_components<components::EventNetwork>();
+        auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
 
         for (size_t i = 0; i < eventNetworks.size() && i < players.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
