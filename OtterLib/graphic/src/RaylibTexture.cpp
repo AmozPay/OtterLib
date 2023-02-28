@@ -20,6 +20,7 @@ namespace Otter::Graphic::Raylib {
     RaylibTexture::RaylibTexture(const std::string& texturePath)
         : _texture(LoadTexture(texturePath.c_str())), _color(WHITE)
     {
+        this->_texturePath = texturePath;
     }
 
     /**
@@ -74,5 +75,7 @@ namespace Otter::Graphic::Raylib {
     int RaylibTexture::getWidth() const { return _texture.width; }
 
     int RaylibTexture::getHeight() const { return _texture.height; }
+
+    std::string RaylibTexture::getFilePath() const { return _texturePath; }
 
 } // namespace Otter::Graphic::Raylib

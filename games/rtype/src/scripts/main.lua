@@ -12,11 +12,11 @@ players = {
 
 
 local function createPlayers()
-    for index, value in pairs(players) do
-        local playerEntity = OtterLib.orchestrator.createEntity()
-        OtterLib.components.Player.createAndAdd(playerEntity, value["id"], value["tag"])
-        OtterLib.components.Health.createAndAdd(playerEntity, 200)
-        value["entityId"] = playerEntity
+    -- for index, value in pairs(players) do
+    --     local playerEntity = OtterLib.orchestrator.createEntity()
+    --     OtterLib.components.Player.createAndAdd(playerEntity, value["id"], value["tag"])
+    --     OtterLib.components.Health.createAndAdd(playerEntity, 200)
+    --     value["entityId"] = playerEntity
     end
 end
 
@@ -25,10 +25,10 @@ local function createEntities()
 end
 
 local function updatePlayers()
-    for index, value in pairs(players) do
-        print("Player " .. OtterLib.components.Player.tag.get(value["entityId"]) .. ":")
-        print("Hp: " .. OtterLib.components.Health.hp.get(value["entityId"]))
-        print("\n")
+    -- for index, value in pairs(players) do
+    --     print("Player " .. OtterLib.components.Player.tag.get(value["entityId"]) .. ":")
+    --     print("Hp: " .. OtterLib.components.Health.hp.get(value["entityId"]))
+    --     print("\n")
     end
 end
 

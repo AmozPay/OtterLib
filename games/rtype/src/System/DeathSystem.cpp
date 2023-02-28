@@ -40,7 +40,37 @@ namespace Otter::Games::RType::System::Death {
 
     void HandleDeath(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
-        std::cout << "Entity dead" << std::endl;
+        std::cout << "test" << std::endl;
+        for (auto &id: vectorId) {
+            auto &animationComp = ref.get_components<components::AnimationComponent>();
+
+            if (!animationComp[id]) {
+                ref.remove_entity(static_cast<std::uint32_t>(id));
+                std::cout << "Entity remove" << std::endl;
+                break;
+            }
+
+            if (!animationComp[id]->idAnimMap.contains(components::DEATH_ANIM)) {
+                ref.remove_entity(static_cast<std::uint32_t>(id));
+                std::cout << "Entity remove" << std::endl;
+                break;
+            }
+
+            if (animationComp[id]->currentAnim != components::DEATH_ANIM) {
+                animationComp[id]->currentAnim = components::DEATH_ANIM;
+                continue;
+            }
+
+            auto animation = animationComp[id]->idAnimMap.find(components::DEATH_ANIM)->second;
+
+            if (animation.currentPos >= animation.animVect.size() - 1) {
+                ref.remove_entity(static_cast<std::uint32_t>(id));
+                std::cout << "Entity remove" << std::endl;
+                break;
+            }
+
+        }
+
     }
 
 } // namespace Otter::Games::RType::System::Death

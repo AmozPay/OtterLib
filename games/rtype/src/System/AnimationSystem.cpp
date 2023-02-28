@@ -17,6 +17,7 @@ namespace Otter::Games::RType::System::Animation {
     using Animation = Otter::Games::RType::Utils::Animation;
     using AnimationComponent = Otter::Games::RType::Components::AnimationComponent;
     using Texture = Otter::Core::BaseComponents::Texture;
+    using TextureStorage = Otter::Core::BaseComponents::TextureStorage;
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
     using ComponentIdVector = Otter::Games::RType::Components::ComponentIdVector;
     using IdAnimMap = Otter::Games::RType::Components::IdAnimMap;
@@ -29,7 +30,21 @@ namespace Otter::Games::RType::System::Animation {
         return isOneShot && (currentPos >= maxSize - 1);
     }
 
-    void computeAnimation(Animation& animation, Texture &texture)
+    void changeTexture(Otter::Core::Orchestrator& ref, Animation& animation, Texture &texture) 
+    {
+        auto& textureStorages = ref.get_components<TextureStorage>();
+
+        for (size_t x = 0; x < textureStorages.size(); x++) {
+            auto& textureStorage = textureStorages[x];
+
+            if (!textureStorage) {
+                continue;
+            }
+            texture._texture = textureStorage->findTextureByPath(animation.texturePath);
+        }        
+    }
+
+    void computeAnimation(Otter::Core::Orchestrator& ref, Animation& animation, Texture &texture)
     {
         TimePoint newTime = std::chrono::steady_clock::now();
         std::chrono::duration<float> duration = (newTime - animation.lastTime) * 1000;
@@ -46,6 +61,9 @@ namespace Otter::Games::RType::System::Animation {
                 animation.currentPos = 0;
             }
             texture._rectangle = animation.animVect[animation.currentPos];
+            if (animation.texturePath.compare(texture._texture.getFilePath()) != 0) {
+                changeTexture(ref, animation, texture);
+            }
         }
     }
 
@@ -64,6 +82,7 @@ namespace Otter::Games::RType::System::Animation {
             
             if (animationComponent->idAnimMap.contains(animationComponent->currentAnim)) {
                 computeAnimation(
+                    ref,
                     animationComponent->idAnimMap
                     .find(animationComponent->currentAnim)->second,
                     *texture

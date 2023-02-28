@@ -15,8 +15,14 @@
 
 namespace Otter::Games::RType::Components {
 
+    enum AnimType {
+        STANDUP_ANIM,
+        RUNNING_ANIM,
+        DEATH_ANIM
+    };
+
     using Animation = Otter::Games::RType::Utils::Animation;
-    using IdAnimMap = std::unordered_map<std::size_t, Animation>;
+    using IdAnimMap = std::unordered_map<AnimType, Animation>;
 
     /**
      * @brief Component for handling animations
@@ -25,7 +31,7 @@ namespace Otter::Games::RType::Components {
      * @struct AnimationComponent
      */
     struct AnimationComponent {
-        AnimationComponent(const IdAnimMap& idAnimMap, const std::size_t& currentAnim)
+        AnimationComponent(const IdAnimMap& idAnimMap, const AnimType& currentAnim)
         {
             this->idAnimMap = idAnimMap;
             this->currentAnim = currentAnim;
@@ -34,7 +40,7 @@ namespace Otter::Games::RType::Components {
         ~AnimationComponent() = default;
 
         IdAnimMap idAnimMap;
-        std::size_t currentAnim;
+        AnimType currentAnim;
     };
 
 }; // namespace Otter::Games::RType::Components
