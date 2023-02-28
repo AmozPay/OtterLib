@@ -7,10 +7,9 @@
 
 #pragma once
 
-#include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
-#include "Utils.hpp"
+#include "ComponentUtils.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
@@ -321,12 +320,12 @@ namespace Otter::Core::BaseComponents {
      * @var _scale: The scale of the entity
      */
     struct Transform {
-        COMPONENT_BUILDER(Transform)
-        {
-            auto scale = json.get<float>("scale");
-            auto rotation = json.get<float>("rotation");
-            core.add_component(e, Transform(scale, rotation, getVector2(json, "position")));
-        }
+        // COMPONENT_BUILDER(Transform)
+        // {
+        //     auto scale = json.get<float>("scale");
+        //     auto rotation = json.get<float>("rotation");
+        //     core.add_component(e, Transform(scale, rotation, getVector2(json, "position")));
+        // }
 
         /**
          * @brief Constructor of the Transform component

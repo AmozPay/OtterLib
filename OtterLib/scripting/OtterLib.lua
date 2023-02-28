@@ -195,15 +195,18 @@ OtterLib = {
         },
     },
     systems = {
-        init = {},
-        preEvent = {},
-        event = {},
-        preUpdate = {},
-        update = {},
-        preDraw = {},
-        draw = {},
-        subDraw = {},
-        cleanup = {}
+        phasesEnum = {
+            init = {},
+            preEvent = {},
+            event = {},
+            preUpdate = {},
+            update = {},
+            preDraw = {},
+            draw = {},
+            subDraw = {},
+            cleanup = {}
+        },
+        register = function(systemFunction, systemPhaseEnum) table.insert(systemPhaseEnum, systemFunction) end,
     }
 }
 

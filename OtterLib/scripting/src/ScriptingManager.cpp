@@ -35,6 +35,7 @@ namespace Otter::Scripting {
         _luaContext.registerFunction("__removeEntity", Otter::Scripting::Bindings::Orchestrator::removeEntity);
 
         this->setupComponentBindings();
+        this->registerComponents();
 
         REGISTER_SYSTEM(init);
         REGISTER_SYSTEM(preEvent);
@@ -47,6 +48,26 @@ namespace Otter::Scripting {
         REGISTER_SYSTEM(cleanup);
 
         std::cout << "[OtterLib] Scripting initialized" << std::endl;
+    }
+
+    void ScriptingManager::registerComponents(void)
+    {
+        _orchestrator.register_component<Core::BaseComponents::Render>();
+        _orchestrator.register_component<Core::BaseComponents::Parallax>();
+        _orchestrator.register_component<Core::BaseComponents::Dispawnable>();
+        _orchestrator.register_component<Core::BaseComponents::Dispawnable>();
+        _orchestrator.register_component<Core::BaseComponents::EventNetwork>();
+        _orchestrator.register_component<Core::BaseComponents::Window>();
+        _orchestrator.register_component<Core::BaseComponents::BoxCollider>();
+        _orchestrator.register_component<Core::BaseComponents::Sound>();
+        _orchestrator.register_component<Core::BaseComponents::Music>();
+        _orchestrator.register_component<Core::BaseComponents::Transform>();
+        _orchestrator.register_component<Core::BaseComponents::Velocity>();
+        _orchestrator.register_component<Core::BaseComponents::Player>();
+        _orchestrator.register_component<Core::BaseComponents::Enemy>();
+        _orchestrator.register_component<Core::BaseComponents::Health>();
+        _orchestrator.register_component<Core::BaseComponents::Damage>();
+        _orchestrator.register_component<Core::BaseComponents::Destructible>();
     }
 
     void ScriptingManager::setupComponentBindings(void)

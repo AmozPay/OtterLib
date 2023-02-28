@@ -1,7 +1,6 @@
 #include "lua_wrapper.hpp"
 #include "Orchestrator.hpp"
 #include "baseComponents.hpp"
-#include "C2LuaBindings.hpp"
 
 namespace Otter::Scripting::Bindings::Orchestrator {
 
@@ -18,7 +17,7 @@ namespace Otter::Scripting::Bindings::Orchestrator {
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-        std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);
+        std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");
         auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
         Otter::Core::Entity e = orchestrator->createEntity();
         orchestrator->remove_entity(entity);
@@ -27,6 +26,18 @@ namespace Otter::Scripting::Bindings::Orchestrator {
 
 } // namespace Otter::Scripting::Bindings::Orchestrator
 
+namespace Otter::Scripting::Bindings {
+    class EnumException {
+        public:
+            EnumException(std::string str): _what(str) {}
+            std::string what()
+            {
+                return _what;
+            }
+            std::string _what;
+    };
+}
+
 namespace Otter::Scripting::Bindings::BaseComponents {
 
     namespace Window {
@@ -34,7 +45,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lllsl", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lllsl");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto width = static_cast<int>(std::get<long long>(args[1]));
             auto height = static_cast<int>(std::get<long long>(args[2]));
@@ -50,7 +61,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lll", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lll");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto width = static_cast<float>(std::get<double>(args[1]));
             auto height = static_cast<float>(std::get<double>(args[2]));
@@ -68,7 +79,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             str_to_enum["STOPPED"] = Core::BaseComponents::SoundStatus::STOPPED;
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lsds", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lsds");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto path = std::string(std::get<char const *>(args[1]));
             auto volume = static_cast<float>(std::get<double>(args[2]));
@@ -88,7 +99,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             str_to_enum["STOPPED"] = Core::BaseComponents::SoundStatus::STOPPED;
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ls");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             char const *str = std::get<char const *>(args[1]);
             if (str_to_enum.find(str) == str_to_enum.end())
@@ -105,7 +116,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             enum_to_str[Core::BaseComponents::SoundStatus::STOPPED] = "STOPPED";
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ls");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto status = orchestrator->get_components<Core::BaseComponents::Sound>()[entity]->_status;
             std::string status_str = enum_to_str[status];
@@ -123,7 +134,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             str_to_enum["STOPPED"] = Core::BaseComponents::SoundStatus::STOPPED;
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lsdbs", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lsdbs");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto path = std::string(std::get<char const *>(args[1]));
             auto volume = static_cast<float>(std::get<double>(args[2]));
@@ -144,7 +155,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             str_to_enum["STOPPED"] = Core::BaseComponents::SoundStatus::STOPPED;
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ls");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             char const *str = std::get<char const *>(args[1]);
             if (str_to_enum.find(str) == str_to_enum.end())
@@ -161,7 +172,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             enum_to_str[Core::BaseComponents::SoundStatus::STOPPED] = "STOPPED";
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ls");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             auto status = orchestrator->get_components<Core::BaseComponents::Music>()[entity]->_status;
             std::string status_str = enum_to_str[status];
@@ -175,7 +186,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ldddd", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ldddd");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             float scale = std::get<double>(args[1]);
             float rotation = std::get<double>(args[2]);
@@ -191,7 +202,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ldddddd", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ldddddd");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             float speed = std::get<double>(args[1]);
             float constantSpeed = std::get<double>(args[2]);
@@ -207,13 +218,21 @@ namespace Otter::Scripting::Bindings::BaseComponents {
     namespace Player {
         int createAndAdd(lua_State *L)
         {
+            std::cout << 1 << std::endl;
             Otter::Scripting::LuaContext ctx(L);
+            std::cout << 2 << std::endl;
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lls", false);
+            std::cout << 3 << std::endl;
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lls");
+            std::cout << 4 << std::endl;
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
+            std::cout << 5 << std::endl;
             int id = std::get<long long>(args[1]);
+            std::cout << 6 << std::endl;
             std::string tag = std::get<char const *>(args[2]);
+            std::cout << 7 << std::endl;
             orchestrator->add_component(entity, Core::BaseComponents::Player(id, tag));
+            std::cout << 888 << std::endl;
             return 0;
         }
     }
@@ -223,7 +242,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lls", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lls");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             int id = std::get<long long>(args[1]);
             std::string tag = std::get<char const *>(args[2]);
@@ -237,7 +256,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ll", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ll");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             unsigned int hp = std::get<long long>(args[1]);
             orchestrator->add_component(entity, Core::BaseComponents::Health(hp));
@@ -250,7 +269,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ll", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ll");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             unsigned int damage = std::get<long long>(args[1]);
             orchestrator->add_component(entity, Core::BaseComponents::Damage(damage));
@@ -263,7 +282,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         {
             Otter::Scripting::LuaContext ctx(L);
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lb", false);
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lb");
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
             bool isDestructible = std::get<bool>(args[1]);
             orchestrator->add_component(entity, Core::BaseComponents::Destructible(isDestructible));

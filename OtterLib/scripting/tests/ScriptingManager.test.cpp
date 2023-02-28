@@ -17,7 +17,7 @@ TEST(scriptingManagerLuaBindings, shouldPrintHi)
     luaContext.doFile("test_data/OtterLib.lua");
     luaContext.doString(Otter::Scripting::luaCallScripts);
     luaContext.doString("function sayHi()\n  print('hi')\n end");
-    luaContext.doString("table.insert(OtterLib.systems.init, sayHi)");
+    luaContext.doString("OtterLib.systems.register(sayHi, OtterLib.systems.phasesEnum.init)");
     auto callScripts = luaContext.bind<char const *>("__callScripts", "", "s");
     testing::internal::CaptureStdout();
     callScripts("init");

@@ -1,5 +1,5 @@
-#pragma once
 
+#pragma once
 #include "baseComponents.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -10,7 +10,7 @@
 #define CLB_STRING_GSETTER(componentType, memberName) int set_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ls");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     (*component)._ ## memberName = std::string(std::get<char const *>(args[1]));\
@@ -19,7 +19,7 @@
 int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     ctx.push(component->_ ## memberName .c_str());\
@@ -30,7 +30,7 @@ int get_ ## memberName(lua_State *L) {\
 #define CLB_INT_GSETTER(componentType, memberName) int set_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ll", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ll");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     (*component)._ ## memberName = std::get<long long>(args[1]);\
@@ -39,7 +39,7 @@ int get_ ## memberName(lua_State *L) {\
 int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     ctx.push(static_cast<long long>(component->_ ## memberName));\
@@ -50,7 +50,7 @@ int get_ ## memberName(lua_State *L) {\
 #define CLB_NUMBER_GSETTER(componentType, memberName) int set_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ll", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ll");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     (*component)._ ## memberName = std::get<double>(args[1]);\
@@ -59,7 +59,7 @@ int get_ ## memberName(lua_State *L) {\
 int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     ctx.push(static_cast<double>(component->_ ## memberName));\
@@ -71,7 +71,7 @@ int get_ ## memberName(lua_State *L) {\
 #define CLB_BOOL_GSETTER(componentType, memberName) int set_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("lb", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lb");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     (*component)._ ## memberName = std::get<bool>(args[1]);\
@@ -80,7 +80,7 @@ int get_ ## memberName(lua_State *L) {\
 int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
     ctx.push(static_cast<bool>(component->_ ## memberName));\
@@ -92,7 +92,7 @@ int get_ ## memberName(lua_State *L) {\
 #define CLB_VECTOR2_GSETTER(componentType, memberName) int set_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ldd", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ldd");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     float x = std::get<double>(args[1]);\
     float y = std::get<double>(args[2]);\
@@ -102,7 +102,7 @@ int get_ ## memberName(lua_State *L) {\
 int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
-    std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
+    std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
     auto vec = orchestrator->get_components<Core::BaseComponents::componentType>()[entity]->_ ## memberName;\
     ctx.push(static_cast<double>(vec.x));\
@@ -126,7 +126,7 @@ namespace Otter::Scripting::Bindings::Templates {
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-        std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);
+        std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");
         auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
         orchestrator->add_component<T>(entity, T());
         return 0;
@@ -139,7 +139,7 @@ namespace Otter::Scripting::Bindings::Templates {
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-        std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);
+        std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");
         auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
         orchestrator->remove_component<T>(entity);
         return 0;

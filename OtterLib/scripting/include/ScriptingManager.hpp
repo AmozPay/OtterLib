@@ -27,7 +27,7 @@ namespace Otter::Scripting {
     // user created scripts and call them in the proper phase. This is called by a library available system.
     static const std::string luaCallScripts = "\
         function __callScripts(phase)\n\
-            for k, v in pairs(OtterLib.systems[phase]) do\n\
+            for k, v in pairs(OtterLib.systems.phasesEnum[phase]) do\n\
                 v()\n\
             end\n\
         end\n\
@@ -47,6 +47,7 @@ namespace Otter::Scripting {
             void enableScripting(const std::string scriptingEntrypointDirectory);
         private:
             void setupComponentBindings(void);
+            void registerComponents(void);
             LuaContext _luaContext;
             Otter::Core::SystemManager &_systemManager;
             Otter::Core::Orchestrator &_orchestrator;
