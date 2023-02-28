@@ -218,21 +218,13 @@ namespace Otter::Scripting::Bindings::BaseComponents {
     namespace Player {
         int createAndAdd(lua_State *L)
         {
-            std::cout << 1 << std::endl;
             Otter::Scripting::LuaContext ctx(L);
-            std::cout << 2 << std::endl;
             Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
-            std::cout << 3 << std::endl;
             std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("lls");
-            std::cout << 4 << std::endl;
             auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
-            std::cout << 5 << std::endl;
             int id = std::get<long long>(args[1]);
-            std::cout << 6 << std::endl;
             std::string tag = std::get<char const *>(args[2]);
-            std::cout << 7 << std::endl;
             orchestrator->add_component(entity, Core::BaseComponents::Player(id, tag));
-            std::cout << 888 << std::endl;
             return 0;
         }
     }

@@ -32,7 +32,7 @@ int get_ ## memberName(lua_State *L) {\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
     std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ll");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
-    auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
+    auto component = orchestrator->get_components<Core::BaseComponents::componentType>()[entity];\
     (*component)._ ## memberName = std::get<long long>(args[1]);\
     return 0;\
 }\
@@ -41,7 +41,7 @@ int get_ ## memberName(lua_State *L) {\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
     std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("l");\
     auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));\
-    auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];\
+    auto component = orchestrator->get_components<Core::BaseComponents::componentType>()[entity];\
     ctx.push(static_cast<long long>(component->_ ## memberName));\
     return 1;\
 }
