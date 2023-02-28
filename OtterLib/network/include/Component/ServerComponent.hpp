@@ -17,6 +17,7 @@ namespace Otter::Network {
         std::map<udp::endpoint, std::uint32_t> playerId;
         std::set<std::uint32_t> netId;
         std::vector<std::function<void(Otter::Core::Orchestrator&, std::string&, int)>> callBack;
+      
     };
 } // namespace Otter::Network
 

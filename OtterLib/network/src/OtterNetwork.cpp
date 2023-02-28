@@ -38,14 +38,14 @@ namespace Otter::Network::Sender {
         return false;
     }
 
-    void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt)
+    void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t client_id, std::stringstream& dt)
     {
         auto& clients = ref.get_components<Otter::Network::ClientComponent>();
 
         for (int i = 0; i < clients.size(); i++) {
             if (!clients[i])
                 continue;
-            if (clients[i]->id == id) {
+            if (clients[i]->id == client_id) {
                 queueDtObj(ref, *(clients[i]), convertDtObj(msg, dt));
                 break;
             }

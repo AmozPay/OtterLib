@@ -40,7 +40,7 @@ namespace Otter::Network {
     namespace Sender {
         bool isMandatory(Otter::Core::Orchestrator& ref, std::uint32_t msg);
         void broadCast_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::stringstream& dt);
-        void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t id, std::stringstream& dt);
+        void send_msg(Otter::Core::Orchestrator& ref, MsgCode msg, std::uint32_t client_id, std::stringstream& dt);
         dtObj convertDtObj(MsgCode msg, std::stringstream& dt);
 
         void queueDtObj(Otter::Core::Orchestrator& ref, Otter::Network::ClientComponent& cl, dtObj&& obj);

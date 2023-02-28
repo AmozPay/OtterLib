@@ -156,6 +156,9 @@ namespace Otter::Network::Server {
             nb += tramFill(tmp, cl);
         Otter::Network::Serializer::saveArchive(ss, nb);
         ss << tmp.str();
+        if (ss.str().size() == 0 || nb == 0)
+          return ret;
+        std::cout << "Tram Sending" << std::endl;
         session.send(ss.str());
         return ret;
     }
@@ -250,7 +253,7 @@ namespace Otter::Network::Server {
 	//std::cout << "gooing to update with index:" << index << std::endl;
         update_session(ref, *sock[index]);
 	//	std::cout << "entering msg" << std::endl;
-	//        update_msg(ref, index);
+        update_msg(ref, index);
 	//std::cout << "entering recv" << std::endl;
         update_recv(ref, index);
 		//std::cout << "end update" << std::endl;

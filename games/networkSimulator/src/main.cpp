@@ -26,16 +26,19 @@ void test_upd(Otter::Core::Orchestrator &ref)
   }
 }
 
+
+void setupNetwork(Otter::Core::Orchestrator &ref)
+{
+
+}
+
 void test_conect_serv(Otter::Core::Orchestrator &ref)
 {
   auto& cl = ref.get_components<Otter::Network::ClientComponent>();
-  /*
-  if (cl.size() == 0) {
-    std::cout << "no client" << std::endl;
-    return;
-  }
-  std::cout << cl.size() << " client on serve" << std::endl;
-  */
+  /**  
+  if (cl.size() != 0) {
+    for (int i = 0; i < cl.size(); i++) {
+    }*/ 
 }
 
 namespace Otter::Core {
@@ -59,7 +62,7 @@ namespace Otter::Core {
       ref.registerSystem(&Otter::Network::Client::init, Otter::Core::SystemManager::init);
       ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
          ref.registerSystem(&Otter::Network::Client::update, Otter::Core::SystemManager::update);
-         ref.registerSystem(&test_conect_serv, Otter::Core::SystemManager::update);
+  //       ref.registerSystem(&test_conect_serv, Otter::Core::SystemManager::update);
 
 #endif
  #if defined(TARGET_SERVER)
