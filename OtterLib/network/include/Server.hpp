@@ -60,7 +60,7 @@ namespace Otter::Network::Server {
     bool tramSending(Otter::Network::Session& session, Otter::Network::ClientComponent& cl);
 
     ///////////////////////function for compute recived data/////////////////////////////////////////////
-    void computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
+    int computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
                      int index);
 }; // namespace Otter::Network::Server
 

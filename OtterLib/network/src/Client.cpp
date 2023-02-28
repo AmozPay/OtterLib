@@ -118,8 +118,10 @@ namespace Otter::Network::Client {
         }
         if (cl.msg_list.size() != 0 && ss.str().size() < 10000)
             nb += tramFill(tmp, cl);
-        Otter::Network::Serializer::saveArchive(ss, nb);
+        Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, nb);
         ss << tmp.str();
+	if (ss.str().size() == 0 || nb == 0)
+	  return ret;
         session.send(ss.str());
         return ret;
     }
@@ -135,6 +137,7 @@ namespace Otter::Network::Client {
             return;
         if (!cl || !soc || !serv)
             return;
+	std::cout << "SENDING TRAM" << std::endl;
         tramSending(*connection[0], *cl);
         cl->seq++;
     }

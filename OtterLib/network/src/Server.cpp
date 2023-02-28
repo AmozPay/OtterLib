@@ -147,7 +147,7 @@ namespace Otter::Network::Server {
         std::uint8_t nb = 0;
 
         Otter::Network::Header::formatHeader(ss, cl.seq, cl.id);
-        if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
+       if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
             ret = true;
             nb += tramFillMandatory(tmp, cl);
         }
@@ -180,8 +180,7 @@ namespace Otter::Network::Server {
     }
 
     ////////////////////////////recieve update///////////////////////////////////
-
-    void computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
+    int computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
                      int index)
     {
         std::uint32_t magic = Otter::Network::Header::getUint(ss);
@@ -191,13 +190,15 @@ namespace Otter::Network::Server {
         dtObj dt;
 
         if (pac == 0)
-            return;
+            return 0;
         for (int i = 0; pac > i; i++) {
             dt = Otter::Network::Header::getDt(ss);
-            if (dt.msgCode == Otter::Network::ACTIVATION)
-                continue;
+            if (dt.msgCode == Otter::Network::ACTIVATION) {
+               return -1;
+	    }
             serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
+	return 0;
     }
 
     void update_recv(Otter::Core::Orchestrator& ref, int index)
@@ -210,7 +211,8 @@ namespace Otter::Network::Server {
         std::stringstream data;
 
         for (auto& it : connection) {
-            for (j = -1; cl.size() > j + 1; j++) {
+	  std::cout << "serv recive dt" << std::endl;
+	  for (j = -1; cl.size() > j + 1; j++) {
                 if (serv->playerId[it->get_endpoint()] == cl[j + 1]->id) {
                     j = j + 1;
                     break;
@@ -223,7 +225,10 @@ namespace Otter::Network::Server {
                 continue;
             if (test_header(data, cl[j]->id, cl[j]->seq) == false)
                 continue;
-            computeTram(ref, *serv, data, j);
+            if (computeTram(ref, *serv, data, j) == -1) {
+	      std::cout << "doublon" << std::endl;  
+	       soc->channel->disconnect(it->get_endpoint());
+	    }
         }
     }
 
@@ -245,7 +250,7 @@ namespace Otter::Network::Server {
 	//	std::cout << "entering msg" << std::endl;
 	//        update_msg(ref, index);
 	//std::cout << "entering recv" << std::endl;
-        //update_recv(ref, index);
+        update_recv(ref, index);
 		//std::cout << "end update" << std::endl;
     }
 
