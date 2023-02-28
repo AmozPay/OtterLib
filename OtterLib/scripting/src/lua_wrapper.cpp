@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
+#include <cstring>
 
 namespace Otter::Scripting {
 
@@ -114,31 +115,39 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
+    std::vector<luaTypes> LuaContext::getArgs(std::string typesFmt)
+    {
+        std::reverse(typesFmt.begin(), typesFmt.end());
+        return this->getStackValues(typesFmt, false);
+    }
+
+
     std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes, bool popValue)
     {
         std::vector<luaTypes> returnValues;
+        unsigned int i = 1;
 
-        for (auto i : returnTypes) {
-            switch (i) {
+        for (auto type: returnTypes) {
+            switch (type) {
             case 'b':
-                LUA_ERR_WRAP(lua_isboolean(L, -1));
-                returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -1)));
+                LUA_ERR_WRAP(lua_isboolean(L, -i));
+                returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -i)));
                 break;
             case 'd':
-                LUA_ERR_WRAP(lua_isnumber(L, -1));
-                returnValues.emplace_back(lua_tonumber(L, -1));
+                LUA_ERR_WRAP(lua_isnumber(L, -i));
+                returnValues.emplace_back(lua_tonumber(L, -i));
                 break;
             case 's':
-                LUA_ERR_WRAP(lua_isstring(L, -1));
-                returnValues.emplace_back(lua_tostring(L, -1));
+                LUA_ERR_WRAP(lua_isstring(L, -i));
+                returnValues.emplace_back(lua_tostring(L, -i));
                 break;
             case 'l':
-                LUA_ERR_WRAP(lua_isinteger(L, -1));
-                returnValues.emplace_back(lua_tointeger(L, -1));
+                LUA_ERR_WRAP(lua_isinteger(L, -i));
+                returnValues.emplace_back(lua_tointeger(L, -i));
                 break;
             case 'p':
-                LUA_ERR_WRAP(lua_isuserdata(L, -1));
-                returnValues.emplace_back(lua_touserdata(L, -1));
+                LUA_ERR_WRAP(lua_isuserdata(L, -i));
+                returnValues.emplace_back(lua_touserdata(L, -i));
                 break;
             default:
                 throw std::invalid_argument("Invalid fmt string");
@@ -146,6 +155,8 @@ namespace Otter::Scripting {
             }
             if (popValue) {
                 lua_pop(L, 1);
+            } else {
+                i++;
             }
         }
         std::reverse(returnValues.begin(), returnValues.end());

@@ -90,6 +90,8 @@ namespace Otter::Scripting {
          */
         void doString(std::string luaString);
 
+        std::vector<luaTypes> getArgs(std::string typesFmt);
+
         /**
          * @brief call a lua function, with no parameters
          * @details valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string
