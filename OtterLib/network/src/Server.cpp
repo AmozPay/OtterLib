@@ -80,7 +80,8 @@ namespace Otter::Network::Server {
         obj.msgCode = Otter::Network::ACTIVATION;
         obj.ss = "ORDER 66";
         Otter::Network::Serializer::saveArchive(ss, obj);
-        return ss.str();
+	std::cout << "Order 66" << std::endl;
+	return ss.str();
     }
 
     void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc)
@@ -189,8 +190,10 @@ namespace Otter::Network::Server {
         std::uint8_t pac = Otter::Network::Header::getChar(ss);
         dtObj dt;
 
-        if (pac == 0)
+	std::cout << "msg recieve "<< std::endl;
+	if (pac == 0)
             return 0;
+       std::cout << "serv recive dt" << std::endl;
         for (int i = 0; pac > i; i++) {
             dt = Otter::Network::Header::getDt(ss);
             if (dt.msgCode == Otter::Network::ACTIVATION) {
@@ -211,7 +214,6 @@ namespace Otter::Network::Server {
         std::stringstream data;
 
         for (auto& it : connection) {
-	  std::cout << "serv recive dt" << std::endl;
 	  for (j = -1; cl.size() > j + 1; j++) {
                 if (serv->playerId[it->get_endpoint()] == cl[j + 1]->id) {
                     j = j + 1;

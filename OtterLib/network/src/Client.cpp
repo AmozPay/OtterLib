@@ -122,6 +122,7 @@ namespace Otter::Network::Client {
         ss << tmp.str();
 	if (ss.str().size() == 0 || nb == 0)
 	  return ret;
+	std::cout << "Tram Sending" << std::endl;
         session.send(ss.str());
         return ret;
     }
@@ -137,7 +138,6 @@ namespace Otter::Network::Client {
             return;
         if (!cl || !soc || !serv)
             return;
-	std::cout << "SENDING TRAM" << std::endl;
         tramSending(*connection[0], *cl);
         cl->seq++;
     }
@@ -222,7 +222,6 @@ namespace Otter::Network::Client {
 	    Otter::Network::Client::update_connection(ref, index);
             Otter::Network::Client::update_session(ref, index);
         } else {
-        std::cout << "entering with serv" << std::endl;
             Otter::Network::Client::update_msg(ref, index);
             Otter::Network::Client::update_recv(ref, index);
         }
