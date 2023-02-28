@@ -99,7 +99,7 @@ int get_ ## memberName(lua_State *L) {\
     orchestrator->get_components<Core::BaseComponents::componentType>()[entity]->_ ## memberName = {.x = x, .y = y};\
     return 0;\
 }\
-int set_ ## memberName(lua_State *L) {\
+int get_ ## memberName(lua_State *L) {\
     Otter::Scripting::LuaContext ctx(L);\
     Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());\
     std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);\
@@ -122,13 +122,13 @@ namespace Otter::Scripting::Bindings::Orchestrator
 
 namespace Otter::Scripting::Bindings::Templates {
     template<typename T>
-    int addEmptyComponent(T component, lua_State *L)
+    int addEmptyComponent(lua_State *L)
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
         std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("l", false);
         auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
-        orchestrator->add_component<T>(entity, component);
+        orchestrator->add_component<T>(entity, T());
         return 0;
     }
 
@@ -182,6 +182,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         CLB_STRING_GSETTER(Sound, path)
         CLB_NUMBER_GSETTER(Sound, volume)
         int set_status(lua_State *L);
+        int get_status(lua_State *L);
         int createAndAdd(lua_State *L);
     }
 
@@ -190,6 +191,7 @@ namespace Otter::Scripting::Bindings::BaseComponents {
         CLB_NUMBER_GSETTER(Music, volume)
         CLB_BOOL_GSETTER(Music, isLooping)
         int set_status(lua_State *L);
+        int get_status(lua_State *L);
         int createAndAdd(lua_State *L);
     }
 

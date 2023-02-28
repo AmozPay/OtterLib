@@ -96,6 +96,22 @@ namespace Otter::Scripting::Bindings::BaseComponents {
             orchestrator->get_components<Core::BaseComponents::Sound>()[entity]->_status = str_to_enum[str];
             return 0;
         }
+
+        int get_status(lua_State *L)
+        {
+            auto enum_to_str = std::map<Core::BaseComponents::SoundStatus, std::string>();
+            enum_to_str[Core::BaseComponents::SoundStatus::PLAYING] = "PLAYING";
+            enum_to_str[Core::BaseComponents::SoundStatus::PAUSED] = "PAUSED";
+            enum_to_str[Core::BaseComponents::SoundStatus::STOPPED] = "STOPPED";
+            Otter::Scripting::LuaContext ctx(L);
+            Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
+            auto status = orchestrator->get_components<Core::BaseComponents::Sound>()[entity]->_status;
+            std::string status_str = enum_to_str[status];
+            ctx.push(status_str.c_str());
+            return 1;
+        }
     }
 
     namespace Music {
@@ -135,6 +151,22 @@ namespace Otter::Scripting::Bindings::BaseComponents {
                 throw Bindings::EnumException(std::string("Invalid enum str value for Core::BaseComponents::SoundStatus: " + std::string(str)));
             orchestrator->get_components<Core::BaseComponents::Music>()[entity]->_status = str_to_enum[str];
             return 0;
+        }
+
+        int get_status(lua_State *L)
+        {
+            auto enum_to_str = std::map<Core::BaseComponents::SoundStatus, std::string>();
+            enum_to_str[Core::BaseComponents::SoundStatus::PLAYING] = "PLAYING";
+            enum_to_str[Core::BaseComponents::SoundStatus::PAUSED] = "PAUSED";
+            enum_to_str[Core::BaseComponents::SoundStatus::STOPPED] = "STOPPED";
+            Otter::Scripting::LuaContext ctx(L);
+            Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
+            std::vector<Otter::Scripting::luaTypes> args = ctx.getStackValues("ls", false);
+            auto entity = static_cast<Otter::Core::Entity>(std::get<long long>(args[0]));
+            auto status = orchestrator->get_components<Core::BaseComponents::Music>()[entity]->_status;
+            std::string status_str = enum_to_str[status];
+            ctx.push(status_str.c_str());
+            return 1;
         }
     }
 
