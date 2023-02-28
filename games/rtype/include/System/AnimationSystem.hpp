@@ -19,6 +19,6 @@ namespace Otter::Games::RType::System::Animation {
      * @return void
      */
     void animate(Otter::Core::Orchestrator& ref);
-}
+} // namespace Otter::Games::RType::System::Animation
 
 #endif /* !ANIMATIONSYSTEM_HPP_ */

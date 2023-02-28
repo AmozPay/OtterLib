@@ -1,14 +1,15 @@
 #include "ScriptingManager.hpp"
-#include "OtterCore.hpp"
 
+#include "OtterCore.hpp"
 
 #include <gtest/gtest.h>
 #include <string>
 
+void Otter::Core::registerSystems(Otter::Core::SystemManager& s) {}
 
-void Otter::Core::registerSystems(Otter::Core::SystemManager &s) {}
-void Otter::Core::createEntityObj(Otter::Core::Orchestrator &o) {}
-void Otter::Core::registerComponents(Otter::Core::Orchestrator &o) {}
+void Otter::Core::createEntityObj(Otter::Core::Orchestrator& o) {}
+
+void Otter::Core::registerComponents(Otter::Core::Orchestrator& o) {}
 
 TEST(scriptingManagerLuaBindings, shouldPrintHi)
 {

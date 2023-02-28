@@ -32,6 +32,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Render {
         COMPONENT_BUILDER(Render) { core.add_component(e, Render()); }
+
         Render() = default;
         ~Render() = default;
     };
@@ -52,6 +53,7 @@ namespace Otter::Games::RType::Components {
             core.add_component(e, Window(json.get<int>("width"), json.get<int>("height"),
                                          json.get<std::string>("title"), json.get<int>("fps")));
         }
+
         /**
          * @brief Constructor of the Window component
          * @param width: The width of the window
@@ -67,6 +69,7 @@ namespace Otter::Games::RType::Components {
             _title = title;
             _fps = fps;
         };
+
         ~Window() = default;
 
         int _width;
@@ -85,14 +88,19 @@ namespace Otter::Games::RType::Components {
     struct Keyboard {
 
         COMPONENT_BUILDER(Keyboard) { core.add_component(e, Keyboard()); }
+
         /**
          * @brief Constructor of the Keyboard component
          */
         Keyboard() : _keyboard(Otter::Graphic::Raylib::RaylibKeyboard()){};
         ~Keyboard() = default;
+
         void setKey(Otter::Graphic::IKeyboard::KeyType raylibKey, const int& state) { _keyMap[raylibKey] = state; };
+
         void removeKey(Otter::Graphic::IKeyboard::KeyType raylibKey) { _keyMap.erase(raylibKey); };
+
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator begin() { return _keyMap.begin(); };
+
         std::map<Otter::Graphic::IKeyboard::KeyType, int>::iterator end() { return _keyMap.end(); };
 
         Otter::Graphic::Raylib::RaylibKeyboard _keyboard;
@@ -112,6 +120,7 @@ namespace Otter::Games::RType::Components {
         {
             core.add_component(e, BoxCollider(json.get<float>("width"), json.get<float>("height")));
         }
+
         /**
          * @brief Constructor of the BoxCollider component
          * @param width: The width of the box collider rectangle
@@ -170,6 +179,7 @@ namespace Otter::Games::RType::Components {
             core.add_component(e, Sound(json.get<std::string>("path"), json.get<float>("volume"),
                                         str_to_enum[json.get<std::string>("status")]));
         }
+
         /**
          * @brief Constructor of the Sound component
          * @param path: The path to the sound
@@ -182,6 +192,7 @@ namespace Otter::Games::RType::Components {
             _volume = volume;
             _status = status;
         };
+
         ~Sound() = default;
 
         std::string _path;
@@ -209,6 +220,7 @@ namespace Otter::Games::RType::Components {
             core.add_component(e, Music(json.get<std::string>("path"), json.get<float>("volume"),
                                         json.get<bool>("isLooping"), str_to_enum[json.get<std::string>("status")]));
         }
+
         /**
          * @brief Constructor of the Music component
          * @param path: The path to the music
@@ -223,6 +235,7 @@ namespace Otter::Games::RType::Components {
             _isLooping = isLooping;
             _status = status;
         }
+
         ~Music() = default;
 
         std::string _path;
@@ -262,11 +275,9 @@ namespace Otter::Games::RType::Components {
          * @param path: The path to the texture
          * @param texture: An instance of the RaylibTexture class
          */
-        Texture(
-            const std::string& path,
-            Otter::Graphic::Raylib::RaylibTexture texture,
-            Otter::Games::RType::Utils::Rectangle rectangle
-        ) : _texture(texture)
+        Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture,
+                Otter::Games::RType::Utils::Rectangle rectangle)
+            : _texture(texture)
         {
             _path = path;
             _rectangle = rectangle;
@@ -302,6 +313,7 @@ namespace Otter::Games::RType::Components {
         }
 
         TextureStorage(const TextureStorageMap& textureStorageMap) { this->textureData = textureStorageMap; };
+
         ~TextureStorage() = default;
 
         Otter::Graphic::Raylib::RaylibTexture& findTextureByPath(const std::string& path)
@@ -345,6 +357,7 @@ namespace Otter::Games::RType::Components {
             _scale = scale;
             _rotation = rotation;
         }
+
         ~Transform() = default;
 
         utils::Vector2 _position;
@@ -413,6 +426,7 @@ namespace Otter::Games::RType::Components {
             auto tag = json.get<std::string>("tag");
             core.add_component(e, Player(id, tag));
         }
+
         /**
          * @brief Constructor of the Player component
          * @param id: The id of the player
@@ -444,6 +458,7 @@ namespace Otter::Games::RType::Components {
             auto tag = json.get<std::string>("tag");
             core.add_component(e, Enemy(id, tag));
         }
+
         /**
          * @brief Constructor of the Enemy component
          * @param id: The id of the enemy
@@ -454,6 +469,7 @@ namespace Otter::Games::RType::Components {
             _id = id;
             _tag = tag;
         }
+
         ~Enemy() = default;
 
         int _id;
@@ -487,6 +503,7 @@ namespace Otter::Games::RType::Components {
 
             core.add_component(e, Obstacle(str_to_enum[json.get<std::string>("type")], json.get<std::string>("tag")));
         }
+
         /**
          * @brief Constructor of the Obstacle component
          * @param type: The type of the obstacle
@@ -512,6 +529,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Health {
         COMPONENT_BUILDER(Health) { core.add_component(e, Health(json.get<unsigned int>("hp"))); }
+
         /**
          * @brief Constructor of the Health component
          * @param hp: The health point of the entity
@@ -531,11 +549,13 @@ namespace Otter::Games::RType::Components {
      */
     struct Damage {
         COMPONENT_BUILDER(Damage) { core.add_component(e, Damage(json.get<unsigned int>("damage"))); }
+
         /**
          * @brief Constructor of the Damage component
          * @param damage: The damage of the entity
          */
         Damage(unsigned int damage) { _damage = damage; }
+
         ~Damage() = default;
 
         unsigned int _damage;
@@ -550,11 +570,13 @@ namespace Otter::Games::RType::Components {
      */
     struct Destructible {
         COMPONENT_BUILDER(Destructible) { core.add_component(e, Destructible(json.get<bool>("isDestructible"))); }
+
         /**
          * @brief Constructor of the Destructible component
          * @param isDestructible: If the entity is destructible: true, otherwise: false
          */
         Destructible(bool isDestructible) { _isDestructible = isDestructible; }
+
         ~Destructible() = default;
 
         bool _isDestructible;
@@ -588,6 +610,7 @@ namespace Otter::Games::RType::Components {
             core.add_component(e, Shooter(str_to_enum[json.get<std::string>("direction")], json.get<bool>("canShoot"),
                                           json.get<int>("shotNbr"), json.get<int>("reloadTime")));
         }
+
         /**
          * @brief Constructor of the Shooter component
          * @param direction: The direction of the shot
@@ -621,6 +644,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Shot {
         COMPONENT_BUILDER(Shot) { core.add_component(e, Shot(json.get<int>("shooterId"))); }
+
         /**
          * @brief Constructor of the Shot component
          * @param shooterId: The id of the shooter
@@ -640,6 +664,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Dispawnable {
         COMPONENT_BUILDER(Dispawnable) { core.add_component(e, Dispawnable()); }
+
         Dispawnable() = default;
         ~Dispawnable() = default;
     };
@@ -652,6 +677,7 @@ namespace Otter::Games::RType::Components {
      */
     struct Parallax {
         COMPONENT_BUILDER(Parallax) { core.add_component(e, Parallax()); }
+
         Parallax() = default;
         ~Parallax() = default;
     };
@@ -661,6 +687,7 @@ namespace Otter::Games::RType::Components {
      */
     struct EventNetwork {
         COMPONENT_BUILDER(EventNetwork) { core.add_component(e, EventNetwork()); }
+
         EventNetwork() { _data = -1; }
 
         ~EventNetwork() = default;

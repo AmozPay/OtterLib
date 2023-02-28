@@ -1,19 +1,19 @@
-#include "lua_wrapper.hpp"
 #include "Orchestrator.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Scripting::Bindings::Orchestrator {
 
-    int createEntity(lua_State *L)
+    int createEntity(lua_State* L)
     {
         Otter::Scripting::LuaContext ctx(L);
-        Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());
+        Otter::Core::Orchestrator* orchestrator =
+            static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());
         Otter::Core::Entity e = orchestrator->createEntity();
         ctx.push(static_cast<long long>(e));
         return 1;
     }
 
-    int removeEntity(lua_State *L)
+    int removeEntity(lua_State* L)
     {
         Otter::Scripting::LuaContext ctx(L);
         Otter::Core::Orchestrator *orchestrator = static_cast<Otter::Core::Orchestrator *>(ctx["__orchestrator"].toVoidPtr());

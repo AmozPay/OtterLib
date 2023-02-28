@@ -9,6 +9,7 @@
 #define ANIMATION_HPP_
 
 #include "Utils.hpp"
+
 #include <chrono>
 #include <vector>
 
@@ -18,7 +19,7 @@ namespace Otter::Games::RType::Utils {
     using AnimRectVect = std::vector<Rectangle>;
 
     struct Animation {
-        Animation(const AnimRectVect &animVect, const float &delay)
+        Animation(const AnimRectVect& animVect, const float& delay)
         {
             this->animVect = animVect;
             this->currentPos = this->animVect.begin();

@@ -1,4 +1,5 @@
 #include "ScriptingManager.hpp"
+
 #include "C2LuaBindings.hpp"
 
 #define REGISTER_SYSTEM(phase)                                                                                         \
