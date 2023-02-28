@@ -44,7 +44,7 @@ namespace Otter::Games::RType::Components {
     struct EventHandlerComponent {
         EventHandlerComponent(const EventHandlerMap& eventHandlerMap) { this->eventHandlerMap = eventHandlerMap; };
 
-        ~EventHandlerComponent() = default;
+        ~EventHandlerComponent() {};
 
         void handleEvent(Orchestrator& ref, const EventTypes& eventType, ComponentIdVector& componentIdVector)
         {
@@ -66,8 +66,8 @@ namespace Otter::Games::RType::Components {
      * @struct EventComponent
      */
     struct EventComponent {
-        EventComponent() = default;
-        ~EventComponent() = default;
+        EventComponent() {};
+        ~EventComponent() {};
 
         EventPairList events;
     };

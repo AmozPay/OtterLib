@@ -9,9 +9,9 @@
 #define ANIMATION_HPP_
 
 #include "Utils.hpp"
-
 #include <chrono>
 #include <vector>
+#include <string>
 
 namespace Otter::Games::RType::Utils {
     using Rectangle = Otter::Games::RType::Utils::Rectangle;
@@ -19,8 +19,13 @@ namespace Otter::Games::RType::Utils {
     using AnimRectVect = std::vector<Rectangle>;
 
     struct Animation {
-        Animation(const AnimRectVect& animVect, const float& delay, bool isOneShot = false)
-        {
+        Animation(
+            const std::string &texturePath,
+            const AnimRectVect& animVect,
+            const float& delay,
+            const bool &isOneShot = false
+        ) {
+            this->texturePath = texturePath;
             this->animVect = animVect;
             this->currentPos = 0;
             this->delay = delay;
@@ -30,6 +35,7 @@ namespace Otter::Games::RType::Utils {
 
         ~Animation() = default;
 
+        std::string texturePath;
         AnimRectVect animVect;
         std::size_t currentPos;
         TimePoint lastTime;

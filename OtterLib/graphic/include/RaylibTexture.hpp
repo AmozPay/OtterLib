@@ -71,8 +71,15 @@ namespace Otter::Graphic::Raylib {
          */
         [[nodiscard]] int getHeight() const;
 
+        /**
+         * @brief Get the height of the texture
+         * @return The height of the texture
+         */
+        [[nodiscard]] std::string getFilePath() const;
+
       private:
         Texture2D _texture;
         Color _color;
+        std::string _texturePath;
     }; // class Texture
 } // namespace Otter::Graphic::Raylib
