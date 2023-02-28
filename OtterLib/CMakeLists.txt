@@ -117,10 +117,10 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterCore tests
     file(GLOB CORE_TESTS core/tests/*.cpp)
-    add_executable(OtterCoreTests ${CORE_FILES} ${SCRIPTING_FILES} ${CORE_TESTS})
+    add_executable(OtterCoreTests ${CORE_FILES} ${SCRIPTING_FILES} ${GRAPHIC_FILES} ${CORE_TESTS})
     target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-    target_include_directories(OtterCoreTests PUBLIC core/include scripting/include)
-    target_link_libraries(OtterCoreTests gtest_main lua)
+    target_include_directories(OtterCoreTests PUBLIC core/include graphic/include scripting/include)
+    target_link_libraries(OtterCoreTests gtest_main lua raylib)
     add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 
     # OtterScripting tests
