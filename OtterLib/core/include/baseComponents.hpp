@@ -469,16 +469,16 @@ namespace Otter::Core::BaseComponents {
      * @var _hp: The health point of the entity
      */
     struct Health {
-        COMPONENT_BUILDER(Health) { core.add_component(e, Health(json.get<unsigned int>("hp"))); }
+        COMPONENT_BUILDER(Health) { core.add_component(e, Health(json.get<int>("hp"))); }
         /**
          * @brief Constructor of the Health component
          * @param hp: The health point of the entity
          */
-        explicit Health(unsigned int hp) { _hp = hp; };
+        explicit Health(int hp) { _hp = hp; };
 
         ~Health() = default;
 
-        unsigned int _hp;
+        int _hp;
     };
 
     /**

@@ -30,18 +30,18 @@ namespace Otter::Games::RType::System::Collision::Enemy {
 
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
             auto const shot = shots[bulletIndex];
+
             if (shot->_shooterId < damages.size() && damages[shot->_shooterId]) {
-                if (healths[enemyIndex]->_hp - damages[shot->_shooterId]->_damage > 0)
-                    healths[enemyIndex]->_hp -= damages[shot->_shooterId]->_damage;
-                else
+                healths[enemyIndex]->_hp -= damages[shot->_shooterId]->_damage;
+                
+                if (healths[enemyIndex]->_hp < 0)
                     healths[enemyIndex]->_hp = 0;
 
                 std::cout << healths[enemyIndex]->_hp << std::endl;
             }
         }
         // TODO: need to delete the entity
-        ref.remove_component<Otter::Core::BaseComponents::Render>(bulletIndex);
-        ref.remove_component<Otter::Core::BaseComponents::BoxCollider>(bulletIndex);
+        ref.remove_entity(static_cast<std::uint32_t>(bulletIndex));
         std::cout << "Enemy to Bullet" << std::endl;
     }
 
