@@ -12,25 +12,27 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/access.hpp>
 
-class Serializable {
-  public:
-    virtual ~Serializable() = default;
+namespace Otter::Network {
+    class Serializable {
+      public:
+        virtual ~Serializable() = default;
 
-  private:
-    virtual boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive) = 0;
-    virtual boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive) = 0;
+      private:
+        virtual boost::archive::binary_oarchive& operator&(boost::archive::binary_oarchive& archive) = 0;
+        virtual boost::archive::binary_iarchive& operator&(boost::archive::binary_iarchive& archive) = 0;
 
-    void serialize(boost::archive::binary_oarchive& binaryOutputArchive, const unsigned int)
-    {
-        *this& binaryOutputArchive;
+        void serialize(boost::archive::binary_oarchive& binaryOutputArchive, const unsigned int)
+        {
+            *this& binaryOutputArchive;
+        };
+
+        void serialize(boost::archive::binary_iarchive& binaryInputArchive, const unsigned int)
+        {
+            *this& binaryInputArchive;
+        };
+
+        friend class boost::serialization::access;
     };
-
-    void serialize(boost::archive::binary_iarchive& binaryInputArchive, const unsigned int)
-    {
-        *this& binaryInputArchive;
-    };
-
-    friend class boost::serialization::access;
-};
+} // namespace Otter::Network
 
 #endif /* !SERIALIZABLE_HPP_ */

@@ -51,6 +51,8 @@ endif()
 
 
 
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
 # CREATE STATIC LIBRARIES
 # OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
@@ -65,7 +67,17 @@ target_include_directories(OtterCore PUBLIC core/include scripting/include graph
 file(GLOB NETWORK_FILES network/src/*.cpp)
 add_library(OtterNetwork STATIC ${NETWORK_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
-target_include_directories(OtterNetwork PUBLIC network/include)
+target_include_directories(
+    OtterNetwork
+    PUBLIC
+    core/include
+    network/include
+    network/include/Component
+    network/include/Deserializer
+    network/include/Networkable
+    network/include/Serializable
+    network/include/Serializer
+)
 
 # OtterScripting
 file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
@@ -111,7 +123,7 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
     file(GLOB NETWORK_TESTS network/tests/*.cpp)
     add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
     target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
-    target_include_directories(OtterNetworkTests PUBLIC network/include)
+    target_include_directories(OtterNetworkTests PUBLIC network/include core/include)
     target_link_libraries(OtterNetworkTests gtest_main)
     add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
 

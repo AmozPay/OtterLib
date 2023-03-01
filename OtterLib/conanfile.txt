@@ -1,6 +1,6 @@
 [requires]
 raylib/4.0.0
-boost/1.81.0
+boost/1.80.0
 asio/1.24.0
 lua/5.4.4
 

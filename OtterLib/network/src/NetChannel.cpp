@@ -39,7 +39,6 @@
 //     void NetChannel::send(udp::endpoint& dest, std::stringstream& data)
 //     {
 //         std::shared_ptr<std::string> buf = std::make_shared<std::string>(data.str());
-
 //         _socket.async_send_to(
 //             asio::buffer(buf->data(), buf->length()), dest,
 //             std::bind(&NetChannel::handle_send, this, std::placeholders::_1, std::placeholders::_2, buf));
