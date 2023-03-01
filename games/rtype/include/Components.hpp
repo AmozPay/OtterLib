@@ -134,6 +134,38 @@ namespace Otter::Games::RType::Components {
 
         int _shooterId;
     };
+
+    /**
+     * @brief Enum for the power up type
+     * @details The power up type is used to know what the power up is doing
+     * @enum PowerUpType
+     * @var HEALTH: The power up is modifying the health
+     * @var DAMAGE: The power up is modifying the damage
+     */
+    enum PowerUpType { HEALTH, DAMAGE };
+
+    /**
+     * @brief Component for the power up
+     * @details The power up component is used to know if an entity is a power up. If it is, it will be able to act as a
+     * power up
+     * @struct PowerUp
+     * @var _powerUpId: The id of the power up
+     * @var _type: The type of the power up
+     * @var _value: The value of the power up (can be negative)
+     */
+    struct PowerUp {
+        PowerUp(int powerUpId, PowerUpType type, int value)
+        {
+            _powerUpId = powerUpId;
+            _type = type;
+            _value = value;
+        }
+        ~PowerUp() = default;
+
+        int _powerUpId;
+        PowerUpType _type;
+        int _value;
+    };
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP
