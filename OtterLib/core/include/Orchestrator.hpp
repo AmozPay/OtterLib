@@ -54,11 +54,11 @@ namespace Otter::Core {
          *
          * @params Template of type base
          */
-        template <class T>
+      /*        template <class T>
         void register_abstract()
         {
             _components.register_abstract<T>();
-        }
+	    }*/
 
         template <buildable B>
         bool register_facto()
@@ -83,12 +83,12 @@ namespace Otter::Core {
          * @return map of (index of component, pair(type_index, any)
          *
          */
-        template <class T>
+      /*    template <class T>
         std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>& get_map_fromBase()
         {
             return _components.get_map_fromBase<T>();
         }
-
+      */
         /**
          * @brief Get component
          * @details ask the core to give you the array of component C
