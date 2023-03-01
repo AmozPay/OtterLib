@@ -10,6 +10,7 @@
 
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include <cstdlib>
 
 namespace Otter::Games::RType::System::Window {
 
@@ -63,9 +64,11 @@ namespace Otter::Games::RType::System::Window {
         auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
-            if (window) {
+
+            if (!window)
+                continue;
+            if (window->_window.isOpen())
                 window->_window.endDrawing();
-            }
         }
     }
 
@@ -74,9 +77,12 @@ namespace Otter::Games::RType::System::Window {
         auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
-            if (window) {
+
+            if (!window)
+                continue;
+
+            if (window->_window.isOpen())
                 window->_window.clearBackground();
-            }
         }
     }
 
@@ -86,8 +92,10 @@ namespace Otter::Games::RType::System::Window {
         for (size_t i = 0; i < windows.size(); i++) {
             auto& window = windows[i];
             if (window) {
-                if (!window->_window.isOpen())
+                if (!window->_window.isOpen()) {
                     window->_window.closeWindow();
+                    std::exit(0);
+                }
             }
         }
     }
