@@ -109,3 +109,49 @@ TEST(registry_advanced, test_multipl_comp)
     reg.remove_entity(3);
     EXPECT_FALSE(tmp[3]);
 }
+
+TEST(Orchestrator, test_remove_a_entity)
+{
+    Otter::Core::Factory f;
+    Otter::Core::Orchestrator orch(f);
+
+    auto const& tmp = orch.register_component<intTest>();
+    auto const& tmp2 = orch.register_component<float>();
+    auto const& tmp3 = orch.register_component<std::string>();
+
+    Otter::Core::Entity e1 = orch.createEntity();
+    Otter::Core::Entity e2 = orch.createEntity();
+    Otter::Core::Entity e3 = orch.createEntity();
+    Otter::Core::Entity e4 = orch.createEntity();
+
+    orch.add_component<float>(e1, 5.3);
+    orch.add_component<float>(e3, 25.5);
+
+    orch.add_component<intTest>(e2, intTest(5));
+    orch.add_component<intTest>(e3, intTest(10));
+    orch.add_component<intTest>(e4, intTest(15));
+
+    orch.add_component(e1, std::string("un"));
+    orch.add_component(e3, std::string("deux"));
+
+    EXPECT_EQ(tmp.size(), e4 +1);
+    EXPECT_EQ(tmp2.size(), e4);
+    EXPECT_EQ(tmp3.size(), e4);
+
+    EXPECT_TRUE(tmp[e2]);
+    orch.remove_component<intTest>(e2);
+    EXPECT_FALSE(tmp[e2]);
+    EXPECT_TRUE(tmp[e3]);
+    EXPECT_TRUE(tmp2[e3]);
+    EXPECT_TRUE(tmp3[e3]);
+
+    orch.remove_entity(e3);
+    
+    EXPECT_FALSE(tmp[e3]);
+    EXPECT_FALSE(tmp2[e3]);
+    EXPECT_FALSE(tmp3[e3]);
+
+    EXPECT_TRUE(tmp[e4]);
+    orch.remove_entity(e4);
+    EXPECT_FALSE(tmp[e4]);
+}

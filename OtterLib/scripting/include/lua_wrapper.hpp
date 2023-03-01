@@ -1,20 +1,20 @@
 #pragma once
 
 extern "C" {
-    #include "lauxlib.h"
-    #include "lua.h"
-    #include "lualib.h"
+#include "lauxlib.h"
+#include "lua.h"
+#include "lualib.h"
 }
 
 #include <algorithm>
 #include <cstdarg>
 #include <functional>
+#include <iostream>
 #include <map>
 #include <stdexcept>
 #include <string>
 #include <variant>
 #include <vector>
-#include <iostream>
 
 namespace Otter::Scripting {
 
@@ -22,8 +22,8 @@ namespace Otter::Scripting {
      * @brief Just interfacing lua_State
      */
     typedef lua_State lua_State;
-    typedef int (*lua_CFunction) (lua_State *L);
-    typedef std::variant<long long, double, bool, char const *, void*> luaTypes;
+    typedef int (*lua_CFunction)(lua_State* L);
+    typedef std::variant<long long, double, bool, char const*, void*> luaTypes;
 #define LUA_ERR_WRAP(expr)                                                                                             \
     if ((expr) != LUA_OK && (expr) != LUA_YIELD)                                                                       \
     throw LuaError::create(L)
@@ -75,7 +75,7 @@ namespace Otter::Scripting {
     class LuaContext {
       public:
         LuaContext();
-        LuaContext(lua_State *);
+        LuaContext(lua_State*);
         ~LuaContext();
 
         /**
@@ -89,6 +89,8 @@ namespace Otter::Scripting {
          * @param luaString valid lua script as a string
          */
         void doString(std::string luaString);
+
+        std::vector<luaTypes> getArgs(std::string typesFmt);
 
         /**
          * @brief call a lua function, with no parameters
@@ -125,39 +127,15 @@ namespace Otter::Scripting {
                 throw LuaError("Request LuaContext function does not exist!");
             }
 
-            std::vector<luaTypes> returnValues;
-
-            for (auto i : returnTypes) {
-                switch (i) {
-                case 'b':
-                    LUA_ERR_WRAP(lua_isboolean(L, -1));
-                    returnValues.emplace_back(static_cast<bool>(lua_toboolean(L, -1)));
-                    break;
-                case 'd':
-                    LUA_ERR_WRAP(lua_isnumber(L, -1));
-                    returnValues.emplace_back(lua_tonumber(L, -1));
-                    break;
-                case 's':
-                    LUA_ERR_WRAP(lua_isstring(L, -1));
-                    returnValues.emplace_back(lua_tostring(L, -1));
-                    break;
-                case 'l':
-                    LUA_ERR_WRAP(lua_isinteger(L, -1));
-                    returnValues.emplace_back(lua_tointeger(L, -1));
-                    break;
-                case 'p':
-                    LUA_ERR_WRAP(lua_isuserdata(L, -1));
-                    returnValues.emplace_back(lua_touserdata(L, -1));
-                    break;
-                default:
-                    throw std::invalid_argument("Invalid fmt string");
-                    break;
-                }
-                lua_pop(L, 1);
-            }
-            std::reverse(returnValues.begin(), returnValues.end());
-            return returnValues;
+            return this->getStackValues(returnTypes, true);
         }
+
+        /**
+         * @brief get function call parameters from lua or return values after function call
+         * @param types
+         * @return std::vector<luaTypes>
+         */
+        std::vector<luaTypes> getStackValues(const std::string typesFmt, bool popValue);
 
         /**
          * @brief bind a lua function to C
@@ -180,11 +158,17 @@ namespace Otter::Scripting {
         LuaValue operator[](std::string key);
 
         void registerFunction(std::string name, lua_CFunction);
-        void setGlobal(std::string name, void *ptr);
+        void setGlobal(std::string name, void* ptr);
         void setGlobal(std::string name, long long integer);
         void setGlobal(std::string name, double number);
-        void setGlobal(std::string name, char const *str);
+        void setGlobal(std::string name, char const* str);
         void setGlobal(std::string name, bool boolean);
+
+        void push(long long integer);
+        void push(double number);
+        void push(char const* str);
+        void push(bool boolean);
+        void push(void* ptr);
 
       private:
         lua_State* L;

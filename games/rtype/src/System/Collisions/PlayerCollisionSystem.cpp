@@ -5,6 +5,7 @@
 ** CollisionSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "PlayerCollisionSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision::Player {
@@ -18,8 +19,8 @@ namespace Otter::Games::RType::System::Collision::Player {
 
     void PlayerToWallCollision(Otter::Core::Orchestrator& ref, size_t playerIndex, size_t entityIndex)
     {
-        auto& transforms = ref.get_components<components::Transform>();
-        auto& healths = ref.get_components<components::Health>();
+        auto& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
 
         if (playerIndex < transforms.size() && playerIndex < healths.size()) {
             auto& playerTransform = transforms[playerIndex];
@@ -44,8 +45,8 @@ namespace Otter::Games::RType::System::Collision::Player {
 
     void PlayerToEnemyCollision(Otter::Core::Orchestrator& ref, size_t playerIndex, size_t entityIndex)
     {
-        auto& healths = ref.get_components<components::Health>();
-        auto const& damages = ref.get_components<components::Damage>();
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
+        auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
 
         if (playerIndex < healths.size() && healths[playerIndex] && entityIndex < damages.size() &&
             damages[entityIndex]) {
@@ -60,8 +61,8 @@ namespace Otter::Games::RType::System::Collision::Player {
     void PlayerCollisionHandler(Otter::Core::Orchestrator& ref, size_t playerIndex, size_t entityIndex)
     {
         auto const& obstacles = ref.get_components<components::Obstacle>();
-        auto const& players = ref.get_components<components::Player>();
-        auto const& enemies = ref.get_components<components::Enemy>();
+        auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto const& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
 
         if (entityIndex < players.size() && players[entityIndex])
             PlayerToPlayerCollision(ref, playerIndex, entityIndex);

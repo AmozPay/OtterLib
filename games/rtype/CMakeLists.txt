@@ -27,6 +27,30 @@ endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
+execute_process(
+    COMMAND ${CMAKE_COMMAND} ${BUILD_TESTING} -S . -B build -G ${CMAKE_GENERATOR}
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${OTTERLIB_DIR}
+)
+
+if(result)
+    message(FATAL_ERROR "CMake step for deps failed: ${result}")
+endif()
+
+
+execute_process(
+    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib ${CONFIG_VALUE}
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
+)
+
+execute_process(
+    COMMAND cp ${OTTERLIB_DIR}/build/lib/OtterLib.lua ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
+)
+
+add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
 # Check if conan dependencies are installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -36,10 +60,20 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
-
-file(GLOB CLIENT_FILES src/*.cpp src/System/*.cpp src/System/Collisions/*.cpp)
-file(GLOB SERVER_FILES src/*.cpp src/System/*.cpp src/System/Collisions/*.cpp)
+file(
+    GLOB CLIENT_FILES
+    src/*.cpp
+    src/Game/*.cpp
+    src/System/*.cpp
+    src/System/Collisions/*.cpp
+)
+file(
+    GLOB SERVER_FILES
+    src/*.cpp
+    src/Game/*.cpp
+    src/System/*.cpp
+    src/System/Collisions/*.cpp
+)
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
@@ -50,6 +84,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Game
     include/System
     include/System/Collisions
 )
@@ -74,6 +109,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Game
     include/System
     include/System/Collisions
 )

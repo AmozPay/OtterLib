@@ -28,7 +28,7 @@ namespace Otter::Core {
             preDraw,
             draw,
             subDraw,
-            end,
+            cleanup,
         };
 
         using sysList = std::vector<std::function<void(Core::Orchestrator&)>>;
@@ -37,7 +37,7 @@ namespace Otter::Core {
       public:
         SystemManager() : _systems()
         {
-            for (int i = 0; i <= Phase::end; i++) {
+            for (int i = 0; i <= Phase::cleanup; i++) {
                 _systems.push_back(sysList());
             }
         };

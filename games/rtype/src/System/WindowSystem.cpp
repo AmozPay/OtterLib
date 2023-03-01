@@ -5,6 +5,7 @@
 ** WindowSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "WindowSystem.hpp"
 
 #include "Components.hpp"
@@ -37,7 +38,7 @@ namespace Otter::Games::RType::System::Window {
 
     void SetTargetFPS(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -48,7 +49,7 @@ namespace Otter::Games::RType::System::Window {
 
     void BeginDraw(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -59,7 +60,7 @@ namespace Otter::Games::RType::System::Window {
 
     void EndDraw(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -70,7 +71,7 @@ namespace Otter::Games::RType::System::Window {
 
     void ClearBackground(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -81,7 +82,7 @@ namespace Otter::Games::RType::System::Window {
 
     void WindowShouldClose(Otter::Core::Orchestrator& ref)
     {
-        auto& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto& window = windows[i];
             if (window) {

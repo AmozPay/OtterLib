@@ -8,7 +8,6 @@ struct st_my_struct {
     char const* str;
 };
 
-
 TEST(doFile, should_load)
 {
     Otter::Scripting::LuaContext ctx;
@@ -48,9 +47,9 @@ TEST(callFn, shouldReturn3strings)
 
     ctx.doFile("test_data/functions.lua");
     std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("return_3_string", "sss");
-    EXPECT_EQ(std::string(std::get<char const *>(retVals[0])), "foo");
-    EXPECT_EQ(std::string(std::get<char const *>(retVals[1])), "bar");
-    EXPECT_EQ(std::string(std::get<char const *>(retVals[2])), "baz");
+    EXPECT_EQ(std::string(std::get<char const*>(retVals[0])), "foo");
+    EXPECT_EQ(std::string(std::get<char const*>(retVals[1])), "bar");
+    EXPECT_EQ(std::string(std::get<char const*>(retVals[2])), "baz");
 }
 
 TEST(callFn, shouldReturnSelf)
@@ -110,11 +109,10 @@ TEST(bind, bindShouldConcatStrings)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doString("function concat(str1, str2) return str1 .. str2 end");
-    auto concatFromLua = ctx.bind<char const *, char const *>("concat", "s", "ss");
+    auto concatFromLua = ctx.bind<char const*, char const*>("concat", "s", "ss");
     auto retVals = concatFromLua("hello ", "world");
-    EXPECT_EQ(std::string(std::get<char const *>(retVals[0])), "hello world");
+    EXPECT_EQ(std::string(std::get<char const*>(retVals[0])), "hello world");
 }
-
 
 TEST(luaValues, getGlobalVariableAsInteger)
 {

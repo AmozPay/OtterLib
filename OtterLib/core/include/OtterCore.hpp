@@ -1,18 +1,22 @@
 #pragma once
 
 #include "Orchestrator.hpp"
-#include "SystemManager.hpp"
 #include "ScriptingManager.hpp"
+#include "SystemManager.hpp"
 
 namespace Otter::Core {
 
     extern void registerComponents(Otter::Core::Orchestrator&);
     extern void registerSystems(Otter::Core::SystemManager&);
     extern void createEntityObj(Otter::Core::Orchestrator&);
+    extern void configureScripts(Otter::Scripting::ScriptingManager&);
 
     class OtterCore {
       public:
-        OtterCore() : _factory(), _systems(), _data(_factory), _scriptingManager(_systems, _data)  { _isRunning = true; };
+        OtterCore() : _factory(), _systems(), _data(_factory), _scriptingManager(_systems, _data)
+        {
+            _isRunning = true;
+        };
 
         ~OtterCore(){};
 
@@ -25,6 +29,7 @@ namespace Otter::Core {
       private:
         void loop();
         void init();
+        void _registerBaseComponents(void);
 
         bool _isRunning;
 

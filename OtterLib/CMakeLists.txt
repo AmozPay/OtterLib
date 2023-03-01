@@ -59,7 +59,7 @@ file(GLOB CORE_FILES core/src/*.cpp)
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
-target_include_directories(OtterCore PUBLIC core/include scripting/include)
+target_include_directories(OtterCore PUBLIC core/include scripting/include graphic/include)
 
 
 
@@ -83,7 +83,8 @@ target_include_directories(
 file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
 add_library(OtterScripting STATIC ${SCRIPTING_FILES})
 target_compile_features(OtterScripting PUBLIC cxx_std_20)
-target_include_directories(OtterScripting PUBLIC scripting/include core/include)
+target_include_directories(OtterScripting PUBLIC scripting/include core/include graphic/include)
+file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 
 # OtterGraphic
@@ -128,25 +129,27 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterCore tests
     file(GLOB CORE_TESTS core/tests/*.cpp)
-    add_executable(OtterCoreTests ${CORE_FILES} ${SCRIPTING_FILES} ${CORE_TESTS})
+    add_executable(OtterCoreTests ${CORE_FILES} ${SCRIPTING_FILES} ${GRAPHIC_FILES} ${CORE_TESTS})
     target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-    target_include_directories(OtterCoreTests PUBLIC core/include scripting/include)
-    target_link_libraries(OtterCoreTests gtest_main lua)
+    target_include_directories(OtterCoreTests PUBLIC core/include graphic/include scripting/include)
+    target_link_libraries(OtterCoreTests gtest_main lua raylib)
     add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
 
     # OtterScripting tests
     file(GLOB SCRIPTING_TESTS scripting/tests/*.cpp)
-    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${SCRIPTING_TESTS})
+    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${CORE_FILES} ${GRAPHIC_FILES} ${SCRIPTING_TESTS})
     target_compile_features(OtterScriptingTests PUBLIC cxx_std_20)
-    target_include_directories(OtterScriptingTests PUBLIC scripting/include core/include)
-    target_link_libraries(OtterScriptingTests gtest_main lua)
+    target_include_directories(OtterScriptingTests PUBLIC scripting/include core/include graphic/include)
+    target_link_libraries(OtterScriptingTests gtest_main lua raylib)
     add_test(NAME OtterScriptingTests COMMAND OtterScriptingTests)
     file(COPY scripting/tests/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/test_data)
 
 
     # Compile tests only
     add_custom_target(OtterLibTests)
     add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+
 
     include(CTest)
     # include(CodeCoverage)
@@ -185,6 +188,12 @@ install(TARGETS
     OtterCore
     EXPORT OtterLib
     DESTINATION lib
+)
+
+install(FILES
+    scripting/OtterLib.lua
+    EXPORT OtterLib
+    DESTINATION lua
 )
 
 if(WIN32)

@@ -5,6 +5,7 @@
 ** CollisionSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "EventCollisionSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision {
@@ -47,8 +48,8 @@ namespace Otter::Games::RType::System::Collision {
 
     void EntityCollision(Otter::Core::Orchestrator& ref)
     {
-        auto& collisions = ref.get_components<components::BoxCollider>();
-        auto& transforms = ref.get_components<components::Transform>();
+        auto& collisions = ref.get_components<Otter::Core::BaseComponents::BoxCollider>();
+        auto& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
 
         for (size_t i = 0; i < collisions.size() && i < transforms.size(); i++) {
             auto& collisionFirst = collisions[i];

@@ -5,6 +5,7 @@
 ** SpriteSystem.cpp
 */
 
+#include "baseComponents.hpp"
 #include "Components.hpp"
 #include "OtterCore.hpp"
 
@@ -12,10 +13,10 @@ namespace Otter::Games::RType::System::Sprite {
 
     void DrawParallax(Otter::Core::Orchestrator& ref)
     {
-        auto& sprites = ref.get_components<Otter::Games::RType::Components::Texture>();
-        auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
-        auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
-        auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
+        auto& sprites = ref.get_components<Otter::Core::BaseComponents::Texture>();
+        auto const& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
+        auto const& renders = ref.get_components<Otter::Core::BaseComponents::Render>();
+        auto const& parallaxes = ref.get_components<Otter::Core::BaseComponents::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size() && i < parallaxes.size();
              i++) {
             if (!parallaxes[i])
@@ -34,10 +35,10 @@ namespace Otter::Games::RType::System::Sprite {
 
     void Draw(Otter::Core::Orchestrator& ref)
     {
-        auto& sprites = ref.get_components<Otter::Games::RType::Components::Texture>();
-        auto const& transforms = ref.get_components<Otter::Games::RType::Components::Transform>();
-        auto const& renders = ref.get_components<Otter::Games::RType::Components::Render>();
-        auto const& parallaxes = ref.get_components<Otter::Games::RType::Components::Parallax>();
+        auto& sprites = ref.get_components<Otter::Core::BaseComponents::Texture>();
+        auto const& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
+        auto const& renders = ref.get_components<Otter::Core::BaseComponents::Render>();
+        auto const& parallaxes = ref.get_components<Otter::Core::BaseComponents::Parallax>();
         for (size_t i = 0; i < sprites.size() && i < transforms.size() && i < renders.size(); i++) {
             if (i < parallaxes.size() && parallaxes[i])
                 continue;
