@@ -311,6 +311,52 @@ namespace Otter::Core::BaseComponents {
     };
 
     /**
+     * @brief Component for the text
+     * @details The text component is used to store the text and the text instance
+     * @struct Text
+     * @var _text: The text
+     * @var _fontSize: The size of the text
+     * @var _tag: The tag of the text
+     * @var _linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
+     * @var _textInstance: An instance of the RaylibText class
+    */
+    struct Text {
+        /**
+         * @constructor
+         * @brief Constructor of the Text component
+         * @param text: The text
+         * @param fontSize: The size of the text
+         * @param tag: The tag of the text (used to identify the text)
+         * @param linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
+        */
+        Text(std::string text, int fontSize, std::string tag, int linkedEntityId) : _textInstance(Otter::Graphic::Raylib::RaylibText())
+        {
+            _text = text;
+            _fontSize = fontSize;
+            _tag = tag;
+            _linkedEntityId = linkedEntityId;
+        };
+
+        ~Text() = default;
+
+        Text& operator=(const Text& other)
+        {
+            _text = other._text;
+            _textInstance = other._textInstance;
+            _fontSize = other._fontSize;
+            _tag = other._tag;
+            _linkedEntityId = other._linkedEntityId;
+            return *this;
+        }
+
+        std::string _text;
+        int _fontSize;
+        std::string _tag;
+        int _linkedEntityId;
+        Otter::Graphic::Raylib::RaylibText _textInstance;
+    };
+
+    /**
      * @brief Component transform
      * @details The transform component is used to store the position, rotation and scale of an entity
      * @struct Transform
@@ -554,5 +600,7 @@ namespace Otter::Core::BaseComponents {
 
         int _data;
     };
+
+    
 
 } // namespace Otter::Games::RType::Components
