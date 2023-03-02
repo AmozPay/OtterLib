@@ -24,6 +24,7 @@
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
 #include "SpriteSystem.hpp"
+#include "TextSystem.hpp"
 #include "WindowSystem.hpp"
 
 #endif // RTYPE_SYSTEM_HPP
