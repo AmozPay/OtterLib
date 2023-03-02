@@ -13,6 +13,7 @@ namespace Otter::Games::GameClient {
     {
         // TODO: need to be cleaned
         Otter::Core::Entity baseEntity = ref.createEntity();
+        Otter::Core::Entity hpText = ref.createEntity();
         Otter::Core::Entity player = ref.createEntity();
         Otter::Core::Entity invisibleWall = ref.createEntity();
         Otter::Core::Entity obstacle = ref.createEntity();
@@ -32,6 +33,9 @@ namespace Otter::Games::GameClient {
                  {"../assets/mobs.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/mobs.gif")},
                  {"../assets/background.png", Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")},
                  {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")}})));
+        
+        ref.add_component(hpText, Otter::Core::BaseComponents::Text("100", 64, "health", player));
+        ref.add_component(hpText, Otter::Core::BaseComponents::Transform(0, 0, {200, 300}));
 
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
@@ -95,7 +99,7 @@ namespace Otter::Games::GameClient {
         ref.add_component(mobs, Otter::Core::BaseComponents::Velocity(0, 0, {0, 0}, {0, 0}));
         ref.add_component(mobs, Otter::Core::BaseComponents::Enemy(25, "test"));
         ref.add_component(mobs, Otter::Core::BaseComponents::BoxCollider(64, 58));
-        ref.add_component(mobs, Otter::Core::BaseComponents::Damage(20));
+        ref.add_component(mobs, Otter::Core::BaseComponents::Damage(1));
         ref.add_component(mobs, Otter::Core::BaseComponents::Health(100));
 
         for (int i = 0; i < 2; i++) {
@@ -131,10 +135,12 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Text::UpdateHealthText, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Sprite::DrawParallax, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
+        ref.registerSystem(systems::Text::DrawText, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
     }
 } // namespace Otter::Games::GameClient
