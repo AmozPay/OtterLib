@@ -24,7 +24,9 @@ namespace Otter::Games::GameClient::Init
         public:
             InitEnemy(
                 Otter::Core::Orchestrator& ref,
-                Otter::Core::Entity baseEntity
+                Otter::Core::Entity baseEntity,
+                std::string id,
+                Otter::Games::RType::Utils::Vector2 pos
             );
             ~InitEnemy();
 
