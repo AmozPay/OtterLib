@@ -28,13 +28,15 @@ namespace Otter::Games::RType::System::Collision::Enemy {
         auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
         auto const& shots = ref.get_components<components::Shot>();
 
+        std::cout << "before " << healths[enemyIndex]->_hp << std::endl;
+
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
             auto const shot = shots[bulletIndex];
 
             if (shot->_shooterId < damages.size() && damages[shot->_shooterId]) {
-                healths[enemyIndex]->_hp -= damages[shot->_shooterId]->_damage;
+                healths[enemyIndex]->_hp = healths[enemyIndex]->_hp - damages[shot->_shooterId]->_damage;
                 
-                if (healths[enemyIndex]->_hp < 0)
+                if (healths[enemyIndex]->_hp <= 0)
                     healths[enemyIndex]->_hp = 0;
 
                 std::cout << healths[enemyIndex]->_hp << std::endl;
