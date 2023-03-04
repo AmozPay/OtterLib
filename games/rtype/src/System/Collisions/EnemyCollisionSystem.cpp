@@ -7,10 +7,12 @@
 
 #include "baseComponents.hpp"
 #include "EnemyCollisionSystem.hpp"
+#include "PlayerCollisionSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision::Enemy {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
+    namespace systems = Otter::Games::RType::System;
 
     void EnemyToEnemyCollision(Otter::Core::Orchestrator& ref, size_t firstEnemyIndex, size_t secondEnemyIndex)
     {
@@ -21,9 +23,18 @@ namespace Otter::Games::RType::System::Collision::Enemy {
     {
         auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
         auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
 
         if (enemyIndex < healths.size() && healths[enemyIndex]) {
             healths[enemyIndex]->_hp = 0;
+        }
+
+        for (std::size_t i = 0; i < players.size(); i++)
+        {
+            if (!players[i])
+                continue;
+
+            systems::Collision::Player::PlayerToEnemyCollision(ref, i, enemyIndex);
         }
 
         std::cout << "Enemy to Wall" << std::endl;
