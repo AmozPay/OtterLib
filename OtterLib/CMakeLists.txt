@@ -56,8 +56,10 @@ add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 # CREATE STATIC LIBRARIES
 # OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
+file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
+
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
-add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
+add_library(OtterCore STATIC ${CORE_FILES} ${GRAPHIC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
 target_include_directories(OtterCore PUBLIC core/include scripting/include graphic/include)
 
@@ -65,12 +67,14 @@ target_include_directories(OtterCore PUBLIC core/include scripting/include graph
 
 # OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
-add_library(OtterNetwork STATIC ${NETWORK_FILES})
+add_library(OtterNetwork STATIC ${NETWORK_FILES} ${GRAPHIC_FILES} ${CORE_FILES} ${SCRIPTING_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(
     OtterNetwork
     PUBLIC
     core/include
+    scripting/include
+    graphic/include
     network/include
     network/include/Component
     network/include/Deserializer
@@ -121,10 +125,22 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterNetwork tests
     file(GLOB NETWORK_TESTS network/tests/*.cpp)
-    add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
+    add_executable(OtterNetworkTests ${NETWORK_FILES} ${CORE_FILES} ${SCRIPTING_FILES} ${GRAPHIC_FILES} ${NETWORK_TESTS})
     target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
-    target_include_directories(OtterNetworkTests PUBLIC network/include core/include)
-    target_link_libraries(OtterNetworkTests gtest_main)
+    target_include_directories(
+        OtterNetworkTests
+        PUBLIC
+        core/include
+        network/include
+        graphic/include
+        scripting/include
+        network/include/Component
+        network/include/Deserializer
+        network/include/Networkable
+        network/include/Serializable
+        network/include/Serializer
+    )
+    target_link_libraries(OtterNetworkTests gtest_main ${CONAN_LIBS})
     add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
 
     # OtterCore tests
