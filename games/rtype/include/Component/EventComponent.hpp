@@ -23,8 +23,13 @@ namespace Otter::Games::RType::Components {
      * @enum EventTypes
      */
     enum EventTypes {
+        LOBBY,
+        INIT_GAME,
         COLISION,
         DEATH,
+        GAME_OVER,
+        WIN,
+        RESET_GAME
     };
 
     using Orchestrator = Otter::Core::Orchestrator;

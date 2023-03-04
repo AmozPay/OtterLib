@@ -23,6 +23,7 @@ namespace Otter::Core {
         this->_data.register_component<Core::BaseComponents::Destructible>();
         this->_data.register_component<Core::BaseComponents::Texture>();
         this->_data.register_component<Core::BaseComponents::TextureStorage>();
+        this->_data.register_component<Core::BaseComponents::GameStatus>();
     }
 
     void OtterCore::init()
