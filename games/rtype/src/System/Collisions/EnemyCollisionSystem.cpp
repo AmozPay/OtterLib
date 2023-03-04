@@ -19,6 +19,13 @@ namespace Otter::Games::RType::System::Collision::Enemy {
 
     void EnemyToWallCollision(Otter::Core::Orchestrator& ref, size_t enemyIndex, size_t wallIndex)
     {
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
+        auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
+
+        if (enemyIndex < healths.size() && healths[enemyIndex]) {
+            healths[enemyIndex]->_hp = 0;
+        }
+
         std::cout << "Enemy to Wall" << std::endl;
     }
 

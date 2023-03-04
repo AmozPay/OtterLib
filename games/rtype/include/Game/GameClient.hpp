@@ -14,6 +14,7 @@
 #include "AnimationSystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
+#include "GameStatusSystem.hpp"
 
 #include "InitBaseEntity.hpp"
 #include "InitEnemy.hpp"

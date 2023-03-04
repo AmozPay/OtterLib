@@ -555,4 +555,25 @@ namespace Otter::Core::BaseComponents {
         int _data;
     };
 
+    enum GameStatusType {
+        LOBBY,
+        GAME_INIT,
+        GAME,
+        GAME_OVER,
+        WIN
+    };
+
+    struct GameStatus
+    {
+        COMPONENT_BUILDER(GameStatus) { core.add_component(e, EventNetwork()); }
+
+        GameStatus(GameStatusType gameStatusType) { 
+            this->gameStatusType = gameStatusType;
+        }
+
+        ~GameStatus() = default;
+
+        GameStatusType gameStatusType;
+    };
+
 } // namespace Otter::Games::RType::Components

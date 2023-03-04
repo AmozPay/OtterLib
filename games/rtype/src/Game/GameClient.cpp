@@ -14,24 +14,7 @@ namespace Otter::Games::GameClient {
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
         Init::InitBaseEntity baseEntity(ref);
-        Init::InitParallaxes parallaxes(ref, baseEntity.getEntity());
-        Init::InitInvisibleWall invisibleWall(ref, baseEntity.getEntity());
-        Init::InitPlayer player(ref, baseEntity.getEntity());
         
-        int enmiesMaxNb = 50;
-        int enemyMaxPos = enmiesMaxNb * 300;
-        int range = 21 - 1;
-        int num = 0;
-        for (int i = 0; i < enmiesMaxNb; i++) {
-            enemyMaxPos = enemyMaxPos - 300;
-            num = rand() % range;
-            Init::InitEnemy enemy(
-                ref, 
-                baseEntity.getEntity(),
-                "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos , 34 * num)
-            );
-        }
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -51,6 +34,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Window::WindowShouldClose, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::event);

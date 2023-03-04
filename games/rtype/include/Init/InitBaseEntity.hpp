@@ -15,6 +15,8 @@
 #include "Utils.hpp"
 #include "Animation.hpp"
 #include "System.hpp"
+#include "LobbySystem.hpp"
+#include "InitGameSystem.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

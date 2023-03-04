@@ -27,10 +27,25 @@ namespace Otter::Games::GameClient::Init
                  {"../assets/r-typesheet43.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/r-typesheet43.gif")},
                  {"../assets/parallax-1920x1080.png", Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")}})));
         ref.add_component(baseEntity, components::EventComponent());
-        ref.add_component(baseEntity, components::EventHandlerComponent(components::EventHandlerMap(
-                                          {{components::EventTypes::COLISION, systems::Collision::HandleCollision},
-                                           {components::EventTypes::DEATH, systems::Death::HandleDeath}})));
+        ref.add_component(baseEntity, components::EventHandlerComponent(
+            components::EventHandlerMap(
+                {
+                    {components::EventTypes::COLISION, systems::Collision::HandleCollision},
+                    {components::EventTypes::DEATH, systems::Death::HandleDeath},
+                    {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
+                    {components::EventTypes::INIT_GAME, systems::InitGame::HandleInitGame}
+                }
+            )));
+        ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());
+        ref.add_component(baseEntity, Otter::Core::BaseComponents::EventNetwork());
+        ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY));
 
+        auto& keyboards = ref.get_components<Otter::Core::BaseComponents::Keyboard>();
+        keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.LEFT, utils::EventState::BACKWARD);
+        keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.RIGHT, utils::EventState::FORWARD);
+        keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.UP, utils::EventState::UP);
+        keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.DOWN, utils::EventState::DOWN);
+        keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.SHIFT, utils::EventState::SHOOT);
     }
 
     InitBaseEntity::~InitBaseEntity()
