@@ -63,6 +63,7 @@ endif()
 file(
     GLOB CLIENT_FILES
     src/*.cpp
+    src/Init/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
     src/System/Collisions/*.cpp
@@ -70,6 +71,7 @@ file(
 file(
     GLOB SERVER_FILES
     src/*.cpp
+    src/Init/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
     src/System/Collisions/*.cpp
@@ -84,6 +86,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Init
     include/Game
     include/System
     include/System/Collisions
@@ -109,6 +112,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Init
     include/Game
     include/System
     include/System/Collisions
