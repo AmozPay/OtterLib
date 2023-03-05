@@ -13,7 +13,7 @@
 #include "EventComponent.hpp"
 #include "Utils.hpp"
 
-namespace Otter::Games::RType::System::InitGame {
+namespace Otter::Games::RType::System::GameClient::InitGame {
 
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;

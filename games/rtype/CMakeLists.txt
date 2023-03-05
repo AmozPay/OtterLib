@@ -43,17 +43,19 @@ endif()
 file(
     GLOB CLIENT_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
     src/System/Collisions/*.cpp
 )
 file(
     GLOB SERVER_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
     src/System/Collisions/*.cpp
 )
 
@@ -66,9 +68,10 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
     include/Game
     include/System
+    include/System/GameClient
     include/System/Collisions
 )
 
@@ -93,9 +96,10 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
     include/Game
     include/System
+    include/System/GameClient
     include/System/Collisions
 )
 target_link_libraries(r-type_server

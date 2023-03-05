@@ -5,7 +5,7 @@
 ** InitPlayer
 */
 
-#include "InitPlayer.hpp"
+#include "InitPlayerClient.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

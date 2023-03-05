@@ -12,6 +12,7 @@
 
 namespace Otter::Network {
 
+    // Do insert no push back -> 0 need to be reserved
     struct ServerComponent {
         std::vector<std::uint32_t> mandatory_static;
         std::map<udp::endpoint, std::uint32_t> playerId;

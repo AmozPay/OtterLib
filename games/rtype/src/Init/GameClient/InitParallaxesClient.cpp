@@ -5,7 +5,7 @@
 ** InitParallaxes
 */
 
-#include "InitParallaxes.hpp"
+#include "InitParallaxesClient.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

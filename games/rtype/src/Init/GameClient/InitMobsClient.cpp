@@ -5,7 +5,7 @@
 ** InitMobs
 */
 
-#include "InitMobs.hpp"
+#include "InitMobsClient.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

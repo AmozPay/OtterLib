@@ -5,7 +5,7 @@
 ** InitObstacle
 */
 
-#include "InitObstacle.hpp"
+#include "InitObstacleClient.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

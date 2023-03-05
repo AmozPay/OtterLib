@@ -5,7 +5,7 @@
 ** InitInvisibleWall
 */
 
-#include "InitInvisibleWall.hpp"
+#include "InitInvisibleWallClient.hpp"
 
 namespace Otter::Games::GameClient::Init
 {

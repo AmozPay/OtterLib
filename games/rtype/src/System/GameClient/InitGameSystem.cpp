@@ -6,14 +6,14 @@
 */
 
 #include "InitGameSystem.hpp"
-#include "InitEnemy.hpp"
-#include "InitInvisibleWall.hpp"
-#include "InitMobs.hpp"
-#include "InitObstacle.hpp"
-#include "InitParallaxes.hpp"
-#include "InitPlayer.hpp"
+#include "InitEnemyClient.hpp"
+#include "InitInvisibleWallClient.hpp"
+#include "InitMobsClient.hpp"
+#include "InitObstacleClient.hpp"
+#include "InitParallaxesClient.hpp"
+#include "InitPlayerClient.hpp"
 
-namespace Otter::Games::RType::System::InitGame {
+namespace Otter::Games::RType::System::GameClient::InitGame {
 
     void InitGame(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {

@@ -18,13 +18,13 @@
 #include "WinSystem.hpp"
 #include "GameOverSystem.hpp"
 
-#include "InitBaseEntity.hpp"
-#include "InitEnemy.hpp"
-#include "InitInvisibleWall.hpp"
-#include "InitMobs.hpp"
-#include "InitObstacle.hpp"
-#include "InitParallaxes.hpp"
-#include "InitPlayer.hpp"
+#include "InitBaseEntityClient.hpp"
+#include "InitEnemyClient.hpp"
+#include "InitInvisibleWallClient.hpp"
+#include "InitMobsClient.hpp"
+#include "InitObstacleClient.hpp"
+#include "InitParallaxesClient.hpp"
+#include "InitPlayerClient.hpp"
 
 namespace Otter::Games::GameClient {
     namespace components = Otter::Games::RType::Components;
