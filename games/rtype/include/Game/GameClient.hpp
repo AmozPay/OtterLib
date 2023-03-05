@@ -16,6 +16,7 @@
 #include "System.hpp"
 #include "GameStatusSystem.hpp"
 #include "WinSystem.hpp"
+#include "GameOverSystem.hpp"
 
 #include "InitBaseEntity.hpp"
 #include "InitEnemy.hpp"
