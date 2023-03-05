@@ -8,6 +8,7 @@
 #ifndef RTYPE_DEATHSYSTEM_HPP
 #define RTYPE_DEATHSYSTEM_HPP
 
+#include "AnimationComponent.hpp"
 #include "Components.hpp"
 #include "OtterCore.hpp"
 

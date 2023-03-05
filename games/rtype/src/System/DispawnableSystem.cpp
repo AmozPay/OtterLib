@@ -5,8 +5,9 @@
 ** DispawnableSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "DispawnableSystem.hpp"
+
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Dispawnable {
 

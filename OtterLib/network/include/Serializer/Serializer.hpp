@@ -11,7 +11,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <sstream>
 
-namespace Network {
+namespace Otter::Network {
     class Serializer {
       public:
         Serializer(){};
@@ -25,6 +25,6 @@ namespace Network {
             oa << classToArchive;
         };
     };
-} // namespace Network
+} // namespace Otter::Network
 
 #endif /* !SERIALIZER_HPP_ */

@@ -118,8 +118,8 @@ namespace Otter::Core {
         reference_type insert_at(size_type pos, C const& comp)
         {
             if (pos >= _data.size())
-                _data.resize(pos, std::optional<C>());
-            _data.insert(_data.begin() + pos, comp);
+                _data.resize(pos + 1, std::optional<C>());
+            _data[pos] = comp;
             return _data[pos];
         }
 
@@ -132,8 +132,8 @@ namespace Otter::Core {
         reference_type insert_at(size_type pos, C&& comp)
         {
             if (pos >= _data.size())
-                _data.resize(pos, std::optional<C>());
-            _data.insert(_data.begin() + pos, comp);
+                _data.resize(pos + 1, std::optional<C>());
+            _data[pos] = comp;
             return _data[pos];
         }
 
@@ -165,7 +165,13 @@ namespace Otter::Core {
          * @brief erase data at index
          * @param index
          */
-        void erase(size_type pos) { _data[pos].reset(); }
+        void erase(size_type pos)
+        {
+            if (_data.size() <= pos)
+                return;
+            if (_data[pos])
+                _data[pos].reset();
+        }
 
         /**
          * @brief find index of component

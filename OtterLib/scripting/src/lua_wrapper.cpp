@@ -1,9 +1,9 @@
 #include "lua_wrapper.hpp"
-
+#include "lua.h"
+#include <cstring>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
-#include <cstring>
 
 namespace Otter::Scripting {
 
@@ -56,8 +56,8 @@ namespace Otter::Scripting {
             case 'p':
                 lua_pushlightuserdata(L, va_arg(args, void*));
                 break;
-            case 'l':
-                lua_pushinteger(L, va_arg(args, long long));
+            case 'i':
+                lua_pushinteger(L, va_arg(args, lua_Integer));
                 break;
             default:
                 throw std::invalid_argument("Invalid fmt string");
@@ -75,7 +75,7 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
-    void LuaContext::push(long long integer) { lua_pushinteger(L, integer); }
+    void LuaContext::push(lua_Integer integer) { lua_pushinteger(L, integer); }
 
     void LuaContext::push(double number) { lua_pushnumber(L, number); }
 
@@ -97,7 +97,7 @@ namespace Otter::Scripting {
         lua_setglobal(L, name.c_str());
     }
 
-    void LuaContext::setGlobal(std::string name, long long value)
+    void LuaContext::setGlobal(std::string name, lua_Integer value)
     {
         this->push(value);
         lua_setglobal(L, name.c_str());
@@ -121,13 +121,12 @@ namespace Otter::Scripting {
         return this->getStackValues(typesFmt, false);
     }
 
-
     std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes, bool popValue)
     {
         std::vector<luaTypes> returnValues;
         unsigned int i = 1;
 
-        for (auto type: returnTypes) {
+        for (auto type : returnTypes) {
             switch (type) {
             case 'b':
                 LUA_ERR_WRAP(lua_isboolean(L, -i));
@@ -141,7 +140,7 @@ namespace Otter::Scripting {
                 LUA_ERR_WRAP(lua_isstring(L, -i));
                 returnValues.emplace_back(lua_tostring(L, -i));
                 break;
-            case 'l':
+            case 'i':
                 LUA_ERR_WRAP(lua_isinteger(L, -i));
                 returnValues.emplace_back(lua_tointeger(L, -i));
                 break;
@@ -206,9 +205,9 @@ namespace Otter::Scripting {
         return res;
     }
 
-    long long LuaValue::toInteger()
+    lua_Integer LuaValue::toInteger()
     {
-        long long res;
+        lua_Integer res;
         lua_getglobal(L, _keys[0].c_str());
         _traverseTable();
         LUA_ERR_WRAP(lua_isinteger(L, -1));
@@ -270,8 +269,8 @@ namespace Otter::Scripting {
                              "#" +
                              path + " \nend \n";
         ctx.doString(getLen);
-        auto retVals = ctx.callFn("__getTableLen", "l");
-        unsigned long long len = std::get<long long>(retVals[0]);
+        auto retVals = ctx.callFn("__getTableLen", "i");
+        unsigned long long len = std::get<lua_Integer>(retVals[0]);
         return len;
     }
 

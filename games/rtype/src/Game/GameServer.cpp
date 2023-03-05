@@ -5,10 +5,12 @@
 ** GameServer
 */
 
-#include "baseComponents.hpp"
 #include "GameServer.hpp"
+#include "OtterCore.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::GameServer {
+
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
         // TODO: need to be cleaned
@@ -53,7 +55,8 @@ namespace Otter::Games::GameServer {
         ref.add_component(mobs, Otter::Core::BaseComponents::Health(100));
 
         for (int i = 0; i < 2; i++) {
-            ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Transform(1, 0, {static_cast<float>(i * 1226), 0}));
+            ref.add_component(parallaxes[i],
+                              Otter::Core::BaseComponents::Transform(1, 0, {static_cast<float>(i * 1226), 0}));
             ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
         }
     }
@@ -68,4 +71,9 @@ namespace Otter::Games::GameServer {
     }
 
     void registerSystems(Otter::Core::SystemManager& ref) { std::cout << "Server here" << std::endl; }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+        scriptingManager.enableScripting("../scripts");
+    }
 } // namespace Otter::Games::GameServer

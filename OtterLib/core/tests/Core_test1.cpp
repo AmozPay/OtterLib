@@ -134,7 +134,7 @@ TEST(Orchestrator, test_remove_a_entity)
     orch.add_component(e1, std::string("un"));
     orch.add_component(e3, std::string("deux"));
 
-    EXPECT_EQ(tmp.size(), e4 +1);
+    EXPECT_EQ(tmp.size(), e4 + 1);
     EXPECT_EQ(tmp2.size(), e4);
     EXPECT_EQ(tmp3.size(), e4);
 
@@ -146,7 +146,7 @@ TEST(Orchestrator, test_remove_a_entity)
     EXPECT_TRUE(tmp3[e3]);
 
     orch.remove_entity(e3);
-    
+
     EXPECT_FALSE(tmp[e3]);
     EXPECT_FALSE(tmp2[e3]);
     EXPECT_FALSE(tmp3[e3]);

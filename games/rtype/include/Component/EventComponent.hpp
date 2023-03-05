@@ -22,10 +22,7 @@ namespace Otter::Games::RType::Components {
      * @brief Custom events types
      * @enum EventTypes
      */
-    enum EventTypes {
-        COLISION,
-        DEATH,
-    };
+    enum EventTypes { LOBBY, INIT_GAME, COLISION, DEATH, GAME_OVER, WIN, RESET_GAME };
 
     using Orchestrator = Otter::Core::Orchestrator;
     using ComponentIdVector = std::vector<std::size_t>;
@@ -44,7 +41,7 @@ namespace Otter::Games::RType::Components {
     struct EventHandlerComponent {
         EventHandlerComponent(const EventHandlerMap& eventHandlerMap) { this->eventHandlerMap = eventHandlerMap; };
 
-        ~EventHandlerComponent() = default;
+        ~EventHandlerComponent(){};
 
         void handleEvent(Orchestrator& ref, const EventTypes& eventType, ComponentIdVector& componentIdVector)
         {
@@ -66,8 +63,8 @@ namespace Otter::Games::RType::Components {
      * @struct EventComponent
      */
     struct EventComponent {
-        EventComponent() = default;
-        ~EventComponent() = default;
+        EventComponent(){};
+        ~EventComponent(){};
 
         EventPairList events;
     };

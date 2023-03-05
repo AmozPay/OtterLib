@@ -41,4 +41,13 @@ namespace Otter::Core {
         Otter::Games::GameServer::registerSystems(ref);
 #endif
     }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+#if defined(TARGET_CLIENT)
+        Otter::Games::GameClient::configureScripting(scriptingManager);
+#elif defined(TARGET_SERVER)
+        Otter::Games::GameServer::configureScripting(scriptingManager);
+#endif
+    }
 } // namespace Otter::Core

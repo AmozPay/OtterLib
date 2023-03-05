@@ -9,7 +9,7 @@ namespace Otter::Core {
     extern void registerComponents(Otter::Core::Orchestrator&);
     extern void registerSystems(Otter::Core::SystemManager&);
     extern void createEntityObj(Otter::Core::Orchestrator&);
-    extern void configureScripts(Otter::Scripting::ScriptingManager&);
+    extern void configureScripting(Otter::Scripting::ScriptingManager&);
 
     class OtterCore {
       public:

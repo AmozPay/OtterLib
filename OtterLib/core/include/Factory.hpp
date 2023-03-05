@@ -17,7 +17,7 @@
 
 #define COMPONENT_BUILDER(name)                                                                                        \
     inline static std::string __tag = #name;                                                                           \
-    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& core, pt::ptree json)
+    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& core, boost::property_tree::ptree json)
 
 namespace Otter::Core {
     class Orchestrator;

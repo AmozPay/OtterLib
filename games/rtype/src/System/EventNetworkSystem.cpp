@@ -7,8 +7,8 @@
 
 #include "EventNetworkSystem.hpp"
 
-#include "baseComponents.hpp"
 #include "Components.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::EventNetwork {
     namespace components = Otter::Games::RType::Components;
@@ -43,18 +43,18 @@ namespace Otter::Games::RType::System::EventNetwork {
             auto& textureStorage = textureStorages[i];
 
             if (textureStorage) {
-                ref.add_component(newShot,
-                                  Otter::Core::BaseComponents::Texture("../assets/projectile.gif",
-                                                      textureStorage->findTextureByPath("../assets/projectile.gif"),
-                                                      Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)));
+                ref.add_component(newShot, Otter::Core::BaseComponents::Texture(
+                                               "../assets/projectile.gif",
+                                               textureStorage->findTextureByPath("../assets/projectile.gif"),
+                                               Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)));
             }
         }
         ref.add_component(newShot, Otter::Core::BaseComponents::Render());
 #endif
-        ref.add_component(
-            newShot, Otter::Core::BaseComponents::Transform(3, 0,
-                                           {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
-                                            transform->_position.y}));
+        ref.add_component(newShot, Otter::Core::BaseComponents::Transform(
+                                       3, 0,
+                                       {transform->_position.x + (texture->_texture.getWidth() * transform->_scale),
+                                        transform->_position.y}));
 
         ref.add_component(newShot, components::Shot(playerIndex));
         if (shooter->_direction == components::LEFT)
