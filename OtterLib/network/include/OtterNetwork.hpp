@@ -22,7 +22,7 @@ namespace Otter::Network {
 
     enum MsgCode {
         ACTIVATION,
-        VAR,
+        INIT_GAME
     };
 
     /////////////////// header

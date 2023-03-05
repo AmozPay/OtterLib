@@ -8,11 +8,43 @@
 #include "OtterGraphic.hpp"
 #include "baseComponents.hpp"
 #include "GameClient.hpp"
+#include "NetworkComponent.hpp"
+#include "ServerComponent.hpp"
+#include "ServerComponent.hpp"
+#include "ClientComponent.hpp"
+#include "Server.hpp"
+#include "Client.hpp"
 #include <utility>
+#include "InitGameMessage.hpp"
 
 namespace Otter::Games::GameClient {
+    void test_upd(Otter::Core::Orchestrator &ref)
+    {
+        auto& sock = ref.get_components<Otter::Network::SocketComponent>();
+        auto& serv = ref.get_components<Otter::Network::ServerComponent>();
+        
+        for (int i = 0; i < sock.size(); i++) {
+            if (!sock[i]) {
+                continue;
+            }
+            std::cout << sock[i]->channel << std::endl;
+            if (serv[i])
+            std::cout << "serv exist with socket" << std::endl;
+            else
+            std::cout << "serv doest exist" <<std::endl;
+        }
+    }
+
+
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
+        Otter::Network::ServerComponent serverComponent;
+    
+        serverComponent.callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int){ });
+        serverComponent.callBack.push_back(systems::GameClient::InitGameMessage::HandleInitGameMessage);
+
+        ref.add_component(0, Otter::Network::SocketComponent());
+        ref.add_component(0, std::move(serverComponent));
         Init::InitBaseEntity baseEntity(ref);
     }
 
@@ -25,10 +57,15 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
+        
+        ref.register_component<Otter::Network::SocketComponent>();
+        ref.register_component<Otter::Network::ServerComponent>();
+        ref.register_component<Otter::Network::ClientComponent>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
+        ref.registerSystem(Otter::Network::Client::init, Otter::Core::SystemManager::init);
         ref.registerSystem(systems::Window::SetTargetFPS, Otter::Core::SystemManager::init);
         ref.registerSystem(systems::Window::WindowShouldClose, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
@@ -38,6 +75,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
+        ref.registerSystem(Otter::Network::Client::update, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
@@ -47,5 +85,8 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Sprite::DrawParallax, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
+        
+        
+        ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
     }
 } // namespace Otter::Games::GameClient

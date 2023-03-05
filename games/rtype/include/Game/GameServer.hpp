@@ -13,6 +13,7 @@
 #include "System.hpp"
 #include "InitBaseEntityServer.hpp"
 #include "GameStatusSystem.hpp"
+#include "CheckClientNbSystem.hpp"
 
 namespace Otter::Games::GameServer {
     namespace components = Otter::Games::RType::Components;

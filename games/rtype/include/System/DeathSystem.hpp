@@ -32,13 +32,22 @@ namespace Otter::Games::RType::System::Death {
     void TriggerDeath(Otter::Core::Orchestrator& ref, size_t entityIndex);
 
     /**
-     * @brief Handle the death event
-     * @details This function is used to handle the death event
+     * @brief Handle the death event for the server
+     * @details This function is used to handle the death event for the server
      * @param ref: The orchestrator
      * @param vectorId: The vector of the ids of the entities
      * @return void
      */
-    void HandleDeath(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId);
+    void HandleDeathServer(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId);
+
+    /**
+     * @brief Handle the death event for the server
+     * @details This function is used to handle the death event for the server
+     * @param ref: The orchestrator
+     * @param vectorId: The vector of the ids of the entities
+     * @return void
+     */
+    void HandleDeathClient(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId);
 
 } // namespace Otter::Games::RType::System::Death
 

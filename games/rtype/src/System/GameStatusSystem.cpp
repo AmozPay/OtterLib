@@ -37,7 +37,6 @@ namespace Otter::Games::RType::System::GameStatus {
             }
 
             if (statuses[i]->gameStatusType == Core::BaseComponents::LOBBY) {
-                std::cout << "Game status lobby" << std::endl;
                 TriggerGameEvent(ref, components::EventTypes::LOBBY);
             }
 
@@ -46,6 +45,7 @@ namespace Otter::Games::RType::System::GameStatus {
             }
 
             if (statuses[i]->gameStatusType == Core::BaseComponents::GAME_OVER) {
+                std::cout << "Game over" << std::endl;
                 TriggerGameEvent(ref, components::EventTypes::GAME_OVER);
             }
 

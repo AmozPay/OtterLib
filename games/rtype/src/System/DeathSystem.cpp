@@ -45,7 +45,22 @@ namespace Otter::Games::RType::System::Death {
         }
     }
 
-    void HandleDeath(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
+    void HandleDeathServer(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
+    {
+        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
+
+        for (auto &id: vectorId) {
+            if (players[id] || enemies[id]) {
+                ref.remove_entity(static_cast<std::uint32_t>(id));
+                std::cout << "Remove entity" << std::endl;
+            }
+
+        }
+    }
+
+
+    void HandleDeathClient(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
         auto &animationComp = ref.get_components<components::AnimationComponent>();
         auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();

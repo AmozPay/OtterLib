@@ -124,6 +124,7 @@ namespace Otter::Network::Client {
 	  return ret;
 	std::cout << "Tram Sending" << std::endl;
         session.send(ss.str());
+        std::cout << "msg send" << ss.str() << std::endl;
         return ret;
     }
 
@@ -156,6 +157,8 @@ namespace Otter::Network::Client {
             return;
         for (int i = 0; pac > i; i++) {
             dt = Otter::Network::Header::getDt(ss);
+            std::cout << serv.callBack.size() << std::endl;
+            std::cout << dt.msgCode << std::endl;
             serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
     }
@@ -174,7 +177,7 @@ namespace Otter::Network::Client {
         std::stringstream data;
         for (auto& it : connection) {
             it->recv(data);
-            if (data.tellp() == data.tellg())
+            if (data.str().empty())
                 continue;
             if (Otter::Network::Server::test_header(data, cl->id, cl->seq) == false)
                 continue;

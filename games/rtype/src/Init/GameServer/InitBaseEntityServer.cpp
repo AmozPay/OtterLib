@@ -21,7 +21,7 @@ namespace Otter::Games::GameServer::Init
             components::EventHandlerMap(
                 {
                     {components::EventTypes::COLISION, systems::Collision::HandleCollision},
-                    {components::EventTypes::DEATH, systems::Death::HandleDeath},
+                    {components::EventTypes::DEATH, systems::Death::HandleDeathServer},
                     {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
                     {components::EventTypes::INIT_GAME, systems::GameServer::InitGame::HandleInitGame},
                     {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
