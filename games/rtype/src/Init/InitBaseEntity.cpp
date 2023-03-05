@@ -33,7 +33,8 @@ namespace Otter::Games::GameClient::Init
                     {components::EventTypes::COLISION, systems::Collision::HandleCollision},
                     {components::EventTypes::DEATH, systems::Death::HandleDeath},
                     {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
-                    {components::EventTypes::INIT_GAME, systems::InitGame::HandleInitGame}
+                    {components::EventTypes::INIT_GAME, systems::InitGame::HandleInitGame},
+                    {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver}
                 }
             )));
         ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());

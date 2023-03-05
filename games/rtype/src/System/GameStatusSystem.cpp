@@ -47,6 +47,10 @@ namespace Otter::Games::RType::System::GameStatus {
                 TriggerGameEvent(ref, components::EventTypes::INIT_GAME);
             }
 
+            if (statuses[i]->gameStatusType == Core::BaseComponents::GAME_OVER) {
+                TriggerGameEvent(ref, components::EventTypes::GAME_OVER);
+            }
+
         }
     }
 }
