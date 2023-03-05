@@ -52,6 +52,10 @@ namespace Otter::Core {
         ref.register_component<Otter::Network::ClientComponent>();
     }
 
+    void configureScripting(Otter::Scripting::ScriptingManager&)
+    {
+    }
+
     void registerSystems(Otter::Core::SystemManager& ref)
     {
 #if defined(TARGET_CLIENT)

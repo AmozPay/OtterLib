@@ -6,10 +6,11 @@
 */
 
 #include "GameServer.hpp"
-
+#include "OtterCore.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::GameServer {
+
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
         // TODO: need to be cleaned
@@ -70,4 +71,9 @@ namespace Otter::Games::GameServer {
     }
 
     void registerSystems(Otter::Core::SystemManager& ref) { std::cout << "Server here" << std::endl; }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+        scriptingManager.enableScripting("../scripts");
+    }
 } // namespace Otter::Games::GameServer

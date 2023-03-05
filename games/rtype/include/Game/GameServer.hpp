@@ -22,6 +22,9 @@ namespace Otter::Games::GameServer {
     void registerComponents(Otter::Core::Orchestrator& ref);
 
     void registerSystems(Otter::Core::SystemManager& ref);
+
+    void configureScripting(Otter::Scripting::ScriptingManager&);
+
 } // namespace Otter::Games::GameServer
 
 #endif /* !GAMESERVER_HPP_ */

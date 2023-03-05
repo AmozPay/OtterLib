@@ -1,5 +1,5 @@
 #include "ScriptingManager.hpp"
-
+#include <boost/format.hpp>
 #include "C2LuaBindings.hpp"
 
 #define REGISTER_SYSTEM(phase)                                                                                         \
@@ -33,6 +33,7 @@ namespace Otter::Scripting {
         _luaContext.doFile(scriptingEntrypointFile + "/OtterLib.lua");
         _luaContext.doFile(scriptingEntrypointFile + "/main.lua");
         _luaContext.doString(luaCallScripts);
+        _luaContext.doString(boost::str(boost::format(isGraphicsEnabledLuaFmt) % _graphicsEnabled));
         std::cout << "[OtterLib] Scripts loaded" << std::endl;
 
         _luaContext.setGlobal("__orchestrator", &_orchestrator);
@@ -52,6 +53,11 @@ namespace Otter::Scripting {
         REGISTER_SYSTEM(cleanup);
 
         std::cout << "[OtterLib] Scripting initialized" << std::endl;
+    }
+
+    void ScriptingManager::enableGraphics(void)
+    {
+        this->_graphicsEnabled = true;
     }
 
     void ScriptingManager::setupComponentBindings(void)

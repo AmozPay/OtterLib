@@ -11,6 +11,8 @@ void Otter::Core::createEntityObj(Otter::Core::Orchestrator& o) {}
 
 void Otter::Core::registerComponents(Otter::Core::Orchestrator& o) {}
 
+void Otter::Core::configureScripting(Otter::Scripting::ScriptingManager& scriptingManager) {}
+
 TEST(scriptingManagerLuaBindings, shouldPrintHi)
 {
     Otter::Scripting::LuaContext luaContext;

@@ -35,6 +35,9 @@ namespace Otter::Games::GameClient {
     void registerComponents(Otter::Core::Orchestrator& ref);
 
     void registerSystems(Otter::Core::SystemManager& ref);
+
+    void configureScripting(Otter::Scripting::ScriptingManager&);
+
 } // namespace Otter::Games::GameClient
 
 #endif /* !GAMECLIENT_HPP_ */

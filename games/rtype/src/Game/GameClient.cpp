@@ -8,6 +8,7 @@
 #include "GameClient.hpp"
 #include "OtterGraphic.hpp"
 #include "baseComponents.hpp"
+#include "OtterCore.hpp"
 
 #include <utility>
 
@@ -47,5 +48,11 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Text::DrawText, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
+    }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+        scriptingManager.enableScripting("../scripts");
+        scriptingManager.enableGraphics();
     }
 } // namespace Otter::Games::GameClient

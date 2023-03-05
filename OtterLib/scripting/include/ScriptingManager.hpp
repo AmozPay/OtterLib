@@ -5,24 +5,6 @@
 
 namespace Otter::Scripting {
 
-    // // Here, we're creating lua code that is directly embeded in the program executable.
-    // // This is later added to a lua context so that lua developpers can access these objects in their scripts
-    // static const std::string luaSystemsTable = "\
-    //     OtterLib = {\
-    //         systems = {\
-    //             init = {},\
-    //             preEvent = {},\
-    //             event = {},\
-    //             preUpdate = {},\
-    //             update = {},\
-    //             preDraw = {},\
-    //             draw = {},\
-    //             subDraw = {},\
-    //             [\"end\"] = {}\
-    //         }\
-    //     }\
-    // ";
-
     // This is not inteded to be used by lua developpers, but is used to retrieve
     // user created scripts and call them in the proper phase. This is called by a library available system.
     static const std::string luaCallScripts = "\
@@ -30,6 +12,12 @@ namespace Otter::Scripting {
             for k, v in pairs(OtterLib.systems.phasesEnum[phase]) do\n\
                 v()\n\
             end\n\
+        end\n\
+    ";
+
+    static const std::string isGraphicsEnabledLuaFmt = "\
+        function __isGraphicEnabled()\n\
+            return %1%\
         end\n\
     ";
 
@@ -44,17 +32,19 @@ namespace Otter::Scripting {
     class ScriptingManager {
       public:
         ScriptingManager(Otter::Core::SystemManager& systemManager, Otter::Core::Orchestrator& orchestrator)
-            : _luaContext(), _systemManager(systemManager), _orchestrator(orchestrator)
+            : _luaContext(), _systemManager(systemManager), _orchestrator(orchestrator), _graphicsEnabled(false)
         {
         }
 
         ~ScriptingManager() = default;
         void enableScripting(const std::string scriptingEntrypointDirectory);
+        void enableGraphics(void);
 
       private:
         void setupComponentBindings(void);
         LuaContext _luaContext;
         Otter::Core::SystemManager& _systemManager;
         Otter::Core::Orchestrator& _orchestrator;
+        bool _graphicsEnabled;
     };
 } // namespace Otter::Scripting
