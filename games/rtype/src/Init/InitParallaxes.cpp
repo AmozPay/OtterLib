@@ -10,7 +10,7 @@
 namespace Otter::Games::GameClient::Init {
     InitParallaxes::InitParallaxes(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
-        Otter::Core::Entity parallaxes[2];
+        Otter::Core::Entity parallaxes[3];
 
         for (unsigned int& parallax : parallaxes) {
             parallax = ref.createEntity();
@@ -28,9 +28,9 @@ namespace Otter::Games::GameClient::Init {
             ref.add_component(parallax, Otter::Core::BaseComponents::Parallax());
         }
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             ref.add_component(parallaxes[i],
-                              Otter::Core::BaseComponents::Transform(5, 0, {static_cast<float>(i * 1226), 0}));
+                              Otter::Core::BaseComponents::Transform(1, 0, {static_cast<float>(i * 1920), 0}));
             ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
         }
     }
