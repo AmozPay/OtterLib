@@ -1,6 +1,6 @@
 #pragma once
 #include "Session.hpp"
-
+#include "Factory.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
 #include <map>
@@ -14,6 +14,12 @@ namespace Otter::Network {
 
     class Socket {
       public:
+        COMPONENT_BUILDER(Socket)
+        {
+          auto port = json.get<std::uint16_t>("port");
+          auto ip = json.get<std::string>("ip");
+          core.add_component(Otter::Network::Socket(ip, port));
+        }
         Socket(std::uint16_t port = 0);
         Socket(boost::asio::ip::address addr, std::uint16_t port = 0);
         Socket(std::string add, std::uint16_t port = 0);
