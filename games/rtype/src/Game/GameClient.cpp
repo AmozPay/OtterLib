@@ -13,8 +13,7 @@
 namespace Otter::Games::GameClient {
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        Init::InitBaseEntity baseEntity(ref);
-        
+        Init::InitBaseEntity baseEntity(ref);   
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -35,11 +34,12 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
-        ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Animation::animate, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Window::ClearBackground, Otter::Core::SystemManager::preDraw);

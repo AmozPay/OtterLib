@@ -27,17 +27,12 @@ namespace Otter::Games::RType::System::Lobby {
     {
         auto &eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
 
-        std::cout << "Lobby" << std::endl;
-
         for (size_t i = 0; i < eventNetworks.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
 
             if (!eventNetwork) {
                 continue;
             }
-
-            std::cout << "EventNetwork" << std::endl;
-
             if (eventNetwork->_data == utils::SHOOT) {
                 TriggerInitGame(ref);
             }

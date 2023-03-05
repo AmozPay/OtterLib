@@ -29,13 +29,13 @@ namespace Otter::Games::RType::System::Collision::Enemy {
             healths[enemyIndex]->_hp = 0;
         }
 
-        for (std::size_t i = 0; i < players.size(); i++)
-        {
-            if (!players[i])
-                continue;
+        // for (std::size_t i = 0; i < players.size(); i++)
+        // {
+        //     if (!players[i])
+        //         continue;
 
-            systems::Collision::Player::PlayerToEnemyCollision(ref, i, enemyIndex);
-        }
+        //     systems::Collision::Player::PlayerToEnemyCollision(ref, i, enemyIndex);
+        // }
 
         std::cout << "Enemy to Wall" << std::endl;
     }
@@ -46,7 +46,8 @@ namespace Otter::Games::RType::System::Collision::Enemy {
         auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
         auto const& shots = ref.get_components<components::Shot>();
 
-        std::cout << "before " << healths[enemyIndex]->_hp << std::endl;
+        std::cout << "Enemy index " << enemyIndex << std::endl;
+        std::cout << "Bullet index " << bulletIndex << std::endl; 
 
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
             auto const shot = shots[bulletIndex];
