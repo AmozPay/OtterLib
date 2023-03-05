@@ -5,15 +5,15 @@
 ** InitPlayer
 */
 
-#ifndef INITPLAYERCLIENT_HPP_
-#define INITPLAYERCLIENT_HPP_
+#ifndef INITPLAYERSERVER_HPP_
+#define INITPLAYERSERVER_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
 #include "baseComponents.hpp"
 #include "Utils.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
@@ -31,4 +31,4 @@ namespace Otter::Games::GameClient::Init
     };
 }
 
-#endif /* !INITPLAYERCLIENT_HPP_ */
+#endif /* !INITPLAYERSERVER_HPP_ */

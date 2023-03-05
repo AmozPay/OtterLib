@@ -2,33 +2,32 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** InitPlayer
+** InitInvisibleWall
 */
 
-#ifndef INITPLAYERCLIENT_HPP_
-#define INITPLAYERCLIENT_HPP_
+#ifndef INITINVISIBLEWALLSERVER_HPP_
+#define INITINVISIBLEWALLSERVER_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
 #include "baseComponents.hpp"
 #include "Utils.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
     namespace components = Otter::Games::RType::Components;
-    namespace utils = Otter::Games::RType::Utils;
 
-    class InitPlayer {
+    class InitInvisibleWall {
         public:
-            InitPlayer(
+            InitInvisibleWall(
                 Otter::Core::Orchestrator& ref,
                 Otter::Core::Entity baseEntity
             );
-            ~InitPlayer();
+            ~InitInvisibleWall();
 
         protected:
         private:
     };
 }
 
-#endif /* !INITPLAYERCLIENT_HPP_ */
+#endif /* !INITINVISIBLEWALLSERVER_HPP_ */

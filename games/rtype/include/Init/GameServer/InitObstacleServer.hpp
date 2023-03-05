@@ -2,33 +2,32 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** InitPlayer
+** InitObstacle
 */
 
-#ifndef INITPLAYERCLIENT_HPP_
-#define INITPLAYERCLIENT_HPP_
+#ifndef INITOBSTACLESERVER_HPP_
+#define INITOBSTACLESERVER_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
 #include "baseComponents.hpp"
 #include "Utils.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
     namespace components = Otter::Games::RType::Components;
-    namespace utils = Otter::Games::RType::Utils;
 
-    class InitPlayer {
+    class InitObstacle {
         public:
-            InitPlayer(
+            InitObstacle(
                 Otter::Core::Orchestrator& ref,
                 Otter::Core::Entity baseEntity
             );
-            ~InitPlayer();
+            ~InitObstacle();
 
         protected:
         private:
     };
 }
 
-#endif /* !INITPLAYERCLIENT_HPP_ */
+#endif /* !INITOBSTACLESERVER_HPP_ */

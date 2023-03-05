@@ -5,8 +5,8 @@
 ** InitBaseEntity
 */
 
-#ifndef INITBASEENTITYCLIENT_HPP_
-#define INITBASEENTITYCLIENT_HPP_
+#ifndef INITBASEENTITY_HPP_
+#define INITBASEENTITY_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
@@ -16,11 +16,11 @@
 #include "Animation.hpp"
 #include "System.hpp"
 #include "LobbySystem.hpp"
-#include "InitGameSystemClient.hpp"
+#include "InitGameSystemServer.hpp"
 #include "GameOverSystem.hpp"
 #include "WinSystem.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
@@ -39,4 +39,4 @@ namespace Otter::Games::GameClient::Init
 
 }
 
-#endif /* !INITBASEENTITYCLIENT_HPP_ */
+#endif /* !INITBASEENTITY_HPP_ */

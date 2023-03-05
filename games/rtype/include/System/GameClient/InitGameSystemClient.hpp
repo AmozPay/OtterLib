@@ -5,8 +5,8 @@
 ** InitGameSystem
 */
 
-#ifndef INITGAMESYSTEM_HPP_
-#define INITGAMESYSTEM_HPP_
+#ifndef INITGAMESYSTEMCLIENT_HPP_
+#define INITGAMESYSTEMCLIENT_HPP_
 
 #include "OtterCore.hpp"
 #include "baseComponents.hpp"
@@ -28,4 +28,4 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
 }
 
-#endif /* !INITGAMESYSTEM_HPP_ */
+#endif /* !INITGAMESYSTEM CLIENT_HPP_ */

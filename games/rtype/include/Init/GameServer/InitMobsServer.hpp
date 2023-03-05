@@ -5,8 +5,8 @@
 ** InitMobs
 */
 
-#ifndef INITMOBS_HPPCLIENT_
-#define INITMOBS_HPPCLIENT_
+#ifndef INITMOBSSERVER_HPP_
+#define INITMOBSSERVER_HPP_
 
 #include "Components.hpp"
 #include "AnimationComponent.hpp"
@@ -15,7 +15,7 @@
 #include "System.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
 
     class InitMobs {
@@ -31,4 +31,4 @@ namespace Otter::Games::GameClient::Init
     };
 }
 
-#endif /* !INITMOBS_HPPCLIENT_ */
+#endif /* !INITMOBSSERVER_HPP_ */

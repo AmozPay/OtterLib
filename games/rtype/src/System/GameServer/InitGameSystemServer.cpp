@@ -5,7 +5,7 @@
 ** InitGameSystem
 */
 
-#include "InitGameSystem.hpp"
+#include "InitGameSystemServer.hpp"
 #include "InitEnemyClient.hpp"
 #include "InitInvisibleWallClient.hpp"
 #include "InitMobsClient.hpp"
@@ -13,7 +13,7 @@
 #include "InitParallaxesClient.hpp"
 #include "InitPlayerClient.hpp"
 
-namespace Otter::Games::RType::System::GameClient::InitGame {
+namespace Otter::Games::RType::System::GameServer::InitGame {
 
     void InitGame(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {

@@ -5,13 +5,13 @@
 ** InitParallaxes
 */
 
-#ifndef INITPARALLAXESCLIENT_HPP_
-#define INITPARALLAXESCLIENT_HPP_
+#ifndef INITPARALLAXESSERVER_HPP_
+#define INITPARALLAXESSERVER_HPP_
 
 #include "OtterCore.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::GameClient::Init
+namespace Otter::Games::GameServer::Init
 {
     class InitParallaxes {
         public:
@@ -26,4 +26,4 @@ namespace Otter::Games::GameClient::Init
     };
 }
 
-#endif /* !INITPARALLAXESCLIENT_HPP_ */
+#endif /* !INITPARALLAXESSERVER_HPP_ */

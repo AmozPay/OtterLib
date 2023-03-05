@@ -5,8 +5,8 @@
 ** InitObstacle
 */
 
-#ifndef INITOBSTACLE_HPP_
-#define INITOBSTACLE_HPP_
+#ifndef INITOBSTACLECLIENT_HPP_
+#define INITOBSTACLECLIENT_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
@@ -30,4 +30,4 @@ namespace Otter::Games::GameClient::Init
     };
 }
 
-#endif /* !INITOBSTACLE_HPP_ */
+#endif /* !INITOBSTACLECLIENT_HPP_ */

@@ -5,8 +5,8 @@
 ** InitInvisibleWall
 */
 
-#ifndef INITINVISIBLEWALL_HPP_
-#define INITINVISIBLEWALL_HPP_
+#ifndef INITINVISIBLEWALLCLIENT_HPP_
+#define INITINVISIBLEWALLCLIENT_HPP_
 
 #include "OtterCore.hpp"
 #include "Components.hpp"
@@ -30,4 +30,4 @@ namespace Otter::Games::GameClient::Init
     };
 }
 
-#endif /* !INITINVISIBLEWALL_HPP_ */
+#endif /* !INITINVISIBLEWALLCLIENT_HPP_ */
