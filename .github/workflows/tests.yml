@@ -21,7 +21,7 @@ jobs:
           cd OtterLib
           sudo pip install conan==1.57.0
           conan profile new --detect default
-          cmake -S . -B build
+          cmake -S . -B build -DBUILD_TESTING=ON
           cmake --build build --target OtterLibTests
       - name: Run OtterCore Tests
         if: always()
@@ -35,3 +35,7 @@ jobs:
         if: always()
         run: |
           ./OtterLib/build/bin/OtterGraphicTests
+      - name: Run OtterScripting Tests
+        if: always()
+        run: |
+          ./OtterLib/build/bin/OtterScriptingTests
