@@ -18,7 +18,7 @@ namespace Otter::Games::RType::System::GameOver
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;
 
-    void TriggerGameOver(Otter::Core::Orchestrator& ref);
+    void CheckGameOver(Otter::Core::Orchestrator& ref);
 
     /**
      * @brief Handle the lobby event

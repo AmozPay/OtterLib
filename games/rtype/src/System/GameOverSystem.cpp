@@ -36,9 +36,25 @@ namespace Otter::Games::RType::System::GameOver
         for (std::size_t i = 0; i < gameStatus.size(); i++) {
             if (!gameStatus[i])
                 continue;
+            if (gameStatus[i]->gameStatusType != Otter::Core::BaseComponents::GAME)
+                continue;
             gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::GAME_OVER;
         }
         InitGameOverScene(ref);
+    }
+
+    void CheckGameOver(Otter::Core::Orchestrator& ref)
+    {
+        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        std::size_t enemyCount = 0;
+
+        for (std::size_t i = 0; i < players.size(); i++) {
+            if (players[i])
+                enemyCount++;
+        }
+        if (enemyCount == 0)
+            TriggerGameOver(ref);
+
     }
 
     void HandleGameOver(
