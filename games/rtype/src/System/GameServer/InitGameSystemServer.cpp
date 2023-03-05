@@ -20,7 +20,8 @@ namespace Otter::Games::RType::System::GameServer::InitGame {
         Otter::Games::GameServer::Init::InitParallaxes parallaxes(ref, baseEntity);
         Otter::Games::GameServer::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
         Otter::Games::GameServer::Init::InitPlayer player(ref, baseEntity);
-         
+
+        srand(42);
         int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
         int range = 21 - 1;
