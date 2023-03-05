@@ -42,14 +42,19 @@ namespace Otter::Scripting {
      * access to the orchestrator to scripts)
      */
     class ScriptingManager {
-        public:
-            ScriptingManager(Otter::Core::SystemManager &systemManager, Otter::Core::Orchestrator &orchestrator): _luaContext(), _systemManager(systemManager), _orchestrator(orchestrator) {}
-            ~ScriptingManager() = default;
-            void enableScripting(const std::string scriptingEntrypointDirectory);
-        private:
-            void setupComponentBindings(void);
-            LuaContext _luaContext;
-            Otter::Core::SystemManager &_systemManager;
-            Otter::Core::Orchestrator &_orchestrator;
+      public:
+        ScriptingManager(Otter::Core::SystemManager& systemManager, Otter::Core::Orchestrator& orchestrator)
+            : _luaContext(), _systemManager(systemManager), _orchestrator(orchestrator)
+        {
+        }
+
+        ~ScriptingManager() = default;
+        void enableScripting(const std::string scriptingEntrypointDirectory);
+
+      private:
+        void setupComponentBindings(void);
+        LuaContext _luaContext;
+        Otter::Core::SystemManager& _systemManager;
+        Otter::Core::Orchestrator& _orchestrator;
     };
 } // namespace Otter::Scripting

@@ -5,8 +5,9 @@
 ** CollisionSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "PlayerCollisionSystem.hpp"
+
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Collision::Player {
     namespace components = Otter::Games::RType::Components;

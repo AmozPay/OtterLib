@@ -5,12 +5,15 @@
 ** CollisionSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "EnemyCollisionSystem.hpp"
+
+#include "PlayerCollisionSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Collision::Enemy {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
+    namespace systems = Otter::Games::RType::System;
 
     void EnemyToEnemyCollision(Otter::Core::Orchestrator& ref, size_t firstEnemyIndex, size_t secondEnemyIndex)
     {
@@ -19,6 +22,22 @@ namespace Otter::Games::RType::System::Collision::Enemy {
 
     void EnemyToWallCollision(Otter::Core::Orchestrator& ref, size_t enemyIndex, size_t wallIndex)
     {
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
+        auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+
+        if (enemyIndex < healths.size() && healths[enemyIndex]) {
+            healths[enemyIndex]->_hp = 0;
+        }
+
+        // for (std::size_t i = 0; i < players.size(); i++)
+        // {
+        //     if (!players[i])
+        //         continue;
+
+        //     systems::Collision::Player::PlayerToEnemyCollision(ref, i, enemyIndex);
+        // }
+
         std::cout << "Enemy to Wall" << std::endl;
     }
 
@@ -28,20 +47,23 @@ namespace Otter::Games::RType::System::Collision::Enemy {
         auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
         auto const& shots = ref.get_components<components::Shot>();
 
+        std::cout << "Enemy index " << enemyIndex << std::endl;
+        std::cout << "Bullet index " << bulletIndex << std::endl;
+
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
             auto const shot = shots[bulletIndex];
+
             if (shot->_shooterId < damages.size() && damages[shot->_shooterId]) {
-                if (healths[enemyIndex]->_hp - damages[shot->_shooterId]->_damage > 0)
-                    healths[enemyIndex]->_hp -= damages[shot->_shooterId]->_damage;
-                else
+                healths[enemyIndex]->_hp = healths[enemyIndex]->_hp - damages[shot->_shooterId]->_damage;
+
+                if (healths[enemyIndex]->_hp <= 0)
                     healths[enemyIndex]->_hp = 0;
 
                 std::cout << healths[enemyIndex]->_hp << std::endl;
             }
         }
         // TODO: need to delete the entity
-        ref.remove_component<Otter::Core::BaseComponents::Render>(bulletIndex);
-        ref.remove_component<Otter::Core::BaseComponents::BoxCollider>(bulletIndex);
+        ref.remove_entity(static_cast<std::uint32_t>(bulletIndex));
         std::cout << "Enemy to Bullet" << std::endl;
     }
 

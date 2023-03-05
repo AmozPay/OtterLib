@@ -41,14 +41,14 @@ namespace Otter::Games::RType::System::Text {
 
     void DrawText(core::Orchestrator& ref)
     {
-        auto& texts = ref.register_component<core::BaseComponents::Text>();
-        const auto& transforms = ref.register_component<core::BaseComponents::Transform>();
+        auto& texts = ref.get_components<core::BaseComponents::Text>();
+        auto const& transforms = ref.get_components<core::BaseComponents::Transform>();
 
         for (size_t i = 0; i < texts.size() && i < transforms.size(); i++) {
             auto& text = texts[i];
-            const auto& transform = transforms[i];
+            auto const& transform = transforms[i];
 
-            if (text)
+            if (text && transform)
                 text->_textInstance.draw(text->_text, {transform->_position.x, transform->_position.y}, text->_fontSize);
         }
     }

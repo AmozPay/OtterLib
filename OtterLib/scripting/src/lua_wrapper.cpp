@@ -1,9 +1,9 @@
 #include "lua_wrapper.hpp"
 
+#include <cstring>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
-#include <cstring>
 
 namespace Otter::Scripting {
 
@@ -121,13 +121,12 @@ namespace Otter::Scripting {
         return this->getStackValues(typesFmt, false);
     }
 
-
     std::vector<luaTypes> LuaContext::getStackValues(const std::string returnTypes, bool popValue)
     {
         std::vector<luaTypes> returnValues;
         unsigned int i = 1;
 
-        for (auto type: returnTypes) {
+        for (auto type : returnTypes) {
             switch (type) {
             case 'b':
                 LUA_ERR_WRAP(lua_isboolean(L, -i));

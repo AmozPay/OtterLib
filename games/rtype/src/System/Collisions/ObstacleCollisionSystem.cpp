@@ -70,7 +70,7 @@ namespace Otter::Games::RType::System::Collision::Obstacle {
         }
     }
 
-    void ObstacleCollisionHandler(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
+    void ObstacleCollisionHandler(Otter::Core::Orchestrator& ref, components::ComponentIdVector& vectorId)
     {
         auto const& obstacles = ref.get_components<components::Obstacle>();
 

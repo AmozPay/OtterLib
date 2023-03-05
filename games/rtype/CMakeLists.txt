@@ -19,36 +19,16 @@ option(BUILD_RELEASE OFF)
 if(BUILD_RELEASE) # when overriden by cli
     message(WARNING "Building project for release")
     set(CONFIG_VALUE "--config Release")
-    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
-else()
-    set(CONFIG_VALUE "")
-    set(BUILD_TESTING "")
+    add_definitions("-DBUILD_TESTING=OFF")
 endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
-execute_process(
-    COMMAND ${CMAKE_COMMAND} ${BUILD_TESTING} -S . -B build -G ${CMAKE_GENERATOR}
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}
-)
 
-if(result)
-    message(FATAL_ERROR "CMake step for deps failed: ${result}")
-endif()
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 
 
-execute_process(
-    COMMAND ${CMAKE_COMMAND} --build . --target OtterLib ${CONFIG_VALUE}
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
-)
-
-execute_process(
-    COMMAND cp ${OTTERLIB_DIR}/build/lib/OtterLib.lua ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${OTTERLIB_DIR}/build
-)
+file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
 
 add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
@@ -63,6 +43,7 @@ endif()
 file(
     GLOB CLIENT_FILES
     src/*.cpp
+    src/Init/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
     src/System/Collisions/*.cpp
@@ -70,6 +51,7 @@ file(
 file(
     GLOB SERVER_FILES
     src/*.cpp
+    src/Init/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
     src/System/Collisions/*.cpp
@@ -84,14 +66,16 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Init
     include/Game
     include/System
     include/System/Collisions
 )
+
 target_link_libraries(r-type_client
+    OtterGraphic
     OtterCore
     OtterNetwork
-    OtterGraphic
     OtterScripting
     ${CONAN_LIBS}
 )
@@ -109,6 +93,7 @@ target_include_directories(
     include/
     include/Utils
     include/Component
+    include/Init
     include/Game
     include/System
     include/System/Collisions

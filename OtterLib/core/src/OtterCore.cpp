@@ -1,4 +1,5 @@
 #include "OtterCore.hpp"
+
 #include "baseComponents.hpp"
 
 namespace Otter::Core {
@@ -24,6 +25,7 @@ namespace Otter::Core {
         this->_data.register_component<Core::BaseComponents::Texture>();
         this->_data.register_component<Core::BaseComponents::TextureStorage>();
         this->_data.register_component<Core::BaseComponents::Text>();
+        this->_data.register_component<Core::BaseComponents::GameStatus>();
     }
 
     void OtterCore::init()
@@ -33,6 +35,7 @@ namespace Otter::Core {
         registerSystems(this->_systems);
         _scriptingManager.enableScripting("../scripts");
         createEntityObj(this->_data);
+        // _scriptingManager.enableScripting("../scripts/main.lua");
         /// call factory
     }
 

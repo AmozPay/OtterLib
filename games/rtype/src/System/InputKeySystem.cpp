@@ -6,9 +6,10 @@
 */
 
 #include "InputKeySystem.hpp"
-#include "baseComponents.hpp"
+
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Event {
 
