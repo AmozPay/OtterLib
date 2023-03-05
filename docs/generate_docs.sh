@@ -5,7 +5,10 @@ echo $OTTERLIB_VERSION
     cd doxygen/doxygen-awesome-css
     git checkout v2.1.0
 )
-doxygen doxygen/Doxyfile
+(
+    cd doxygen
+    doxygen Doxyfile
+)
 (
     cd rfc
     ./build_rfc.sh
