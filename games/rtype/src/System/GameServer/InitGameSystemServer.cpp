@@ -6,20 +6,20 @@
 */
 
 #include "InitGameSystemServer.hpp"
-#include "InitEnemyClient.hpp"
-#include "InitInvisibleWallClient.hpp"
-#include "InitMobsClient.hpp"
-#include "InitObstacleClient.hpp"
-#include "InitParallaxesClient.hpp"
-#include "InitPlayerClient.hpp"
+#include "InitEnemyServer.hpp"
+#include "InitInvisibleWallServer.hpp"
+#include "InitMobsServer.hpp"
+#include "InitObstacleServer.hpp"
+#include "InitParallaxesServer.hpp"
+#include "InitPlayerServer.hpp"
 
 namespace Otter::Games::RType::System::GameServer::InitGame {
 
     void InitGame(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
-        Otter::Games::GameClient::Init::InitParallaxes parallaxes(ref, baseEntity);
-        Otter::Games::GameClient::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
-        Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
+        Otter::Games::GameServer::Init::InitParallaxes parallaxes(ref, baseEntity);
+        Otter::Games::GameServer::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
+        Otter::Games::GameServer::Init::InitPlayer player(ref, baseEntity);
          
         int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
@@ -28,7 +28,7 @@ namespace Otter::Games::RType::System::GameServer::InitGame {
         for (int i = 0; i < enmiesMaxNb; i++) {
             enemyMaxPos = enemyMaxPos - 300;
             num = rand() % range;
-            Otter::Games::GameClient::Init::InitEnemy enemy(
+            Otter::Games::GameServer::Init::InitEnemy enemy(
                 ref, 
                 baseEntity,
                 "Enemy " + std::to_string(i),

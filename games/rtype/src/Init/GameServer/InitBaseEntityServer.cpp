@@ -14,18 +14,8 @@ namespace Otter::Games::GameServer::Init
         // TODO: need to be cleaned
         baseEntity = ref.createEntity();
 
-        ref.add_component(baseEntity, Otter::Core::BaseComponents::Window(1280, 720, "title", 60));
-        ref.add_component(
-            baseEntity,
-            Otter::Core::BaseComponents::TextureStorage(Otter::Core::BaseComponents::TextureStorageMap(
-                {{"../assets/spaceship.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/spaceship.gif")},
-                 {"../assets/obstacle.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/obstacle.gif")},
-                 {"../assets/mobs.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/mobs.gif")},
-                 {"../assets/background.png", Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")},
-                 {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")},
-                 {"../assets/enemy1-34x34.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy1-34x34.png")},
-                 {"../assets/r-typesheet43.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/r-typesheet43.gif")},
-                 {"../assets/parallax-1920x1080.png", Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")}})));
+        std::cout << "base entity loaded" << std::endl;
+
         ref.add_component(baseEntity, components::EventComponent());
         ref.add_component(baseEntity, components::EventHandlerComponent(
             components::EventHandlerMap(

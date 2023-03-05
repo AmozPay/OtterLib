@@ -11,6 +11,8 @@
 #include "Components.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
+#include "InitBaseEntityServer.hpp"
+#include "GameStatusSystem.hpp"
 
 namespace Otter::Games::GameServer {
     namespace components = Otter::Games::RType::Components;

@@ -27,8 +27,6 @@ namespace Otter::Games::RType::System::GameStatus {
         }
     }
 
-    
-    
     void HandleGameStatus(Otter::Core::Orchestrator& ref)
     {
         auto &statuses = ref.get_components<Core::BaseComponents::GameStatus>();
@@ -39,6 +37,7 @@ namespace Otter::Games::RType::System::GameStatus {
             }
 
             if (statuses[i]->gameStatusType == Core::BaseComponents::LOBBY) {
+                std::cout << "Game status lobby" << std::endl;
                 TriggerGameEvent(ref, components::EventTypes::LOBBY);
             }
 

@@ -23,11 +23,6 @@ namespace Otter::Games::GameServer::Init
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
         for (unsigned int& parallax : parallaxes) {
-            ref.add_component(parallax, Otter::Core::BaseComponents::Texture(
-                                            "../assets/parallax-1920x1080.png",
-                                            textureStorages[baseEntity]->findTextureByPath("../assets/parallax-1920x1080.png"),
-                                            Otter::Games::RType::Utils::Rectangle(0, 0, 1920, 1080)));
-            ref.add_component(parallax, Otter::Core::BaseComponents::Render());
             ref.add_component(parallax, Otter::Core::BaseComponents::Parallax());
         }
 

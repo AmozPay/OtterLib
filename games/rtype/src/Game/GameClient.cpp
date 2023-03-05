@@ -13,7 +13,7 @@
 namespace Otter::Games::GameClient {
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        Init::InitBaseEntity baseEntity(ref);   
+        Init::InitBaseEntity baseEntity(ref);
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
