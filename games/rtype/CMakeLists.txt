@@ -17,9 +17,13 @@ endif()
 
 option(BUILD_RELEASE OFF)
 if(BUILD_RELEASE) # when overriden by cli
-    message(WARNING "Building project for release")
+    message("Building project for release")
     set(CONFIG_VALUE "--config Release")
-    add_definitions("-DBUILD_TESTING=OFF")
+    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
+else()
+    message("Building project for debug, with tests")
+    set(CONFIG_VALUE "--config Debug")
+    set(BUILD_TESTING "-DBUILD_TESTING=ON")
 endif()
 
 # Build OtterLib
@@ -30,15 +34,52 @@ add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 
 file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
 
-add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
+include(ExternalProject)
 
-# Check if conan dependencies are installed
+ExternalProject_Add(OtterLib
+
+    SOURCE_DIR ${OTTERLIB_DIR}
+    BINARY_DIR ${OTTERLIB_DIR}/build
+
+    # BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib
+    CMAKE_ARGS ${BUILD_TESTING}
+    BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib ${CONFIG_VALUE}
+    INSTALL_DIR ${OTTERLIB_DIR}/build
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+)
+
+if(WIN32)
+  set(prefix "")
+  set(suffix ".dll")
+  set(CMAKE_SHELL "powershell.exe")
+else()
+  set(prefix "lib")
+  set(suffix ".so")
+  set(CMAKE_SHELL bash -c)
+endif()
+
+# Check if conan is installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
     include(${OTTERLIB_DIR}/conanbuildinfo.cmake)
     conan_basic_setup()
 else()
-    message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
+    # If not, install conan dependencies
+    message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
+    execute_process(
+        COMMAND ${CMAKE_SHELL} "conan install ${OTTERLIB_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
+        OUTPUT_VARIABLE result
+        WORKING_DIRECTORY ${OTTERLIB_DIR}
+    )
+
+    if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
+        message(STATUS "[Conan] Conan dependencies installed!")
+        include(${OTTERLIB_DIR}/conanbuildinfo.cmake)
+        conan_basic_setup()
+    else()
+        message(FATAL_ERROR "[Conan] Conan install error: ${result}")
+    endif()
 endif()
+
 
 file(
     GLOB CLIENT_FILES
@@ -59,6 +100,7 @@ file(
 
 # build client
 add_executable(r-type_client ${CLIENT_FILES})
+target_compile_features(r-type_client PUBLIC cxx_std_20)
 target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
 target_include_directories(
     r-type_client
@@ -70,13 +112,14 @@ target_include_directories(
     include/Game
     include/System
     include/System/Collisions
+    ${OTTERLIB_DIR}/build/include
 )
 
 target_link_libraries(r-type_client
-    OtterGraphic
-    OtterCore
-    OtterNetwork
-    OtterScripting
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
     ${CONAN_LIBS}
 )
 
@@ -87,6 +130,7 @@ file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 # build server
 add_executable(r-type_server ${SERVER_FILES})
 target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
+target_compile_features(r-type_server PUBLIC cxx_std_20)
 target_include_directories(
     r-type_server
     PUBLIC
@@ -97,18 +141,19 @@ target_include_directories(
     include/Game
     include/System
     include/System/Collisions
+    ${OTTERLIB_DIR}/build/include
 )
 target_link_libraries(r-type_server
-    OtterCore
-    OtterNetwork
-    OtterGraphic
-    OtterScripting
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
+    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
     ${CONAN_LIBS}
 )
 
 # Does not compile tests
 add_custom_target(r-type)
-add_dependencies(r-type r-type_server r-type_client)
+add_dependencies(r-type r-type_server r-type_client OtterLib)
 
 
 install(
