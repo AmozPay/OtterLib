@@ -19,15 +19,18 @@ option(BUILD_RELEASE OFF)
 if(BUILD_RELEASE) # when overriden by cli
     message(WARNING "Building project for release")
     set(CONFIG_VALUE "--config Release")
-    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
-else()
-    set(CONFIG_VALUE "")
-    set(BUILD_TESTING "")
+    add_definitions("-DBUILD_TESTING=OFF")
 endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
 
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
+
+file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
+
+add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build/bin)
 
 # Check if conan dependencies are installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -37,11 +40,14 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
-
-file(GLOB CLIENT_FILES src/*.cpp)
-file(GLOB SERVER_FILES src/*.cpp)
-
+file(
+    GLOB CLIENT_FILES
+    src/*.cpp
+)
+file(
+    GLOB SERVER_FILES
+    src/*.cpp
+)
 
 # build client
 add_executable(simulator_client ${CLIENT_FILES})
@@ -50,15 +56,12 @@ target_include_directories(
     simulator_client
     PUBLIC
     include/
-    include/Utils
-    include/Component
-    include/System
-    include/System/Collisions 
 )
+
 target_link_libraries(simulator_client
+    OtterGraphic
     OtterCore
     OtterNetwork
-    OtterGraphic
     OtterScripting
     ${CONAN_LIBS}
 )
@@ -74,10 +77,6 @@ target_include_directories(
     simulator_server
     PUBLIC
     include/
-    include/Utils
-    include/Component
-    include/System
-    include/System/Collisions
 )
 target_link_libraries(simulator_server
     OtterCore
@@ -88,8 +87,8 @@ target_link_libraries(simulator_server
 )
 
 # Does not compile tests
-add_custom_target(NetworkSimulator)
-add_dependencies(NetworkSimulator simulator_server simulator_client)
+add_custom_target(simulator)
+add_dependencies(simulator simulator_server simulator_client)
 
 
 install(
