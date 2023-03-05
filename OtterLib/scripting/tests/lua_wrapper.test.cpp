@@ -1,5 +1,5 @@
 #include "lua_wrapper.hpp"
-
+#include "lua.h"
 #include <gtest/gtest.h>
 #include <string>
 
@@ -27,7 +27,7 @@ TEST(callFn, shouldAdd)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("test_data/functions.lua");
-    long long sum = std::get<long long>(ctx.callFn("add", "l", "ll", 1, 1)[0]);
+    lua_Integer sum = std::get<lua_Integer>(ctx.callFn("add", "i", "ii", 1, 1)[0]);
     EXPECT_EQ(sum, 2);
 }
 
@@ -36,9 +36,9 @@ TEST(callFn, shouldReturn2longs)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("test_data/functions.lua");
-    std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("tuple_of_2s", "ll");
-    EXPECT_EQ(std::get<long long>(retVals[0]), 2);
-    EXPECT_EQ(std::get<long long>(retVals[1]), 2);
+    std::vector<Otter::Scripting::luaTypes> retVals = ctx.callFn("tuple_of_2s", "ii");
+    EXPECT_EQ(std::get<lua_Integer>(retVals[0]), 2);
+    EXPECT_EQ(std::get<lua_Integer>(retVals[1]), 2);
 }
 
 TEST(callFn, shouldReturn3strings)
@@ -68,7 +68,7 @@ TEST(callFn, shouldThrowErr)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doFile("test_data/functions.lua");
-    EXPECT_THROW(ctx.callFn("doesNotExist", "l", "ll", 1, 1), Otter::Scripting::LuaError);
+    EXPECT_THROW(ctx.callFn("doesNotExist", "i", "ii", 1, 1), Otter::Scripting::LuaError);
 }
 
 TEST(stdOutChecks, should_print_hello)
@@ -97,10 +97,10 @@ TEST(bind, bindAddShouldAdd)
     Otter::Scripting::LuaContext ctx;
 
     ctx.doString("function add(x, y) return x + y end");
-    auto addFromLua = ctx.bind<int, int>("add", "l", "ll");
+    auto addFromLua = ctx.bind<int, int>("add", "i", "ii");
     auto res = addFromLua(1, 2);
     std::vector<Otter::Scripting::luaTypes> retVals = addFromLua(1, 2);
-    EXPECT_EQ(std::get<long long>(retVals[0]), 3);
+    EXPECT_EQ(std::get<lua_Integer>(retVals[0]), 3);
 }
 
 TEST(bind, bindShouldConcatStrings)

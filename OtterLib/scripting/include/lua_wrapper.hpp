@@ -23,7 +23,7 @@ namespace Otter::Scripting {
      */
     typedef lua_State lua_State;
     typedef int (*lua_CFunction)(lua_State* L);
-    typedef std::variant<long long, double, bool, char const*, void*> luaTypes;
+    typedef std::variant<lua_Integer, double, bool, char const*, void*> luaTypes;
 #define LUA_ERR_WRAP(expr)                                                                                             \
     if ((expr) != LUA_OK && (expr) != LUA_YIELD)                                                                       \
     throw LuaError::create(L)
@@ -55,7 +55,7 @@ namespace Otter::Scripting {
         LuaValue(lua_State* state, std::vector<std::string> keys, std::string key);
         ~LuaValue() = default;
         bool toBool();
-        long long toInteger();
+        lua_Integer toInteger();
         double toDouble();
         void* toVoidPtr();
         std::string toString();
@@ -94,7 +94,7 @@ namespace Otter::Scripting {
 
         /**
          * @brief call a lua function, with no parameters
-         * @details valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string
+         * @details valid return types in string: b -> bool, d -> double, i -> lua_Integer, s -> const std::string
          * @param returnTypes a string indicating the lua types of the return values
          * @return std::vector<std::variant<Ts...>>
          */
@@ -105,9 +105,9 @@ namespace Otter::Scripting {
 
         /**
          * @brief call a lua function
-         * @details valid return types in string: b -> bool, d -> double, l -> long long, s -> const std::string, p ->
+         * @details valid return types in string: b -> bool, d -> double, i -> lua_Integer, s -> const std::string, p ->
          * void *
-         * @details valid args types in string: b -> bool, d -> double, l -> long long, s -> std::string, n -> nil, p ->
+         * @details valid args types in string: b -> bool, d -> double, i -> lua_Integer, s -> std::string, n -> nil, p ->
          * void *
          * @details if nil is specified, you must pass 0 at the same index of the variadic argument
          * @param returnTypes a string indicating the lua types of the return values
@@ -141,9 +141,9 @@ namespace Otter::Scripting {
          * @brief bind a lua function to C
          * @tparam Args the parameters types of the created function
          * @param name name of the lua function to call
-         * @param returnTypes valid return types in string: b -> bool, d -> double, l -> long long, s -> const
+         * @param returnTypes valid return types in string: b -> bool, d -> double, i -> lua_Integer, s -> const
          * std::string, p -> void *
-         * @param argsTypes valid args types in string: b -> bool, d -> double, l -> long long, s -> std::string, n ->
+         * @param argsTypes valid args types in string: b -> bool, d -> double, i -> lua_Integer, s -> std::string, n ->
          * nil, p -> void *
          * @return std::function<std::vector<luaTypes>(Args...)> A callable function which wraps a lua function
          */
@@ -159,12 +159,12 @@ namespace Otter::Scripting {
 
         void registerFunction(std::string name, lua_CFunction);
         void setGlobal(std::string name, void* ptr);
-        void setGlobal(std::string name, long long integer);
+        void setGlobal(std::string name, lua_Integer integer);
         void setGlobal(std::string name, double number);
         void setGlobal(std::string name, char const* str);
         void setGlobal(std::string name, bool boolean);
 
-        void push(long long integer);
+        void push(lua_Integer integer);
         void push(double number);
         void push(char const* str);
         void push(bool boolean);
