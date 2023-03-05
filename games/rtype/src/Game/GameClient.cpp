@@ -5,6 +5,8 @@
 ** GameClient
 */
 
+#include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
 #include "GameClient.hpp"
 #include <utility>
 

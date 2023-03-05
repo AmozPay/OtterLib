@@ -19,18 +19,15 @@ option(BUILD_RELEASE OFF)
 if(BUILD_RELEASE) # when overriden by cli
     message(WARNING "Building project for release")
     set(CONFIG_VALUE "--config Release")
-    add_definitions("-DBUILD_TESTING=OFF")
+    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
+else()
+    set(CONFIG_VALUE "")
+    set(BUILD_TESTING "")
 endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
 
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
-
-
-file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
-
-add_subdirectory(${OTTERLIB_DIR} ${OTTERLIB_DIR}/build)
 
 # Check if conan dependencies are installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -40,42 +37,28 @@ else()
     message(FATAL_ERROR "Conan dependencies not installed, please run 'conan install' in OtterLib directory")
 endif()
 
-file(
-    GLOB CLIENT_FILES
-    src/*.cpp
-    src/Init/*.cpp
-    src/Game/*.cpp
-    src/System/*.cpp
-    src/System/Collisions/*.cpp
-)
-file(
-    GLOB SERVER_FILES
-    src/*.cpp
-    src/Init/*.cpp
-    src/Game/*.cpp
-    src/System/*.cpp
-    src/System/Collisions/*.cpp
-)
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
+file(GLOB CLIENT_FILES src/*.cpp)
+file(GLOB SERVER_FILES src/*.cpp)
+
 
 # build client
-add_executable(r-type_client ${CLIENT_FILES})
-target_compile_definitions(r-type_client PUBLIC TARGET_CLIENT)
+add_executable(simulator_client ${CLIENT_FILES})
+target_compile_definitions(simulator_client PUBLIC TARGET_CLIENT)
 target_include_directories(
-    r-type_client
+    simulator_client
     PUBLIC
     include/
     include/Utils
     include/Component
-    include/Init
-    include/Game
     include/System
-    include/System/Collisions
+    include/System/Collisions 
 )
-
-target_link_libraries(r-type_client
-    OtterGraphic
+target_link_libraries(simulator_client
     OtterCore
     OtterNetwork
+    OtterGraphic
     OtterScripting
     ${CONAN_LIBS}
 )
@@ -85,20 +68,18 @@ file(COPY src/scripts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY src/entities DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # build server
-add_executable(r-type_server ${SERVER_FILES})
-target_compile_definitions(r-type_server PUBLIC TARGET_SERVER)
+add_executable(simulator_server ${SERVER_FILES})
+target_compile_definitions(simulator_server PUBLIC TARGET_SERVER)
 target_include_directories(
-    r-type_server
+    simulator_server
     PUBLIC
     include/
     include/Utils
     include/Component
-    include/Init
-    include/Game
     include/System
     include/System/Collisions
 )
-target_link_libraries(r-type_server
+target_link_libraries(simulator_server
     OtterCore
     OtterNetwork
     OtterGraphic
@@ -107,12 +88,12 @@ target_link_libraries(r-type_server
 )
 
 # Does not compile tests
-add_custom_target(r-type)
-add_dependencies(r-type r-type_server r-type_client)
+add_custom_target(NetworkSimulator)
+add_dependencies(NetworkSimulator simulator_server simulator_client)
 
 
 install(
-    TARGETS r-type_server r-type_client
+    TARGETS simulator_server simulator_client
     RUNTIME
     DESTINATION bin
     COMPONENT release

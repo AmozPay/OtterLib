@@ -33,6 +33,7 @@ namespace Otter::Core {
         registerSystems(this->_systems);
         _scriptingManager.enableScripting("../scripts");
         createEntityObj(this->_data);
+	// _scriptingManager.enableScripting("../scripts/main.lua");
         /// call factory
     }
 
