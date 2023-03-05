@@ -18,31 +18,28 @@ namespace Otter::Graphic::Raylib {
      * @return Instance of the RaylibTexture class
      */
     RaylibTexture::RaylibTexture(const std::string& texturePath)
-        : _texture(LoadTexture(texturePath.c_str())), _rotation(0), _scale(1), _color(WHITE)
+        : _texture(LoadTexture(texturePath.c_str())), _color(WHITE)
     {
+        this->_texturePath = texturePath;
     }
 
     /**
      * @brief Destructor of the RaylibTexture class
      */
     RaylibTexture::~RaylibTexture() = default;
+
     //    RaylibTexture::~RaylibTexture() { UnloadTexture(_texture); }
 
     /**
      * @brief Draw the texture
      * @return Nothing
      */
-    void RaylibTexture::draw(Vector2 position) { DrawTextureEx(_texture, position, _rotation, _scale, _color); }
-
-    /**
-     * @brief Check if the texture is colliding with another texture
-     * @param rec1: First rectangle
-     * @param rec2: second rectangle
-     * @return bool
-     */
-    bool RaylibTexture::checkCollisionRecs(const Rectangle rec1, const Rectangle rec2) const
+    void RaylibTexture::draw(Rectangle source, Vector2 position, float rotation, float scale)
     {
-        return CheckCollisionRecs(rec1, rec2);
+        Rectangle dest = {position.x, position.y, source.width * scale, source.height * scale};
+        Vector2 origin = {0.0f, 0.0f};
+
+        DrawTextureTiled(_texture, source, dest, origin, rotation, scale, _color);
     }
 
     /**
@@ -55,20 +52,6 @@ namespace Otter::Graphic::Raylib {
         UnloadTexture(_texture);
         _texture = LoadTexture(texturePath.c_str());
     }
-
-    /**
-     * @brief Set the rotation of the texture
-     * @param rotation: Rotation of the texture
-     * @return Nothing
-     */
-    void RaylibTexture::setRotation(float rotation) { _rotation = rotation; }
-
-    /**
-     * @brief Set the scale of the texture
-     * @param scale: Scale of the texture
-     * @return Nothing
-     */
-    void RaylibTexture::setScale(float scale) { _scale = scale; }
 
     /**
      * @brief Set the color of the texture
@@ -84,18 +67,6 @@ namespace Otter::Graphic::Raylib {
     Texture2D RaylibTexture::getTexture() const { return _texture; }
 
     /**
-     * @brief Get the rotation of the texture
-     * @return float
-     */
-    float RaylibTexture::getRotation() const { return _rotation; }
-
-    /**
-     * @brief Get the scale of the texture
-     * @return float
-     */
-    float RaylibTexture::getScale() const { return _scale; }
-
-    /**
      * @brief Get the color of the texture
      * @return Color
      */
@@ -104,5 +75,7 @@ namespace Otter::Graphic::Raylib {
     int RaylibTexture::getWidth() const { return _texture.width; }
 
     int RaylibTexture::getHeight() const { return _texture.height; }
+
+    std::string RaylibTexture::getFilePath() const { return _texturePath; }
 
 } // namespace Otter::Graphic::Raylib

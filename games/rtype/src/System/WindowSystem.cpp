@@ -9,6 +9,9 @@
 
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
+
+#include <cstdlib>
 
 namespace Otter::Games::RType::System::Window {
 
@@ -37,7 +40,7 @@ namespace Otter::Games::RType::System::Window {
 
     void SetTargetFPS(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -48,7 +51,7 @@ namespace Otter::Games::RType::System::Window {
 
     void BeginDraw(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
             if (window) {
@@ -59,34 +62,41 @@ namespace Otter::Games::RType::System::Window {
 
     void EndDraw(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
-            if (window) {
+
+            if (!window)
+                continue;
+            if (window->_window.isOpen())
                 window->_window.endDrawing();
-            }
         }
     }
 
     void ClearBackground(Otter::Core::Orchestrator& ref)
     {
-        auto const& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto const& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto const& window = windows[i];
-            if (window) {
+
+            if (!window)
+                continue;
+
+            if (window->_window.isOpen())
                 window->_window.clearBackground();
-            }
         }
     }
 
     void WindowShouldClose(Otter::Core::Orchestrator& ref)
     {
-        auto& windows = ref.get_components<Otter::Games::RType::Components::Window>();
+        auto& windows = ref.get_components<Otter::Core::BaseComponents::Window>();
         for (size_t i = 0; i < windows.size(); i++) {
             auto& window = windows[i];
             if (window) {
-                if (!window->_window.isOpen())
+                if (!window->_window.isOpen()) {
                     window->_window.closeWindow();
+                    std::exit(0);
+                }
             }
         }
     }

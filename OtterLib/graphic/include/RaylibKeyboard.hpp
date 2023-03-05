@@ -8,7 +8,13 @@
 #ifndef RAYLIBKEYBOARD_HPP_
 #define RAYLIBKEYBOARD_HPP_
 
+#include "OtterGraphicKeyboard.hpp"
 #include "Raylib.hpp"
+
+#include <unordered_map>
+
+using KeyType = Otter::Graphic::IKeyboard::KeyType;
+using KeyTypeKeyCodeMap = std::unordered_map<KeyType, int>;
 
 /**
  * @brief The namespace of the Otter Graphic library for Raylib
@@ -17,7 +23,7 @@ namespace Otter::Graphic::Raylib {
     /**
      * @brief The RaylibKeyboard class for Raylib keyboard management
      */
-    class RaylibKeyboard {
+    class RaylibKeyboard : public Otter::Graphic::IKeyboard {
       public:
         /**
          * @brief Construct a new Keyboard object
@@ -29,71 +35,51 @@ namespace Otter::Graphic::Raylib {
         ~RaylibKeyboard();
 
         /**
-         * @brief The Raylib key enum
-         * @details The Raylib key enum
-         * @enum RaylibKey::LEFT: The left key
-         * @enum RaylibKey::RIGHT: The right key
-         * @enum RaylibKey::UP: The up key
-         * @enum RaylibKey::DOWN: The down key
-         * @enum RaylibKey::SPACE: The space key
-         * @enum RaylibKey::ESCAPE: The escape key
-         */
-        enum RaylibKey {
-            LEFT = KEY_LEFT,
-            RIGHT = KEY_RIGHT,
-            UP = KEY_UP,
-            DOWN = KEY_DOWN,
-            SPACE = KEY_SPACE,
-            ESCAPE = KEY_ESCAPE,
-            SHIFT = KEY_RIGHT_SHIFT,
-        };
-
-        /**
          * @brief Add a key to the map
          * @param raylibKey: The Raylib key associated, the one
          * @param state: The state of the key (no sense in this lib, but used by the game)
          * @return Nothing
          */
-        void setKey(RaylibKey raylibKey, const int& state);
+        void setKey(KeyType raylibKey, const int& state);
 
         /**
          * @brief Remove a key from the map
          * @param raylibKey: The Raylib key associated
          * @return Nothing
          */
-        void removeKey(RaylibKey raylibKey);
+        void removeKey(KeyType raylibKey);
 
         /**
          * @brief Set the exit key
          * @param raylibKey: The Raylib key associated
          * @return Nothing
          */
-        void setExitKey(RaylibKey raylibKey) const;
+        void setExitKey(KeyType raylibKey) const;
 
         /**
          * @brief Check if a key has been pressed once
          * @param key: The Raylib key to check
          * @return True if the key is pressed, false otherwise
          */
-        [[nodiscard]] bool isKeyPressed(RaylibKey key) const;
+        [[nodiscard]] bool isKeyPressed(KeyType keyType) const;
         /**
          * @brief Check if a key is being pressed
          * @param key: The Raylib key to check
          * @return True if the key is down, false otherwise
          */
-        [[nodiscard]] bool isKeyDown(RaylibKey key) const;
+        [[nodiscard]] bool isKeyDown(KeyType keyType) const;
         /**
          * @brief Check if a key has been released once
          * @param key: The Raylib key to check
          * @return True if the key is up, false otherwise
          */
-        [[nodiscard]] bool isKeyReleased(RaylibKey key) const;
+        [[nodiscard]] bool isKeyReleased(KeyType keyType) const;
         /**
          * @brief Check if a key is NOT being pressed
          * @param key: The Raylib key to check
          * @return True if the key is up, false otherwise
          */
-        [[nodiscard]] bool isKeyUp(RaylibKey key) const;
+        [[nodiscard]] bool isKeyUp(KeyType keyType) const;
         /**
          * @brief Get key pressed (keycode)
          * @details Call it multiple times for keys queued
@@ -101,20 +87,9 @@ namespace Otter::Graphic::Raylib {
          */
         static int getKeyPressed();
 
-        /**
-         * @brief Get the begin iterator of the key map
-         * @return The begin iterator of the key map
-         */
-        std::map<RaylibKey, int>::iterator begin();
-
-        /**
-         * @brief Get the end iterator of the key map
-         * @return The end iterator of the key map
-         */
-        std::map<RaylibKey, int>::iterator end();
-
       private:
-        std::map<RaylibKey, int> _keyMap;
+        int getKeyCode(const KeyType& keyType) const;
+        KeyTypeKeyCodeMap _keyTypeKeyCodeMap;
     };
 } // namespace Otter::Graphic::Raylib
 

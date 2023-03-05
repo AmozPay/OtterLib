@@ -1,12 +1,40 @@
 #include "OtterCore.hpp"
 
+#include "baseComponents.hpp"
+
 namespace Otter::Core {
+
+    void OtterCore::_registerBaseComponents(void)
+    {
+        this->_data.register_component<Core::BaseComponents::Render>();
+        this->_data.register_component<Core::BaseComponents::Keyboard>();
+        this->_data.register_component<Core::BaseComponents::Parallax>();
+        this->_data.register_component<Core::BaseComponents::Dispawnable>();
+        this->_data.register_component<Core::BaseComponents::EventNetwork>();
+        this->_data.register_component<Core::BaseComponents::Window>();
+        this->_data.register_component<Core::BaseComponents::BoxCollider>();
+        this->_data.register_component<Core::BaseComponents::Sound>();
+        this->_data.register_component<Core::BaseComponents::Music>();
+        this->_data.register_component<Core::BaseComponents::Transform>();
+        this->_data.register_component<Core::BaseComponents::Velocity>();
+        this->_data.register_component<Core::BaseComponents::Player>();
+        this->_data.register_component<Core::BaseComponents::Enemy>();
+        this->_data.register_component<Core::BaseComponents::Health>();
+        this->_data.register_component<Core::BaseComponents::Damage>();
+        this->_data.register_component<Core::BaseComponents::Destructible>();
+        this->_data.register_component<Core::BaseComponents::Texture>();
+        this->_data.register_component<Core::BaseComponents::TextureStorage>();
+        this->_data.register_component<Core::BaseComponents::Text>();
+        this->_data.register_component<Core::BaseComponents::GameStatus>();
+    }
+
     void OtterCore::init()
     {
+        _registerBaseComponents();
         registerComponents(this->_data);
         registerSystems(this->_systems);
-	 createEntityObj(this->_data);
-				      
+        configureScripting(_scriptingManager);
+        createEntityObj(this->_data);
         /// call factory
     }
 
@@ -22,6 +50,7 @@ namespace Otter::Core {
             _systems(_data, SystemManager::draw);
             _systems(_data, SystemManager::subDraw);
         }
+        _systems(_data, SystemManager::cleanup);
     }
 
     int OtterCore::engineStart()

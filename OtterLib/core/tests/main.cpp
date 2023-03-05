@@ -5,7 +5,8 @@ void Otter::Core::registerComponents(Otter::Core::Orchestrator& orchestrator) {}
 
 void Otter::Core::registerSystems(Otter::Core::SystemManager& manager) {}
 
-void Otter::Core::createEntityObj(Otter::Core::Orchestrator&) {};
+void Otter::Core::createEntityObj(Otter::Core::Orchestrator&){};
+void Otter::Core::configureScripting(Otter::Scripting::ScriptingManager& scriptingManager) {}
 
 TEST(TestSuiteName, TestName) { EXPECT_TRUE(true); }
 

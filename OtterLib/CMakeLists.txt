@@ -51,28 +51,49 @@ endif()
 
 
 
-# CREATE STATIC LIBRARIES
+add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+
+# CREATE SHARED LIBRARIES
 # OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
+file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
+
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
-add_library(OtterCore STATIC ${CORE_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
+add_library(OtterCore SHARED ${CORE_FILES} ${GRAPHIC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
-target_include_directories(OtterCore PUBLIC core/include)
+target_include_directories(OtterCore PUBLIC core/include scripting/include graphic/include)
 
 
 
 # OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
-list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
-add_library(OtterNetwork STATIC ${NETWORK_FILES})
+add_library(OtterNetwork SHARED ${NETWORK_FILES} ${GRAPHIC_FILES} ${CORE_FILES} ${SCRIPTING_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
-target_include_directories(OtterNetwork PUBLIC network/include)
+target_include_directories(
+    OtterNetwork
+    PUBLIC
+    core/include
+    scripting/include
+    graphic/include
+    network/include
+    network/include/Component
+    network/include/Deserializer
+    network/include/Networkable
+    network/include/Serializable
+    network/include/Serializer
+)
 
+# OtterScripting
+file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
+add_library(OtterScripting SHARED ${SCRIPTING_FILES})
+target_compile_features(OtterScripting PUBLIC cxx_std_20)
+target_include_directories(OtterScripting PUBLIC scripting/include core/include graphic/include)
+file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 
 # OtterGraphic
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
-add_library(OtterGraphic STATIC ${GRAPHIC_FILES} graphic/include)
+add_library(OtterGraphic SHARED ${GRAPHIC_FILES} graphic/include)
 target_compile_features(OtterGraphic PUBLIC cxx_std_20)
 target_include_directories(OtterGraphic PUBLIC graphic/include)
 
@@ -104,42 +125,73 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # OtterNetwork tests
     file(GLOB NETWORK_TESTS network/tests/*.cpp)
-    add_executable(OtterNetworkTests ${NETWORK_FILES} ${NETWORK_TESTS})
+    add_executable(OtterNetworkTests ${NETWORK_FILES} ${CORE_FILES} ${SCRIPTING_FILES} ${GRAPHIC_FILES} ${NETWORK_TESTS})
     target_compile_features(OtterNetworkTests PUBLIC cxx_std_20)
-    target_include_directories(OtterNetworkTests PUBLIC network/include)
-    target_link_libraries(OtterNetworkTests gtest_main)
+    target_include_directories(
+        OtterNetworkTests
+        PUBLIC
+        core/include
+        network/include
+        graphic/include
+        scripting/include
+        network/include/Component
+        network/include/Deserializer
+        network/include/Networkable
+        network/include/Serializable
+        network/include/Serializer
+    )
+    target_link_libraries(OtterNetworkTests gtest_main ${CONAN_LIBS})
     add_test(NAME OtterNetworkTests COMMAND OtterNetworkTests)
 
     # OtterCore tests
     file(GLOB CORE_TESTS core/tests/*.cpp)
-    add_executable(OtterCoreTests ${CORE_FILES} ${CORE_TESTS})
+    add_executable(OtterCoreTests ${CORE_FILES} ${SCRIPTING_FILES} ${GRAPHIC_FILES} ${CORE_TESTS})
     target_compile_features(OtterCoreTests PUBLIC cxx_std_20)
-    target_include_directories(OtterCoreTests PUBLIC core/include)
-    target_link_libraries(OtterCoreTests gtest_main)
+    target_include_directories(OtterCoreTests PUBLIC core/include graphic/include scripting/include)
+    target_link_libraries(OtterCoreTests gtest_main lua raylib)
     add_test(NAME OtterCoreTests COMMAND OtterCoreTests)
+
+    # OtterScripting tests
+    file(GLOB SCRIPTING_TESTS scripting/tests/*.cpp)
+    add_executable(OtterScriptingTests ${SCRIPTING_FILES} ${CORE_FILES} ${GRAPHIC_FILES} ${SCRIPTING_TESTS})
+    target_compile_features(OtterScriptingTests PUBLIC cxx_std_20)
+    target_include_directories(OtterScriptingTests PUBLIC scripting/include core/include graphic/include)
+    target_link_libraries(OtterScriptingTests gtest_main lua raylib)
+    add_test(NAME OtterScriptingTests COMMAND OtterScriptingTests)
+    file(COPY scripting/tests/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/test_data)
+
 
     # Compile tests only
     add_custom_target(OtterLibTests)
     add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+
+
+    include(CTest)
+    # include(CodeCoverage)
+    # ctest_coverage()
+
 endif()
 
 
 
 # Does not compile tests
 add_custom_target(OtterLib)
-add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic)
+add_dependencies(OtterLib OtterCore OtterNetwork OtterGraphic OtterScripting)
 
 
 # Find headers
 file(GLOB CORE_HEADERS core/include/*.hpp)
-file(GLOB NETWORK_HEADERS network/include/*.hpp)
+file(GLOB NETWORK_HEADERS network/include/*.hpp network/include/Component/*.hpp network/include/Deserializer/*.hpp network/include/Networkable/*.hpp network/include/Serializable/*.hpp network/include/Serializer/*.hpp)
 file(GLOB GRAPHIC_HEADERS graphic/include/*.hpp)
+file(GLOB SCRIPT_HEADERS scripting/include/*.hpp)
 
 # Add headers to installed elements
 install(FILES
     ${GRAPHIC_HEADERS}
     ${NETWORK_HEADERS}
     ${CORE_HEADERS}
+    ${SCRIPT_HEADERS}
     DESTINATION "include"
 )
 
@@ -148,9 +200,15 @@ install(FILES
 install(TARGETS
     OtterGraphic
     OtterNetwork
+    OtterScripting
     OtterCore
     EXPORT OtterLib
     DESTINATION lib
+)
+
+install(FILES
+    scripting/OtterLib.lua
+    DESTINATION lua
 )
 
 if(WIN32)

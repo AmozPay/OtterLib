@@ -13,12 +13,12 @@
 namespace Otter::Games::RType::System::Sprite {
 
     /**
-     * @brief Load the sprite system
-     * @details Load the texture with the path for each entity with the texture component
+     * @brief Draw the parallax system
+     * @details Draw the texture for each entity with the texture and parallax component
      * @param ref: The orchestrator
      * @return void
      */
-    void Load(Otter::Core::Orchestrator& ref);
+    void DrawParallax(Otter::Core::Orchestrator& ref);
 
     /**
      * @brief Draw the sprite system

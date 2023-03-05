@@ -7,28 +7,33 @@
 #include "RaylibKeyboard.hpp"
 
 namespace Otter::Graphic::Raylib {
-    RaylibKeyboard::RaylibKeyboard() = default;
+    RaylibKeyboard::RaylibKeyboard()
+    {
+        _keyTypeKeyCodeMap = {{LEFT, KEY_LEFT},   {RIGHT, KEY_RIGHT},   {UP, KEY_UP},           {DOWN, KEY_DOWN},
+                              {SPACE, KEY_SPACE}, {ESCAPE, KEY_ESCAPE}, {SHIFT, KEY_LEFT_SHIFT}};
+    };
 
     RaylibKeyboard::~RaylibKeyboard() = default;
 
-    void RaylibKeyboard::setKey(RaylibKey raylibKey, const int& state) { _keyMap[raylibKey] = state; }
+    void RaylibKeyboard::setExitKey(KeyType keyType) const { SetExitKey(getKeyCode(keyType)); }
 
-    void RaylibKeyboard::removeKey(RaylibKey raylibKey) { _keyMap.erase(raylibKey); }
+    bool RaylibKeyboard::isKeyPressed(KeyType keyType) const { return IsKeyPressed(getKeyCode(keyType)); }
 
-    void RaylibKeyboard::setExitKey(RaylibKey raylibKey) const { SetExitKey(raylibKey); }
+    bool RaylibKeyboard::isKeyDown(KeyType keyType) const { return IsKeyDown(getKeyCode(keyType)); }
 
-    bool RaylibKeyboard::isKeyPressed(RaylibKey key) const { return IsKeyPressed(key); }
+    bool RaylibKeyboard::isKeyReleased(KeyType keyType) const { return IsKeyReleased(getKeyCode(keyType)); }
 
-    bool RaylibKeyboard::isKeyDown(RaylibKey key) const { return IsKeyDown(key); }
-
-    bool RaylibKeyboard::isKeyReleased(RaylibKey key) const { return IsKeyReleased(key); }
-
-    bool RaylibKeyboard::isKeyUp(RaylibKey key) const { return IsKeyUp(key); }
+    bool RaylibKeyboard::isKeyUp(KeyType keyType) const { return IsKeyUp(getKeyCode(keyType)); }
 
     int RaylibKeyboard::getKeyPressed() { return GetKeyPressed(); }
 
-    std::map<RaylibKeyboard::RaylibKey, int>::iterator RaylibKeyboard::begin() { return _keyMap.begin(); }
+    int RaylibKeyboard::getKeyCode(const KeyType& keyType) const
+    {
+        KeyTypeKeyCodeMap::const_iterator it = _keyTypeKeyCodeMap.find(keyType);
 
-    std::map<RaylibKeyboard::RaylibKey, int>::iterator RaylibKeyboard::end() { return _keyMap.end(); }
+        if (it == _keyTypeKeyCodeMap.end())
+            return -1;
+        return it->second;
+    }
 
 } // namespace Otter::Graphic::Raylib

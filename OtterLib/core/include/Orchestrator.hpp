@@ -43,29 +43,29 @@ namespace Otter::Core {
         template <class C>
         Core::sparse_array<C>& register_component()
         {
-	  register_facto<C>();
+            register_facto<C>();
             return _components.register_component<C>();
         }
 
-      /**
-       * @brief register abstract class
-       * @details register a component base who will register independantly all component who can be donwgraded to HImself
-       * 
-       * @params Template of type base
-       */
-        template <class T>
-        void register_abstract()
-        {
-            auto& tmp = _components.register_abstract<T>();
-            return tmp;
-        }
+        /**
+         * @brief register abstract class
+         * @details register a component base who will register independantly all component who can be donwgraded to
+         * HImself
+         *
+         * @params Template of type base
+         */
+        /*        template <class T>
+          void register_abstract()
+          {
+              _components.register_abstract<T>();
+              }*/
 
         template <buildable B>
         bool register_facto()
         {
             std::cout << "class << " << B::__tag << " have buidler" << std::endl;
             builder.addComponentSerializer(B::__tag,
-                                            std::function<void(Entity, Orchestrator&, pt::ptree)>(&B::__initialise));
+                                           std::function<void(Entity, Orchestrator&, pt::ptree)>(&B::__initialise));
             return true;
         }
 
@@ -76,20 +76,19 @@ namespace Otter::Core {
             return false;
         }
 
-      /**
-       * @brief get_map_fromBase
-       * @details a map with all the component with base of T
-       * @params Template of type base
-       * @return map of (index of component, pair(type_index, any)
-       *
-       */
-        template <class T>
-        std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>& get_map_fromBase()
-        {
-	  return _components.get_map_fromBase<T>();
-        }
-
-
+        /**
+         * @brief get_map_fromBase
+         * @details a map with all the component with base of T
+         * @params Template of type base
+         * @return map of (index of component, pair(type_index, any)
+         *
+         */
+        /*    template <class T>
+          std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>& get_map_fromBase()
+          {
+              return _components.get_map_fromBase<T>();
+          }
+        */
         /**
          * @brief Get component
          * @details ask the core to give you the array of component C
@@ -162,6 +161,7 @@ namespace Otter::Core {
         }
 
         Factory& builder;
+
       private:
         ComponentManager _components;
         EntityManager _entity;
