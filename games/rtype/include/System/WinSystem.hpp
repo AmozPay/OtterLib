@@ -8,13 +8,12 @@
 #ifndef WINSYSTEM_HPP_
 #define WINSYSTEM_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
-namespace Otter::Games::RType::System::Win
-{
+namespace Otter::Games::RType::System::Win {
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;
 
@@ -29,7 +28,6 @@ namespace Otter::Games::RType::System::Win
      */
     void HandleWin(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
 
-}
-
+} // namespace Otter::Games::RType::System::Win
 
 #endif /* !WINSYSTEM_HPP_ */

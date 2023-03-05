@@ -5,9 +5,9 @@
 ** SpriteSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "Components.hpp"
 #include "OtterCore.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Sprite {
 

@@ -8,10 +8,10 @@
 #ifndef LOBBYSYSTEM_HPP_
 #define LOBBYSYSTEM_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Lobby {
 
@@ -26,6 +26,6 @@ namespace Otter::Games::RType::System::Lobby {
      * @return void
      */
     void HandleLobby(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
-}
+} // namespace Otter::Games::RType::System::Lobby
 
 #endif /* !LOBBYSYSTEM_HPP_ */

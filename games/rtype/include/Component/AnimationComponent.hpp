@@ -15,11 +15,7 @@
 
 namespace Otter::Games::RType::Components {
 
-    enum AnimType {
-        STANDUP_ANIM,
-        RUNNING_ANIM,
-        DEATH_ANIM
-    };
+    enum AnimType { STANDUP_ANIM, RUNNING_ANIM, DEATH_ANIM };
 
     using Animation = Otter::Games::RType::Utils::Animation;
     using IdAnimMap = std::unordered_map<AnimType, Animation>;

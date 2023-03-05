@@ -7,12 +7,8 @@
 
 #include "InitPlayer.hpp"
 
-namespace Otter::Games::GameClient::Init
-{
-    InitPlayer::InitPlayer(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity
-    )
+namespace Otter::Games::GameClient::Init {
+    InitPlayer::InitPlayer(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
         Otter::Core::Entity player = ref.createEntity();
 
@@ -20,10 +16,10 @@ namespace Otter::Games::GameClient::Init
 
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
-        ref.add_component(player,
-                          Otter::Core::BaseComponents::Texture("../assets/spaceship.gif",
-                                              textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif"),
-                                              Otter::Games::RType::Utils::Rectangle(0, 0, 32, 14)));
+        ref.add_component(player, Otter::Core::BaseComponents::Texture(
+                                      "../assets/spaceship.gif",
+                                      textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif"),
+                                      Otter::Games::RType::Utils::Rectangle(0, 0, 32, 14)));
         ref.add_component(player, Otter::Core::BaseComponents::Render());
         ref.add_component(player, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(player, Otter::Core::BaseComponents::EventNetwork());
@@ -44,8 +40,5 @@ namespace Otter::Games::GameClient::Init
         keyboards[player]->setKey(keyboards[player]->_keyboard.SHIFT, utils::EventState::SHOOT);
     }
 
-    InitPlayer::~InitPlayer()
-    {
-
-    }
-}
+    InitPlayer::~InitPlayer() {}
+} // namespace Otter::Games::GameClient::Init

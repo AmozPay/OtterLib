@@ -8,10 +8,10 @@
 #ifndef INITGAMESYSTEM_HPP_
 #define INITGAMESYSTEM_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::InitGame {
 
@@ -26,6 +26,6 @@ namespace Otter::Games::RType::System::InitGame {
      * @return void
      */
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
-}
+} // namespace Otter::Games::RType::System::InitGame
 
 #endif /* !INITGAMESYSTEM_HPP_ */

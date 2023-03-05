@@ -7,19 +7,23 @@
                                   { this->_luaContext.callFn("__callScripts", "", "s", #phase); },                     \
                                   Otter::Core::SystemManager::phase)
 
-#define CLB_REGISTER_GSETTER_FUNCTION(componentName, property) \
-    _luaContext.registerFunction("__" #componentName "_get_" #property, Bindings::BaseComponents::componentName::get_ ## property );\
-    _luaContext.registerFunction("__" #componentName "_set_" #property, Bindings::BaseComponents::componentName::set_ ## property );
+#define CLB_REGISTER_GSETTER_FUNCTION(componentName, property)                                                         \
+    _luaContext.registerFunction("__" #componentName "_get_" #property,                                                \
+                                 Bindings::BaseComponents::componentName::get_##property);                             \
+    _luaContext.registerFunction("__" #componentName "_set_" #property,                                                \
+                                 Bindings::BaseComponents::componentName::set_##property);
 
-#define CLB_REGISTER_CD_FUNCTION(componentName) \
-    _luaContext.registerFunction("__" #componentName "_createAndAdd", Bindings::BaseComponents::componentName::createAndAdd );\
-    _luaContext.registerFunction("__" #componentName "_delete", Bindings::Templates::removeComponent<Core::BaseComponents::componentName> );
+#define CLB_REGISTER_CD_FUNCTION(componentName)                                                                        \
+    _luaContext.registerFunction("__" #componentName "_createAndAdd",                                                  \
+                                 Bindings::BaseComponents::componentName::createAndAdd);                               \
+    _luaContext.registerFunction("__" #componentName "_delete",                                                        \
+                                 Bindings::Templates::removeComponent<Core::BaseComponents::componentName>);
 
-
-#define CLB_REGISTER_SIMPLE_COMPONENT(componentName) \
-    _luaContext.registerFunction("__" #componentName "_createAndAdd", Bindings::Templates::addEmptyComponent<Core::BaseComponents::componentName> );\
-    _luaContext.registerFunction("__" #componentName "_delete", Bindings::Templates::removeComponent<Core::BaseComponents::componentName> );
-
+#define CLB_REGISTER_SIMPLE_COMPONENT(componentName)                                                                   \
+    _luaContext.registerFunction("__" #componentName "_createAndAdd",                                                  \
+                                 Bindings::Templates::addEmptyComponent<Core::BaseComponents::componentName>);         \
+    _luaContext.registerFunction("__" #componentName "_delete",                                                        \
+                                 Bindings::Templates::removeComponent<Core::BaseComponents::componentName>);
 
 namespace Otter::Scripting {
     // static const std::string getTableLenght

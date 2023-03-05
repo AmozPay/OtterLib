@@ -5,16 +5,15 @@
 ** GameClient
 */
 
+#include "GameClient.hpp"
+
 #include "OtterGraphic.hpp"
 #include "baseComponents.hpp"
-#include "GameClient.hpp"
+
 #include <utility>
 
 namespace Otter::Games::GameClient {
-    void createEntityObj(Otter::Core::Orchestrator& ref)
-    {
-        Init::InitBaseEntity baseEntity(ref);   
-    }
+    void createEntityObj(Otter::Core::Orchestrator& ref) { Init::InitBaseEntity baseEntity(ref); }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
     {

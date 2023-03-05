@@ -5,12 +5,12 @@
 ** CollisionSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "CollisionSystem.hpp"
 
 #include "EnemyCollisionSystem.hpp"
 #include "ObstacleCollisionSystem.hpp"
 #include "PlayerCollisionSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Collision {
     namespace components = Otter::Games::RType::Components;
@@ -20,7 +20,6 @@ namespace Otter::Games::RType::System::Collision {
     {
         auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
         auto const& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
-
 
         // At least one of the entities is a player
         if (vectorId.size() == 2) {

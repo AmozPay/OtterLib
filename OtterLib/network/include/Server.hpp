@@ -61,7 +61,7 @@ namespace Otter::Network::Server {
 
     ///////////////////////function for compute recived data/////////////////////////////////////////////
     int computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
-                     int index);
+                    int index);
 }; // namespace Otter::Network::Server
 
 #endif /* SERVER_H */

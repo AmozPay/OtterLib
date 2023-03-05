@@ -25,7 +25,7 @@ namespace Otter::Games::RType::System::Lobby {
 
     void HandleLobby(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
-        auto &eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
+        auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
 
         for (size_t i = 0; i < eventNetworks.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
@@ -40,4 +40,4 @@ namespace Otter::Games::RType::System::Lobby {
             eventNetwork->_data = -1;
         }
     }
-}
+} // namespace Otter::Games::RType::System::Lobby

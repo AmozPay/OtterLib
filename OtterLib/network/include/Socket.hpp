@@ -2,11 +2,11 @@
 #include "Session.hpp"
 
 #include <boost/asio.hpp>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <thread>
-#include <iostream>
 
 namespace Otter::Network {
 
@@ -52,6 +52,10 @@ namespace Otter::Network {
         std::mutex _sessions_lock;
         std::vector<udp::endpoint> _new_sessions;
         std::mutex _new_sessions_lock;
-      std::jthread _job{[this] { this->_io.run(); std::cout << "ioend" << std::endl;}};
+        std::jthread _job{[this]
+                          {
+                              this->_io.run();
+                              std::cout << "ioend" << std::endl;
+                          }};
     };
 } // namespace Otter::Network

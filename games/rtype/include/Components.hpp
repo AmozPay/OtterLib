@@ -55,7 +55,7 @@ namespace Otter::Games::RType::Components {
             _tag = tag;
         };
 
-        ~Obstacle() {};
+        ~Obstacle(){};
 
         ObstacleType _type;
         std::string _tag;
@@ -106,7 +106,7 @@ namespace Otter::Games::RType::Components {
             _lastShotTimestamp = 0;
         }
 
-        ~Shooter() {};
+        ~Shooter(){};
 
         ShotDirection _direction;
         bool _canShoot;
@@ -130,7 +130,7 @@ namespace Otter::Games::RType::Components {
          */
         explicit Shot(int shooterId) { _shooterId = shooterId; };
 
-        ~Shot() {};
+        ~Shot(){};
 
         int _shooterId;
     };
