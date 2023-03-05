@@ -16,6 +16,8 @@ namespace Otter::Games::GameClient::Init
     {
         Otter::Core::Entity player = ref.createEntity();
 
+        std::cout << "Player id = " << std::to_string(player) << std::endl;
+
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 
         ref.add_component(player,

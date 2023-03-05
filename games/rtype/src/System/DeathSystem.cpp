@@ -30,12 +30,18 @@ namespace Otter::Games::RType::System::Death {
     void EntityDeath(Otter::Core::Orchestrator& ref)
     {
         auto const& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
+        auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
 
         for (size_t i = 0; i < healths.size(); i++) {
             auto const& health = healths[i];
+            auto &player = players[i];
 
-            if (health && health->_hp <= 0)
+            if (health && health->_hp <= 0) {
                 TriggerDeath(ref, i);
+                if (player)
+                    std::cout << "death player triggerd" << std::endl;
+            }
+
         }
     }
 
@@ -56,8 +62,6 @@ namespace Otter::Games::RType::System::Death {
         auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
 
         for (auto &id: vectorId) {
-            
-
             if (!animationComp[id]) {
                 if (players[id])
                     Otter::Games::RType::System::GameOver::TriggerGameOver(ref);
@@ -84,8 +88,10 @@ namespace Otter::Games::RType::System::Death {
             auto animation = animationComp[id]->idAnimMap.find(components::DEATH_ANIM)->second;
 
             if (animation.currentPos >= animation.animVect.size() - 1) {
-                if (players[id])
+                if (players[id]) {
+                    std::cout << "Remove player" << std::endl;
                     Otter::Games::RType::System::GameOver::TriggerGameOver(ref);
+                }
                 else
                     ref.remove_entity(static_cast<std::uint32_t>(id));
                 std::cout << "Entity remove" << std::endl;

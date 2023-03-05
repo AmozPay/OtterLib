@@ -36,8 +36,6 @@ namespace Otter::Games::RType::System::EventNetwork {
     {
         Otter::Core::Entity newShot = ref.createEntity();
 
-        std::cout << "Bullet = " << newShot << std::endl;
-
 #if defined(TARGET_CLIENT)
         auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
 

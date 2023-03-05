@@ -21,7 +21,7 @@ namespace Otter::Games::RType::System::InitGame {
         Otter::Games::GameClient::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
          
-        int enmiesMaxNb = 50;
+        int enmiesMaxNb = 3;
         int enemyMaxPos = enmiesMaxNb * 300;
         int range = 21 - 1;
         int num = 0;

@@ -2,24 +2,20 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** GameOverSystem
+** WinSystem
 */
 
-#include "GameOverSystem.hpp"
+#include "WinSystem.hpp"
 
-namespace Otter::Games::RType::System::GameOver
+namespace Otter::Games::RType::System::Win
 {
-    void InitGameOverScene(Otter::Core::Orchestrator& ref)
+    void InitWinScene(Otter::Core::Orchestrator& ref)
     {
         auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
-        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
         auto &velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
 
-        for (std::size_t i = 0; i < players.size() || i < enemies.size(); i++) {
-            if (players[i]) {
-                ref.remove_entity(static_cast<std::uint32_t>(i));
-            }
-            if (enemies[i] && velocities[i]) {
+        for (std::size_t i = 0; i < players.size() || i < velocities.size(); i++) {
+            if (players[i] && velocities[i]) {
                 ref.remove_component<Otter::Core::BaseComponents::Velocity>(
                     static_cast<std::uint32_t>(i)
                 );
@@ -27,7 +23,7 @@ namespace Otter::Games::RType::System::GameOver
         }
     }
 
-    void TriggerGameOver(
+    void TriggerWin(
         Otter::Core::Orchestrator& ref
     )
     {
@@ -36,17 +32,34 @@ namespace Otter::Games::RType::System::GameOver
         for (std::size_t i = 0; i < gameStatus.size(); i++) {
             if (!gameStatus[i])
                 continue;
-            gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::GAME_OVER;
+            if (gameStatus[i]->gameStatusType != Otter::Core::BaseComponents::GAME)
+                return;
+            gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::WIN;
         }
-        InitGameOverScene(ref);
+        InitWinScene(ref);
     }
 
-    void HandleGameOver(
-        Otter::Core::Orchestrator& ref,
-        std::vector<std::size_t>&
-    )
+    void CheckWin(Otter::Core::Orchestrator& ref)
+    {
+        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
+        std::size_t enemyCount = 0;
+
+        
+
+        for (std::size_t i = 0; i < enemies.size(); i++) {
+            if (enemies[i])
+                enemyCount++;
+        }
+        if (enemyCount == 0)
+            TriggerWin(ref);
+
+    }
+
+    void HandleWin(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
         auto &eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
+
+        std::cout << "Win" << std::endl;
 
         for (size_t i = 0; i < eventNetworks.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
@@ -56,4 +69,5 @@ namespace Otter::Games::RType::System::GameOver
             }
         }
     }
+
 }
