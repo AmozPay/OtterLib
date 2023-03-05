@@ -26,16 +26,16 @@ jobs:
       - name: Run OtterCore Tests
         if: always()
         run: |
-          ./OtterLib/build/bin/OtterCoreTests
+          ./build/bin/OtterCoreTests
       - name: Run OtterNetwork Tests
         if: always()
         run: |
-          ./OtterLib/build/bin/OtterNetworkTests
+          ./build/bin/OtterNetworkTests
       - name: Run OtterGraphic Tests
         if: always()
         run: |
-          ./OtterLib/build/bin/OtterGraphicTests
+          ./build/bin/OtterGraphicTests
       - name: Run OtterScripting Tests
         if: always()
         run: |
-          ./OtterLib/build/bin/OtterScriptingTests
+          ./build/bin/OtterScriptingTests
