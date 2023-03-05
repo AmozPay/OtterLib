@@ -21,6 +21,7 @@ namespace Otter::Games::RType::System::Collision {
         auto const& players = ref.get_components<Otter::Core::BaseComponents::Player>();
         auto const& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
 
+
         // At least one of the entities is a player
         if (vectorId.size() == 2) {
             if (vectorId[0] < players.size() && players[vectorId[0]])

@@ -9,8 +9,22 @@
 #define GAMECLIENT_HPP_
 
 #include "Components.hpp"
+#include "baseComponents.hpp"
+#include "AnimationComponent.hpp"
+#include "AnimationSystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
+#include "GameStatusSystem.hpp"
+#include "WinSystem.hpp"
+#include "GameOverSystem.hpp"
+
+#include "InitBaseEntity.hpp"
+#include "InitEnemy.hpp"
+#include "InitInvisibleWall.hpp"
+#include "InitMobs.hpp"
+#include "InitObstacle.hpp"
+#include "InitParallaxes.hpp"
+#include "InitPlayer.hpp"
 
 namespace Otter::Games::GameClient {
     namespace components = Otter::Games::RType::Components;

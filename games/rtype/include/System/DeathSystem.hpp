@@ -9,6 +9,7 @@
 #define RTYPE_DEATHSYSTEM_HPP
 
 #include "Components.hpp"
+#include "AnimationComponent.hpp"
 #include "OtterCore.hpp"
 
 namespace Otter::Games::RType::System::Death {
