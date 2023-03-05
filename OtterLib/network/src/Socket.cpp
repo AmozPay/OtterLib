@@ -7,7 +7,10 @@
 Otter::Network::Socket::Socket(std::uint16_t port) : _socket(_io, udp::endpoint(udp::v4(), port))
 {
     this->_recv();
-    this->_job = std::jthread{[this] { this->_io.run();}};
+    this->_job = std::jthread{[this] { 
+        this->_io.run();
+        std::cout << "Io end" << std::endl;
+    }};
     std::cout << "Socket bound to " << _socket.local_endpoint() << std::endl;
 }
 
@@ -15,7 +18,10 @@ Otter::Network::Socket::Socket(boost::asio::ip::address addr, std::uint16_t port
     : _socket(_io, udp::endpoint(addr, port))
 {
     this->_recv();
-    this->_job = std::jthread{[this] { this->_io.run();}};
+    this->_job = std::jthread{[this] { 
+        this->_io.run();
+        std::cout << "Io end" << std::endl;
+    }};
     std::cout << "Socket bound to " << _socket.local_endpoint() << std::endl;
 }
 
@@ -24,7 +30,10 @@ Otter::Network::Socket::Socket(std::string addr, std::uint16_t port)
 
 {
     this->_recv();
-    this->_job = std::jthread{[this] { this->_io.run();}};
+    this->_job = std::jthread{[this] { 
+        this->_io.run();
+        std::cout << "Io end" << std::endl;
+    }};
     std::cout << "Socket bound to " << _socket.local_endpoint() << std::endl;
 }
 
