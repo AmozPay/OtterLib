@@ -6,7 +6,6 @@
 */
 
 #include "GameClient.hpp"
-
 #include "OtterGraphic.hpp"
 #include "baseComponents.hpp"
 
@@ -40,11 +39,13 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Text::UpdateHealthText, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Animation::animate, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Sprite::DrawParallax, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
+        ref.registerSystem(systems::Text::DrawText, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
     }
 } // namespace Otter::Games::GameClient
