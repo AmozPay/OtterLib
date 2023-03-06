@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** InitObstacle
+** InitPowerup
 */
 
 #ifndef INITOBSTACLE_HPP_
@@ -16,14 +16,15 @@
 namespace Otter::Games::GameClient::Init {
     namespace components = Otter::Games::RType::Components;
 
-    class InitObstacle {
+    class InitPowerup {
       public:
-        InitObstacle(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity);
-        ~InitObstacle();
+        InitPowerup(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos, Otter::Games::RType::Components::PowerupType powerupType, int powerupValue);
+        ~InitPowerup();
 
       protected:
       private:
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITOBSTACLE_HPP_ */
+#endif /* !INITPOWERUP_HPP_ */
