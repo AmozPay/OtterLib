@@ -61,6 +61,36 @@ namespace Otter::Games::RType::Components {
         std::string _tag;
     };
 
+
+    /**
+     * @brief Enum for the powerup type
+     * @details The powerup type is used to know what the powerup is going to do
+     * @enum PowerupType
+     * @var HEALTH: The powerup is going to heal the entity who picked it up (HP ++)
+     * @var DAMAGE: The powerup is going to apply damage to the entity who picked it up (HP --)
+     * @var STRENGTH: The powerup is going to increase the attack of the entity who picked it up (Attack ++)
+     * @var WEAKNESS: The powerup is going to decrease the attack of the entity who picked it up (Attack --)
+     * @var SPEED: The powerup is going to increase the speed of the entity who picked it up (Speed ++)
+     * @var SLOWNESS: The powerup is going to decrease the speed of the entity who picked it up (Speed --)
+    */
+    enum PowerupType { HEALTH, DAMAGE, STRENGTH, WEAKNESS, SPEED, SLOWNESS };
+
+    struct Powerup {
+        /**
+         * @brief Constructor of the Powerup component
+         * @param type: The type of the powerup
+         * @param value: The value of the powerup
+        */
+        Powerup(PowerupType type, int value) {
+            _type = type;
+            _value = value;
+        }
+        ~Powerup(){};
+
+        PowerupType _type;
+        int _value;
+    };
+
     /**
      * @brief Enum for the shot direction
      * @details The shot direction is used to know if the shot is going to the left or to the right
@@ -135,37 +165,6 @@ namespace Otter::Games::RType::Components {
         int _shooterId;
     };
 
-    /**
-     * @brief Enum for the power up type
-     * @details The power up type is used to know what the power up is doing
-     * @enum PowerUpType
-     * @var HEALTH: The power up is modifying the health
-     * @var DAMAGE: The power up is modifying the damage
-     */
-    enum PowerUpType { HEALTH, DAMAGE };
-
-    /**
-     * @brief Component for the power up
-     * @details The power up component is used to know if an entity is a power up. If it is, it will be able to act as a
-     * power up
-     * @struct PowerUp
-     * @var _powerUpId: The id of the power up
-     * @var _type: The type of the power up
-     * @var _value: The value of the power up (can be negative)
-     */
-    struct PowerUp {
-        PowerUp(int powerUpId, PowerUpType type, int value)
-        {
-            _powerUpId = powerUpId;
-            _type = type;
-            _value = value;
-        }
-        ~PowerUp() = default;
-
-        int _powerUpId;
-        PowerUpType _type;
-        int _value;
-    };
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP
