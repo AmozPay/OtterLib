@@ -77,8 +77,8 @@ namespace Otter::Games::RType::Components {
      * @var _direction: The direction of the shot
      * @var _canShoot: If the entity can shoot: true, otherwise: false
      * @var _shotNbr: The number of shot, -1 if infinite
-     * @var _reloadTime: The reload time of the shot, -1 if infinite
-     * @var _lastShotTimestamp: The timestamp of the last shot
+     * @var _reloadTime: The reload time of the shot, -1 if infinite (in ms)
+     * @var _lastShotTimestamp: The timestamp of the last shot (in ms)
      */
     struct Shooter {
         COMPONENT_BUILDER(Shooter)
@@ -95,7 +95,7 @@ namespace Otter::Games::RType::Components {
          * @param direction: The direction of the shot
          * @param canShoot: If the entity can shoot: true, otherwise: false
          * @param shotNbr: The number of shot, -1 if infinite
-         * @param reloadTime: The reload time of the shot, -1 if infinite
+         * @param reloadTime: The reload time of the shot, -1 if infinite (in ms)
          */
         Shooter(ShotDirection direction, bool canShoot, int shotNbr, double reloadTime)
         {
@@ -103,7 +103,7 @@ namespace Otter::Games::RType::Components {
             _canShoot = canShoot;
             _shotNbr = shotNbr;
             _reloadTime = reloadTime;
-            _lastShotTimestamp = 0;
+            _lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
         }
 
         ~Shooter(){};
@@ -112,7 +112,7 @@ namespace Otter::Games::RType::Components {
         bool _canShoot;
         int _shotNbr;
         double _reloadTime;
-        std::time_t _lastShotTimestamp;
+        std::chrono::milliseconds _lastShotTimestamp;
     };
 
     /**

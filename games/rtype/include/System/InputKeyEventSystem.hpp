@@ -5,13 +5,13 @@
 ** EventNetworkSystem.hpp
 */
 
-#ifndef RTYPE_EVENTNETWORKSYSTEM_HPP
-#define RTYPE_EVENTNETWORKSYSTEM_HPP
+#ifndef RTYPE_INPUTKEYEVENTSYSTEM_HPP
+#define RTYPE_INPUTKEYEVENTSYSTEM_HPP
 
 #include "OtterCore.hpp"
 #include "Utils.hpp"
 
-namespace Otter::Games::RType::System::EventNetwork {
+namespace Otter::Games::RType::System::InputKeyEventSystem {
 
     namespace utils = Otter::Games::RType::Utils;
 
@@ -64,6 +64,6 @@ namespace Otter::Games::RType::System::EventNetwork {
      */
     void EventHandler(Otter::Core::Orchestrator& ref);
 
-} // namespace Otter::Games::RType::System::EventNetwork
+} // namespace Otter::Games::RType::System::InputKeyEventSystem
 
-#endif // RTYPE_EVENTNETWORKSYSTEM_HPP
+#endif // RTYPE_INPUTKEYEVENTSYSTEM_HPP
