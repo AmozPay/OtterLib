@@ -1,5 +1,5 @@
 #include "ScriptingManager.hpp"
-
+#include <boost/format.hpp>
 #include "C2LuaBindings.hpp"
 
 #define REGISTER_SYSTEM(phase)                                                                                         \
@@ -7,19 +7,23 @@
                                   { this->_luaContext.callFn("__callScripts", "", "s", #phase); },                     \
                                   Otter::Core::SystemManager::phase)
 
-#define CLB_REGISTER_GSETTER_FUNCTION(componentName, property) \
-    _luaContext.registerFunction("__" #componentName "_get_" #property, Bindings::BaseComponents::componentName::get_ ## property );\
-    _luaContext.registerFunction("__" #componentName "_set_" #property, Bindings::BaseComponents::componentName::set_ ## property );
+#define CLB_REGISTER_GSETTER_FUNCTION(componentName, property)                                                         \
+    _luaContext.registerFunction("__" #componentName "_get_" #property,                                                \
+                                 Bindings::BaseComponents::componentName::get_##property);                             \
+    _luaContext.registerFunction("__" #componentName "_set_" #property,                                                \
+                                 Bindings::BaseComponents::componentName::set_##property);
 
-#define CLB_REGISTER_CD_FUNCTION(componentName) \
-    _luaContext.registerFunction("__" #componentName "_createAndAdd", Bindings::BaseComponents::componentName::createAndAdd );\
-    _luaContext.registerFunction("__" #componentName "_delete", Bindings::Templates::removeComponent<Core::BaseComponents::componentName> );
+#define CLB_REGISTER_CD_FUNCTION(componentName)                                                                        \
+    _luaContext.registerFunction("__" #componentName "_createAndAdd",                                                  \
+                                 Bindings::BaseComponents::componentName::createAndAdd);                               \
+    _luaContext.registerFunction("__" #componentName "_delete",                                                        \
+                                 Bindings::Templates::removeComponent<Core::BaseComponents::componentName>);
 
-
-#define CLB_REGISTER_SIMPLE_COMPONENT(componentName) \
-    _luaContext.registerFunction("__" #componentName "_createAndAdd", Bindings::Templates::addEmptyComponent<Core::BaseComponents::componentName> );\
-    _luaContext.registerFunction("__" #componentName "_delete", Bindings::Templates::removeComponent<Core::BaseComponents::componentName> );
-
+#define CLB_REGISTER_SIMPLE_COMPONENT(componentName)                                                                   \
+    _luaContext.registerFunction("__" #componentName "_createAndAdd",                                                  \
+                                 Bindings::Templates::addEmptyComponent<Core::BaseComponents::componentName>);         \
+    _luaContext.registerFunction("__" #componentName "_delete",                                                        \
+                                 Bindings::Templates::removeComponent<Core::BaseComponents::componentName>);
 
 namespace Otter::Scripting {
     // static const std::string getTableLenght
@@ -29,6 +33,7 @@ namespace Otter::Scripting {
         _luaContext.doFile(scriptingEntrypointFile + "/OtterLib.lua");
         _luaContext.doFile(scriptingEntrypointFile + "/main.lua");
         _luaContext.doString(luaCallScripts);
+        _luaContext.doString(boost::str(boost::format(isGraphicsEnabledLuaFmt) % _graphicsEnabled));
         std::cout << "[OtterLib] Scripts loaded" << std::endl;
 
         _luaContext.setGlobal("__orchestrator", &_orchestrator);
@@ -48,6 +53,11 @@ namespace Otter::Scripting {
         REGISTER_SYSTEM(cleanup);
 
         std::cout << "[OtterLib] Scripting initialized" << std::endl;
+    }
+
+    void ScriptingManager::enableGraphics(void)
+    {
+        this->_graphicsEnabled = true;
     }
 
     void ScriptingManager::setupComponentBindings(void)

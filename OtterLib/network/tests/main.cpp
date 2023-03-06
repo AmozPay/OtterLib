@@ -1,17 +1,22 @@
 
 #include "../include/Deserializer/Deserializer.hpp"
 #include "../include/Serializer/Serializer.hpp"
-#include "test.hpp"
 #include "OtterCore.hpp"
+#include "test.hpp"
 
 #include <iostream>
 #include <set>
 #include <sstream>
 #include <string>
 
-void Otter::Core::registerSystems(Otter::Core::SystemManager &m) {}
-void Otter::Core::registerComponents(Otter::Core::Orchestrator &o) {}
-void Otter::Core::createEntityObj(Otter::Core::Orchestrator &o) {}
+void Otter::Core::registerSystems(Otter::Core::SystemManager& m) {}
+
+void Otter::Core::registerComponents(Otter::Core::Orchestrator& o) {}
+
+void Otter::Core::createEntityObj(Otter::Core::Orchestrator& o) {}
+
+void Otter::Core::configureScripting(Otter::Scripting::ScriptingManager& scriptingManager) {}
+
 
 /*int main()
 {

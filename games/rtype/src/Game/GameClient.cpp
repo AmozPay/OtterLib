@@ -5,6 +5,7 @@
 ** GameClient
 */
 
+#include "GameClient.hpp"
 #include "OtterGraphic.hpp"
 #include "baseComponents.hpp"
 #include "GameClient.hpp"
@@ -16,6 +17,7 @@
 #include "Client.hpp"
 #include <utility>
 #include "InitGameMessage.hpp"
+#include "GameStatusSystem.hpp"
 
 namespace Otter::Games::GameClient {
     void test_upd(Otter::Core::Orchestrator &ref)
@@ -73,20 +75,28 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
-        ref.registerSystem(systems::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(Otter::Network::Client::update, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Text::UpdateHealthText, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Animation::animate, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Window::BeginDraw, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Window::ClearBackground, Otter::Core::SystemManager::preDraw);
         ref.registerSystem(systems::Sprite::DrawParallax, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
+        ref.registerSystem(systems::Text::DrawText, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
         
         
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
+    }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+        scriptingManager.enableScripting("../scripts");
+        scriptingManager.enableGraphics();
     }
 } // namespace Otter::Games::GameClient

@@ -7,31 +7,26 @@
 
 #include "GameOverSystem.hpp"
 
-namespace Otter::Games::RType::System::GameOver
-{
+namespace Otter::Games::RType::System::GameOver {
     void InitGameOverScene(Otter::Core::Orchestrator& ref)
     {
-        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
-        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
-        auto &velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
+        auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
 
         for (std::size_t i = 0; i < players.size() || i < enemies.size(); i++) {
             if (players[i]) {
                 ref.remove_entity(static_cast<std::uint32_t>(i));
             }
             if (enemies[i] && velocities[i]) {
-                ref.remove_component<Otter::Core::BaseComponents::Velocity>(
-                    static_cast<std::uint32_t>(i)
-                );
+                ref.remove_component<Otter::Core::BaseComponents::Velocity>(static_cast<std::uint32_t>(i));
             }
         }
     }
 
-    void TriggerGameOver(
-        Otter::Core::Orchestrator& ref
-    )
+    void TriggerGameOver(Otter::Core::Orchestrator& ref)
     {
-        auto &gameStatus = ref.get_components<Otter::Core::BaseComponents::GameStatus>();
+        auto& gameStatus = ref.get_components<Otter::Core::BaseComponents::GameStatus>();
 
         for (std::size_t i = 0; i < gameStatus.size(); i++) {
             if (!gameStatus[i])
@@ -45,7 +40,7 @@ namespace Otter::Games::RType::System::GameOver
 
     void CheckGameOver(Otter::Core::Orchestrator& ref)
     {
-        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
         std::size_t enemyCount = 0;
 
         for (std::size_t i = 0; i < players.size(); i++) {
@@ -54,15 +49,11 @@ namespace Otter::Games::RType::System::GameOver
         }
         if (enemyCount == 0)
             TriggerGameOver(ref);
-
     }
 
-    void HandleGameOver(
-        Otter::Core::Orchestrator& ref,
-        std::vector<std::size_t>&
-    )
+    void HandleGameOver(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
-        auto &eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
+        auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
 
         for (size_t i = 0; i < eventNetworks.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
@@ -72,4 +63,4 @@ namespace Otter::Games::RType::System::GameOver
             }
         }
     }
-}
+} // namespace Otter::Games::RType::System::GameOver

@@ -6,10 +6,11 @@
 */
 
 #include "AnimationSystem.hpp"
+
 #include "Animation.hpp"
 #include "AnimationComponent.hpp"
-#include "EventComponent.hpp"
 #include "Components.hpp"
+#include "EventComponent.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Animation {
@@ -22,15 +23,12 @@ namespace Otter::Games::RType::System::Animation {
     using ComponentIdVector = Otter::Games::RType::Components::ComponentIdVector;
     using IdAnimMap = Otter::Games::RType::Components::IdAnimMap;
 
-    bool checkOneShotEnd(
-        const bool &isOneShot,
-        const std::size_t &maxSize,
-        const std::size_t &currentPos
-    ) {
+    bool checkOneShotEnd(const bool& isOneShot, const std::size_t& maxSize, const std::size_t& currentPos)
+    {
         return isOneShot && (currentPos >= maxSize - 1);
     }
 
-    void changeTexture(Otter::Core::Orchestrator& ref, Animation& animation, Texture &texture) 
+    void changeTexture(Otter::Core::Orchestrator& ref, Animation& animation, Texture& texture)
     {
         auto& textureStorages = ref.get_components<TextureStorage>();
 
@@ -41,18 +39,14 @@ namespace Otter::Games::RType::System::Animation {
                 continue;
             }
             texture._texture = textureStorage->findTextureByPath(animation.texturePath);
-        }        
+        }
     }
 
-    void computeAnimation(Otter::Core::Orchestrator& ref, Animation& animation, Texture &texture)
+    void computeAnimation(Otter::Core::Orchestrator& ref, Animation& animation, Texture& texture)
     {
         TimePoint newTime = std::chrono::steady_clock::now();
         std::chrono::duration<float> duration = (newTime - animation.lastTime) * 1000;
-        bool oneShotEnd = checkOneShotEnd(
-            animation.isOneShot,
-            animation.animVect.size(),
-            animation.currentPos
-        );
+        bool oneShotEnd = checkOneShotEnd(animation.isOneShot, animation.animVect.size(), animation.currentPos);
 
         if (duration.count() >= animation.delay && !oneShotEnd) {
             animation.currentPos = animation.currentPos + 1;
@@ -79,20 +73,13 @@ namespace Otter::Games::RType::System::Animation {
             if (!animationComponent || !texture) {
                 continue;
             }
-            
+
             if (animationComponent->idAnimMap.contains(animationComponent->currentAnim)) {
-                computeAnimation(
-                    ref,
-                    animationComponent->idAnimMap
-                    .find(animationComponent->currentAnim)->second,
-                    *texture
-                );
+                computeAnimation(ref, animationComponent->idAnimMap.find(animationComponent->currentAnim)->second,
+                                 *texture);
             }
         }
     }
 
-    void handleAnim(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
-    {
-        
-    }
+    void handleAnim(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId) {}
 } // namespace Otter::Games::RType::System::Animation

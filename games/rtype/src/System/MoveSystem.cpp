@@ -6,6 +6,7 @@
 */
 
 #include "MoveSystem.hpp"
+
 #include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Move {

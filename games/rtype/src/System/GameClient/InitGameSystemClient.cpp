@@ -30,18 +30,12 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             enemyMaxPos = enemyMaxPos - 300;
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
-                ref, 
-                baseEntity,
-                "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos , 34 * num)
-            );
+                ref, baseEntity, "Enemy " + std::to_string(i),
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num));
         }
     }
 
-    void HandleInitGame(
-        Otter::Core::Orchestrator& ref,
-        std::vector<std::size_t>&
-    )
+    void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
         auto& gameStatuses = ref.get_components<Otter::Core::BaseComponents::GameStatus>();
 
@@ -53,6 +47,6 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             InitGame(ref, static_cast<Otter::Core::Entity>(i));
             gameStatuses[i]->gameStatusType = Otter::Core::BaseComponents::GAME;
             return;
-        }   
+        }
     }
-}
+} // namespace Otter::Games::RType::System::InitGame

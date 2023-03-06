@@ -8,17 +8,18 @@
 #ifndef INITBASEENTITY_HPP_
 #define INITBASEENTITY_HPP_
 
-#include "OtterCore.hpp"
-#include "Components.hpp"
-#include "baseComponents.hpp"
-#include "AnimationComponent.hpp"
-#include "Utils.hpp"
 #include "Animation.hpp"
 #include "System.hpp"
 #include "LobbySystem.hpp"
 #include "InitGameSystemServer.hpp"
 #include "GameOverSystem.hpp"
+#include "InitGameSystemServer.hpp"
+#include "LobbySystem.hpp"
+#include "OtterCore.hpp"
+#include "System.hpp"
+#include "Utils.hpp"
 #include "WinSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::GameServer::Init
 {
@@ -27,16 +28,15 @@ namespace Otter::Games::GameServer::Init
     namespace systems = Otter::Games::RType::System;
 
     class InitBaseEntity {
-        public:
-            InitBaseEntity(Otter::Core::Orchestrator& ref);
-            ~InitBaseEntity();
-            Otter::Core::Entity getEntity() const;
+      public:
+        InitBaseEntity(Otter::Core::Orchestrator& ref);
+        ~InitBaseEntity();
+        Otter::Core::Entity getEntity() const;
 
-        private:
-            Otter::Core::Entity baseEntity;
-
+      private:
+        Otter::Core::Entity baseEntity;
     };
 
-}
+} // namespace Otter::Games::GameClient::Init
 
 #endif /* !INITBASEENTITY_HPP_ */

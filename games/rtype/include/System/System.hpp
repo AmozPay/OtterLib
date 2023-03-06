@@ -19,11 +19,12 @@
 #include "DeathSystem.hpp"
 #include "DispawnableSystem.hpp"
 #include "EventHandlerSystem.hpp"
-#include "EventNetworkSystem.hpp"
+#include "InputKeyEventSystem.hpp"
 #include "InputKeySystem.hpp"
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
 #include "SpriteSystem.hpp"
+#include "TextSystem.hpp"
 #include "WindowSystem.hpp"
 
 #endif // RTYPE_SYSTEM_HPP

@@ -9,14 +9,27 @@
 #define NETWORKCOMPONENT_HPP_
 
 #include "Socket.hpp"
-
+#include "Factory.hpp"
 #include <boost/asio.hpp>
 
 namespace Otter::Network {
     struct SocketComponent {
-        SocketComponent() : channel(nullptr){};
+      COMPONENT_BUILDER(Socket)                                                                                  
+       {                                                                                                          
+          auto port = json.get<std::uint16_t>("port");                                                             
+          auto ip = json.get<std::string>("ip");
+          
+          SocketComponent net;
+          net.ip = ip;
+          net.port = port;
+          core.add_component(e , std::move(net));
+       }
 
-        std::shared_ptr<Otter::Network::Socket> channel;
+      SocketComponent() : channel(nullptr){};
+      
+      std::shared_ptr<Otter::Network::Socket> channel;
+      std::uint16_t port;
+      std::string ip;
     };
 } // namespace Otter::Network
 

@@ -18,10 +18,9 @@ namespace Otter::Games::RType::System::GameStatus {
 
             if (!event)
                 continue;
-            
+
             if (event->events.size() == 0) {
-                components::EventPair eventPair(eventType,
-                                            components::ComponentIdVector({}));
+                components::EventPair eventPair(eventType, components::ComponentIdVector({}));
                 event->events.push_back(eventPair);
             }
         }
@@ -29,7 +28,7 @@ namespace Otter::Games::RType::System::GameStatus {
 
     void HandleGameStatus(Otter::Core::Orchestrator& ref)
     {
-        auto &statuses = ref.get_components<Core::BaseComponents::GameStatus>();
+        auto& statuses = ref.get_components<Core::BaseComponents::GameStatus>();
 
         for (std::size_t i = 0; i < statuses.size(); i++) {
             if (!statuses[i]) {
@@ -52,8 +51,6 @@ namespace Otter::Games::RType::System::GameStatus {
             if (statuses[i]->gameStatusType == Core::BaseComponents::WIN) {
                 TriggerGameEvent(ref, components::EventTypes::WIN);
             }
-
         }
     }
-}
-
+} // namespace Otter::Games::RType::System::GameStatus

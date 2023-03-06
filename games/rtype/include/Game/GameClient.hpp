@@ -8,14 +8,9 @@
 #ifndef GAMECLIENT_HPP_
 #define GAMECLIENT_HPP_
 
-#include "Components.hpp"
-#include "baseComponents.hpp"
 #include "AnimationComponent.hpp"
 #include "AnimationSystem.hpp"
-#include "OtterCore.hpp"
-#include "System.hpp"
-#include "GameStatusSystem.hpp"
-#include "WinSystem.hpp"
+#include "Components.hpp"
 #include "GameOverSystem.hpp"
 
 #include "InitBaseEntityClient.hpp"
@@ -36,6 +31,9 @@ namespace Otter::Games::GameClient {
     void registerComponents(Otter::Core::Orchestrator& ref);
 
     void registerSystems(Otter::Core::SystemManager& ref);
+
+    void configureScripting(Otter::Scripting::ScriptingManager&);
+
 } // namespace Otter::Games::GameClient
 
 #endif /* !GAMECLIENT_HPP_ */

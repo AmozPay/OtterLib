@@ -55,7 +55,32 @@ namespace Otter::Core {
         return e;
     }
 
-    std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core)
+  void Factory::createFromFile(std::string path, Otter::Core::Orchestrator& core, Entity e)
+    {
+        pt::ptree root;
+        std::function<void(Entity, Orchestrator&, pt::ptree)> initializer;
+
+        if (!std::filesystem::exists(path))
+            throw std::runtime_error("This file does not exist: " + path);
+        pt::read_json(path, root);
+        pt::ptree& components = root.get_child("components");
+        for (auto& it : components) {
+            auto& key = it.first;
+            auto& value = it.second;
+            if (_initializers.find(key) == _initializers.end()) {
+                std::cout << "No initializing method found for component: " << key << std::endl;
+                continue;
+            }
+            initializer = _initializers.at(key);
+            initializer(e, core, value);
+            std::cout << "successfully initialized: '" << root.get<std::string>("name") << "'." << it.first
+                      << std::endl;
+        }
+        std::cout << "Initialized entity from " << path << std::endl;
+    }
+
+
+  std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core)
     {
         std::vector<Entity> entities;
 

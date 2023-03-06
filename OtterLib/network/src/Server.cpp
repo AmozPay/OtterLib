@@ -80,8 +80,8 @@ namespace Otter::Network::Server {
         obj.msgCode = Otter::Network::ACTIVATION;
         obj.ss = "ORDER 66";
         Otter::Network::Serializer::saveArchive(ss, obj);
-	std::cout << "Order 66" << std::endl;
-	return ss.str();
+        std::cout << "Order 66" << std::endl;
+        return ss.str();
     }
 
     void update_session(Otter::Core::Orchestrator& ref, Otter::Network::SocketComponent& soc)
@@ -92,8 +92,8 @@ namespace Otter::Network::Server {
 
         std::stringstream data;
         for (auto& it : connection) {
-	  it->recv(data);
-	  std::cout << "new connection arrive " << data.str() << "|"  << std::endl;
+            it->recv(data);
+            std::cout << "new connection arrive " << data.str() << "|" << std::endl;
             std::uint32_t id = Otter::Network::Server::test_conect(*serv, data);
             if (id != -1) {
                 ////////////// add a new clien
@@ -102,8 +102,8 @@ namespace Otter::Network::Server {
                 it->send(connectMsg(id));
                 ///// send a validation msg
             } else {
-	      std::cout << "socket disconnect" << std::endl;
-	      soc.channel->disconnect(it->get_endpoint());
+                std::cout << "socket disconnect" << std::endl;
+                soc.channel->disconnect(it->get_endpoint());
             }
         }
     }
@@ -148,7 +148,7 @@ namespace Otter::Network::Server {
         std::uint8_t nb = 0;
 
         Otter::Network::Header::formatHeader(ss, cl.seq, cl.id);
-       if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
+        if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
             ret = true;
             nb += tramFillMandatory(tmp, cl);
         }
@@ -157,7 +157,7 @@ namespace Otter::Network::Server {
         Otter::Network::Serializer::saveArchive(ss, nb);
         ss << tmp.str();
         if (ss.str().size() == 0 || nb == 0)
-          return ret;
+            return ret;
         std::cout << "Tram Sending" << std::endl;
         session.send(ss.str());
         std::cout << "msg send" << ss.str() << std::endl;
@@ -186,7 +186,7 @@ namespace Otter::Network::Server {
 
     ////////////////////////////recieve update///////////////////////////////////
     int computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
-                     int index)
+                    int index)
     {
         std::uint32_t magic = Otter::Network::Header::getUint(ss);
         std::uint32_t seq = Otter::Network::Header::getUint(ss);
@@ -194,18 +194,18 @@ namespace Otter::Network::Server {
         std::uint8_t pac = Otter::Network::Header::getChar(ss);
         dtObj dt;
 
-	std::cout << "msg recieve "<< std::endl;
-	if (pac == 0)
+        std::cout << "msg recieve " << std::endl;
+        if (pac == 0)
             return 0;
-       std::cout << "serv recive dt" << std::endl;
+        std::cout << "serv recive dt" << std::endl;
         for (int i = 0; pac > i; i++) {
             dt = Otter::Network::Header::getDt(ss);
             if (dt.msgCode == Otter::Network::ACTIVATION) {
-               return -1;
-	    }
+                return -1;
+            }
             serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
-	return 0;
+        return 0;
     }
 
     void update_recv(Otter::Core::Orchestrator& ref, int index)
@@ -218,7 +218,7 @@ namespace Otter::Network::Server {
         std::stringstream data;
 
         for (auto& it : connection) {
-	  for (j = -1; cl.size() > j + 1; j++) {
+            for (j = -1; cl.size() > j + 1; j++) {
                 if (serv->playerId[it->get_endpoint()] == cl[j + 1]->id) {
                     j = j + 1;
                     break;
@@ -232,9 +232,9 @@ namespace Otter::Network::Server {
             if (test_header(data, cl[j]->id, cl[j]->seq) == false)
                 continue;
             if (computeTram(ref, *serv, data, j) == -1) {
-	      std::cout << "doublon" << std::endl;  
-	       soc->channel->disconnect(it->get_endpoint());
-	    }
+                std::cout << "doublon" << std::endl;
+                soc->channel->disconnect(it->get_endpoint());
+            }
         }
     }
 
@@ -246,18 +246,18 @@ namespace Otter::Network::Server {
         int index = -1;
 
         for (int i = 0; i < sock.size(); i++) {
-	  if (sock[i])
+            if (sock[i])
                 index = i;
         }
         if (index == -1)
             return;
-	//std::cout << "gooing to update with index:" << index << std::endl;
+        // std::cout << "gooing to update with index:" << index << std::endl;
         update_session(ref, *sock[index]);
-	//	std::cout << "entering msg" << std::endl;
+        //	std::cout << "entering msg" << std::endl;
         update_msg(ref, index);
-	//std::cout << "entering recv" << std::endl;
+        // std::cout << "entering recv" << std::endl;
         update_recv(ref, index);
-		//std::cout << "end update" << std::endl;
+        // std::cout << "end update" << std::endl;
     }
 
     void init(Otter::Core::Orchestrator& ref)

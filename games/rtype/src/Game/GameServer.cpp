@@ -5,12 +5,12 @@
 ** GameServer
 */
 
-#include "baseComponents.hpp"
 #include "GameServer.hpp"
 #include "NetworkComponent.hpp"
 #include "ServerComponent.hpp"
 #include "ClientComponent.hpp"
 #include "Server.hpp"
+#include "InputKeyEventSystem.hpp"
 
 
 namespace Otter::Games::GameServer {
@@ -60,7 +60,7 @@ namespace Otter::Games::GameServer {
         ref.registerSystem(Otter::Network::Server::init, Otter::Core::SystemManager::init);
         ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
         ref.registerSystem(Otter::Network::Server::update, Otter::Core::SystemManager::event);
-        ref.registerSystem(systems::EventNetwork::EventHandler, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
@@ -73,5 +73,10 @@ namespace Otter::Games::GameServer {
 
 
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
+    }
+
+    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    {
+        scriptingManager.enableScripting("../scripts");
     }
 } // namespace Otter::Games::GameServer

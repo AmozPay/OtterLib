@@ -8,27 +8,23 @@
 #ifndef INITMOBS_HPPCLIENT_
 #define INITMOBS_HPPCLIENT_
 
-#include "Components.hpp"
 #include "AnimationComponent.hpp"
 #include "AnimationSystem.hpp"
+#include "Components.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::GameClient::Init
-{
+namespace Otter::Games::GameClient::Init {
 
     class InitMobs {
-        public:
-            InitMobs(
-                Otter::Core::Orchestrator& ref,
-                Otter::Core::Entity baseEntity
-            );
-            ~InitMobs();
+      public:
+        InitMobs(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity);
+        ~InitMobs();
 
-        protected:
-        private:
+      protected:
+      private:
     };
-}
+} // namespace Otter::Games::GameClient::Init
 
 #endif /* !INITMOBS_HPPCLIENT_ */

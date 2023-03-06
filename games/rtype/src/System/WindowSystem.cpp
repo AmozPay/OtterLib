@@ -5,11 +5,12 @@
 ** WindowSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "WindowSystem.hpp"
 
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
+
 #include <cstdlib>
 
 namespace Otter::Games::RType::System::Window {

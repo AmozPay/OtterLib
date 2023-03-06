@@ -7,27 +7,22 @@
 
 #include "WinSystem.hpp"
 
-namespace Otter::Games::RType::System::Win
-{
+namespace Otter::Games::RType::System::Win {
     void InitWinScene(Otter::Core::Orchestrator& ref)
     {
-        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
-        auto &velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
 
         for (std::size_t i = 0; i < players.size() || i < velocities.size(); i++) {
             if (players[i] && velocities[i]) {
-                ref.remove_component<Otter::Core::BaseComponents::Velocity>(
-                    static_cast<std::uint32_t>(i)
-                );
+                ref.remove_component<Otter::Core::BaseComponents::Velocity>(static_cast<std::uint32_t>(i));
             }
         }
     }
 
-    void TriggerWin(
-        Otter::Core::Orchestrator& ref
-    )
+    void TriggerWin(Otter::Core::Orchestrator& ref)
     {
-        auto &gameStatus = ref.get_components<Otter::Core::BaseComponents::GameStatus>();
+        auto& gameStatus = ref.get_components<Otter::Core::BaseComponents::GameStatus>();
 
         for (std::size_t i = 0; i < gameStatus.size(); i++) {
             if (!gameStatus[i])
@@ -41,10 +36,8 @@ namespace Otter::Games::RType::System::Win
 
     void CheckWin(Otter::Core::Orchestrator& ref)
     {
-        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
+        auto& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
         std::size_t enemyCount = 0;
-
-        
 
         for (std::size_t i = 0; i < enemies.size(); i++) {
             if (enemies[i])
@@ -52,12 +45,11 @@ namespace Otter::Games::RType::System::Win
         }
         if (enemyCount == 0)
             TriggerWin(ref);
-
     }
 
     void HandleWin(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
-        auto &eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
+        auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
 
         std::cout << "Win" << std::endl;
 
@@ -70,4 +62,4 @@ namespace Otter::Games::RType::System::Win
         }
     }
 
-}
+} // namespace Otter::Games::RType::System::Win

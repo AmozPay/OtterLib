@@ -95,9 +95,12 @@ namespace Otter::Network::Header {
         }
     }
 
-  std::uint32_t getUint(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<std::uint32_t>(ss); }
+    std::uint32_t getUint(std::stringstream& ss)
+    {
+        return Otter::Network::Deserializer::loadArchive<std::uint32_t>(ss);
+    }
 
-  std::uint8_t getChar(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<std::uint8_t>(ss); }
+    std::uint8_t getChar(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<std::uint8_t>(ss); }
 
     dtObj getDt(std::stringstream& ss) { return Otter::Network::Deserializer::loadArchive<dtObj>(ss); }
 

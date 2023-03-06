@@ -8,13 +8,12 @@
 #ifndef GAMEOVERSYSTEM_HPP_
 #define GAMEOVERSYSTEM_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
-namespace Otter::Games::RType::System::GameOver
-{
+namespace Otter::Games::RType::System::GameOver {
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;
 
@@ -28,6 +27,6 @@ namespace Otter::Games::RType::System::GameOver
      * @return void
      */
     void HandleGameOver(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
-}
+} // namespace Otter::Games::RType::System::GameOver
 
 #endif /* !GAMEOVERSYSTEM_HPP_ */

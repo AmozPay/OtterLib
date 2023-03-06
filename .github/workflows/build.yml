@@ -22,7 +22,7 @@ jobs:
           conan profile new --detect default
           cmake -DBUILD_TESTING=OFF -S . -B build
           cd build
-          cmake --build . --target r-type
+          cmake --build . --target OtterLib r-type
   build_windows:
     name: On Windows
     runs-on: windows-latest
@@ -39,4 +39,4 @@ jobs:
           pip install conan==1.57.0
           cmake -DBUILD_TESTING=OFF -S . -B build -G "Visual Studio 17 2022"
           cd build/
-          cmake --build . --target r-type
+          cmake --build . --target OtterLib r-type

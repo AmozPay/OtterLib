@@ -17,7 +17,7 @@
 
 #define COMPONENT_BUILDER(name)                                                                                        \
     inline static std::string __tag = #name;                                                                           \
-    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& core, pt::ptree json)
+    static void __initialise(Otter::Core::Entity e, Otter::Core::Orchestrator& core, boost::property_tree::ptree json)
 
 namespace Otter::Core {
     class Orchestrator;
@@ -41,6 +41,7 @@ namespace Otter::Core {
         Factory();
         ~Factory();
         Entity createFromFile(std::string path, Otter::Core::Orchestrator& core);
+        void createFromFile(std::string path, Otter::Core::Orchestrator& core, Entity e);
         std::vector<Entity> loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core);
         void addComponentSerializer(std::string component_name,
                                     std::function<void(Entity, Orchestrator& core, pt::ptree)> initializer);

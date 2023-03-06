@@ -5,9 +5,10 @@
 ** CollisionSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "EnemyCollisionSystem.hpp"
+
 #include "PlayerCollisionSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Collision::Enemy {
     namespace components = Otter::Games::RType::Components;
@@ -47,14 +48,14 @@ namespace Otter::Games::RType::System::Collision::Enemy {
         auto const& shots = ref.get_components<components::Shot>();
 
         std::cout << "Enemy index " << enemyIndex << std::endl;
-        std::cout << "Bullet index " << bulletIndex << std::endl; 
+        std::cout << "Bullet index " << bulletIndex << std::endl;
 
         if (enemyIndex < healths.size() && healths[enemyIndex] && bulletIndex < shots.size() && shots[bulletIndex]) {
             auto const shot = shots[bulletIndex];
 
             if (shot->_shooterId < damages.size() && damages[shot->_shooterId]) {
                 healths[enemyIndex]->_hp = healths[enemyIndex]->_hp - damages[shot->_shooterId]->_damage;
-                
+
                 if (healths[enemyIndex]->_hp <= 0)
                     healths[enemyIndex]->_hp = 0;
 

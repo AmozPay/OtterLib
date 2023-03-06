@@ -8,10 +8,10 @@
 #ifndef GAMESTATUSSYSTEM_HPP_
 #define GAMESTATUSSYSTEM_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::GameStatus {
 
@@ -26,6 +26,6 @@ namespace Otter::Games::RType::System::GameStatus {
      * @return void
      */
     void HandleGameStatus(Otter::Core::Orchestrator& ref);
-}
+} // namespace Otter::Games::RType::System::GameStatus
 
 #endif /* !GAMESTATUSSYSTEM_HPP_ */

@@ -5,8 +5,9 @@
 ** ParallaxSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "ParallaxSystem.hpp"
+
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Parallax {
 
