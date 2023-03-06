@@ -92,6 +92,7 @@ namespace Otter::Games::RType::System::EventNetwork {
 
     void EventDetection(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
+        // TODO: Player events are here @Baptiste
         PlayerMovementEvent(ref, playerIndex, state);
         if (state == utils::SHOOT)
             CreateShot(ref, playerIndex);
