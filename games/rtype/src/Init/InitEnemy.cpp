@@ -8,6 +8,7 @@
 #include "InitEnemy.hpp"
 
 namespace Otter::Games::GameClient::Init {
+    
     InitEnemy::InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
                          Otter::Games::RType::Utils::Vector2 pos)
     {
@@ -27,6 +28,8 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(enemy, Otter::Core::BaseComponents::BoxCollider(68, 68));
         ref.add_component(enemy, Otter::Core::BaseComponents::Damage(1));
         ref.add_component(enemy, Otter::Core::BaseComponents::Health(10));
+
+        ref.add_component(enemy, components::Shooter(components::ShotDirection::LEFT, true, -1, 2000));
 
         utils::AnimRectVect animRectVect;
         animRectVect.push_back(utils::Rectangle(0, 0, 34, 34));
