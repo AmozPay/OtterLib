@@ -44,7 +44,7 @@ namespace Otter::Games::RType::System::Powerup {
             auto& health = healths[pickedUpEntityId];
 
             health->_hp += powerup->_value;
-            std::cout << health->_hp << std::endl;
+            std::cout << "Health++ " << health->_hp << std::endl;
         }
     }
 
@@ -55,7 +55,7 @@ namespace Otter::Games::RType::System::Powerup {
             auto& health = healths[pickedUpEntityId];
 
             health->_hp -= powerup->_value;
-            std::cout << health->_hp << std::endl;
+            std::cout << "Health-- " << health->_hp << std::endl;
         }
     }
 
@@ -66,7 +66,7 @@ namespace Otter::Games::RType::System::Powerup {
             auto& damage = damages[pickedUpEntityId];
 
             damage->_damage += powerup->_value;
-            std::cout << damage->_damage << std::endl;
+            std::cout << "Damage++ " << damage->_damage << std::endl;
         }
     }
 
@@ -80,7 +80,7 @@ namespace Otter::Games::RType::System::Powerup {
                 damage->_damage = 0;
             else
                 damage->_damage -= powerup->_value;
-                std::cout << damage->_damage << std::endl;
+            std::cout << "Health-- " << damage->_damage << std::endl;
         }
     }
 
@@ -91,7 +91,7 @@ namespace Otter::Games::RType::System::Powerup {
             auto& velocity = velocities[pickedUpEntityId];
 
             velocity->_speed += powerup->_value;
-            std::cout << velocity->_speed << std::endl;
+            std::cout << "Speed++ " << velocity->_speed << std::endl;
         }
     }
 
@@ -102,7 +102,7 @@ namespace Otter::Games::RType::System::Powerup {
             auto& velocity = velocities[pickedUpEntityId];
 
             velocity->_speed -= powerup->_value;
-            std::cout << velocity->_speed << std::endl;
+            std::cout << "Speed-- " << velocity->_speed << std::endl;
         }
     }
 
