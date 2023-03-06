@@ -18,6 +18,7 @@
 // Other
 #include "DeathSystem.hpp"
 #include "DispawnableSystem.hpp"
+#include "EnemyShotSystem.hpp"
 #include "EventHandlerSystem.hpp"
 #include "InputKeyEventSystem.hpp"
 #include "InputKeySystem.hpp"
