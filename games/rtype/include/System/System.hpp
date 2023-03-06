@@ -23,6 +23,7 @@
 #include "InputKeySystem.hpp"
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
+#include "PowerupSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "TextSystem.hpp"
 #include "WindowSystem.hpp"

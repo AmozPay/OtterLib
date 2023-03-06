@@ -24,6 +24,7 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
+        ref.register_component<components::Powerup>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
