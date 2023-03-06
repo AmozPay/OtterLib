@@ -32,22 +32,22 @@ namespace Otter::Games::RType::System::Powerup {
     void HealthPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId);
 
     /**
-     * @brief Harm powerup handler
-     * @details Handle the harm powerup picked up by an entity by decreasing its health
+     * @brief Damage powerup handler
+     * @details Handle the damage powerup picked up by an entity by decreasing its health
      * @param ref: The orchestrator
      * @param powerup: The powerup
      * @param pickedUpEntityId: The id of the entity that picked up the powerup
     */
-    void HarmPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId);
+    void DamagePowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId);
 
     /**
-     * @brief Attack powerup handler
-     * @details Handle the attack powerup picked up by an entity by increasing its damage
+     * @brief Strength powerup handler
+     * @details Handle the strength powerup picked up by an entity by increasing its damage
      * @param ref: The orchestrator
      * @param powerup: The powerup
      * @param pickedUpEntityId: The id of the entity that picked up the powerup
     */
-    void AttackPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId);
+    void StrengthPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId);
 
     /**
      * @brief Weakness powerup handler

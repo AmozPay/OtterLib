@@ -23,9 +23,9 @@ namespace Otter::Games::RType::System::Powerup {
             if (powerup->_type == components::HEALTH)
                 HealthPowerupHandler(ref, powerup, pickedUpEntityId);
             if (powerup->_type == components::DAMAGE)
-                HarmPowerupHandler(ref, powerup, pickedUpEntityId);
+                DamagePowerupHandler(ref, powerup, pickedUpEntityId);
             if (powerup->_type == components::STRENGTH)
-                AttackPowerupHandler(ref, powerup, pickedUpEntityId);
+                StrengthPowerupHandler(ref, powerup, pickedUpEntityId);
             if (powerup->_type == components::WEAKNESS)
                 WeaknessPowerupHandler(ref, powerup, pickedUpEntityId);
             if (powerup->_type == components::SPEED)
@@ -48,7 +48,7 @@ namespace Otter::Games::RType::System::Powerup {
         }
     }
 
-    void HarmPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId) {
+    void DamagePowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId) {
         auto& healths = ref.get_components<core::BaseComponents::Health>();
 
         if (pickedUpEntityId < healths.size() && healths[pickedUpEntityId]) {
@@ -59,7 +59,7 @@ namespace Otter::Games::RType::System::Powerup {
         }
     }
 
-    void AttackPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId) {
+    void StrengthPowerupHandler(Otter::Core::Orchestrator& ref, const auto& powerup, int pickedUpEntityId) {
         auto& damages = ref.get_components<core::BaseComponents::Damage>();
 
         if (pickedUpEntityId < damages.size() && damages[pickedUpEntityId]) {
