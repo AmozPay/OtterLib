@@ -68,7 +68,6 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
 
         if (shooter->_shotNbr != -1)
             shooter->_shotNbr -= 1;
-        // shooter->_lastShotTimestamp = std::time(nullptr);
         shooter->_lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());;
     }
 
@@ -84,10 +83,8 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
             auto& shooter = shooters[playerIndex];
 
             if (transform && texture && shooter) {
-                // std::time_t now = std::time(nullptr);
                 std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
                 if (shooter->_canShoot && (shooter->_shotNbr > 0 || shooter->_shotNbr == -1)) {
-                    std::cout << now.count() << " " << shooter->_lastShotTimestamp.count() << std::endl;
                     if ((shooter->_reloadTime == -1 || (now.count() - shooter->_lastShotTimestamp.count()) > shooter->_reloadTime))
                         CreateShotEntity(ref, playerIndex, transform, texture, shooter);
                 }
