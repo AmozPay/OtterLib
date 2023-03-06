@@ -21,6 +21,7 @@ namespace Otter::Games::RType::System::InitGame {
         Otter::Games::GameClient::Init::InitParallaxes parallaxes(ref, baseEntity);
         Otter::Games::GameClient::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
+        Otter::Games::GameClient::Init::InitObstacle obstacles(ref, baseEntity);
 
         int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
