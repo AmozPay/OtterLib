@@ -13,6 +13,7 @@
 #include "Components.hpp"
 #include "GameOverSystem.hpp"
 #include "InitGameSystem.hpp"
+#include "InitLobbySystem.hpp"
 #include "LobbySystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"

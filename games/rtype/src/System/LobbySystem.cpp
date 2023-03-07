@@ -26,6 +26,7 @@ namespace Otter::Games::RType::System::Lobby {
     void HandleLobby(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
     {
         auto& eventNetworks = ref.get_components<Otter::Core::BaseComponents::EventNetwork>();
+        const auto& menus = ref.get_components<Otter::Games::RType::Components::Menu>();
 
         for (size_t i = 0; i < eventNetworks.size(); i++) {
             auto& eventNetwork = eventNetworks[i];
@@ -34,6 +35,11 @@ namespace Otter::Games::RType::System::Lobby {
                 continue;
             }
             if (eventNetwork->_data == utils::SHOOT) {
+                for (size_t i = 0; i < menus.size(); i++) {
+                    if (menus[i])
+                        ref.remove_entity(i);
+                }
+                Otter::Games::RType::System::Window::ClearBackground(ref);
                 TriggerInitGame(ref);
             }
 
