@@ -189,13 +189,11 @@ namespace Otter::Network::Client {
     {
         std::cout << "initNetwork" << std::endl;
         auto& net = ref.get_components<Otter::Network::SocketComponent>();
-        auto& serv = ref.get_components<Otter::Network::ServerComponent>();
 
         for (int i = 0; i < net.size(); i++) {
             if (net[i]) {
                 std::cout << "socket created at index" << i << std::endl;
-                net[i]->channel = std::make_shared<Otter::Network::Socket>(8082);
-                serv[i]->playerId[udp::endpoint(udp::v4(), 8080)] = 0;
+                net[i]->channel = std::make_shared<Otter::Network::Socket>(net[i]->ip, net[i]->port);
             }
         }
     }

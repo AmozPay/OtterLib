@@ -25,7 +25,7 @@ namespace Otter::Network {
           core.add_component(e , std::move(net));
        }
 
-      SocketComponent() : channel(nullptr){};
+      SocketComponent() : channel(nullptr){ port = 8080; ip = "0.0.0.0";};
       
       std::shared_ptr<Otter::Network::Socket> channel;
       std::uint16_t port;

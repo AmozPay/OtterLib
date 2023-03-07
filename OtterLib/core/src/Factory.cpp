@@ -73,7 +73,7 @@ namespace Otter::Core {
             }
             initializer = _initializers.at(key);
             initializer(e, core, value);
-            std::cout << "successfully initialized: '" << root.get<std::string>("name") << "'." << it.first
+            std::cout << "successfully initialized: '" << root.get_optional<std::string>("name") << "'." << it.first
                       << std::endl;
         }
         std::cout << "Initialized entity from " << path << std::endl;
