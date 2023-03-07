@@ -17,8 +17,13 @@ endif()
 
 if (WIN32)
     set(CMAKE_SHELL "powershell.exe")
+    set(CPACK_GENERATOR "ZIP")
+    add_link_options("-NODEFAULTLIB:library" "-SUBSYSTEM:CONSOLE" "-SUBSYSTEM:WINDOWS")
+    add_definitions("-D_WIN32_WINNT=0x0601")
 else()
     set(CMAKE_SHELL bash -c)
+    set(CPACK_GENERATOR "TGZ")
+    add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 endif()
 
 # Find Conan
@@ -51,15 +56,14 @@ endif()
 
 
 
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 
-# CREATE SHARED LIBRARIES
+# CREATE STATIC LIBRARIES
 # OtterCore
 file(GLOB CORE_FILES core/src/*.cpp)
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
 
 list(REMOVE_ITEM CORE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
-add_library(OtterCore SHARED ${CORE_FILES} ${GRAPHIC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
+add_library(OtterCore STATIC ${CORE_FILES} ${GRAPHIC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/core/src/main.cpp)
 target_compile_features(OtterCore PUBLIC cxx_std_20)
 target_include_directories(OtterCore PUBLIC core/include scripting/include graphic/include)
 
@@ -67,7 +71,7 @@ target_include_directories(OtterCore PUBLIC core/include scripting/include graph
 
 # OtterNetwork
 file(GLOB NETWORK_FILES network/src/*.cpp)
-add_library(OtterNetwork SHARED ${NETWORK_FILES} ${GRAPHIC_FILES} ${CORE_FILES} ${SCRIPTING_FILES})
+add_library(OtterNetwork STATIC ${NETWORK_FILES} ${GRAPHIC_FILES} ${CORE_FILES} ${SCRIPTING_FILES})
 target_compile_features(OtterNetwork PUBLIC cxx_std_20)
 target_include_directories(
     OtterNetwork
@@ -85,7 +89,7 @@ target_include_directories(
 
 # OtterScripting
 file(GLOB SCRIPTING_FILES scripting/src/*.cpp)
-add_library(OtterScripting SHARED ${SCRIPTING_FILES})
+add_library(OtterScripting STATIC ${SCRIPTING_FILES})
 target_compile_features(OtterScripting PUBLIC cxx_std_20)
 target_include_directories(OtterScripting PUBLIC scripting/include core/include graphic/include)
 file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/lib)
@@ -93,9 +97,9 @@ file(COPY scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 # OtterGraphic
 file(GLOB GRAPHIC_FILES graphic/src/*.cpp)
-add_library(OtterGraphic SHARED ${GRAPHIC_FILES} graphic/include)
+add_library(OtterGraphic STATIC ${GRAPHIC_FILES})
 target_compile_features(OtterGraphic PUBLIC cxx_std_20)
-target_include_directories(OtterGraphic PUBLIC graphic/include)
+target_include_directories(OtterGraphic PUBLIC graphic/include core/include)
 
 include(CTest)
 option(BUILD_TESTING ON)
@@ -119,7 +123,7 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
     file(GLOB GRAPHIC_TESTS graphic/tests/*.cpp)
     add_executable(OtterGraphicTests ${GRAPHIC_FILES} ${GRAPHIC_TESTS})
     target_compile_features(OtterGraphicTests PUBLIC cxx_std_20)
-    target_include_directories(OtterGraphicTests PUBLIC graphic/include)
+    target_include_directories(OtterGraphicTests PUBLIC graphic/include core/include)
     target_link_libraries(OtterGraphicTests gtest_main ${CONAN_LIBS})
     add_test(NAME OtterGraphicTests COMMAND OtterGraphicTests)
 
@@ -210,13 +214,6 @@ install(FILES
     scripting/OtterLib.lua
     DESTINATION lua
 )
-
-if(WIN32)
-    set(CPACK_GENERATOR "ZIP")
-    # target_link_options(OtterCore PUBLIC "-NODEFAULTLIB:library")
-else()
-    set(CPACK_GENERATOR "TGZ")
-endif()
 
 # Bundle output with cpack
 include(CPack)

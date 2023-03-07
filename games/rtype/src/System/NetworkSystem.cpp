@@ -15,10 +15,12 @@
 
 #include <iostream>
 #include <random>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 namespace Otter::Games::RType::System::Network {
-
+    
     using baseMap = std::unordered_map<std::size_t, std::pair<std::type_index, std::any&>>;
     /*
       namespace {

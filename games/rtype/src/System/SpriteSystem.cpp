@@ -25,7 +25,7 @@ namespace Otter::Games::RType::System::Sprite {
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.draw(Rectangle(sprite->_rectangle.x, sprite->_rectangle.y, sprite->_rectangle.width,
+                sprite->_texture.draw(Otter::Core::Utils::Rectangle(sprite->_rectangle.x, sprite->_rectangle.y, sprite->_rectangle.width,
                                                 sprite->_rectangle.height),
                                       {transform->_position.x, transform->_position.y}, transform->_rotation,
                                       transform->_scale);
@@ -46,7 +46,7 @@ namespace Otter::Games::RType::System::Sprite {
             auto const& transform = transforms[i];
             auto const& render = renders[i];
             if (sprite && transform && render) {
-                sprite->_texture.draw(Rectangle(sprite->_rectangle.x, sprite->_rectangle.y, sprite->_rectangle.width,
+                sprite->_texture.draw(Otter::Core::Utils::Rectangle(sprite->_rectangle.x, sprite->_rectangle.y, sprite->_rectangle.width,
                                                 sprite->_rectangle.height),
                                       {transform->_position.x, transform->_position.y}, transform->_rotation,
                                       transform->_scale);

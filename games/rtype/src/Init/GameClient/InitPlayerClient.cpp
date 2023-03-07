@@ -20,7 +20,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(player, Otter::Core::BaseComponents::Texture(
                                       "../assets/spaceship.gif",
                                       textureStorages[baseEntity]->findTextureByPath("../assets/spaceship.gif"),
-                                      Otter::Games::RType::Utils::Rectangle(0, 0, 32, 14)));
+                                      Otter::Core::Utils::Rectangle(0, 0, 32, 14)));
         ref.add_component(player, Otter::Core::BaseComponents::Render());
         ref.add_component(player, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(player, Otter::Core::BaseComponents::EventNetwork());

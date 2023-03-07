@@ -17,12 +17,11 @@
 
 namespace Otter::Games::GameServer::Init {
     namespace components = Otter::Games::RType::Components;
-    namespace utils = Otter::Games::RType::Utils;
 
     class InitEnemy {
       public:
         InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                  Otter::Games::RType::Utils::Vector2 pos);
+                  Otter::Core::Utils::Vector2 pos);
         ~InitEnemy();
 
         void InitBasicEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,

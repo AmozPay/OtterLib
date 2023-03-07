@@ -15,21 +15,26 @@ else()
     )
 endif()
 
-option(BUILD_RELEASE OFF)
-if(BUILD_RELEASE) # when overriden by cli
-    message("Building project for release")
-    set(CONFIG_VALUE "--config Release")
-    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
-else()
-    message("Building project for debug, with tests")
-    set(CONFIG_VALUE "--config Debug")
+option(BUILD_TESTING "Build OtterLib tests" OFF)
+if(BUILD_TESTING) # when overriden by cli
+    message("Building OtterLib without tests")
     set(BUILD_TESTING "-DBUILD_TESTING=ON")
+else()
+    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
+    message("Building OtterLib with tests")
+endif()
+
+option(BUILD_RELEASE "Build OtterLib tests" OFF)
+if(BUILD_RELEASE) # when overriden by cli
+    message("Building OtterLib for release")
+    set(CONFIG_VALUE "--config Release")
+else()
+    message("Building OtterLib for debug")
+    set(CONFIG_VALUE "--config Debug")
 endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
-
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 
 
 file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
@@ -50,12 +55,17 @@ ExternalProject_Add(OtterLib
 
 if(WIN32)
   set(prefix "")
-  set(suffix ".dll")
+  set(suffix ".lib")
   set(CMAKE_SHELL "powershell.exe")
+  set(LINUX_CONAN_FLAGS "")
+  add_definitions("-D_WIN32_WINNT=0x0601")
+  add_link_options("-NODEFAULTLIB:library" "-SUBSYSTEM:CONSOLE" "-SUBSYSTEM:WINDOWS")
 else()
   set(prefix "lib")
-  set(suffix ".so")
+  set(suffix ".a")
   set(CMAKE_SHELL bash -c)
+  set(LINUX_CONAN_FLAGS "-c tools.system.package_manager:sudo=true")
+  add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
 endif()
 
 # Check if conan is installed
@@ -66,7 +76,7 @@ else()
     # If not, install conan dependencies
     message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
     execute_process(
-        COMMAND ${CMAKE_SHELL} "conan install ${OTTERLIB_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
+        COMMAND ${CMAKE_SHELL} "conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing -c tools.system.package_manager:mode=install ${LINUX_CONAN_FLAGS}"
         OUTPUT_VARIABLE result
         WORKING_DIRECTORY ${OTTERLIB_DIR}
     )

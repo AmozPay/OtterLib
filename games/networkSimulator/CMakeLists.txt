@@ -15,7 +15,7 @@ else()
     )
 endif()
 
-option(BUILD_RELEASE OFF)
+option(BUILD_RELEASE "Build project for release" OFF)
 if(BUILD_RELEASE) # when overriden by cli
     message("Building project for release")
     set(CONFIG_VALUE "--config Release")

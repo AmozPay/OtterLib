@@ -9,32 +9,32 @@
 
 namespace Otter::Graphic::Raylib {
 
-    RaylibMusic::RaylibMusic(const std::string& music_path) : _music(LoadMusicStream(music_path.c_str())), _volume(1.0f)
+    RaylibMusic::RaylibMusic(const std::string& music_path) : _music(raylib::LoadMusicStream(music_path.c_str())), _volume(1.0f)
     {
     }
 
-    RaylibMusic::~RaylibMusic() { UnloadMusicStream(_music); }
+    RaylibMusic::~RaylibMusic() { raylib::UnloadMusicStream(_music); }
 
-    void Raylib::RaylibMusic::play() { PlayMusicStream(_music); }
+    void Raylib::RaylibMusic::play() { raylib::PlayMusicStream(_music); }
 
-    void RaylibMusic::pause() { PauseMusicStream(_music); }
+    void RaylibMusic::pause() { raylib::PauseMusicStream(_music); }
 
-    void RaylibMusic::resume() { ResumeMusicStream(_music); }
+    void RaylibMusic::resume() { raylib::ResumeMusicStream(_music); }
 
-    void RaylibMusic::stop() { StopMusicStream(_music); }
+    void RaylibMusic::stop() { raylib::StopMusicStream(_music); }
 
     void RaylibMusic::restart()
     {
-        StopMusicStream(_music);
-        PlayMusicStream(_music);
+        raylib::StopMusicStream(_music);
+        raylib::PlayMusicStream(_music);
     }
 
-    bool RaylibMusic::isPlaying() { return IsMusicStreamPlaying(_music); }
+    bool RaylibMusic::isPlaying() { return raylib::IsMusicStreamPlaying(_music); }
 
     void RaylibMusic::setVolume(const float& volume)
     {
         _volume = volume;
-        SetMusicVolume(_music, _volume);
+        raylib::SetMusicVolume(_music, _volume);
     }
 
     float RaylibMusic::getVolume() const { return _volume; }

@@ -5,11 +5,9 @@
 ** RaylibKeyboard.hpp
 */
 
-#ifndef RAYLIBKEYBOARD_HPP_
-#define RAYLIBKEYBOARD_HPP_
+#pragma once
 
 #include "OtterGraphicKeyboard.hpp"
-#include "Raylib.hpp"
 
 #include <unordered_map>
 
@@ -92,5 +90,3 @@ namespace Otter::Graphic::Raylib {
         KeyTypeKeyCodeMap _keyTypeKeyCodeMap;
     };
 } // namespace Otter::Graphic::Raylib
-
-#endif /* !RAYLIBKEYBOARD_HPP_ */

@@ -17,7 +17,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(mobs, Otter::Core::BaseComponents::Texture(
                                     "../assets/mobs.gif",
                                     textureStorages[baseEntity]->findTextureByPath("../assets/mobs.gif"),
-                                    Otter::Games::RType::Utils::Rectangle(0, 0, 32, 29)));
+                                    Otter::Core::Utils::Rectangle(0, 0, 32, 29)));
         ref.add_component(mobs, Otter::Core::BaseComponents::Render());
 
         ref.add_component(mobs, Otter::Core::BaseComponents::Transform(2, 0, {800, 300}));
