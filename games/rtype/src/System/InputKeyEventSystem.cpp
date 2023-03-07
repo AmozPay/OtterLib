@@ -59,4 +59,4 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
         }
     }
 
-} // namespace Otter::Games::RType::System::EventNetwork
+} // namespace Otter::Games::RType::System::InputKeyEventSystem

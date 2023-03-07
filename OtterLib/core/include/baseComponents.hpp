@@ -331,7 +331,7 @@ namespace Otter::Core::BaseComponents {
      * @var _tag: The tag of the text
      * @var _linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
      * @var _textInstance: An instance of the RaylibText class
-    */
+     */
     struct Text {
         /**
          * @constructor
@@ -340,8 +340,9 @@ namespace Otter::Core::BaseComponents {
          * @param fontSize: The size of the text
          * @param tag: The tag of the text (used to identify the text)
          * @param linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
-        */
-        Text(std::string text, int fontSize, std::string tag, int linkedEntityId) : _textInstance(Otter::Graphic::Raylib::RaylibText())
+         */
+        Text(std::string text, int fontSize, std::string tag, int linkedEntityId)
+            : _textInstance(Otter::Graphic::Raylib::RaylibText())
         {
             _text = text;
             _fontSize = fontSize;

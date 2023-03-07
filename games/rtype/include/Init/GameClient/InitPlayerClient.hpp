@@ -5,8 +5,8 @@
 ** InitPlayer
 */
 
-#ifndef INITPLAYER_HPP_
-#define INITPLAYER_HPP_
+#ifndef INITPLAYERCLIENT_HPP_
+#define INITPLAYERCLIENT_HPP_
 
 #include "Components.hpp"
 #include "OtterCore.hpp"
@@ -27,4 +27,4 @@ namespace Otter::Games::GameClient::Init {
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITPLAYER_HPP_ */
+#endif /* !INITPLAYERCLIENT_HPP_ */

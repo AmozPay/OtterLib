@@ -5,7 +5,7 @@
 ** InitEnemy
 */
 
-#include "InitEnemy.hpp"
+#include "InitEnemyClient.hpp"
 
 namespace Otter::Games::GameClient::Init {
     

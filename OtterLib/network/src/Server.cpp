@@ -160,6 +160,7 @@ namespace Otter::Network::Server {
             return ret;
         std::cout << "Tram Sending" << std::endl;
         session.send(ss.str());
+        std::cout << "msg send" << ss.str() << std::endl;
         return ret;
     }
 
@@ -266,7 +267,7 @@ namespace Otter::Network::Server {
 
         for (int i = 0; i < net.size(); i++) {
             if (net[i])
-                net[i]->channel = std::make_shared<Otter::Network::Socket>(8080);
+                net[i]->channel = std::make_shared<Otter::Network::Socket>(net[i]->ip, net[i]->port);
         }
     }
 

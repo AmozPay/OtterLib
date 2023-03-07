@@ -1,7 +1,8 @@
 #pragma once
-#include "Session.hpp"
 #include "Factory.hpp"
 #include "Orchestrator.hpp"
+#include "Session.hpp"
+
 #include <boost/asio.hpp>
 #include <iostream>
 #include <map>
@@ -53,10 +54,6 @@ namespace Otter::Network {
         std::mutex _sessions_lock;
         std::vector<udp::endpoint> _new_sessions;
         std::mutex _new_sessions_lock;
-        std::jthread _job{[this]
-                          {
-                              this->_io.run();
-                              std::cout << "ioend" << std::endl;
-                          }};
+        std::jthread _job;
     };
 } // namespace Otter::Network

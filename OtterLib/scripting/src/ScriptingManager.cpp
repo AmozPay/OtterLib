@@ -1,6 +1,8 @@
 #include "ScriptingManager.hpp"
-#include <boost/format.hpp>
+
 #include "C2LuaBindings.hpp"
+
+#include <boost/format.hpp>
 
 #define REGISTER_SYSTEM(phase)                                                                                         \
     _systemManager.registerSystem([this](Otter::Core::Orchestrator& o)                                                 \
@@ -55,10 +57,7 @@ namespace Otter::Scripting {
         std::cout << "[OtterLib] Scripting initialized" << std::endl;
     }
 
-    void ScriptingManager::enableGraphics(void)
-    {
-        this->_graphicsEnabled = true;
-    }
+    void ScriptingManager::enableGraphics(void) { this->_graphicsEnabled = true; }
 
     void ScriptingManager::setupComponentBindings(void)
     {

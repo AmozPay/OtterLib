@@ -5,8 +5,8 @@
 ** InitEnemy
 */
 
-#ifndef INITENEMY_HPP_
-#define INITENEMY_HPP_
+#ifndef INITENEMYCLIENT_HPP_
+#define INITENEMYCLIENT_HPP_
 
 #include "Animation.hpp"
 #include "AnimationComponent.hpp"
@@ -36,4 +36,4 @@ namespace Otter::Games::GameClient::Init {
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITENEMY_HPP_ */
+#endif /* !INITENEMYCLIENT_HPP_ */
