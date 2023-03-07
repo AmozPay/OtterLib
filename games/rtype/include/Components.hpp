@@ -135,6 +135,16 @@ namespace Otter::Games::RType::Components {
 
         int _shooterId;
     };
+
+    /**
+     * @brief Component for the menu
+     * @details The menu component is used to know if an entity is the menu
+     * @struct Menu
+     */
+    struct Menu {
+        Menu() {}
+        ~Menu() {}
+    };
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP

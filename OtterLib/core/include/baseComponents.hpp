@@ -625,7 +625,7 @@ namespace Otter::Core::BaseComponents {
         int _data;
     };
 
-    enum GameStatusType { LOBBY, GAME_INIT, GAME, GAME_OVER, WIN };
+    enum GameStatusType { LOBBY_INIT, LOBBY, GAME_INIT, GAME, GAME_OVER, WIN };
 
     struct GameStatus {
         COMPONENT_BUILDER(GameStatus) { core.add_component(e, EventNetwork()); }

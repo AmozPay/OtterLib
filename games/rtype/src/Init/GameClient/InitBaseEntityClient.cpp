@@ -27,7 +27,12 @@ namespace Otter::Games::GameClient::Init {
                  {"../assets/enemy2-29x22.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy2-29x22.png")},
                  {"../assets/r-typesheet43.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/r-typesheet43.gif")},
                  {"../assets/parallax-1920x1080.png",
-                  Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")}})));
+                  Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")},
+                  {"../assets/menu.png",
+                  Otter::Graphic::Raylib::RaylibTexture("../assets/menu.png")}})));
+
+
+
         ref.add_component(baseEntity, components::EventComponent());
         ref.add_component(baseEntity,
                           components::EventHandlerComponent(components::EventHandlerMap(
@@ -36,10 +41,11 @@ namespace Otter::Games::GameClient::Init {
                                {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
                                {components::EventTypes::INIT_GAME, systems::GameClient::InitGame::HandleInitGame},
                                {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
-                               {components::EventTypes::WIN, systems::Win::HandleWin}})));
+                               {components::EventTypes::WIN, systems::Win::HandleWin},
+                               {components::EventTypes::INIT_LOBBY, systems::InitLobby::HandleInitLobby}})));
         ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::EventNetwork());
-        ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY));
+        ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY_INIT));
 
         auto& keyboards = ref.get_components<Otter::Core::BaseComponents::Keyboard>();
         keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.LEFT, utils::EventState::BACKWARD);
@@ -47,6 +53,7 @@ namespace Otter::Games::GameClient::Init {
         keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.UP, utils::EventState::UP);
         keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.DOWN, utils::EventState::DOWN);
         keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.SHIFT, utils::EventState::SHOOT);
+
     }
 
     InitBaseEntity::~InitBaseEntity() {}

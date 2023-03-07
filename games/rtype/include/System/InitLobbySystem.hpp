@@ -1,20 +1,19 @@
 /*
 ** EPITECH PROJECT, 2023
-** OtterLib [WSL : Ubuntu]
+** $
 ** File description:
-** LobbySystem
+** InitGameSystem
 */
 
-#ifndef LOBBYSYSTEM_HPP_
-#define LOBBYSYSTEM_HPP_
+#ifndef INITLOBBYSYSTEM_HPP_
+#define INITLOBBYSYSTEM_HPP_
 
 #include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "Utils.hpp"
 #include "baseComponents.hpp"
-#include "System.hpp"
 
-namespace Otter::Games::RType::System::Lobby {
+namespace Otter::Games::RType::System::InitLobby {
 
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;
@@ -26,7 +25,7 @@ namespace Otter::Games::RType::System::Lobby {
      * @param vectorId: The vector of the ids of the entities
      * @return void
      */
-    void HandleLobby(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
-} // namespace Otter::Games::RType::System::Lobby
+    void HandleInitLobby(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
+} // namespace Otter::Games::RType::System::InitLobby
 
-#endif /* !LOBBYSYSTEM_HPP_ */
+#endif /* !INITLOBBYSYSTEM_HPP_ */
