@@ -13,6 +13,8 @@
 
 namespace Otter::Games::RType::System::Shot {
 
+    enum ShooterType { PLAYER, ENEMY, BOSS };
+
     /**
      * @brief Create a Shot Entity object for the player
      * @details Create a Shot Entity object
@@ -47,7 +49,7 @@ namespace Otter::Games::RType::System::Shot {
      * @param isEnemy: True if the shooting entity is an enemy (false otherwise)
      * @return void
      */
-    void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex, bool isEnemy);
+    void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex, ShooterType shooterType);
 
 }
 

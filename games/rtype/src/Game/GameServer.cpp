@@ -57,17 +57,15 @@ namespace Otter::Games::GameServer {
     {
         ref.registerSystem(Otter::Network::Server::init, Otter::Core::SystemManager::init);
         ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
-        ref.registerSystem(Otter::Network::Server::update, Otter::Core::SystemManager::event);
-        ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
-        ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::EnemyShot::AutomaticShotForEntity, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
-        ref.registerSystem(systems::CheckClientNb::CheckClientNb, Otter::Core::SystemManager::update);
 
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
     }

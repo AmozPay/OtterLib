@@ -13,6 +13,7 @@
 #include "InitObstacleServer.hpp"
 #include "InitParallaxesServer.hpp"
 #include "InitPlayerServer.hpp"
+#include "InitBossServer.hpp"
 
 namespace Otter::Games::RType::System::GameServer::InitGame {
 
@@ -32,8 +33,10 @@ namespace Otter::Games::RType::System::GameServer::InitGame {
             num = rand() % range;
             Otter::Games::GameServer::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num));
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
         }
+        Otter::Games::GameServer::Init::InitBoss boss(ref, baseEntity, "Boss 1",
+                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 200));
     }
 
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)

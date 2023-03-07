@@ -135,6 +135,61 @@ namespace Otter::Games::RType::Components {
 
         int _shooterId;
     };
+
+    /**
+     * @brief Component for the deceleration
+     * @details The deceleration component is used to know if an entity has a deceleration.
+     * @struct Deceleration
+     * @var _triggeredPosition: The position where the deceleration is triggered
+     * @var _decelerationValue: The value of the deceleration
+    */
+    struct Deceleration {
+        /**
+         * @brief Constructor of the Deceleration component
+         * @param triggeredPosition: The position where the deceleration is triggered
+         * @param decelerationValue: The value of the deceleration
+        */
+        Deceleration(float triggeredPosition, float decelerationValue) {
+            _triggeredPosition = triggeredPosition;
+            _decelerationValue = decelerationValue;
+        };
+        ~Deceleration(){};
+
+        float _triggeredPosition;
+        float _decelerationValue;
+    };
+
+    enum HoveringDirection { UP, DOWN };
+
+    /**
+     * @brief Component for the hovering
+     * @details The hovering component is used to know if an entity is hovering. If it is, it will be able to go up and down
+     * @struct Hovering
+     * @var _hoveringSpeed: The speed of the hovering
+     * @var _minHovering: The minimum position of the hovering (y position)
+     * @var _maxHovering: The maximum position of the hovering (y position)
+    */
+    struct Hovering {
+        /**
+         * @brief Constructor of the Hovering component
+         * @param hoveringSpeed: The speed of the hovering
+         * @param minHovering: The minimum position of the hovering (y position)
+         * @param maxHovering: The maximum position of the hovering (y position)
+         * @param direction: The direction of the hovering
+        */
+        Hovering(float hoveringSpeed, float minHovering, float maxHovering, HoveringDirection direction) {
+            _hoveringSpeed = hoveringSpeed;
+            _minHovering = minHovering;
+            _maxHovering = maxHovering;
+            _direction = direction;
+        }
+        ~Hovering(){}
+
+        float _hoveringSpeed;
+        float _minHovering;
+        float _maxHovering;
+        HoveringDirection _direction;
+    };
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP

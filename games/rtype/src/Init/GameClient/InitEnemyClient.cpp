@@ -12,6 +12,7 @@ namespace Otter::Games::GameClient::Init {
     InitEnemy::InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
                          Otter::Games::RType::Utils::Vector2 pos)
     {
+        // srand(42);
         int enemyType = rand() % 2;
 
         if (enemyType == 1)
@@ -89,6 +90,8 @@ namespace Otter::Games::GameClient::Init {
         animRectVect.push_back(utils::Rectangle(29, 0, 29, 22));
         animRectVect.push_back(utils::Rectangle(29 * 2, 0, 29, 22));
         animRectVect.push_back(utils::Rectangle(29 * 3, 0, 29, 22));
+        animRectVect.push_back(utils::Rectangle(29 * 4, 0, 29, 22));
+        animRectVect.push_back(utils::Rectangle(29 * 5, 0, 29, 22));
         utils::Animation anim("../assets/enemy2-29x22.png", animRectVect, 200);
         utils::AnimRectVect animRectVect2;
         animRectVect2.push_back(utils::Rectangle(0, 26 * 2, 28, 28));

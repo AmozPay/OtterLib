@@ -24,7 +24,7 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
 
         srand(42);
-        int enmiesMaxNb = 20;
+        int enmiesMaxNb = 5;
         int enemyMaxPos = enmiesMaxNb * 300;
         int range = 21 - 1;
         int num = 0;
@@ -33,10 +33,10 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 15));
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
         }
         Otter::Games::GameClient::Init::InitBoss boss(ref, baseEntity, "Boss 1",
-                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 300));
+                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 150));
     }
 
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
