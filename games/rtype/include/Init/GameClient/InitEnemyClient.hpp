@@ -5,8 +5,8 @@
 ** InitEnemy
 */
 
-#ifndef INITENEMY_HPP_
-#define INITENEMY_HPP_
+#ifndef INITENEMYCLIENT_HPP_
+#define INITENEMYCLIENT_HPP_
 
 #include "Animation.hpp"
 #include "AnimationComponent.hpp"
@@ -25,9 +25,15 @@ namespace Otter::Games::GameClient::Init {
                   Otter::Games::RType::Utils::Vector2 pos);
         ~InitEnemy();
 
+        void InitBasicEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos);
+
+        void InitShootingEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos);
+
       protected:
       private:
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITENEMY_HPP_ */
+#endif /* !INITENEMYCLIENT_HPP_ */

@@ -84,17 +84,23 @@ endif()
 file(
     GLOB CLIENT_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
+    src/Init/GameServer/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
+    src/System/GameServer/*.cpp
     src/System/Collisions/*.cpp
 )
 file(
     GLOB SERVER_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
+    src/Init/GameServer/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
+    src/System/GameServer/*.cpp
     src/System/Collisions/*.cpp
 )
 
@@ -108,9 +114,12 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
+    include/Init/GameServer
     include/Game
     include/System
+    include/System/GameClient
+    include/System/GameServer
     include/System/Collisions
     ${OTTERLIB_DIR}/build/include
 )
@@ -137,9 +146,12 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
+    include/Init/GameServer
     include/Game
     include/System
+    include/System/GameClient
+    include/System/GameServer
     include/System/Collisions
     ${OTTERLIB_DIR}/build/include
 )

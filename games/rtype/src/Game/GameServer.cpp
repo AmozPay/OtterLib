@@ -6,59 +6,36 @@
 */
 
 #include "GameServer.hpp"
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
+
+#include "ClientComponent.hpp"
+#include "InputKeyEventSystem.hpp"
+#include "NetworkComponent.hpp"
+#include "Server.hpp"
+#include "ServerComponent.hpp"
 
 namespace Otter::Games::GameServer {
+    void test_upd(Otter::Core::Orchestrator& ref)
+    {
+        auto& sock = ref.get_components<Otter::Network::SocketComponent>();
+        auto& serv = ref.get_components<Otter::Network::ServerComponent>();
+
+        for (int i = 0; i < sock.size(); i++) {
+            if (!sock[i]) {
+                continue;
+            }
+            std::cout << sock[i]->channel << std::endl;
+            if (serv[i])
+                std::cout << "serv exist with socket" << std::endl;
+            else
+                std::cout << "serv doest exist" << std::endl;
+        }
+    }
 
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        // TODO: need to be cleaned
-        Otter::Core::Entity baseEntity = ref.createEntity();
-        Otter::Core::Entity player = ref.createEntity();
-        Otter::Core::Entity invisibleWall = ref.createEntity();
-        Otter::Core::Entity obstacle = ref.createEntity();
-        Otter::Core::Entity mobs = ref.createEntity();
-        Otter::Core::Entity parallaxes[2];
-
-        for (unsigned int& parallax : parallaxes) {
-            parallax = ref.createEntity();
-        }
-
-        ref.add_component(baseEntity, components::EventComponent());
-        ref.add_component(baseEntity, components::EventHandlerComponent(components::EventHandlerMap(
-                                          {{components::EventTypes::COLISION, systems::Collision::HandleCollision},
-                                           {components::EventTypes::DEATH, systems::Death::HandleDeath}})));
-
-        ref.add_component(player, Otter::Core::BaseComponents::Transform(3, 0, {200, 200}));
-        ref.add_component(player, Otter::Core::BaseComponents::Player(20, "test"));
-        ref.add_component(player, Otter::Core::BaseComponents::Velocity(5, 0, {1, 10}, {1, 1}));
-        ref.add_component(player, Otter::Core::BaseComponents::BoxCollider(96, 42));
-        ref.add_component(player, Otter::Core::BaseComponents::Health(100));
-        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 0.001));
-        ref.add_component(player, Otter::Core::BaseComponents::Damage(10));
-
-        ref.add_component(invisibleWall, Otter::Core::BaseComponents::BoxCollider(10, 720));
-        ref.add_component(invisibleWall, Otter::Core::BaseComponents::Transform(1, 0, {-10, 0}));
-        ref.add_component(invisibleWall, components::Obstacle(components::ObstacleType::WALL, "invisible_wall"));
-
-        ref.add_component(obstacle, Otter::Core::BaseComponents::Transform(4, 0, {0, 0}));
-        ref.add_component(obstacle, Otter::Core::BaseComponents::Velocity(0, 0, {0, 0}, {0, 0}));
-        ref.add_component(obstacle, Otter::Core::BaseComponents::BoxCollider(248, 96));
-        ref.add_component(obstacle, components::Obstacle(components::ObstacleType::WALL, "test"));
-
-        ref.add_component(mobs, Otter::Core::BaseComponents::Transform(2, 0, {800, 300}));
-        ref.add_component(mobs, Otter::Core::BaseComponents::Velocity(0, 0, {0, 0}, {0, 0}));
-        ref.add_component(mobs, Otter::Core::BaseComponents::Enemy(25, "test"));
-        ref.add_component(mobs, Otter::Core::BaseComponents::BoxCollider(64, 58));
-        ref.add_component(mobs, Otter::Core::BaseComponents::Damage(20));
-        ref.add_component(mobs, Otter::Core::BaseComponents::Health(100));
-
-        for (int i = 0; i < 2; i++) {
-            ref.add_component(parallaxes[i],
-                              Otter::Core::BaseComponents::Transform(1, 0, {static_cast<float>(i * 1226), 0}));
-            ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
-        }
+        ref.add_component(0, Otter::Network::SocketComponent());
+        ref.add_component(0, Otter::Network::ServerComponent());
+        Init::InitBaseEntity baseEntity(ref);
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -68,9 +45,32 @@ namespace Otter::Games::GameServer {
         ref.register_component<components::Shot>();
         ref.register_component<components::EventHandlerComponent>();
         ref.register_component<components::EventComponent>();
+        ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
+        ref.register_component<components::AnimationComponent>();
+
+        ref.register_component<Otter::Network::SocketComponent>();
+        ref.register_component<Otter::Network::ServerComponent>();
+        ref.register_component<Otter::Network::ClientComponent>();
     }
 
-    void registerSystems(Otter::Core::SystemManager& ref) { std::cout << "Server here" << std::endl; }
+    void registerSystems(Otter::Core::SystemManager& ref)
+    {
+        ref.registerSystem(Otter::Network::Server::init, Otter::Core::SystemManager::init);
+        ref.registerSystem(systems::Event::PollEvent, Otter::Core::SystemManager::preEvent);
+        ref.registerSystem(Otter::Network::Server::update, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
+        ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::CheckClientNb::CheckClientNb, Otter::Core::SystemManager::update);
+
+        ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
+    }
 
     void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
     {

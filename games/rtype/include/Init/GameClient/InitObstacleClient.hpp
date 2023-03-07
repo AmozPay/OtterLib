@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** InitInvisibleWall
+** InitObstacle
 */
 
-#ifndef INITINVISIBLEWALL_HPP_
-#define INITINVISIBLEWALL_HPP_
+#ifndef INITOBSTACLECLIENT_HPP_
+#define INITOBSTACLECLIENT_HPP_
 
 #include "Components.hpp"
 #include "OtterCore.hpp"
@@ -16,14 +16,14 @@
 namespace Otter::Games::GameClient::Init {
     namespace components = Otter::Games::RType::Components;
 
-    class InitInvisibleWall {
+    class InitObstacle {
       public:
-        InitInvisibleWall(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity);
-        ~InitInvisibleWall();
+        InitObstacle(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity);
+        ~InitObstacle();
 
       protected:
       private:
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITINVISIBLEWALL_HPP_ */
+#endif /* !INITOBSTACLECLIENT_HPP_ */

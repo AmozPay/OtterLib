@@ -1,6 +1,7 @@
 #include "Orchestrator.hpp"
 #include "baseComponents.hpp"
 #include "lua.h"
+
 namespace Otter::Scripting::Bindings::Orchestrator {
 
     int createEntity(lua_State* L)

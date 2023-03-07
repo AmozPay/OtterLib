@@ -48,6 +48,7 @@ namespace Otter::Games::RType::System::GameStatus {
             }
 
             if (statuses[i]->gameStatusType == Core::BaseComponents::GAME_OVER) {
+                std::cout << "Game over" << std::endl;
                 TriggerGameEvent(ref, components::EventTypes::GAME_OVER);
             }
 
