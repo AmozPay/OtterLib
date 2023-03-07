@@ -24,7 +24,7 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
 
         srand(42);
-        int enmiesMaxNb = 5;
+        int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
         int range = 21 - 1;
         int num = 0;

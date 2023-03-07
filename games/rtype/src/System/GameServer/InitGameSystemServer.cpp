@@ -36,7 +36,7 @@ namespace Otter::Games::RType::System::GameServer::InitGame {
                 Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
         }
         Otter::Games::GameServer::Init::InitBoss boss(ref, baseEntity, "Boss 1",
-                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 200));
+                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 150));
     }
 
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)

@@ -20,7 +20,7 @@ namespace Otter::Games::GameServer::Init {
         ref.add_component(boss, Otter::Core::BaseComponents::Damage(25));
         ref.add_component(boss, Otter::Core::BaseComponents::Health(200));
         ref.add_component(boss, Otter::Games::RType::Components::Deceleration(1280, 0.004));
-        ref.add_component(boss, Otter::Games::RType::Components::Hovering(1, 50, 550, Otter::Games::RType::Components::HoveringDirection::DOWN));
+        ref.add_component(boss, Otter::Games::RType::Components::Hovering(1, 100, 450, Otter::Games::RType::Components::HoveringDirection::DOWN));
 
         ref.add_component(boss, components::Shooter(components::ShotDirection::LEFT, true, -1, 1000));
     }
