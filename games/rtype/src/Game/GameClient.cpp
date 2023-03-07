@@ -78,6 +78,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(Otter::Network::Client::update, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::EnemyShot::AutomaticShotForEntity, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
