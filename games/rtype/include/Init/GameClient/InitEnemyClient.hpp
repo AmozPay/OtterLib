@@ -2,12 +2,14 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** InitPlayer
+** InitEnemy
 */
 
-#ifndef INITPLAYER_HPP_
-#define INITPLAYER_HPP_
+#ifndef INITENEMYCLIENT_HPP_
+#define INITENEMYCLIENT_HPP_
 
+#include "Animation.hpp"
+#include "AnimationComponent.hpp"
 #include "Components.hpp"
 #include "OtterCore.hpp"
 #include "Utils.hpp"
@@ -17,14 +19,15 @@ namespace Otter::Games::GameClient::Init {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
 
-    class InitPlayer {
+    class InitEnemy {
       public:
-        InitPlayer(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity);
-        ~InitPlayer();
+        InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos);
+        ~InitEnemy();
 
       protected:
       private:
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITPLAYER_HPP_ */
+#endif /* !INITENEMYCLIENT_HPP_ */

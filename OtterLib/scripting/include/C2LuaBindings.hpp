@@ -15,7 +15,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("is");                                              \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         (*component)._##memberName = std::string(std::get<char const*>(args[1]));                                      \
         return 0;                                                                                                      \
@@ -26,7 +26,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("i");                                               \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         ctx.push(component->_##memberName.c_str());                                                                    \
         return 1;                                                                                                      \
@@ -40,9 +40,9 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ii");                                              \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Core::BaseComponents::componentType>()[entity];                  \
-        (*component)._##memberName = std::get<lua_Integer>(args[1]);                                                     \
+        (*component)._##memberName = std::get<lua_Integer>(args[1]);                                                   \
         return 0;                                                                                                      \
     }                                                                                                                  \
     int get_##memberName(lua_State* L)                                                                                 \
@@ -51,9 +51,9 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("i");                                               \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Core::BaseComponents::componentType>()[entity];                  \
-        ctx.push(static_cast<lua_Integer>(component->_##memberName));                                                    \
+        ctx.push(static_cast<lua_Integer>(component->_##memberName));                                                  \
         return 1;                                                                                                      \
     }
 
@@ -65,7 +65,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ii");                                              \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         (*component)._##memberName = std::get<double>(args[1]);                                                        \
         return 0;                                                                                                      \
@@ -76,7 +76,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("i");                                               \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         ctx.push(static_cast<double>(component->_##memberName));                                                       \
         return 1;                                                                                                      \
@@ -90,7 +90,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("ib");                                              \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         (*component)._##memberName = std::get<bool>(args[1]);                                                          \
         return 0;                                                                                                      \
@@ -101,7 +101,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("i");                                               \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto component = orchestrator->get_components<Otter::Core::BaseComponents::componentType>()[entity];           \
         ctx.push(static_cast<bool>(component->_##memberName));                                                         \
         return 1;                                                                                                      \
@@ -115,7 +115,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("idd");                                             \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         float x = std::get<double>(args[1]);                                                                           \
         float y = std::get<double>(args[2]);                                                                           \
         orchestrator->get_components<Core::BaseComponents::componentType>()[entity]->_##memberName = {.x = x, .y = y}; \
@@ -127,7 +127,7 @@
         Otter::Core::Orchestrator* orchestrator =                                                                      \
             static_cast<Otter::Core::Orchestrator*>(ctx["__orchestrator"].toVoidPtr());                                \
         std::vector<Otter::Scripting::luaTypes> args = ctx.getArgs("i");                                               \
-        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                  \
+        auto entity = static_cast<Otter::Core::Entity>(std::get<lua_Integer>(args[0]));                                \
         auto vec = orchestrator->get_components<Core::BaseComponents::componentType>()[entity]->_##memberName;         \
         ctx.push(static_cast<double>(vec.x));                                                                          \
         ctx.push(static_cast<double>(vec.y));                                                                          \

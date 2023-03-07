@@ -5,8 +5,8 @@
 ** InitParallaxes
 */
 
-#ifndef INITPARALLAXES_HPP_
-#define INITPARALLAXES_HPP_
+#ifndef INITPARALLAXESCLIENT_HPP_
+#define INITPARALLAXESCLIENT_HPP_
 
 #include "OtterCore.hpp"
 #include "baseComponents.hpp"
@@ -22,4 +22,4 @@ namespace Otter::Games::GameClient::Init {
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITPARALLAXES_HPP_ */
+#endif /* !INITPARALLAXESCLIENT_HPP_ */

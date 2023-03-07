@@ -5,7 +5,7 @@
 ** InitEnemy
 */
 
-#include "InitEnemy.hpp"
+#include "InitEnemyClient.hpp"
 
 namespace Otter::Games::GameClient::Init {
     InitEnemy::InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,

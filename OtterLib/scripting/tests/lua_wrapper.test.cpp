@@ -1,5 +1,7 @@
 #include "lua_wrapper.hpp"
+
 #include "lua.h"
+
 #include <gtest/gtest.h>
 #include <string>
 

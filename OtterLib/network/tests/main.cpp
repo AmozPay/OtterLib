@@ -17,7 +17,6 @@ void Otter::Core::createEntityObj(Otter::Core::Orchestrator& o) {}
 
 void Otter::Core::configureScripting(Otter::Scripting::ScriptingManager& scriptingManager) {}
 
-
 /*int main()
 {
   std::stringstream ss;

@@ -5,8 +5,8 @@
 ** InitEnemy
 */
 
-#ifndef INITENEMY_HPP_
-#define INITENEMY_HPP_
+#ifndef INITENEMYSERVER_HPP_
+#define INITENEMYSERVER_HPP_
 
 #include "Animation.hpp"
 #include "AnimationComponent.hpp"
@@ -15,7 +15,7 @@
 #include "Utils.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::GameClient::Init {
+namespace Otter::Games::GameServer::Init {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
 
@@ -28,6 +28,6 @@ namespace Otter::Games::GameClient::Init {
       protected:
       private:
     };
-} // namespace Otter::Games::GameClient::Init
+} // namespace Otter::Games::GameServer::Init
 
-#endif /* !INITENEMY_HPP_ */
+#endif /* !INITENEMYSERVER_HPP_ */
