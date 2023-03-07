@@ -105,7 +105,74 @@ namespace Otter::Games::RType::System::Shot {
         shooter->_lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());;
     }
 
-    void CreateShot(Otter::Core::Orchestrator& ref, size_t entityIndex, bool isEnemy)
+    void CreateBossShotEntity(Otter::Core::Orchestrator& ref, size_t enemyIndex, auto const& transform, auto& texture,
+                          auto& shooter)
+    {
+        Otter::Core::Entity newShot = ref.createEntity();
+        Otter::Core::Entity newSecondShot = ref.createEntity();
+
+#if defined(TARGET_CLIENT)
+        auto& textureStorages = ref.get_components<Otter::Core::BaseComponents::TextureStorage>();
+
+        for (size_t i = 0; i < textureStorages.size(); i++) {
+            auto& textureStorage = textureStorages[i];
+
+            if (textureStorage) {
+                ref.add_component(newShot, Otter::Core::BaseComponents::Texture(
+                                               "../assets/ennemyShoot3-50x10.png",
+                                               textureStorage->findTextureByPath("../assets/ennemyShoot3-50x10.png"),
+                                               Otter::Games::RType::Utils::Rectangle(0, 0, 50, 10)));
+                ref.add_component(newSecondShot, Otter::Core::BaseComponents::Texture(
+                                               "../assets/ennemyShoot3-50x10.png",
+                                               textureStorage->findTextureByPath("../assets/ennemyShoot3-50x10.png"),
+                                               Otter::Games::RType::Utils::Rectangle(0, 0, 50, 10)));
+            }
+        }
+        ref.add_component(newShot, Otter::Core::BaseComponents::Render());
+        ref.add_component(newSecondShot, Otter::Core::BaseComponents::Render());
+#endif
+        ref.add_component(newShot, Otter::Core::BaseComponents::Transform(
+                                       3, 0,
+                                       {transform->_position.x - 150,
+                                        transform->_position.y + 65}));
+        ref.add_component(newSecondShot, Otter::Core::BaseComponents::Transform(
+                                       3, 0,
+                                       {transform->_position.x - 150,
+                                        transform->_position.y + 190}));
+
+        ref.add_component(newShot, components::Shot(enemyIndex));
+        ref.add_component(newSecondShot, components::Shot(enemyIndex));
+        if (shooter->_direction == components::LEFT) {
+            ref.add_component(newShot, Otter::Core::BaseComponents::Velocity(0, 8, {-1, 0}, {0, 0}));
+            ref.add_component(newSecondShot, Otter::Core::BaseComponents::Velocity(0, 8, {-1, 0}, {0, 0}));
+        }
+        if (shooter->_direction == components::RIGHT) {
+            ref.add_component(newShot, Otter::Core::BaseComponents::Velocity(0, 8, {1, 0}, {0, 0}));
+            ref.add_component(newSecondShot, Otter::Core::BaseComponents::Velocity(0, 8, {1, 0}, {0, 0}));
+        }
+        ref.add_component(newShot, components::Obstacle(components::ObstacleType::BULLET, "enemy_bullet"));
+        ref.add_component(newSecondShot, components::Obstacle(components::ObstacleType::BULLET, "enemy_bullet"));
+        ref.add_component(newShot, Otter::Core::BaseComponents::BoxCollider(150, 30));
+        ref.add_component(newSecondShot, Otter::Core::BaseComponents::BoxCollider(150, 30));
+
+        utils::AnimRectVect animRectVect;
+        animRectVect.push_back(utils::Rectangle(0, 0, 50, 10));
+        animRectVect.push_back(utils::Rectangle(50, 0, 50, 10));
+        animRectVect.push_back(utils::Rectangle(50 * 2, 0, 50, 10));
+        utils::Animation anim("../assets/ennemyShoot3-50x10.png", animRectVect, 200);
+
+        components::IdAnimMap idAnimMap;
+        idAnimMap.emplace(components::STANDUP_ANIM, anim);
+
+        ref.add_component(newShot, components::AnimationComponent(idAnimMap, components::STANDUP_ANIM));
+        ref.add_component(newSecondShot, components::AnimationComponent(idAnimMap, components::STANDUP_ANIM));
+
+        if (shooter->_shotNbr != -1)
+            shooter->_shotNbr -= 1;
+        shooter->_lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());;
+    }
+
+    void CreateShot(Otter::Core::Orchestrator& ref, size_t entityIndex, ShooterType shooterType)
     {
         auto const& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
         auto& textures = ref.get_components<Otter::Core::BaseComponents::Texture>();
@@ -121,8 +188,10 @@ namespace Otter::Games::RType::System::Shot {
                 if (shooter->_canShoot && (shooter->_shotNbr > 0 || shooter->_shotNbr == -1)) {
                     std::cout << now.count() << " " << shooter->_lastShotTimestamp.count() << std::endl;
                     if ((shooter->_reloadTime == -1 || (now.count() - shooter->_lastShotTimestamp.count()) > shooter->_reloadTime)) {
-                        if (isEnemy)
+                        if (shooterType == ShooterType::ENEMY)
                             CreateEnemyShotEntity(ref, entityIndex, transform, texture, shooter);
+                        else if (shooterType == ShooterType::BOSS)
+                            CreateBossShotEntity(ref, entityIndex, transform, texture, shooter);
                         else
                             CreatePlayerShotEntity(ref, entityIndex, transform, texture, shooter);
                     }

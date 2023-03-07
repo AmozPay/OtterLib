@@ -25,6 +25,12 @@ namespace Otter::Games::GameServer::Init {
                   Otter::Games::RType::Utils::Vector2 pos);
         ~InitEnemy();
 
+        void InitBasicEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos);
+
+        void InitShootingEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                  Otter::Games::RType::Utils::Vector2 pos);
+
       protected:
       private:
     };

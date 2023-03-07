@@ -22,6 +22,7 @@ namespace Otter::Games::RType::System::EnemyShot {
         const auto& shooters = ref.get_components<components::Shooter>();
         const auto& transforms = ref.get_components<core::BaseComponents::Transform>();
 
+        // srand(42);
         int num = 0;
         for (size_t i = 0; i < enemies.size() && i < shooters.size() && i < transforms.size(); i++) {
             const auto& enemy = enemies[i];
@@ -30,7 +31,10 @@ namespace Otter::Games::RType::System::EnemyShot {
 
             num = rand() % 20;
             if (enemy && shooter && num == 1 && transform && transform->_position.x < 1280) {
-                Otter::Games::RType::System::Shot::CreateShot(ref, i, true);
+                if (enemy->_tag == "boss")
+                    Otter::Games::RType::System::Shot::CreateShot(ref, i, Otter::Games::RType::System::Shot::ShooterType::BOSS);
+                else
+                    Otter::Games::RType::System::Shot::CreateShot(ref, i, Otter::Games::RType::System::Shot::ShooterType::ENEMY);
             }
         }
     }

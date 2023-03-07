@@ -13,6 +13,7 @@
 #include "InitObstacleClient.hpp"
 #include "InitParallaxesClient.hpp"
 #include "InitPlayerClient.hpp"
+#include "InitBossClient.hpp"
 #include "InitPowerupClient.hpp"
 
 namespace Otter::Games::RType::System::GameClient::InitGame {
@@ -55,8 +56,10 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 15));
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
         }
+        Otter::Games::GameClient::Init::InitBoss boss(ref, baseEntity, "Boss 1",
+                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 150));
 
         CreatePowerup(ref, baseEntity);
     }

@@ -39,7 +39,7 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
         // TODO: Player events are here @Baptiste
         PlayerMovementEvent(ref, playerIndex, state);
         if (state == utils::SHOOT)
-            Otter::Games::RType::System::Shot::CreateShot(ref, playerIndex, false);
+            Otter::Games::RType::System::Shot::CreateShot(ref, playerIndex, Otter::Games::RType::System::Shot::ShooterType::PLAYER);
         if (state == utils::CLOSE) {
             // DO NOTHING FOR THE MOMENT
         }

@@ -60,6 +60,8 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
+        ref.register_component<components::Deceleration>();
+        ref.register_component<components::Hovering>();
         ref.register_component<components::Powerup>();
 
         ref.register_component<Otter::Network::SocketComponent>();
@@ -81,6 +83,8 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(Otter::Network::Client::update, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::EnemyShot::AutomaticShotForEntity, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Deceleration::Deceleration, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::Hovering::Hovering, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
