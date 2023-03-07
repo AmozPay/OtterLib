@@ -23,6 +23,7 @@ namespace Otter::Games::GameClient::Init {
                  {"../assets/background.png", Otter::Graphic::Raylib::RaylibTexture("../assets/background.png")},
                  {"../assets/projectile.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/projectile.gif")},
                  {"../assets/enemy1-34x34.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy1-34x34.png")},
+                 {"../assets/enemy2-29x22.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy2-29x22.png")},
                  {"../assets/r-typesheet43.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/r-typesheet43.gif")},
                  {"../assets/parallax-1920x1080.png",
                   Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")}})));
