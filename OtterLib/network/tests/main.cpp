@@ -4,6 +4,7 @@
 #include "OtterCore.hpp"
 #include "test.hpp"
 
+#include <bitset>
 #include <iostream>
 #include <set>
 #include <sstream>
@@ -126,4 +127,23 @@ int main()
     std::cout << dt.ss << "|" << std::endl;
     return 0;
 }
+*/
+
+/*
+
+int main()
+{
+  std::uint8_t pac = 8;
+
+  std::cout << "pac:" << std::bitset<8>(pac) << std::endl;
+  pac =  pac | 0X00;
+  std::cout << "pac:" << std::bitset<8>(pac) << std::endl;
+
+  std::cout << "mandatory" << std::bitset<8>((pac & 0X80) >> 7) << std::endl;
+
+  pac = pac << 1 >> 1 ;
+  std::cout << "pac " << std::bitset<8>(pac ^ 0X80) << std::endl;
+
+}
+
 */

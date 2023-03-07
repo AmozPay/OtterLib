@@ -39,10 +39,11 @@ namespace Otter::Network::Client {
             std::cout << connection.size() << " new connection to server" << data.str() << std::endl;
             std::uint32_t id = test_conect(*serv, data);
             if (id != -1) {
-                serv->netId.insert(id);
+	      serv->playerId.clear();
+	      serv->netId.insert(id);
                 serv->playerId[connection[0]->get_endpoint()] = id;
                 ClientComponent tmp;
-                tmp.seq = 0;
+                tmp.seq = 1;
                 tmp.id = id;
                 ref.add_component(index, std::move(tmp));
             } else {
@@ -85,7 +86,8 @@ namespace Otter::Network::Client {
             cl.mandatory_msg_list.pop();
             nb++;
         }
-        return nb;
+         cl.mandatory_buffer.push(std::pair(nb, ss.str()));
+       return nb;
     }
 
     int tramFill(std::stringstream& ss, Otter::Network::ClientComponent& cl)
@@ -95,6 +97,7 @@ namespace Otter::Network::Client {
         while (cl.msg_list.size() != 0) {
             if (sizeof(cl.msg_list.front()) + len > 10000)
                 return nb;
+	    std::cout << "dt serialised" << cl.msg_list.front().ss << std::endl;
             Otter::Network::Serializer::saveArchive(ss, cl.msg_list.front());
             len = ss.str().size();
             cl.msg_list.pop();
@@ -110,13 +113,27 @@ namespace Otter::Network::Client {
         bool ret = false;
         std::uint8_t nb = 0;
 
-        Otter::Network::Header::formatHeader(ss, cl.seq, cl.id);
-        if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
+        if (cl.mandatory_buffer.size() == 0) {
+            Otter::Network::Header::formatHeader(ss, cl.seq, cl.id);
+            if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
+                ret = true;
+                nb += tramFillMandatory(tmp, cl);
+	    std::cout << "Mandatory serialised" << std::endl;
+            }
+        } else {
+            Otter::Network::Header::formatHeader(ss, cl.mandatory_seq, cl.id);
+            ss << cl.mandatory_buffer.front().second;
+            nb = cl.mandatory_buffer.front().first;
             ret = true;
-            nb += tramFillMandatory(tmp, cl);
+	    std::cout << "mandatory buffered" << std::endl;
         }
+
         if (cl.msg_list.size() != 0 && ss.str().size() < 10000)
             nb += tramFill(tmp, cl);
+
+        if (ret == true)
+            nb = nb | 0X80;
+
         Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, nb);
         ss << tmp.str();
         if (ss.str().size() == 0 || nb == 0)
@@ -138,11 +155,68 @@ namespace Otter::Network::Client {
             return;
         if (!cl || !soc || !serv)
             return;
-        tramSending(*connection[0], *cl);
-        cl->seq++;
+        if (tramSending(*connection[0], *cl)) {
+              std::cout << "mandatory bind" << cl->seq << std::endl;
+            cl->mandatory_seq = cl->seq;
+        } else {
+            cl->seq++;
+        }
     }
 
     ///////////////////////////recv update////////////////////////////////////////////
+
+    void validation_handcheck(Otter::Core::Orchestrator& ref, std::uint32_t cl_index, std::string& tmp)
+    {
+        auto& cl = ref.get_components<Otter::Network::ClientComponent>()[cl_index];
+        std::stringstream ss(tmp);
+        std::uint32_t seq = Otter::Network::Header::getUint(ss);
+
+        if (seq == cl->mandatory_seq) {
+            cl->mandatory_buffer.pop();
+            cl->seq++;
+        }
+        std::cout << "handcheck" << std::endl;
+    }
+
+    void validation_msg(Otter::Core::Orchestrator& ref, int index, int seqManda)
+    {
+        auto& soc = ref.get_components<Otter::Network::SocketComponent>()[0];
+        auto& serv = ref.get_components<Otter::Network::ServerComponent>()[0];
+        auto& cl = ref.get_components<Otter::Network::ClientComponent>();
+        std::vector<Otter::Network::Session*> connection = soc->channel->get_sessions();
+
+        std::stringstream ss;
+        std::stringstream tmp;
+        std::uint8_t nb = 0;
+
+        Otter::Network::Header::formatHeader(ss, cl[index]->seq, cl[index]->id);
+        Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, 1);
+        Otter::Network::dtObj obj;
+        obj.msgCode = Otter::Network::VALIDATION;
+        Otter::Network::Serializer::saveArchive<std::uint32_t>(tmp, seqManda);
+        obj.ss = tmp.str();
+        Otter::Network::Serializer::saveArchive(ss, obj);
+        connection[0]->send(ss.str());
+        std::cout << "validation " << ss.str() << std::endl;
+    }
+
+    bool compute_manda(Otter::Core::Orchestrator& ref, int index, std::uint32_t seqRecv, bool manda)
+    {
+        auto& cl = ref.get_components<Otter::Network::ClientComponent>();
+
+        if (manda == true) {
+            validation_msg(ref, index, seqRecv);
+            if (cl[index]->mandatory_recv_seq == seqRecv) {
+	      std::cout << "already recive" << std::endl;
+	      return true;
+            } else {
+	      std::cout << "new recieve" << std::endl;
+	    }
+            cl[index]->mandatory_recv_seq = seqRecv;
+        }
+        return false;
+    }
+
     void computeTram(Otter::Core::Orchestrator& ref, Otter::Network::ServerComponent& serv, std::stringstream& ss,
                      int index)
     {
@@ -151,6 +225,9 @@ namespace Otter::Network::Client {
         std::uint32_t id = Otter::Network::Header::getUint(ss);
         std::uint8_t pac = Otter::Network::Header::getChar(ss);
         Otter::Network::dtObj dt;
+        int manda = (pac & 0X80) >> 7;
+	if (manda)
+	  pac = pac ^ 0X80;
 
         if (pac == 0)
             return;
@@ -158,6 +235,13 @@ namespace Otter::Network::Client {
             dt = Otter::Network::Header::getDt(ss);
             std::cout << serv.callBack.size() << std::endl;
             std::cout << dt.msgCode << std::endl;
+
+            if (compute_manda(ref, index, seq, manda) == true)
+                continue;
+            if (dt.msgCode == Otter::Network::VALIDATION) {
+                validation_handcheck(ref, index, dt.ss);
+                continue;
+            }
             serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
     }
@@ -202,7 +286,7 @@ namespace Otter::Network::Client {
     {
         auto& clients = ref.get_components<Otter::Network::ClientComponent>();
         auto& sock = ref.get_components<Otter::Network::SocketComponent>();
-
+	static int count = 0;
         int index = -1;
 
         for (int i = 0; i < sock.size(); i++) {
@@ -219,9 +303,13 @@ namespace Otter::Network::Client {
             Otter::Network::Client::update_connection(ref, index);
             Otter::Network::Client::update_session(ref, index);
         } else {
+	  if (count >= 30000) {
             Otter::Network::Client::update_msg(ref, index);
             Otter::Network::Client::update_recv(ref, index);
-        }
+	    count= 0;
+	  }
+	}
+	count++;
         /// std::cout << "end update" << std::endl;
     }
 

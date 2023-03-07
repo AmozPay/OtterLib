@@ -22,6 +22,7 @@ namespace Otter::Network {
 
     enum MsgCode {
         ACTIVATION,
+        VALIDATION,
         INIT_GAME,
         PLAYER_MOVE,
         ENEMY_MOVE

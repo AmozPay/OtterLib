@@ -24,7 +24,16 @@ void test_upd(Otter::Core::Orchestrator& ref)
     }
 }
 
-void setupNetwork(Otter::Core::Orchestrator& ref) {}
+void setupNetwork(Otter::Core::Orchestrator& ref)
+{
+    auto& serv = ref.get_components<Otter::Network::ServerComponent>();
+    serv[0]->mandatory_static.push_back(Otter::Network::MSG);
+
+    serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string&, int) {std::cout << "msg 1" << std::endl;});
+    serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string&, int) {std::cout << "msg 2" << std::endl;});
+    serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string&, int) {std::cout << "msg 3" << std::endl;});
+    serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string& str, int) {std::cout << str << "  TAHTAAAAAAAAAAAAA WORRRRKKKKKKK" << std::endl;});    
+}
 
 void test_conect_serv(Otter::Core::Orchestrator& ref)
 {
@@ -34,6 +43,20 @@ void test_conect_serv(Otter::Core::Orchestrator& ref)
       for (int i = 0; i < cl.size(); i++) {
       }*/
 }
+void sending_to(Otter::Core::Orchestrator &ref)
+{
+  static int count = 0;
+
+  count++;
+  if (count == 20000) {
+    std::cout << "COUTNER DOWN" << std::endl;
+    std::stringstream ss("testing");
+    Otter::Network::Sender::broadCast_msg(ref, Otter::Network::MSG, ss);
+  }
+}
+
+
+
 
 namespace Otter::Core {
 
@@ -57,11 +80,14 @@ namespace Otter::Core {
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {
+       ref.registerSystem(&setupNetwork, Otter::Core::SystemManager::init);
+      
 #if defined(TARGET_CLIENT)
         std::cout << "iam client" << std::endl;
         ref.registerSystem(&Otter::Network::Client::init, Otter::Core::SystemManager::init);
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
         ref.registerSystem(&Otter::Network::Client::update, Otter::Core::SystemManager::update);
+        ref.registerSystem(&sending_to, Otter::Core::SystemManager::update);
         //       ref.registerSystem(&test_conect_serv, Otter::Core::SystemManager::update);
 
 #endif
