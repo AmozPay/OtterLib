@@ -9,8 +9,8 @@
 #define CHECKCLIENTNBSYSTEM_HPP_
 
 #include "OtterCore.hpp"
-#include "ServerComponent.hpp"
 #include "OtterNetwork.hpp"
+#include "ServerComponent.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::CheckClientNb {

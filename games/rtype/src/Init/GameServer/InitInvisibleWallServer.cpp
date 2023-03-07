@@ -7,12 +7,8 @@
 
 #include "InitInvisibleWallServer.hpp"
 
-namespace Otter::Games::GameServer::Init
-{
-    InitInvisibleWall::InitInvisibleWall(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity
-    )
+namespace Otter::Games::GameServer::Init {
+    InitInvisibleWall::InitInvisibleWall(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
         Otter::Core::Entity invisibleWall = ref.createEntity();
 
@@ -22,8 +18,5 @@ namespace Otter::Games::GameServer::Init
         ref.add_component(invisibleWall, components::Obstacle(components::ObstacleType::WALL, "invisible_wall"));
     }
 
-    InitInvisibleWall::~InitInvisibleWall()
-    {
-
-    }
-}
+    InitInvisibleWall::~InitInvisibleWall() {}
+} // namespace Otter::Games::GameServer::Init

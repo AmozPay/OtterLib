@@ -6,6 +6,7 @@
 */
 
 #include "InitGameSystemClient.hpp"
+
 #include "InitEnemyClient.hpp"
 #include "InitInvisibleWallClient.hpp"
 #include "InitMobsClient.hpp"
@@ -20,7 +21,7 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
         Otter::Games::GameClient::Init::InitParallaxes parallaxes(ref, baseEntity);
         Otter::Games::GameClient::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
-        
+
         srand(42);
         int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
@@ -49,4 +50,4 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             return;
         }
     }
-} // namespace Otter::Games::RType::System::InitGame
+} // namespace Otter::Games::RType::System::GameClient::InitGame

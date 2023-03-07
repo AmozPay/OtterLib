@@ -7,12 +7,8 @@
 
 #include "InitPlayerServer.hpp"
 
-namespace Otter::Games::GameServer::Init
-{
-    InitPlayer::InitPlayer(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity
-    )
+namespace Otter::Games::GameServer::Init {
+    InitPlayer::InitPlayer(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
         Otter::Core::Entity player = ref.createEntity();
 
@@ -30,8 +26,5 @@ namespace Otter::Games::GameServer::Init
         ref.add_component(player, Otter::Core::BaseComponents::Damage(10));
     }
 
-    InitPlayer::~InitPlayer()
-    {
-
-    }
-}
+    InitPlayer::~InitPlayer() {}
+} // namespace Otter::Games::GameServer::Init

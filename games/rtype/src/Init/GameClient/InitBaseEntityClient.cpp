@@ -27,17 +27,14 @@ namespace Otter::Games::GameClient::Init {
                  {"../assets/parallax-1920x1080.png",
                   Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")}})));
         ref.add_component(baseEntity, components::EventComponent());
-        ref.add_component(baseEntity, components::EventHandlerComponent(
-            components::EventHandlerMap(
-                {
-                    {components::EventTypes::COLISION, systems::Collision::HandleCollision},
-                    {components::EventTypes::DEATH, systems::Death::HandleDeathClient},
-                    {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
-                    {components::EventTypes::INIT_GAME, systems::GameClient::InitGame::HandleInitGame},
-                    {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
-                    {components::EventTypes::WIN, systems::Win::HandleWin}
-                }
-            )));
+        ref.add_component(baseEntity,
+                          components::EventHandlerComponent(components::EventHandlerMap(
+                              {{components::EventTypes::COLISION, systems::Collision::HandleCollision},
+                               {components::EventTypes::DEATH, systems::Death::HandleDeathClient},
+                               {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
+                               {components::EventTypes::INIT_GAME, systems::GameClient::InitGame::HandleInitGame},
+                               {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
+                               {components::EventTypes::WIN, systems::Win::HandleWin}})));
         ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::EventNetwork());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY));

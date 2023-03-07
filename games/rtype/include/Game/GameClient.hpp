@@ -12,7 +12,6 @@
 #include "AnimationSystem.hpp"
 #include "Components.hpp"
 #include "GameOverSystem.hpp"
-
 #include "InitBaseEntityClient.hpp"
 #include "InitEnemyClient.hpp"
 #include "InitInvisibleWallClient.hpp"

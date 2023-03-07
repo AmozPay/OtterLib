@@ -8,10 +8,10 @@
 #ifndef INITGAMEMESSAGE_HPP_
 #define INITGAMEMESSAGE_HPP_
 
-#include "OtterCore.hpp"
-#include "baseComponents.hpp"
 #include "EventComponent.hpp"
+#include "OtterCore.hpp"
 #include "Utils.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::GameClient::InitGameMessage {
 
@@ -26,6 +26,6 @@ namespace Otter::Games::RType::System::GameClient::InitGameMessage {
      * @return void
      */
     void HandleInitGameMessage(Otter::Core::Orchestrator& ref, std::string&, int);
-}
+} // namespace Otter::Games::RType::System::GameClient::InitGameMessage
 
 #endif /* !INITGAMEMESSAGE_HPP_ */

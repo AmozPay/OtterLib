@@ -18,10 +18,7 @@ namespace Otter::Graphic::Raylib {
      * @brief Constructor for the Raylib::Text class
      * @return A new instance of the Raylib::Text class
      */
-    RaylibText::RaylibText()
-        : _color(WHITE)
-    {
-    }
+    RaylibText::RaylibText() : _color(WHITE) {}
 
     /**
      * @brief Destructor for the Raylib::Text class

@@ -7,8 +7,7 @@
 
 #include "InitBaseEntityServer.hpp"
 
-namespace Otter::Games::GameServer::Init
-{
+namespace Otter::Games::GameServer::Init {
     InitBaseEntity::InitBaseEntity(Otter::Core::Orchestrator& ref)
     {
         // TODO: need to be cleaned
@@ -17,17 +16,14 @@ namespace Otter::Games::GameServer::Init
         std::cout << "base entity loaded" << std::endl;
 
         ref.add_component(baseEntity, components::EventComponent());
-        ref.add_component(baseEntity, components::EventHandlerComponent(
-            components::EventHandlerMap(
-                {
-                    {components::EventTypes::COLISION, systems::Collision::HandleCollision},
-                    {components::EventTypes::DEATH, systems::Death::HandleDeathServer},
-                    {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
-                    {components::EventTypes::INIT_GAME, systems::GameServer::InitGame::HandleInitGame},
-                    {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
-                    {components::EventTypes::WIN, systems::Win::HandleWin}
-                }
-            )));
+        ref.add_component(baseEntity,
+                          components::EventHandlerComponent(components::EventHandlerMap(
+                              {{components::EventTypes::COLISION, systems::Collision::HandleCollision},
+                               {components::EventTypes::DEATH, systems::Death::HandleDeathServer},
+                               {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
+                               {components::EventTypes::INIT_GAME, systems::GameServer::InitGame::HandleInitGame},
+                               {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
+                               {components::EventTypes::WIN, systems::Win::HandleWin}})));
         ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::EventNetwork());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY));
@@ -40,15 +36,8 @@ namespace Otter::Games::GameServer::Init
         keyboards[baseEntity]->setKey(keyboards[baseEntity]->_keyboard.SHIFT, utils::EventState::SHOOT);
     }
 
-    InitBaseEntity::~InitBaseEntity()
-    {
+    InitBaseEntity::~InitBaseEntity() {}
 
-    }
+    Otter::Core::Entity InitBaseEntity::getEntity() const { return baseEntity; }
 
-    Otter::Core::Entity InitBaseEntity::getEntity() const
-    {
-        return baseEntity;
-    }
-
-
-}
+} // namespace Otter::Games::GameServer::Init

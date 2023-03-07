@@ -5,11 +5,11 @@
 ** TextSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "TextSystem.hpp"
 
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Text {
 
@@ -22,7 +22,8 @@ namespace Otter::Games::RType::System::Text {
 
         const int& entityId = text->_linkedEntityId;
 
-        if (entityId != -1 && entityId < healths.size() && healths[entityId] && entityId < transforms.size() && transforms[entityId]) {
+        if (entityId != -1 && entityId < healths.size() && healths[entityId] && entityId < transforms.size() &&
+            transforms[entityId]) {
             const auto& health = healths[entityId];
             auto& entityTransform = transforms[entityId];
             auto& textTransform = transforms[textId];
@@ -53,7 +54,8 @@ namespace Otter::Games::RType::System::Text {
             auto const& transform = transforms[i];
 
             if (text && transform)
-                text->_textInstance.draw(text->_text, {transform->_position.x, transform->_position.y}, text->_fontSize);
+                text->_textInstance.draw(text->_text, {transform->_position.x, transform->_position.y},
+                                         text->_fontSize);
         }
     }
 

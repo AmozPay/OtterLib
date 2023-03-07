@@ -6,43 +6,43 @@
 */
 
 #include "GameClient.hpp"
-#include "OtterGraphic.hpp"
-#include "baseComponents.hpp"
-#include "GameClient.hpp"
-#include "NetworkComponent.hpp"
-#include "ServerComponent.hpp"
-#include "ServerComponent.hpp"
-#include "ClientComponent.hpp"
-#include "Server.hpp"
+
 #include "Client.hpp"
-#include <utility>
-#include "InitGameMessage.hpp"
+#include "ClientComponent.hpp"
+#include "GameClient.hpp"
 #include "GameStatusSystem.hpp"
+#include "InitGameMessage.hpp"
+#include "NetworkComponent.hpp"
+#include "OtterGraphic.hpp"
+#include "Server.hpp"
+#include "ServerComponent.hpp"
+#include "baseComponents.hpp"
+
+#include <utility>
 
 namespace Otter::Games::GameClient {
-    void test_upd(Otter::Core::Orchestrator &ref)
+    void test_upd(Otter::Core::Orchestrator& ref)
     {
         auto& sock = ref.get_components<Otter::Network::SocketComponent>();
         auto& serv = ref.get_components<Otter::Network::ServerComponent>();
-        
+
         for (int i = 0; i < sock.size(); i++) {
             if (!sock[i]) {
                 continue;
             }
             std::cout << sock[i]->channel << std::endl;
             if (serv[i])
-            std::cout << "serv exist with socket" << std::endl;
+                std::cout << "serv exist with socket" << std::endl;
             else
-            std::cout << "serv doest exist" <<std::endl;
+                std::cout << "serv doest exist" << std::endl;
         }
     }
-
 
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
         Otter::Network::ServerComponent serverComponent;
-    
-        serverComponent.callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int){ });
+
+        serverComponent.callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         serverComponent.callBack.push_back(systems::GameClient::InitGameMessage::HandleInitGameMessage);
 
         ref.add_component(0, Otter::Network::SocketComponent());
@@ -59,7 +59,7 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
-        
+
         ref.register_component<Otter::Network::SocketComponent>();
         ref.register_component<Otter::Network::ServerComponent>();
         ref.register_component<Otter::Network::ClientComponent>();
@@ -89,8 +89,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::Sprite::Draw, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Text::DrawText, Otter::Core::SystemManager::draw);
         ref.registerSystem(systems::Window::EndDraw, Otter::Core::SystemManager::subDraw);
-        
-        
+
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
     }
 

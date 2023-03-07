@@ -21,4 +21,4 @@ namespace Otter::Games::RType::System::GameClient::InitGameMessage {
         }
     }
 
-}
+} // namespace Otter::Games::RType::System::GameClient::InitGameMessage

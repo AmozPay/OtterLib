@@ -7,12 +7,8 @@
 
 #include "InitParallaxesServer.hpp"
 
-namespace Otter::Games::GameServer::Init
-{
-    InitParallaxes::InitParallaxes(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity
-    )
+namespace Otter::Games::GameServer::Init {
+    InitParallaxes::InitParallaxes(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
         Otter::Core::Entity parallaxes[2];
 
@@ -27,13 +23,11 @@ namespace Otter::Games::GameServer::Init
         }
 
         for (int i = 0; i < 2; i++) {
-            ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Transform(5, 0, {static_cast<float>(i * 1226), 0}));
+            ref.add_component(parallaxes[i],
+                              Otter::Core::BaseComponents::Transform(5, 0, {static_cast<float>(i * 1226), 0}));
             ref.add_component(parallaxes[i], Otter::Core::BaseComponents::Velocity(0, 5, {-1, 0}, {0, 0}));
         }
     }
 
-    InitParallaxes::~InitParallaxes()
-    {
-
-    }
-}
+    InitParallaxes::~InitParallaxes() {}
+} // namespace Otter::Games::GameServer::Init

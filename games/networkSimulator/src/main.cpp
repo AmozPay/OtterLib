@@ -42,8 +42,8 @@ namespace Otter::Core {
         Entity e = ref.createEntity();
         std::cout << "sockec on id " << e << std::endl;
 
-	ref.builder.createFromFile("../scripts/serverSetup.conf", ref, 0);
-	//	ref.add_component(0, Otter::Network::ServerComponent());
+        ref.builder.createFromFile("../scripts/serverSetup.conf", ref, 0);
+        //	ref.add_component(0, Otter::Network::ServerComponent());
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -53,9 +53,7 @@ namespace Otter::Core {
         ref.register_component<Otter::Network::ClientComponent>();
     }
 
-    void configureScripting(Otter::Scripting::ScriptingManager&)
-    {
-    }
+    void configureScripting(Otter::Scripting::ScriptingManager&) {}
 
     void registerSystems(Otter::Core::SystemManager& ref)
     {

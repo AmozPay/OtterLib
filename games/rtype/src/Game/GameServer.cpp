@@ -6,32 +6,30 @@
 */
 
 #include "GameServer.hpp"
-#include "NetworkComponent.hpp"
-#include "ServerComponent.hpp"
-#include "ClientComponent.hpp"
-#include "Server.hpp"
-#include "InputKeyEventSystem.hpp"
 
+#include "ClientComponent.hpp"
+#include "InputKeyEventSystem.hpp"
+#include "NetworkComponent.hpp"
+#include "Server.hpp"
+#include "ServerComponent.hpp"
 
 namespace Otter::Games::GameServer {
-     void test_upd(Otter::Core::Orchestrator &ref)
+    void test_upd(Otter::Core::Orchestrator& ref)
     {
         auto& sock = ref.get_components<Otter::Network::SocketComponent>();
         auto& serv = ref.get_components<Otter::Network::ServerComponent>();
-        
+
         for (int i = 0; i < sock.size(); i++) {
             if (!sock[i]) {
                 continue;
             }
             std::cout << sock[i]->channel << std::endl;
             if (serv[i])
-            std::cout << "serv exist with socket" << std::endl;
+                std::cout << "serv exist with socket" << std::endl;
             else
-            std::cout << "serv doest exist" <<std::endl;
-        
+                std::cout << "serv doest exist" << std::endl;
         }
     }
-
 
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
@@ -70,7 +68,6 @@ namespace Otter::Games::GameServer {
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::CheckClientNb::CheckClientNb, Otter::Core::SystemManager::update);
-
 
         ref.registerSystem(&test_upd, Otter::Core::SystemManager::init);
     }

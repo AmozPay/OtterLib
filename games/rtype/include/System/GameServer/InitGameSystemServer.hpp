@@ -26,6 +26,6 @@ namespace Otter::Games::RType::System::GameServer::InitGame {
      * @return void
      */
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
-} // namespace Otter::Games::RType::System::InitGame
+} // namespace Otter::Games::RType::System::GameServer::InitGame
 
 #endif /* !INITGAMESYSTEMSERVER_HPP_ */

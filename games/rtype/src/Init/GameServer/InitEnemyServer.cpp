@@ -7,15 +7,9 @@
 
 #include "InitEnemyServer.hpp"
 
-
-namespace Otter::Games::GameServer::Init
-{
-    InitEnemy::InitEnemy(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity,
-        std::string id,
-        Otter::Games::RType::Utils::Vector2 pos
-    )
+namespace Otter::Games::GameServer::Init {
+    InitEnemy::InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
+                         Otter::Games::RType::Utils::Vector2 pos)
     {
 
         Otter::Core::Entity enemy = ref.createEntity();
@@ -27,8 +21,5 @@ namespace Otter::Games::GameServer::Init
         ref.add_component(enemy, Otter::Core::BaseComponents::Health(10));
     }
 
-    InitEnemy::~InitEnemy()
-    {
-
-    }
-}
+    InitEnemy::~InitEnemy() {}
+} // namespace Otter::Games::GameServer::Init

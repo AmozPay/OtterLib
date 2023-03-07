@@ -55,7 +55,7 @@ namespace Otter::Core {
         return e;
     }
 
-  void Factory::createFromFile(std::string path, Otter::Core::Orchestrator& core, Entity e)
+    void Factory::createFromFile(std::string path, Otter::Core::Orchestrator& core, Entity e)
     {
         pt::ptree root;
         std::function<void(Entity, Orchestrator&, pt::ptree)> initializer;
@@ -79,8 +79,7 @@ namespace Otter::Core {
         std::cout << "Initialized entity from " << path << std::endl;
     }
 
-
-  std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core)
+    std::vector<Entity> Factory::loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core)
     {
         std::vector<Entity> entities;
 

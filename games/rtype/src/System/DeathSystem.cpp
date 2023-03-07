@@ -45,7 +45,8 @@ namespace Otter::Games::RType::System::Death {
         }
     }
 
-    void HandleHealthTextDelete(Otter::Core::Orchestrator& ref, int entityId) {
+    void HandleHealthTextDelete(Otter::Core::Orchestrator& ref, int entityId)
+    {
         auto& entityHealthTexts = ref.get_components<Otter::Core::BaseComponents::Text>();
 
         for (size_t i = 0; i < entityHealthTexts.size(); i++) {
@@ -58,18 +59,16 @@ namespace Otter::Games::RType::System::Death {
 
     void HandleDeathServer(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
-        auto &players = ref.get_components<Otter::Core::BaseComponents::Player>();
-        auto &enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
+        auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
+        auto& enemies = ref.get_components<Otter::Core::BaseComponents::Enemy>();
 
-        for (auto &id: vectorId) {
+        for (auto& id : vectorId) {
             if (players[id] || enemies[id]) {
                 ref.remove_entity(static_cast<std::uint32_t>(id));
                 std::cout << "Remove entity" << std::endl;
             }
-
         }
     }
-
 
     void HandleDeathClient(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {

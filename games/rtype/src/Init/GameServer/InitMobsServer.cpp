@@ -7,12 +7,8 @@
 
 #include "InitMobsServer.hpp"
 
-namespace Otter::Games::GameServer::Init
-{
-    InitMobs::InitMobs(
-        Otter::Core::Orchestrator& ref,
-        Otter::Core::Entity baseEntity
-    )
+namespace Otter::Games::GameServer::Init {
+    InitMobs::InitMobs(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)
     {
         Otter::Core::Entity mobs = ref.createEntity();
 
@@ -24,8 +20,5 @@ namespace Otter::Games::GameServer::Init
         ref.add_component(mobs, Otter::Core::BaseComponents::Health(100));
     }
 
-    InitMobs::~InitMobs()
-    {
-
-    }
-}
+    InitMobs::~InitMobs() {}
+} // namespace Otter::Games::GameServer::Init
