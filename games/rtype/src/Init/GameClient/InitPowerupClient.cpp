@@ -9,7 +9,7 @@
 
 namespace Otter::Games::GameClient::Init {
     InitPowerup::InitPowerup(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                  Otter::Games::RType::Utils::Vector2 pos, Otter::Games::RType::Components::PowerupType powerupType, int powerupValue)
+                  Otter::Core::Utils::Vector2 pos, Otter::Games::RType::Components::PowerupType powerupType, int powerupValue)
     {
         Otter::Core::Entity powerup = ref.createEntity();
 
@@ -21,7 +21,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(powerup, Otter::Core::BaseComponents::Texture(
                                         paths[powerupType],
                                         textureStorages[baseEntity]->findTextureByPath(paths[powerupType]),
-                                        Otter::Games::RType::Utils::Rectangle(0, 0, 20, 20)));
+                                        Otter::Core::Utils::Rectangle(0, 0, 20, 20)));
         ref.add_component(powerup, Otter::Core::BaseComponents::Render());
 
         ref.add_component(powerup, Otter::Core::BaseComponents::Transform(2, 0, {pos.x, pos.y}));

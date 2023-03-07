@@ -22,7 +22,7 @@ namespace Otter::Games::GameClient::Init {
     }
 
     void InitEnemy::InitShootingEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                         Otter::Games::RType::Utils::Vector2 pos)
+                         Otter::Core::Utils::Vector2 pos)
     {
         Otter::Core::Entity enemy = ref.createEntity();
         Otter::Core::Entity enemyHealth = ref.createEntity();
@@ -67,7 +67,7 @@ namespace Otter::Games::GameClient::Init {
     }
 
     void InitEnemy::InitBasicEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                         Otter::Games::RType::Utils::Vector2 pos)
+                         Otter::Core::Utils::Vector2 pos)
     {
         Otter::Core::Entity enemy = ref.createEntity();
         Otter::Core::Entity enemyHealth = ref.createEntity();

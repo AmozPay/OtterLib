@@ -75,8 +75,9 @@ if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
 else()
     # If not, install conan dependencies
     message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
+    message(WARNING ${CMAKE_CURRENT_SOURCE_DIR})
     execute_process(
-        COMMAND ${CMAKE_SHELL} "conan install ${CMAKE_CURRENT_SOURCE_DIR} --build=missing -c tools.system.package_manager:mode=install ${LINUX_CONAN_FLAGS}"
+        COMMAND ${CMAKE_SHELL} "conan install ${OTTERLIB_DIR} --build=missing -c tools.system.package_manager:mode=install ${LINUX_CONAN_FLAGS}"
         OUTPUT_VARIABLE result
         WORKING_DIRECTORY ${OTTERLIB_DIR}
     )

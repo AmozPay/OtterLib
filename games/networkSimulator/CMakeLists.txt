@@ -54,7 +54,7 @@ if(WIN32)
     set(CMAKE_SHELL "powershell.exe")
 else()
     set(prefix "lib")
-    set(suffix ".so")
+    set(suffix ".a")
     set(CMAKE_SHELL bash -c)
 endif()
 
