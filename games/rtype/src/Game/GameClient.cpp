@@ -17,6 +17,7 @@
 #include "ServerComponent.hpp"
 #include "baseComponents.hpp"
 #include "MovePlayerMessageClient.hpp"
+#include "MoveEnemyMessageClient.hpp"
 #include "MoveSystemClient.hpp"
 
 #include <utility>
@@ -48,6 +49,7 @@ namespace Otter::Games::GameClient {
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back(systems::GameClient::InitGameMessage::HandleInitGameMessage);
         servers[0]->callBack.push_back(systems::GameClient::MovePlayerMessage::ReceiveMovePlayerMessage);
+        servers[0]->callBack.push_back(systems::GameClient::MoveEnemyMessage::ReceiveMoveEnemyMessage);
 
         Init::InitBaseEntity baseEntity(ref);
     }

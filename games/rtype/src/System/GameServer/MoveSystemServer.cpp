@@ -29,6 +29,25 @@ namespace Otter::Games::RType::System::GameServer::Move {
         );
     }
 
+    void sendEnemyMovement(
+        Otter::Core::Orchestrator& ref,
+        std::size_t &enemyIndex,
+        utils::Vector2 &pos
+    ) {
+        auto &enemies = ref.get_components<baseComponent::Enemy>();
+
+        if (enemyIndex >= enemies.size())
+            return;
+        if (!enemies[enemyIndex])
+            return;
+
+        system::GameServer::MoveEnemyMessage::SendMoveEnemyMessage(
+            ref,
+            enemies[enemyIndex]->_id,
+            pos
+        );
+    }
+
     void EntityMovement(Otter::Core::Orchestrator& ref)
     {
         auto& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();

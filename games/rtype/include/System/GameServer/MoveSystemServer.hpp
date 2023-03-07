@@ -13,6 +13,7 @@
 #include "Utils.hpp"
 #include "baseComponents.hpp"
 #include "MovePlayerMessageServer.hpp"
+#include "MoveEnemyMessageServer.hpp"
 
 namespace Otter::Games::RType::System::GameServer::Move {
 

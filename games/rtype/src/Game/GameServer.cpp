@@ -43,6 +43,7 @@ namespace Otter::Games::GameServer {
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back(systems::GameServer::MovePlayerMessage::ReceiveMovePlayerMessage);
+        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         Init::InitBaseEntity baseEntity(ref);
     }
 
