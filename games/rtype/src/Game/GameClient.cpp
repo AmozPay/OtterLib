@@ -55,12 +55,14 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::Obstacle>();
         ref.register_component<components::Shooter>();
         ref.register_component<components::Shot>();
+        ref.register_component<components::Menu>();
         ref.register_component<components::EventHandlerComponent>();
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
         ref.register_component<components::Deceleration>();
         ref.register_component<components::Hovering>();
+        ref.register_component<components::Powerup>();
 
         ref.register_component<Otter::Network::SocketComponent>();
         ref.register_component<Otter::Network::ServerComponent>();

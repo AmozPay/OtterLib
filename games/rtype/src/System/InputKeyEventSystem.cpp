@@ -36,6 +36,7 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
 
     void EventDetection(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
+        // TODO: Player events are here @Baptiste
         PlayerMovementEvent(ref, playerIndex, state);
         if (state == utils::SHOOT)
             Otter::Games::RType::System::Shot::CreateShot(ref, playerIndex, Otter::Games::RType::System::Shot::ShooterType::PLAYER);

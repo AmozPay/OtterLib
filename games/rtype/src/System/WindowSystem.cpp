@@ -12,6 +12,8 @@
 #include "baseComponents.hpp"
 
 #include <cstdlib>
+#include <iostream>
+#include <string>
 
 namespace Otter::Games::RType::System::Window {
 
