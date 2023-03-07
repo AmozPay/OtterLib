@@ -26,6 +26,20 @@ namespace Otter::Network {
             ia >> loadedData;
             return loadedData;
         };
+
+        template <class T>
+        static T loadArchiveFromString(std::string& data)
+        {
+            std::stringstream stringStream;
+
+            stringStream << data;
+
+            T loadedData = T();
+            boost::archive::binary_iarchive ia(stringStream);
+
+            ia >> loadedData;
+            return loadedData;
+        };
     };
 } // namespace Otter::Network
 

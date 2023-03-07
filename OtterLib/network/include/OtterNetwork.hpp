@@ -23,6 +23,8 @@ namespace Otter::Network {
     enum MsgCode {
         ACTIVATION,
         INIT_GAME,
+        PLAYER_MOVE,
+        ENEMY_MOVE
     };
 
     /////////////////// header

@@ -19,6 +19,7 @@
 #include "InitObstacleClient.hpp"
 #include "InitParallaxesClient.hpp"
 #include "InitPlayerClient.hpp"
+#include "System.hpp"
 
 namespace Otter::Games::GameClient {
     namespace components = Otter::Games::RType::Components;

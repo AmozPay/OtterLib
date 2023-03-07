@@ -12,6 +12,8 @@
 #include "NetworkComponent.hpp"
 #include "Server.hpp"
 #include "ServerComponent.hpp"
+#include "MovePlayerMessageServer.hpp"
+#include "MoveSystemServer.hpp"
 
 namespace Otter::Games::GameServer {
     void test_upd(Otter::Core::Orchestrator& ref)
@@ -33,8 +35,14 @@ namespace Otter::Games::GameServer {
 
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        ref.add_component(0, Otter::Network::SocketComponent());
-        ref.add_component(0, Otter::Network::ServerComponent());
+        Otter::Network::ServerComponent serverComponent;
+
+        ref.builder.createFromFile("../entities/server_socket.json", ref, 0);
+
+        auto &servers = ref.get_components<Otter::Network::ServerComponent>();
+        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back(systems::GameServer::MovePlayerMessage::ReceiveMovePlayerMessage);
         Init::InitBaseEntity baseEntity(ref);
     }
 
@@ -64,7 +72,7 @@ namespace Otter::Games::GameServer {
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
-        ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::GameServer::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::CheckClientNb::CheckClientNb, Otter::Core::SystemManager::update);

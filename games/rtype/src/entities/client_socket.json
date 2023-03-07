@@ -4,6 +4,10 @@
         "Socket": {
             "ip": "127.0.0.1",
             "port": 8080
+        },
+        "RemoteServer": {
+            "RemotePort": 8082,
+            "RemoteIp": "0.0.0.0"
         }
     }
 }

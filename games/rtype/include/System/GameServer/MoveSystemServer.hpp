@@ -5,13 +5,20 @@
 ** MoveSystem.hpp
 */
 
-#ifndef RTYPE_MOVESYSTEM_HPP
-#define RTYPE_MOVESYSTEM_HPP
+#ifndef RTYPE_MOVESYSTEMSERVER_HPP
+#define RTYPE_MOVESYSTEMSERVER_HPP
 
 #include "Components.hpp"
 #include "OtterCore.hpp"
+#include "Utils.hpp"
+#include "baseComponents.hpp"
+#include "MovePlayerMessageServer.hpp"
 
-namespace Otter::Games::RType::System::Move {
+namespace Otter::Games::RType::System::GameServer::Move {
+
+    namespace utils = Otter::Games::RType::Utils;
+    namespace system = Otter::Games::RType::System;
+    namespace baseComponent = Otter::Core::BaseComponents;
 
     /**
      * @brief System for the movement of the entities
@@ -24,4 +31,4 @@ namespace Otter::Games::RType::System::Move {
 
 } // namespace Otter::Games::RType::System::Move
 
-#endif // RTYPE_MOVESYSTEM_HPP
+#endif // RTYPE_MOVESYSTEMSERVER_HPP

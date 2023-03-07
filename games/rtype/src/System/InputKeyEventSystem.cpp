@@ -9,6 +9,7 @@
 
 #include "Components.hpp"
 #include "baseComponents.hpp"
+#include "MovePlayerMessageClient.hpp"
 
 #include <chrono>
 
@@ -16,20 +17,29 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
     namespace components = Otter::Games::RType::Components;
     namespace utils = Otter::Games::RType::Utils;
     namespace raylib = Otter::Graphic::Raylib;
+    namespace system = Otter::Games::RType::System;
 
     void PlayerMovementEvent(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
         auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
         if (playerIndex < velocities.size() && velocities[playerIndex]) {
             auto& velocity = velocities[playerIndex];
-            if (state == utils::EventState::BACKWARD)
+            if (state == utils::EventState::BACKWARD) {
                 velocity->_accelerationDirection.x += -1;
-            if (state == utils::EventState::FORWARD)
+                system::GameClient::MovePlayerMessage::SendMovePlayerMessage(ref, playerIndex, state);
+            }
+            if (state == utils::EventState::FORWARD) {
                 velocity->_accelerationDirection.x += 1;
-            if (state == utils::EventState::UP)
+                system::GameClient::MovePlayerMessage::SendMovePlayerMessage(ref, playerIndex, state);
+            }
+            if (state == utils::EventState::UP) {
                 velocity->_accelerationDirection.y += -1;
-            if (state == utils::EventState::DOWN)
+                system::GameClient::MovePlayerMessage::SendMovePlayerMessage(ref, playerIndex, state);
+            }
+            if (state == utils::EventState::DOWN) {
                 velocity->_accelerationDirection.y += 1;
+                system::GameClient::MovePlayerMessage::SendMovePlayerMessage(ref, playerIndex, state);
+            }
         }
     }
 

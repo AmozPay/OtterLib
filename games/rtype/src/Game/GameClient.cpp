@@ -6,7 +6,6 @@
 */
 
 #include "GameClient.hpp"
-
 #include "Client.hpp"
 #include "ClientComponent.hpp"
 #include "GameClient.hpp"
@@ -17,6 +16,8 @@
 #include "Server.hpp"
 #include "ServerComponent.hpp"
 #include "baseComponents.hpp"
+#include "MovePlayerMessageClient.hpp"
+#include "MoveSystemClient.hpp"
 
 #include <utility>
 
@@ -40,13 +41,14 @@ namespace Otter::Games::GameClient {
 
     void createEntityObj(Otter::Core::Orchestrator& ref)
     {
-        Otter::Network::ServerComponent serverComponent;
 
-        serverComponent.callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
-        serverComponent.callBack.push_back(systems::GameClient::InitGameMessage::HandleInitGameMessage);
+        ref.builder.createFromFile("../entities/client_socket.json", ref, 0);
 
-        ref.add_component(0, Otter::Network::SocketComponent());
-        ref.add_component(0, std::move(serverComponent));
+        auto &servers = ref.get_components<Otter::Network::ServerComponent>();
+        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back(systems::GameClient::InitGameMessage::HandleInitGameMessage);
+        servers[0]->callBack.push_back(systems::GameClient::MovePlayerMessage::ReceiveMovePlayerMessage);
+
         Init::InitBaseEntity baseEntity(ref);
     }
 
@@ -59,7 +61,6 @@ namespace Otter::Games::GameClient {
         ref.register_component<components::EventComponent>();
         ref.register_component<Otter::Core::BaseComponents::TextureStorage>();
         ref.register_component<components::AnimationComponent>();
-
         ref.register_component<Otter::Network::SocketComponent>();
         ref.register_component<Otter::Network::ServerComponent>();
         ref.register_component<Otter::Network::ClientComponent>();
@@ -78,7 +79,7 @@ namespace Otter::Games::GameClient {
         ref.registerSystem(systems::InputKeyEventSystem::EventHandler, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(Otter::Network::Client::update, Otter::Core::SystemManager::update);
-        ref.registerSystem(systems::Move::EntityMovement, Otter::Core::SystemManager::update);
+        ref.registerSystem(systems::GameClient::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Text::UpdateHealthText, Otter::Core::SystemManager::update);

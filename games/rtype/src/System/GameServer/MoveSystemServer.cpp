@@ -5,16 +5,35 @@
 ** MoveSystem.cpp
 */
 
-#include "MoveSystem.hpp"
-
+#include "MoveSystemServer.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::RType::System::Move {
+namespace Otter::Games::RType::System::GameServer::Move {
+
+    void sendPlayerMovement(
+        Otter::Core::Orchestrator& ref,
+        std::size_t &playerIndex,
+        utils::Vector2 &pos
+    ) {
+        auto &players = ref.get_components<baseComponent::Player>();
+
+        if (playerIndex >= players.size())
+            return;
+        if (!players[playerIndex])
+            return;
+
+        system::GameServer::MovePlayerMessage::SendMovePlayerMessage(
+            ref,
+            players[playerIndex]->_id,
+            pos
+        );
+    }
 
     void EntityMovement(Otter::Core::Orchestrator& ref)
     {
         auto& transforms = ref.get_components<Otter::Core::BaseComponents::Transform>();
         auto& velocities = ref.get_components<Otter::Core::BaseComponents::Velocity>();
+
         for (size_t i = 0; i < transforms.size() && i < velocities.size(); i++) {
             auto& transform = transforms[i];
             auto& velocity = velocities[i];
@@ -28,6 +47,7 @@ namespace Otter::Games::RType::System::Move {
                 transform->_position.y += velocity->_accelerationDirection.y * velocity->_speed;
                 velocity->_accelerationDirection.x = 0;
                 velocity->_accelerationDirection.y = 0;
+                sendPlayerMovement(ref, i, transform->_position);
             }
         }
     }
