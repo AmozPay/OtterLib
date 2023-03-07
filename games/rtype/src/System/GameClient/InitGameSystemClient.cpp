@@ -13,6 +13,7 @@
 #include "InitObstacleClient.hpp"
 #include "InitParallaxesClient.hpp"
 #include "InitPlayerClient.hpp"
+#include "InitBossClient.hpp"
 
 namespace Otter::Games::RType::System::GameClient::InitGame {
 
@@ -34,6 +35,8 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
                 ref, baseEntity, "Enemy " + std::to_string(i),
                 Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 15));
         }
+        Otter::Games::GameClient::Init::InitBoss boss(ref, baseEntity, "Boss 1",
+                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 300));
     }
 
     void HandleInitGame(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)
