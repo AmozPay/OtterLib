@@ -167,7 +167,6 @@ namespace Otter::Games::RType::Components {
     };
 
     /**
-
      * @brief Component for the deceleration
      * @details The deceleration component is used to know if an entity has a deceleration.
      * @struct Deceleration
@@ -222,6 +221,7 @@ namespace Otter::Games::RType::Components {
         HoveringDirection _direction;
     };
 
+    /**
      * @brief Component for the menu
      * @details The menu component is used to know if an entity is the menu
      * @struct Menu
