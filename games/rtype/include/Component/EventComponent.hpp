@@ -22,7 +22,7 @@ namespace Otter::Games::RType::Components {
      * @brief Custom events types
      * @enum EventTypes
      */
-    enum EventTypes { LOBBY, INIT_GAME, COLISION, DEATH, GAME_OVER, WIN, RESET_GAME };
+    enum EventTypes { LOBBY, INIT_LOBBY, INIT_GAME, COLISION, DEATH, GAME_OVER, WIN, RESET_GAME };
 
     using Orchestrator = Otter::Core::Orchestrator;
     using ComponentIdVector = std::vector<std::size_t>;
