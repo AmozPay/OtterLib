@@ -18,11 +18,13 @@
 // Other
 #include "DeathSystem.hpp"
 #include "DispawnableSystem.hpp"
+#include "EnemyShotSystem.hpp"
 #include "EventHandlerSystem.hpp"
 #include "InputKeyEventSystem.hpp"
 #include "InputKeySystem.hpp"
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
+#include "ShotSystem.hpp"
 #include "PowerupSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "TextSystem.hpp"

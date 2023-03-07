@@ -25,28 +25,6 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
     void PlayerMovementEvent(auto& velocity, utils::EventState state);
 
     /**
-     * @brief Create a Shot Entity object
-     * @details Create a Shot Entity object
-     * @param ref: The orchestrator
-     * @param playerIndex: The player index
-     * @param transform: The transform of the player
-     * @param texture: The texture of the player
-     * @param shooter: The shooter component of the player
-     * @return void
-     */
-    void CreateShotEntity(Otter::Core::Orchestrator& ref, size_t playerIndex, auto const& transform, auto& texture,
-                          auto& shooter);
-
-    /**
-     * @brief Create a Shot object
-     * @details Create a Shot object
-     * @param ref: The orchestrator
-     * @param playerIndex: The player index
-     * @return void
-     */
-    void CreateShot(Otter::Core::Orchestrator& ref, size_t playerIndex);
-
-    /**
      * @brief Detect the event
      * @details Detect the event and manage events
      * @param ref: The orchestrator

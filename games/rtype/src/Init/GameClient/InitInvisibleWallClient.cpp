@@ -5,7 +5,7 @@
 ** InitInvisibleWall
 */
 
-#include "InitInvisibleWall.hpp"
+#include "InitInvisibleWallClient.hpp"
 
 namespace Otter::Games::GameClient::Init {
     InitInvisibleWall::InitInvisibleWall(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)

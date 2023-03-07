@@ -107,8 +107,8 @@ namespace Otter::Scripting {
          * @brief call a lua function
          * @details valid return types in string: b -> bool, d -> double, i -> lua_Integer, s -> const std::string, p ->
          * void *
-         * @details valid args types in string: b -> bool, d -> double, i -> lua_Integer, s -> std::string, n -> nil, p ->
-         * void *
+         * @details valid args types in string: b -> bool, d -> double, i -> lua_Integer, s -> std::string, n -> nil, p
+         * -> void *
          * @details if nil is specified, you must pass 0 at the same index of the variadic argument
          * @param returnTypes a string indicating the lua types of the return values
          * @param argsTypes a string indicating the lua types of the passed parameters

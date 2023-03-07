@@ -11,13 +11,13 @@
 #include "OtterCore.hpp"
 
 namespace Otter::Games::RType::System::Text {
-    
+
     /**
      * @brief Update the text system for the health
      * @details Update the text for each entity with the text & health component
      * @param ref: The orchestrator
      * @return void
-    */
+     */
     void UpdateHealthText(Otter::Core::Orchestrator& ref);
 
     /**

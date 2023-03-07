@@ -133,7 +133,8 @@ namespace Otter::Games::RType::Components {
             _canShoot = canShoot;
             _shotNbr = shotNbr;
             _reloadTime = reloadTime;
-            _lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+            _lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch());
         }
 
         ~Shooter(){};

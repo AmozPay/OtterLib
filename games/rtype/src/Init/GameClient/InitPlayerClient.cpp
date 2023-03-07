@@ -5,7 +5,7 @@
 ** InitPlayer
 */
 
-#include "InitPlayer.hpp"
+#include "InitPlayerClient.hpp"
 
 namespace Otter::Games::GameClient::Init {
     InitPlayer::InitPlayer(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity)

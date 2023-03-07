@@ -5,8 +5,8 @@
 ** InitMobs
 */
 
-#ifndef INITMOBS_HPP_
-#define INITMOBS_HPP_
+#ifndef INITMOBS_HPPCLIENT_
+#define INITMOBS_HPPCLIENT_
 
 #include "AnimationComponent.hpp"
 #include "AnimationSystem.hpp"
@@ -27,4 +27,4 @@ namespace Otter::Games::GameClient::Init {
     };
 } // namespace Otter::Games::GameClient::Init
 
-#endif /* !INITMOBS_HPP_ */
+#endif /* !INITMOBS_HPPCLIENT_ */

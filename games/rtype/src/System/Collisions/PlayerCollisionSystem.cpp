@@ -37,6 +37,22 @@ namespace Otter::Games::RType::System::Collision::Player {
 
     void PlayerToBulletCollision(Otter::Core::Orchestrator& ref, size_t playerIndex, size_t entityIndex)
     {
+        auto const& damages = ref.get_components<Otter::Core::BaseComponents::Damage>();
+        auto& healths = ref.get_components<Otter::Core::BaseComponents::Health>();
+        auto const& shots = ref.get_components<components::Shot>();
+
+        if (playerIndex < healths.size() && healths[playerIndex] && entityIndex < shots.size() && shots[entityIndex]) {
+            auto const shot = shots[entityIndex];
+
+            if (shot->_shooterId < damages.size() && damages[shot->_shooterId]) {
+
+                if (healths[playerIndex]->_hp > damages[shot->_shooterId]->_damage)
+                    healths[playerIndex]->_hp -= damages[shot->_shooterId]->_damage;
+                else
+                    healths[playerIndex]->_hp = 0;
+            }
+        }
+        ref.remove_entity(static_cast<std::uint32_t>(entityIndex));
         std::cout << "Player to Bullet" << std::endl;
     }
 

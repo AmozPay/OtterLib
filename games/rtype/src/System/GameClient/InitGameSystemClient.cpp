@@ -5,16 +5,17 @@
 ** InitGameSystem
 */
 
-#include "InitGameSystem.hpp"
+#include "InitGameSystemClient.hpp"
 
-#include "InitEnemy.hpp"
-#include "InitInvisibleWall.hpp"
-#include "InitMobs.hpp"
-#include "InitPowerup.hpp"
-#include "InitParallaxes.hpp"
-#include "InitPlayer.hpp"
+#include "InitEnemyClient.hpp"
+#include "InitInvisibleWallClient.hpp"
+#include "InitMobsClient.hpp"
+#include "InitObstacleClient.hpp"
+#include "InitParallaxesClient.hpp"
+#include "InitPlayerClient.hpp"
+#include "InitPowerupClient.hpp"
 
-namespace Otter::Games::RType::System::InitGame {
+namespace Otter::Games::RType::System::GameClient::InitGame {
 
     namespace componets = Otter::Games::RType::Components;
 
@@ -22,6 +23,7 @@ namespace Otter::Games::RType::System::InitGame {
     {
         int powerupValue[] = {25, 15, 5, 2, 2, 1};
 
+        srand(42);
         int powerupMaxNb = 10;
         int powerupMaxPos = powerupMaxNb * 800;
         int range = 21 - 1;
@@ -43,6 +45,7 @@ namespace Otter::Games::RType::System::InitGame {
         Otter::Games::GameClient::Init::InitInvisibleWall invisibleWall(ref, baseEntity);
         Otter::Games::GameClient::Init::InitPlayer player(ref, baseEntity);
 
+        srand(42);
         int enmiesMaxNb = 20;
         int enemyMaxPos = enmiesMaxNb * 300;
         int range = 21 - 1;
@@ -52,7 +55,7 @@ namespace Otter::Games::RType::System::InitGame {
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num));
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 15));
         }
 
         CreatePowerup(ref, baseEntity);
@@ -72,4 +75,4 @@ namespace Otter::Games::RType::System::InitGame {
             return;
         }
     }
-} // namespace Otter::Games::RType::System::InitGame
+} // namespace Otter::Games::RType::System::GameClient::InitGame

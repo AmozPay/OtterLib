@@ -14,7 +14,10 @@ namespace Otter::Games::RType::System::Collision::Obstacle {
 
     void BulletToWallCollision(Otter::Core::Orchestrator& ref, size_t bulletIndex, size_t wallIndex) {}
 
-    void BulletToBulletCollision(Otter::Core::Orchestrator& ref, size_t firstBulletIndex, size_t secondBulletIndex) {}
+    void BulletToBulletCollision(Otter::Core::Orchestrator& ref, size_t firstBulletIndex, size_t secondBulletIndex) {
+        ref.remove_entity(static_cast<std::uint32_t>(firstBulletIndex));
+        ref.remove_entity(static_cast<std::uint32_t>(secondBulletIndex));
+    }
 
     void BulletToPowerupCollision(Otter::Core::Orchestrator& ref, size_t bulletIndex, size_t powerupIndex) {
         auto const& shots = ref.get_components<Otter::Games::RType::Components::Shot>();

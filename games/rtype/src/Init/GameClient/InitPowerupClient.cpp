@@ -5,7 +5,7 @@
 ** InitPowerup
 */
 
-#include "InitPowerup.hpp"
+#include "InitPowerupClient.hpp"
 
 namespace Otter::Games::GameClient::Init {
     InitPowerup::InitPowerup(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
