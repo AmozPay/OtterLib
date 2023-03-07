@@ -45,12 +45,24 @@ namespace Otter::Games::RType::System::Death {
         }
     }
 
+    void HandleHealthTextDelete(Otter::Core::Orchestrator& ref, int entityId) {
+        auto& entityHealthTexts = ref.get_components<Otter::Core::BaseComponents::Text>();
+
+        for (size_t i = 0; i < entityHealthTexts.size(); i++) {
+            auto& entityHealthText = entityHealthTexts[i];
+
+            if (entityHealthText && entityHealthText->_linkedEntityId == entityId)
+                ref.remove_entity(static_cast<std::uint32_t>(i));
+        }
+    }
+
     void HandleDeath(Otter::Core::Orchestrator& ref, std::vector<std::size_t>& vectorId)
     {
         auto& animationComp = ref.get_components<components::AnimationComponent>();
         auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
 
         for (auto& id : vectorId) {
+            HandleHealthTextDelete(ref, id);
             if (!animationComp[id]) {
                 ref.remove_entity(static_cast<std::uint32_t>(id));
                 std::cout << "Entity remove" << std::endl;
