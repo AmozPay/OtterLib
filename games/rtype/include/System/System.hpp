@@ -25,6 +25,7 @@
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
 #include "ShotSystem.hpp"
+#include "PowerupSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "TextSystem.hpp"
 #include "WindowSystem.hpp"

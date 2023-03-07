@@ -12,6 +12,7 @@
 #include "AnimationSystem.hpp"
 #include "Components.hpp"
 #include "GameOverSystem.hpp"
+#include "GameStatusSystem.hpp"
 #include "InitBaseEntityClient.hpp"
 #include "InitEnemyClient.hpp"
 #include "InitInvisibleWallClient.hpp"
@@ -19,6 +20,11 @@
 #include "InitObstacleClient.hpp"
 #include "InitParallaxesClient.hpp"
 #include "InitPlayerClient.hpp"
+#include "InitPowerupClient.hpp"
+#include "OtterCore.hpp"
+#include "System.hpp"
+#include "WinSystem.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::GameClient {
     namespace components = Otter::Games::RType::Components;

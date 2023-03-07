@@ -29,7 +29,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(player, Otter::Core::BaseComponents::Velocity(5, 0, {1, 10}, {1, 1}));
         ref.add_component(player, Otter::Core::BaseComponents::BoxCollider(96, 42));
         ref.add_component(player, Otter::Core::BaseComponents::Health(100));
-        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 1000));
+        ref.add_component(player, components::Shooter(components::ShotDirection::RIGHT, true, -1, 500));
         ref.add_component(player, Otter::Core::BaseComponents::Damage(10));
 
         auto& keyboards = ref.get_components<Otter::Core::BaseComponents::Keyboard>();

@@ -26,11 +26,17 @@ namespace Otter::Games::GameClient::Init {
                  {"../assets/enemy1-34x34.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy1-34x34.png")},
                  {"../assets/enemy2-29x22.png", Otter::Graphic::Raylib::RaylibTexture("../assets/enemy2-29x22.png")},
                  {"../assets/r-typesheet43.gif", Otter::Graphic::Raylib::RaylibTexture("../assets/r-typesheet43.gif")},
+                 {"../assets/parallax-1920x1080.png", Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")},
+                 {"../assets/power-up-damage-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-damage-20x20.png")},
+                 {"../assets/power-up-health-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-health-20x20.png")},
+                 {"../assets/power-up-slowness-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-slowness-20x20.png")},
+                 {"../assets/power-up-speed-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-speed-20x20.png")},
+                 {"../assets/power-up-strength-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-strength-20x20.png")},
+                 {"../assets/power-up-weakness-20x20.png", Otter::Graphic::Raylib::RaylibTexture("../assets/power-up-weakness-20x20.png")},
                  {"../assets/parallax-1920x1080.png",
                   Otter::Graphic::Raylib::RaylibTexture("../assets/parallax-1920x1080.png")},
                   {"../assets/menu.png",
                   Otter::Graphic::Raylib::RaylibTexture("../assets/menu.png")}})));
-
 
 
         ref.add_component(baseEntity, components::EventComponent());

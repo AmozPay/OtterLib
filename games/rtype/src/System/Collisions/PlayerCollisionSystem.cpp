@@ -5,6 +5,7 @@
 ** CollisionSystem.cpp
 */
 
+#include "PowerupSystem.hpp"
 #include "PlayerCollisionSystem.hpp"
 
 #include "baseComponents.hpp"
@@ -57,6 +58,7 @@ namespace Otter::Games::RType::System::Collision::Player {
 
     void PlayerToPowerUpCollision(Otter::Core::Orchestrator& ref, size_t playerIndex, size_t entityIndex)
     {
+        Otter::Games::RType::System::Powerup::PowerupHandler(ref, entityIndex, playerIndex);
         std::cout << "Player to Power UP" << std::endl;
     }
 
