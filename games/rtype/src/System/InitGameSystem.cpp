@@ -31,7 +31,7 @@ namespace Otter::Games::RType::System::InitGame {
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num));
+                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 15));
         }
     }
 
