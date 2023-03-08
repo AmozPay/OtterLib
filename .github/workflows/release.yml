@@ -45,6 +45,36 @@ jobs:
           tag_name: v${{ steps.changelog.outputs.version }}
           release_name: v${{ steps.changelog.outputs.version }}
           body: ${{ steps.changelog.outputs.description }}
+  deploy_docs:
+    name: deploy docs on github pages
+    if: github.repository == 'AmozPay/OtterLib'
+    needs: create_release
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: install doxygen
+        run: |
+          sudo apt install -y doxygen graphviz
+      - name: build documentation
+        run: |
+          cd $GITHUB_WORKSPACE/docs
+          ./generate_docs.prod.sh
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'docs/.retype'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
   create_bundles_linux:
     runs-on: ubuntu-latest
     needs: create_release
@@ -148,35 +178,6 @@ jobs:
           asset_path: games/rtype/RType-${{ needs.create_release.outputs.version }}-win64.exe
           asset_name: RType-${{ needs.create_release.outputs.version }}-Windows64Installer.exe
           asset_content_type: application/vnd.microsoft.portable-executable
-  deploy_docs:
-    name: deploy docs on github pages
-    if: github.repository == 'AmozPay/OtterLib'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: install doxygen
-        run: |
-          sudo apt install -y doxygen graphviz
-      - name: build documentation
-        run: |
-          cd $GITHUB_WORKSPACE/docs
-          ./generate_docs.prod.sh
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: 'docs/.retype'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-
   docker_publish:
     runs-on: ubuntu-latest
     if: github.repository == 'AmozPay/OtterLib'

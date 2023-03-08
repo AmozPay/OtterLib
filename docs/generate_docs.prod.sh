@@ -15,7 +15,7 @@ echo $OTTERLIB_VERSION
 )
 rm -rf .retype
 mkdir -p .retype/rfc
-mv html .retype/api-reference
+mv doxygen/html .retype/api-reference
 mv rfc/rfc.html .retype/rfc/index.html
 
 yarn && yarn retype build retype.prod.yml

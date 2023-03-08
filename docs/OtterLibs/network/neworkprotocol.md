@@ -101,4 +101,4 @@ sequenceDiagram
  	
 ```
 
-![](../assets/images/lovu_otter.png)
+![](../../assets/images/lovu_otter.png)
