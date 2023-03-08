@@ -41,6 +41,7 @@ namespace Otter::Core {
         Factory();
         ~Factory();
         Entity createFromFile(std::string path, Otter::Core::Orchestrator& core);
+        void createFromFile(std::string path, Otter::Core::Orchestrator& core, Entity e);
         std::vector<Entity> loadEntitiesFromFolder(std::string path, Otter::Core::Orchestrator& core);
         void addComponentSerializer(std::string component_name,
                                     std::function<void(Entity, Orchestrator& core, pt::ptree)> initializer);

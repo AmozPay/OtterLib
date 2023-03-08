@@ -1,5 +1,7 @@
 #include "lua_wrapper.hpp"
+
 #include "lua.h"
+
 #include <cstring>
 #include <filesystem>
 #include <iostream>

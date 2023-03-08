@@ -75,7 +75,7 @@ namespace Otter::Graphic::Raylib {
         [[nodiscard]] float getVolume() const;
 
       private:
-        Sound _sound;
+        raylib::Sound _sound;
         float _volume;
     };
 

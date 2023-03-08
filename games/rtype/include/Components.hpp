@@ -20,9 +20,6 @@
 
 namespace Otter::Games::RType::Components {
     namespace pt = boost::property_tree;
-    namespace utils = Otter::Games::RType::Utils;
-
-    utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     enum ObstacleType { WALL, BULLET, POWERUP };
 
@@ -61,6 +58,36 @@ namespace Otter::Games::RType::Components {
         std::string _tag;
     };
 
+
+    /**
+     * @brief Enum for the powerup type
+     * @details The powerup type is used to know what the powerup is going to do
+     * @enum PowerupType
+     * @var HEALTH: The powerup is going to heal the entity who picked it up (HP ++)
+     * @var DAMAGE: The powerup is going to apply damage to the entity who picked it up (HP --)
+     * @var STRENGTH: The powerup is going to increase the attack of the entity who picked it up (Attack ++)
+     * @var WEAKNESS: The powerup is going to decrease the attack of the entity who picked it up (Attack --)
+     * @var SPEED: The powerup is going to increase the speed of the entity who picked it up (Speed ++)
+     * @var SLOWNESS: The powerup is going to decrease the speed of the entity who picked it up (Speed --)
+    */
+    enum PowerupType { HEALTH, DAMAGE, STRENGTH, WEAKNESS, SPEED, SLOWNESS };
+
+    struct Powerup {
+        /**
+         * @brief Constructor of the Powerup component
+         * @param type: The type of the powerup
+         * @param value: The value of the powerup
+        */
+        Powerup(PowerupType type, int value) {
+            _type = type;
+            _value = value;
+        }
+        ~Powerup(){};
+
+        PowerupType _type;
+        int _value;
+    };
+
     /**
      * @brief Enum for the shot direction
      * @details The shot direction is used to know if the shot is going to the left or to the right
@@ -77,8 +104,8 @@ namespace Otter::Games::RType::Components {
      * @var _direction: The direction of the shot
      * @var _canShoot: If the entity can shoot: true, otherwise: false
      * @var _shotNbr: The number of shot, -1 if infinite
-     * @var _reloadTime: The reload time of the shot, -1 if infinite
-     * @var _lastShotTimestamp: The timestamp of the last shot
+     * @var _reloadTime: The reload time of the shot, -1 if infinite (in ms)
+     * @var _lastShotTimestamp: The timestamp of the last shot (in ms)
      */
     struct Shooter {
         COMPONENT_BUILDER(Shooter)
@@ -95,7 +122,7 @@ namespace Otter::Games::RType::Components {
          * @param direction: The direction of the shot
          * @param canShoot: If the entity can shoot: true, otherwise: false
          * @param shotNbr: The number of shot, -1 if infinite
-         * @param reloadTime: The reload time of the shot, -1 if infinite
+         * @param reloadTime: The reload time of the shot, -1 if infinite (in ms)
          */
         Shooter(ShotDirection direction, bool canShoot, int shotNbr, double reloadTime)
         {
@@ -103,7 +130,8 @@ namespace Otter::Games::RType::Components {
             _canShoot = canShoot;
             _shotNbr = shotNbr;
             _reloadTime = reloadTime;
-            _lastShotTimestamp = 0;
+            _lastShotTimestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch());
         }
 
         ~Shooter(){};
@@ -112,7 +140,7 @@ namespace Otter::Games::RType::Components {
         bool _canShoot;
         int _shotNbr;
         double _reloadTime;
-        std::time_t _lastShotTimestamp;
+        std::chrono::milliseconds _lastShotTimestamp;
     };
 
     /**
@@ -134,6 +162,72 @@ namespace Otter::Games::RType::Components {
 
         int _shooterId;
     };
+
+    /**
+     * @brief Component for the deceleration
+     * @details The deceleration component is used to know if an entity has a deceleration.
+     * @struct Deceleration
+     * @var _triggeredPosition: The position where the deceleration is triggered
+     * @var _decelerationValue: The value of the deceleration
+    */
+    struct Deceleration {
+        /**
+         * @brief Constructor of the Deceleration component
+         * @param triggeredPosition: The position where the deceleration is triggered
+         * @param decelerationValue: The value of the deceleration
+        */
+        Deceleration(float triggeredPosition, float decelerationValue) {
+            _triggeredPosition = triggeredPosition;
+            _decelerationValue = decelerationValue;
+        };
+        ~Deceleration(){};
+
+        float _triggeredPosition;
+        float _decelerationValue;
+    };
+
+    enum HoveringDirection { UP, DOWN };
+
+    /**
+     * @brief Component for the hovering
+     * @details The hovering component is used to know if an entity is hovering. If it is, it will be able to go up and down
+     * @struct Hovering
+     * @var _hoveringSpeed: The speed of the hovering
+     * @var _minHovering: The minimum position of the hovering (y position)
+     * @var _maxHovering: The maximum position of the hovering (y position)
+    */
+    struct Hovering {
+        /**
+         * @brief Constructor of the Hovering component
+         * @param hoveringSpeed: The speed of the hovering
+         * @param minHovering: The minimum position of the hovering (y position)
+         * @param maxHovering: The maximum position of the hovering (y position)
+         * @param direction: The direction of the hovering
+        */
+        Hovering(float hoveringSpeed, float minHovering, float maxHovering, HoveringDirection direction) {
+            _hoveringSpeed = hoveringSpeed;
+            _minHovering = minHovering;
+            _maxHovering = maxHovering;
+            _direction = direction;
+        }
+        ~Hovering(){}
+
+        float _hoveringSpeed;
+        float _minHovering;
+        float _maxHovering;
+        HoveringDirection _direction;
+    };
+
+    /**
+     * @brief Component for the menu
+     * @details The menu component is used to know if an entity is the menu
+     * @struct Menu
+     */
+    struct Menu {
+        Menu() {}
+        ~Menu() {}
+    };
+
 } // namespace Otter::Games::RType::Components
 
 #endif // RTYPE_COMPONENTS_HPP

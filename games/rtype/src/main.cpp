@@ -15,7 +15,7 @@
 
 namespace Otter::Core {
 
-    void createEntityObj(Otter::Core::Orchestrator& ref)
+    DllExport void createEntityObj(Otter::Core::Orchestrator& ref)
     {
 #if defined(TARGET_CLIENT)
         Otter::Games::GameClient::createEntityObj(ref);
@@ -24,7 +24,7 @@ namespace Otter::Core {
 #endif
     }
 
-    void registerComponents(Otter::Core::Orchestrator& ref)
+    DllExport void registerComponents(Otter::Core::Orchestrator& ref)
     {
 #if defined(TARGET_CLIENT)
         Otter::Games::GameClient::registerComponents(ref);
@@ -33,7 +33,7 @@ namespace Otter::Core {
 #endif
     }
 
-    void registerSystems(Otter::Core::SystemManager& ref)
+    DllExport void registerSystems(Otter::Core::SystemManager& ref)
     {
 #if defined(TARGET_CLIENT)
         Otter::Games::GameClient::registerSystems(ref);
@@ -42,7 +42,7 @@ namespace Otter::Core {
 #endif
     }
 
-    void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
+    DllExport void configureScripting(Otter::Scripting::ScriptingManager& scriptingManager)
     {
 #if defined(TARGET_CLIENT)
         Otter::Games::GameClient::configureScripting(scriptingManager);

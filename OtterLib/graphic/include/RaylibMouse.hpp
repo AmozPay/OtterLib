@@ -55,12 +55,12 @@ namespace Otter::Graphic::Raylib {
          * @brief Get the mouse position
          * @return The mouse position
          */
-        static Vector2 getMousePosition();
+        static raylib::Vector2 getMousePosition();
         /**
          * @brief Get the mouse delta
          * @return The mouse delta
          */
-        static Vector2 getMouseDelta();
+        static raylib::Vector2 getMouseDelta();
 
         /**
          * @brief Check if the mouse button is pressed

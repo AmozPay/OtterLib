@@ -12,6 +12,7 @@
 #include "OtterCore.hpp"
 #include "Utils.hpp"
 #include "baseComponents.hpp"
+#include "System.hpp"
 
 namespace Otter::Games::RType::System::Lobby {
 

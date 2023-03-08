@@ -1,7 +1,8 @@
 #pragma once
-#include "Session.hpp"
 #include "Factory.hpp"
 #include "Orchestrator.hpp"
+#include "Session.hpp"
+
 #include <boost/asio.hpp>
 #include <iostream>
 #include <map>
@@ -15,12 +16,6 @@ namespace Otter::Network {
 
     class Socket {
       public:
-        // COMPONENT_BUILDER(Socket)
-        // {
-        //   auto port = json.get<std::uint16_t>("port");
-        //   auto ip = json.get<std::string>("ip");
-        //   core.add_component(e, Otter::Network::Socket(ip, port));
-        // }
         Socket(std::uint16_t port = 0);
         Socket(boost::asio::ip::address addr, std::uint16_t port = 0);
         Socket(std::string add, std::uint16_t port = 0);
@@ -59,10 +54,6 @@ namespace Otter::Network {
         std::mutex _sessions_lock;
         std::vector<udp::endpoint> _new_sessions;
         std::mutex _new_sessions_lock;
-        std::jthread _job{[this]
-                          {
-                              this->_io.run();
-                              std::cout << "ioend" << std::endl;
-                          }};
+        std::jthread _job;
     };
 } // namespace Otter::Network

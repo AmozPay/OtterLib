@@ -8,7 +8,10 @@
 #ifndef GAMESERVER_HPP_
 #define GAMESERVER_HPP_
 
+#include "CheckClientNbSystem.hpp"
 #include "Components.hpp"
+#include "GameStatusSystem.hpp"
+#include "InitBaseEntityServer.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
 

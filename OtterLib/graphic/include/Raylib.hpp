@@ -18,7 +18,13 @@
 #include <map>
 #include <memory>
 #include <queue>
-#include <raylib.h>
 #include <set>
 #include <string>
 #include <vector>
+#include "ComponentUtils.hpp"
+
+#include "windows_config.hpp"
+
+namespace raylib {
+    #include <raylib.h>
+}

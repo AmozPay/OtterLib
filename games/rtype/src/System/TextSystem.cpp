@@ -5,25 +5,30 @@
 ** TextSystem.cpp
 */
 
-#include "baseComponents.hpp"
 #include "TextSystem.hpp"
 
 #include "Components.hpp"
 #include "OtterGraphic.hpp"
+#include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Text {
 
     namespace core = Otter::Core;
 
-    void HealthTextChecker(core::Orchestrator& ref, auto& text)
+    void HealthTextChecker(core::Orchestrator& ref, auto& text, int textId)
     {
         const auto& healths = ref.get_components<core::BaseComponents::Health>();
+        auto& transforms = ref.get_components<core::BaseComponents::Transform>();
 
         const int& entityId = text->_linkedEntityId;
 
-        if (entityId != -1 && entityId < healths.size() && healths[entityId]) {
+        if (entityId != -1 && entityId < healths.size() && healths[entityId] && entityId < transforms.size() &&
+            transforms[entityId]) {
             const auto& health = healths[entityId];
-            text->_text = std::to_string(health->_hp);
+            auto& entityTransform = transforms[entityId];
+            auto& textTransform = transforms[textId];
+            text->_text = std::to_string(health->_hp) + " HP";
+            textTransform->_position = {entityTransform->_position.x, entityTransform->_position.y - 25};
         }
     }
 
@@ -35,7 +40,7 @@ namespace Otter::Games::RType::System::Text {
             auto& text = texts[i];
 
             if (text && text->_tag == ("health"))
-                HealthTextChecker(ref, text);
+                HealthTextChecker(ref, text, i);
         }
     }
 
@@ -49,7 +54,8 @@ namespace Otter::Games::RType::System::Text {
             auto const& transform = transforms[i];
 
             if (text && transform)
-                text->_textInstance.draw(text->_text, {transform->_position.x, transform->_position.y}, text->_fontSize);
+                text->_textInstance.draw(text->_text, {transform->_position.x, transform->_position.y},
+                                         text->_fontSize);
         }
     }
 

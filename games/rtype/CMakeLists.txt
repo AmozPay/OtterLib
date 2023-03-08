@@ -15,26 +15,56 @@ else()
     )
 endif()
 
-option(BUILD_RELEASE OFF)
-if(BUILD_RELEASE) # when overriden by cli
-    message("Building project for release")
-    set(CONFIG_VALUE "--config Release")
-    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
-else()
-    message("Building project for debug, with tests")
-    set(CONFIG_VALUE "--config Debug")
+option(BUILD_TESTING "Build OtterLib tests" OFF)
+if(BUILD_TESTING) # when overriden by cli
+    message("Building OtterLib without tests")
     set(BUILD_TESTING "-DBUILD_TESTING=ON")
+else()
+    set(BUILD_TESTING "-DBUILD_TESTING=OFF")
+    message("Building OtterLib with tests")
+endif()
+
+option(BUILD_RELEASE "Build OtterLib tests" OFF)
+if(BUILD_RELEASE) # when overriden by cli
+    message("Building OtterLib for release")
+    set(CONFIG_VALUE "--config Release")
+else()
+    message("Building OtterLib for debug")
+    set(CONFIG_VALUE "--config Debug")
 endif()
 
 # Build OtterLib
 set(OTTERLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../OtterLib)
 
-add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
-
 
 file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/scripts)
 
 include(ExternalProject)
+
+option(SHARED_LIBRARY "" ON)
+
+if(WIN32)
+set(LIB_PREFIX "")
+set(LIB_SUFFIX ".lib")
+set(CMAKE_SHELL "powershell.exe")
+set(LINUX_CONAN_FLAGS "")
+add_definitions("-D_WIN32_WINNT=0x0601")
+add_link_options("-NODEFAULTLIB:library" "-SUBSYSTEM:CONSOLE")
+else()
+set(LIB_PREFIX "lib")
+
+if(SHARED_LIBRARY)
+    set(LIB_SUFFIX ".so")
+    set(SHARED_LIBRARY "-DSHARED_LIBRARY=ON")
+    else()
+        set(SHARED_LIBRARY "-DSHARED_LIBRARY=OFF")
+        set(LIB_SUFFIX ".a")
+    endif()
+
+    set(CMAKE_SHELL bash -c)
+    set(LINUX_CONAN_FLAGS "-c tools.system.package_manager:sudo=true")
+    add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+endif()
 
 ExternalProject_Add(OtterLib
 
@@ -42,21 +72,11 @@ ExternalProject_Add(OtterLib
     BINARY_DIR ${OTTERLIB_DIR}/build
 
     # BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib
-    CMAKE_ARGS ${BUILD_TESTING}
+    CMAKE_ARGS ${BUILD_TESTING} ${SHARED_LIBRARY}
     BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib ${CONFIG_VALUE}
     INSTALL_DIR ${OTTERLIB_DIR}/build
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 )
-
-if(WIN32)
-  set(prefix "")
-  set(suffix ".dll")
-  set(CMAKE_SHELL "powershell.exe")
-else()
-  set(prefix "lib")
-  set(suffix ".so")
-  set(CMAKE_SHELL bash -c)
-endif()
 
 # Check if conan is installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -65,8 +85,9 @@ if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
 else()
     # If not, install conan dependencies
     message(STATUS "[Conan] Conan dependencies not installed, installing dependencies...")
+    message(WARNING ${CMAKE_CURRENT_SOURCE_DIR})
     execute_process(
-        COMMAND ${CMAKE_SHELL} "conan install ${OTTERLIB_DIR} --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=true"
+        COMMAND ${CMAKE_SHELL} "conan install ${OTTERLIB_DIR} --build=missing -c tools.system.package_manager:mode=install ${LINUX_CONAN_FLAGS}"
         OUTPUT_VARIABLE result
         WORKING_DIRECTORY ${OTTERLIB_DIR}
     )
@@ -84,17 +105,23 @@ endif()
 file(
     GLOB CLIENT_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
+    src/Init/GameServer/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
+    src/System/GameServer/*.cpp
     src/System/Collisions/*.cpp
 )
 file(
     GLOB SERVER_FILES
     src/*.cpp
-    src/Init/*.cpp
+    src/Init/GameClient/*.cpp
+    src/Init/GameServer/*.cpp
     src/Game/*.cpp
     src/System/*.cpp
+    src/System/GameClient/*.cpp
+    src/System/GameServer/*.cpp
     src/System/Collisions/*.cpp
 )
 
@@ -108,18 +135,21 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
+    include/Init/GameServer
     include/Game
     include/System
+    include/System/GameClient
+    include/System/GameServer
     include/System/Collisions
     ${OTTERLIB_DIR}/build/include
 )
 
 target_link_libraries(r-type_client
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterCore${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterNetwork${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterGraphic${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterScripting${LIB_SUFFIX}
     ${CONAN_LIBS}
 )
 
@@ -137,17 +167,20 @@ target_include_directories(
     include/
     include/Utils
     include/Component
-    include/Init
+    include/Init/GameClient
+    include/Init/GameServer
     include/Game
     include/System
+    include/System/GameClient
+    include/System/GameServer
     include/System/Collisions
     ${OTTERLIB_DIR}/build/include
 )
 target_link_libraries(r-type_server
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterCore${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterNetwork${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterGraphic${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterScripting${LIB_SUFFIX}
     ${CONAN_LIBS}
 )
 

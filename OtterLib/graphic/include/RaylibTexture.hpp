@@ -31,7 +31,7 @@ namespace Otter::Graphic::Raylib {
          * @param scale: The scale of the texture
          * @return Nothing
          */
-        void draw(Rectangle source, Vector2 position, float rotation, float scale);
+        void draw(Otter::Core::Utils::Rectangle source, Otter::Core::Utils::Vector2 position, float rotation, float scale);
 
         /**
          * @brief Set the texture to use
@@ -45,19 +45,19 @@ namespace Otter::Graphic::Raylib {
          * @param color: The color to set
          * @return Nothing
          */
-        void setColor(Color color);
+        void setColor(raylib::Color color);
 
         /**
          * @brief Get the texture
          * @return The texture
          */
-        [[nodiscard]] Texture2D getTexture() const;
+        [[nodiscard]] raylib::Texture2D getTexture() const;
 
         /**
          * @brief Get the color of the texture
          * @return The color of the texture
          */
-        [[nodiscard]] Color getColor() const;
+        [[nodiscard]] raylib::Color getColor() const;
 
         /**
          * @brief Get the width of the texture
@@ -78,8 +78,8 @@ namespace Otter::Graphic::Raylib {
         [[nodiscard]] std::string getFilePath() const;
 
       private:
-        Texture2D _texture;
-        Color _color;
+        raylib::Texture2D _texture;
+        raylib::Color _color;
         std::string _texturePath;
     }; // class Texture
 } // namespace Otter::Graphic::Raylib

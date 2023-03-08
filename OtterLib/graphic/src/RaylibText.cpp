@@ -18,10 +18,7 @@ namespace Otter::Graphic::Raylib {
      * @brief Constructor for the Raylib::Text class
      * @return A new instance of the Raylib::Text class
      */
-    RaylibText::RaylibText()
-        : _color(WHITE)
-    {
-    }
+    RaylibText::RaylibText() : _color(raylib::WHITE) {}
 
     /**
      * @brief Destructor for the Raylib::Text class
@@ -37,9 +34,9 @@ namespace Otter::Graphic::Raylib {
      * @param fontSize: The size of the font
      * @return Nothing
      */
-    void RaylibText::draw(std::string& text, Vector2 pos, int fontSize)
+    void RaylibText::draw(std::string& text, Otter::Core::Utils::Vector2 pos, int fontSize)
     {
-        DrawText(text.c_str(), pos.x, pos.y, fontSize, _color);
+       raylib::DrawText(text.c_str(), pos.x, pos.y, fontSize, _color);
     }
 
     /**
@@ -49,8 +46,8 @@ namespace Otter::Graphic::Raylib {
      */
     void RaylibText::setFont(const std::string& fontPath)
     {
-        UnloadFont(_font);
-        _font = LoadFont(fontPath.c_str());
+        raylib::UnloadFont(_font);
+        _font = raylib::LoadFont(fontPath.c_str());
     }
 
     /**
@@ -58,17 +55,17 @@ namespace Otter::Graphic::Raylib {
      * @param color: The color to set
      * @return Nothing
      */
-    void RaylibText::setColor(Color color) { _color = color; }
+    void RaylibText::setColor(raylib::Color color) { _color = color; }
 
     /**
      * @brief Get the font used
      * @return The font used
      */
-    Font RaylibText::getFont() const { return _font; }
+    raylib::Font RaylibText::getFont() const { return _font; }
 
     /**
      * @brief Get the color of the text
      * @return The color of the text
      */
-    Color RaylibText::getColor() const { return _color; }
+    raylib::Color RaylibText::getColor() const { return _color; }
 } // namespace Otter::Graphic::Raylib

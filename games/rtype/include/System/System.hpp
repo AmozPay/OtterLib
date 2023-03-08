@@ -17,12 +17,17 @@
 
 // Other
 #include "DeathSystem.hpp"
+#include "DecelerationSystem.hpp"
 #include "DispawnableSystem.hpp"
+#include "EnemyShotSystem.hpp"
 #include "EventHandlerSystem.hpp"
-#include "EventNetworkSystem.hpp"
+#include "HoveringSystem.hpp"
+#include "InputKeyEventSystem.hpp"
 #include "InputKeySystem.hpp"
 #include "MoveSystem.hpp"
 #include "ParallaxSystem.hpp"
+#include "ShotSystem.hpp"
+#include "PowerupSystem.hpp"
 #include "SpriteSystem.hpp"
 #include "TextSystem.hpp"
 #include "WindowSystem.hpp"

@@ -6,6 +6,7 @@
 */
 
 #include "ObstacleCollisionSystem.hpp"
+#include "PowerupSystem.hpp"
 
 namespace Otter::Games::RType::System::Collision::Obstacle {
     namespace components = Otter::Games::RType::Components;
@@ -13,9 +14,19 @@ namespace Otter::Games::RType::System::Collision::Obstacle {
 
     void BulletToWallCollision(Otter::Core::Orchestrator& ref, size_t bulletIndex, size_t wallIndex) {}
 
-    void BulletToBulletCollision(Otter::Core::Orchestrator& ref, size_t firstBulletIndex, size_t secondBulletIndex) {}
+    void BulletToBulletCollision(Otter::Core::Orchestrator& ref, size_t firstBulletIndex, size_t secondBulletIndex) {
+        ref.remove_entity(static_cast<std::uint32_t>(firstBulletIndex));
+        ref.remove_entity(static_cast<std::uint32_t>(secondBulletIndex));
+    }
 
-    void BulletToPowerupCollision(Otter::Core::Orchestrator& ref, size_t bulletIndex, size_t powerupIndex) {}
+    void BulletToPowerupCollision(Otter::Core::Orchestrator& ref, size_t bulletIndex, size_t powerupIndex) {
+        auto const& shots = ref.get_components<Otter::Games::RType::Components::Shot>();
+
+        if (bulletIndex < shots.size() && shots[bulletIndex]) {
+            Otter::Games::RType::System::Powerup::PowerupHandler(ref, powerupIndex, shots[bulletIndex]->_shooterId);
+            ref.remove_entity(static_cast<std::uint32_t>(bulletIndex));
+        }
+    }
 
     void WallToWallCollision(Otter::Core::Orchestrator& ref, size_t firstWallIndex, size_t secondWallIndex) {}
 

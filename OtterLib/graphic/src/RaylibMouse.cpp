@@ -14,21 +14,21 @@ namespace Otter::Graphic::Raylib {
 
     void RaylibMouse::setButton(const int& button) { _button = button; }
 
-    float RaylibMouse::getMouseWheelMove() { return GetMouseWheelMove(); }
+    float RaylibMouse::getMouseWheelMove() { return raylib::GetMouseWheelMove(); }
 
-    int RaylibMouse::getMouseX() { return GetMouseX(); }
+    int RaylibMouse::getMouseX() { return raylib::GetMouseX(); }
 
-    int RaylibMouse::getMouseY() { return GetMouseY(); }
+    int RaylibMouse::getMouseY() { return raylib::GetMouseY(); }
 
-    Vector2 RaylibMouse::getMousePosition() { return GetMousePosition(); }
+    raylib::Vector2 RaylibMouse::getMousePosition() { return raylib::GetMousePosition(); }
 
-    Vector2 RaylibMouse::getMouseDelta() { return GetMouseDelta(); }
+    raylib::Vector2 RaylibMouse::getMouseDelta() { return raylib::GetMouseDelta(); }
 
-    bool RaylibMouse::isMouseButtonPressed() const { return IsMouseButtonPressed(_button); }
+    bool RaylibMouse::isMouseButtonPressed() const { return raylib::IsMouseButtonPressed(_button); }
 
-    bool RaylibMouse::isMouseButtonDown() const { return IsMouseButtonDown(_button); }
+    bool RaylibMouse::isMouseButtonDown() const { return raylib::IsMouseButtonDown(_button); }
 
-    bool RaylibMouse::isMouseButtonReleased() const { return IsMouseButtonReleased(_button); }
+    bool RaylibMouse::isMouseButtonReleased() const { return raylib::IsMouseButtonReleased(_button); }
 
-    bool RaylibMouse::isMouseButtonUp() const { return IsMouseButtonUp(_button); }
+    bool RaylibMouse::isMouseButtonUp() const { return raylib::IsMouseButtonUp(_button); }
 } // namespace Otter::Graphic::Raylib

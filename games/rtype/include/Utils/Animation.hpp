@@ -9,27 +9,26 @@
 #define ANIMATION_HPP_
 
 #include "Utils.hpp"
-
+#include "ComponentUtils.hpp"
 #include <chrono>
 #include <string>
 #include <vector>
 
 namespace Otter::Games::RType::Utils {
-    using Rectangle = Otter::Games::RType::Utils::Rectangle;
+    using Rectangle = Otter::Core::Utils::Rectangle;
     using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
     using AnimRectVect = std::vector<Rectangle>;
 
     struct Animation {
         Animation(const std::string& texturePath, const AnimRectVect& animVect, const float& delay,
-                  const bool& isOneShot = false)
-        {
-            this->texturePath = texturePath;
-            this->animVect = animVect;
-            this->currentPos = 0;
-            this->delay = delay;
-            this->lastTime = std::chrono::steady_clock::now();
-            this->isOneShot = isOneShot;
-        };
+                  const bool& isOneShot = false):
+                  texturePath(texturePath),
+                  animVect(animVect),
+                  currentPos(0),
+                  lastTime(std::chrono::steady_clock::now()),
+                  delay(delay),
+                  isOneShot(isOneShot)
+        {}
 
         ~Animation() = default;
 

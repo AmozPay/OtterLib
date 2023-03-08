@@ -10,7 +10,6 @@
 #include "ComponentUtils.hpp"
 #include "OtterCore.hpp"
 #include "OtterGraphic.hpp"
-
 #include <boost/property_tree/ptree.hpp>
 #include <chrono>
 #include <memory>
@@ -18,9 +17,8 @@
 
 namespace Otter::Core::BaseComponents {
     namespace pt = boost::property_tree;
-    namespace utils = Otter::Games::RType::Utils;
 
-    utils::Vector2 getVector2(pt::ptree json, std::string key);
+    Otter::Core::Utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     /**
      * @brief Component for the rendering
@@ -138,7 +136,7 @@ namespace Otter::Core::BaseComponents {
          * @param rec2: The second rectangle
          * @return True if the rectangles are colliding, false otherwise
          */
-        bool CheckCollisionRecs(utils::Rectangle rec1, utils::Rectangle rec2)
+        bool CheckCollisionRecs(Otter::Core::Utils::Rectangle rec1, Otter::Core::Utils::Rectangle rec2)
         {
             return ((rec1.x < (rec2.x + rec2.width) && (rec1.x + rec1.width) > rec2.x) &&
                     (rec1.y < (rec2.y + rec2.height) && (rec1.y + rec1.height) > rec2.y));
@@ -269,7 +267,7 @@ namespace Otter::Core::BaseComponents {
          * @param texture: An instance of the RaylibTexture class
          */
         Texture(const std::string& path, Otter::Graphic::Raylib::RaylibTexture texture,
-                Otter::Games::RType::Utils::Rectangle rectangle)
+                Otter::Core::Utils::Rectangle rectangle)
             : _texture(texture)
         {
             _path = path;
@@ -288,7 +286,7 @@ namespace Otter::Core::BaseComponents {
 
         std::string _path;
         Otter::Graphic::Raylib::RaylibTexture _texture;
-        Otter::Games::RType::Utils::Rectangle _rectangle;
+        Otter::Core::Utils::Rectangle _rectangle;
     };
 
     using TextureStorageMap = std::unordered_map<std::string, Otter::Graphic::Raylib::RaylibTexture>;
@@ -331,7 +329,7 @@ namespace Otter::Core::BaseComponents {
      * @var _tag: The tag of the text
      * @var _linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
      * @var _textInstance: An instance of the RaylibText class
-    */
+     */
     struct Text {
         /**
          * @constructor
@@ -340,8 +338,9 @@ namespace Otter::Core::BaseComponents {
          * @param fontSize: The size of the text
          * @param tag: The tag of the text (used to identify the text)
          * @param linkedEntityId: The id of the entity linked to the text (not mandatory, can be -1)
-        */
-        Text(std::string text, int fontSize, std::string tag, int linkedEntityId) : _textInstance(Otter::Graphic::Raylib::RaylibText())
+         */
+        Text(std::string text, int fontSize, std::string tag, int linkedEntityId)
+            : _textInstance(Otter::Graphic::Raylib::RaylibText())
         {
             _text = text;
             _fontSize = fontSize;
@@ -391,7 +390,7 @@ namespace Otter::Core::BaseComponents {
          * @param rotation: The rotation of the entity
          * @param position: A vector of float for the position of the entity
          */
-        Transform(float scale, float rotation, utils::Vector2 position) : _position(position), _lastPosition(position)
+        Transform(float scale, float rotation, Otter::Core::Utils::Vector2 position) : _position(position), _lastPosition(position)
         {
             _scale = scale;
             _rotation = rotation;
@@ -399,8 +398,8 @@ namespace Otter::Core::BaseComponents {
 
         ~Transform() = default;
 
-        utils::Vector2 _position;
-        utils::Vector2 _lastPosition;
+        Otter::Core::Utils::Vector2 _position;
+        Otter::Core::Utils::Vector2 _lastPosition;
         float _rotation;
         float _scale;
     };
@@ -434,8 +433,8 @@ namespace Otter::Core::BaseComponents {
          * @param constantAccelerationDirection: A vector of float for the constant acceleration direction of the entity
          * @param accelerationDirection: A vector of float for the acceleration direction of the entity
          */
-        Velocity(float speed, float constantSpeed, utils::Vector2 constantAccelerationDirection,
-                 utils::Vector2 accelerationDirection)
+        Velocity(float speed, float constantSpeed, Otter::Core::Utils::Vector2 constantAccelerationDirection,
+                 Otter::Core::Utils::Vector2 accelerationDirection)
             : _accelerationDirection(accelerationDirection),
               _constantAccelerationDirection(constantAccelerationDirection)
         {
@@ -447,8 +446,8 @@ namespace Otter::Core::BaseComponents {
 
         float _speed;
         float _constantSpeed;
-        utils::Vector2 _constantAccelerationDirection;
-        utils::Vector2 _accelerationDirection;
+        Otter::Core::Utils::Vector2 _constantAccelerationDirection;
+        Otter::Core::Utils::Vector2 _accelerationDirection;
     };
 
     /**
@@ -624,7 +623,7 @@ namespace Otter::Core::BaseComponents {
         int _data;
     };
 
-    enum GameStatusType { LOBBY, GAME_INIT, GAME, GAME_OVER, WIN };
+    enum GameStatusType { LOBBY_INIT, LOBBY, GAME_INIT, GAME, GAME_OVER, WIN };
 
     struct GameStatus {
         COMPONENT_BUILDER(GameStatus) { core.add_component(e, EventNetwork()); }

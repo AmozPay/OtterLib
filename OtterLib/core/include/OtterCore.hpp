@@ -1,15 +1,16 @@
 #pragma once
 
+#include "windows_config.hpp"
 #include "Orchestrator.hpp"
 #include "ScriptingManager.hpp"
 #include "SystemManager.hpp"
 
 namespace Otter::Core {
 
-    extern void registerComponents(Otter::Core::Orchestrator&);
-    extern void registerSystems(Otter::Core::SystemManager&);
-    extern void createEntityObj(Otter::Core::Orchestrator&);
-    extern void configureScripting(Otter::Scripting::ScriptingManager&);
+    DllImport void registerComponents(Otter::Core::Orchestrator&);
+    DllImport void registerSystems(Otter::Core::SystemManager&);
+    DllImport void createEntityObj(Otter::Core::Orchestrator&);
+    DllImport void configureScripting(Otter::Scripting::ScriptingManager&);
 
     class OtterCore {
       public:
