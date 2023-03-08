@@ -5,9 +5,10 @@
 ** GameOverSystem
 */
 
-#include "GameOverSystem.hpp"
+#include "GameOverSystemServer.hpp"
+#include "EndGameMessageServer.hpp"
 
-namespace Otter::Games::RType::System::GameOver {
+namespace Otter::Games::RType::System::GameServer::GameOver {
     void InitGameOverScene(Otter::Core::Orchestrator& ref)
     {
         auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
@@ -34,6 +35,7 @@ namespace Otter::Games::RType::System::GameOver {
             if (gameStatus[i]->gameStatusType != Otter::Core::BaseComponents::GAME)
                 continue;
             gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::GAME_OVER;
+            system::GameServer::EndGameMessage::SendGameOver(ref);
         }
         InitGameOverScene(ref);
     }
@@ -47,8 +49,9 @@ namespace Otter::Games::RType::System::GameOver {
             if (players[i])
                 enemyCount++;
         }
-        if (enemyCount == 0)
+        if (enemyCount == 0) {
             TriggerGameOver(ref);
+        }
     }
 
     void HandleGameOver(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)

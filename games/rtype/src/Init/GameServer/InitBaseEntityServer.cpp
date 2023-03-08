@@ -22,8 +22,8 @@ namespace Otter::Games::GameServer::Init {
                                {components::EventTypes::DEATH, systems::Death::HandleDeathServer},
                                {components::EventTypes::LOBBY, systems::Lobby::HandleLobby},
                                {components::EventTypes::INIT_GAME, systems::GameServer::InitGame::HandleInitGame},
-                               {components::EventTypes::GAME_OVER, systems::GameOver::HandleGameOver},
-                               {components::EventTypes::WIN, systems::Win::HandleWin}})));
+                               {components::EventTypes::GAME_OVER, systems::GameServer::GameOver::HandleGameOver},
+                               {components::EventTypes::WIN, systems::GameServer::Win::HandleWin}})));
         ref.add_component(baseEntity, Otter::Core::BaseComponents::Keyboard());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::EventNetwork());
         ref.add_component(baseEntity, Otter::Core::BaseComponents::GameStatus(Otter::Core::BaseComponents::LOBBY));

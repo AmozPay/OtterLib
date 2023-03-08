@@ -5,9 +5,9 @@
 ** WinSystem
 */
 
-#include "WinSystem.hpp"
+#include "WinSystemServer.hpp"
 
-namespace Otter::Games::RType::System::Win {
+namespace Otter::Games::RType::System::GameServer::Win {
     void InitWinScene(Otter::Core::Orchestrator& ref)
     {
         auto& players = ref.get_components<Otter::Core::BaseComponents::Player>();
@@ -30,6 +30,7 @@ namespace Otter::Games::RType::System::Win {
             if (gameStatus[i]->gameStatusType != Otter::Core::BaseComponents::GAME)
                 return;
             gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::WIN;
+            Otter::Games::RType::System::GameServer::EndGameMessage::SendWin(ref);
         }
         InitWinScene(ref);
     }
@@ -43,8 +44,9 @@ namespace Otter::Games::RType::System::Win {
             if (enemies[i])
                 enemyCount++;
         }
-        if (enemyCount == 0)
+        if (enemyCount == 0) {
             TriggerWin(ref);
+        }
     }
 
     void HandleWin(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&)

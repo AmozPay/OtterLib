@@ -2,22 +2,24 @@
 ** EPITECH PROJECT, 2023
 ** OtterLib [WSL : Ubuntu]
 ** File description:
-** WinSystem
+** GameOverSystem
 */
 
-#ifndef WINSYSTEM_HPP_
-#define WINSYSTEM_HPP_
+#ifndef GAMEOVERSYSTEMCLIENT_HPP_
+#define GAMEOVERSYSTEMCLIENT_HPP_
 
 #include "EventComponent.hpp"
 #include "OtterCore.hpp"
 #include "Utils.hpp"
 #include "baseComponents.hpp"
 
-namespace Otter::Games::RType::System::Win {
+namespace Otter::Games::RType::System::GameClient::GameOver {
     namespace utils = Otter::Games::RType::Utils;
     namespace components = Otter::Games::RType::Components;
 
-    void CheckWin(Otter::Core::Orchestrator& ref);
+    void TriggerGameOver(Otter::Core::Orchestrator& ref);
+
+    void CheckGameOver(Otter::Core::Orchestrator& ref);
 
     /**
      * @brief Handle the lobby event
@@ -26,8 +28,7 @@ namespace Otter::Games::RType::System::Win {
      * @param vectorId: The vector of the ids of the entities
      * @return void
      */
-    void HandleWin(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
+    void HandleGameOver(Otter::Core::Orchestrator& ref, std::vector<std::size_t>&);
+} // namespace Otter::Games::RType::System::GameOver
 
-} // namespace Otter::Games::RType::System::Win
-
-#endif /* !WINSYSTEM_HPP_ */
+#endif /* !GAMEOVERSYSTEM_HPP_ */

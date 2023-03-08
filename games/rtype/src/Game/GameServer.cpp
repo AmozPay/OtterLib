@@ -15,6 +15,7 @@
 #include "MovePlayerMessageServer.hpp"
 #include "MoveSystemServer.hpp"
 #include "ShootMessageServer.hpp"
+#include "EndGameMessageServer.hpp"
 
 namespace Otter::Games::GameServer {
     void test_upd(Otter::Core::Orchestrator& ref)
@@ -47,6 +48,8 @@ namespace Otter::Games::GameServer {
         servers[0]->callBack.push_back(systems::GameServer::MovePlayerMessage::ReceiveMovePlayerMessage);
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back(systems::GameServer::ShootMessageServer::ReceiveShootMessage);
+        servers[0]->callBack.push_back(systems::GameServer::EndGameMessage::ReceiveGameOver);
+        servers[0]->callBack.push_back(systems::GameServer::EndGameMessage::ReceiveWin);
         Init::InitBaseEntity baseEntity(ref);
     }
 
@@ -74,8 +77,8 @@ namespace Otter::Games::GameServer {
         ref.registerSystem(systems::EventHandler::EventHandlerSystem, Otter::Core::SystemManager::event);
         ref.registerSystem(systems::Parallax::ParallaxHandler, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameStatus::HandleGameStatus, Otter::Core::SystemManager::preUpdate);
-        ref.registerSystem(systems::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
-        ref.registerSystem(systems::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::GameServer::Win::CheckWin, Otter::Core::SystemManager::preUpdate);
+        ref.registerSystem(systems::GameServer::GameOver::CheckGameOver, Otter::Core::SystemManager::preUpdate);
         ref.registerSystem(systems::GameServer::Move::EntityMovement, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Collision::EntityCollision, Otter::Core::SystemManager::update);
         ref.registerSystem(systems::Death::EntityDeath, Otter::Core::SystemManager::update);

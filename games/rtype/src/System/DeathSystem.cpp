@@ -6,8 +6,6 @@
 */
 
 #include "DeathSystem.hpp"
-
-#include "GameOverSystem.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::RType::System::Death {

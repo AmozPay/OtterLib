@@ -11,13 +11,13 @@
 #include "Animation.hpp"
 #include "AnimationComponent.hpp"
 #include "Components.hpp"
-#include "GameOverSystem.hpp"
+#include "GameOverSystemClient.hpp"
 #include "InitGameSystemClient.hpp"
 #include "LobbySystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
 #include "Utils.hpp"
-#include "WinSystem.hpp"
+#include "WinSystemClient.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::GameClient::Init {

@@ -26,7 +26,9 @@ namespace Otter::Network {
         INIT_GAME,
         PLAYER_MOVE,
         ENEMY_MOVE,
-        SHOOT
+        SHOOT,
+        GAME_OVER,
+        WIN
     };
 
     /////////////////// header

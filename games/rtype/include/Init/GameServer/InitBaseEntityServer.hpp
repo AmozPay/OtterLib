@@ -9,13 +9,13 @@
 #define INITBASEENTITY_HPP_
 
 #include "Animation.hpp"
-#include "GameOverSystem.hpp"
+#include "GameOverSystemServer.hpp"
 #include "InitGameSystemServer.hpp"
 #include "LobbySystem.hpp"
 #include "OtterCore.hpp"
 #include "System.hpp"
 #include "Utils.hpp"
-#include "WinSystem.hpp"
+#include "WinSystemServer.hpp"
 #include "baseComponents.hpp"
 
 namespace Otter::Games::GameServer::Init {
