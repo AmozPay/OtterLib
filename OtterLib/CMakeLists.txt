@@ -168,7 +168,7 @@ if(BUILD_TESTING) # ... CMake code to create tests ...
 
     # Compile tests only
     add_custom_target(OtterLibTests)
-    add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests)
+    add_dependencies(OtterLibTests OtterCoreTests OtterNetworkTests OtterGraphicTests OtterScriptingTests)
 
 
     include(CTest)
