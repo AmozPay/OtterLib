@@ -14,6 +14,7 @@
 #include "ServerComponent.hpp"
 #include "MovePlayerMessageServer.hpp"
 #include "MoveSystemServer.hpp"
+#include "ShootMessageServer.hpp"
 
 namespace Otter::Games::GameServer {
     void test_upd(Otter::Core::Orchestrator& ref)
@@ -42,8 +43,10 @@ namespace Otter::Games::GameServer {
         auto &servers = ref.get_components<Otter::Network::ServerComponent>();
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back(systems::GameServer::MovePlayerMessage::ReceiveMovePlayerMessage);
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back(systems::GameServer::ShootMessageServer::ReceiveShootMessage);
         Init::InitBaseEntity baseEntity(ref);
     }
 

@@ -10,6 +10,7 @@
 #include "Components.hpp"
 #include "baseComponents.hpp"
 #include "MovePlayerMessageClient.hpp"
+#include "ShootMessageClient.hpp"
 
 #include <chrono>
 
@@ -112,8 +113,13 @@ namespace Otter::Games::RType::System::InputKeyEventSystem {
     void EventDetection(Otter::Core::Orchestrator& ref, size_t playerIndex, utils::EventState state)
     {
         PlayerMovementEvent(ref, playerIndex, state);
-        if (state == utils::SHOOT)
+        if (state == utils::SHOOT) {
             CreateShot(ref, playerIndex);
+            system::GameClient::ShootMessageClient::SendShootMessage(
+                ref,
+                playerIndex
+            );
+        }
         if (state == utils::CLOSE) {
             // DO NOTHING FOR THE MOMENT
         }

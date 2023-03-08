@@ -25,7 +25,8 @@ namespace Otter::Network {
         VALIDATION,
         INIT_GAME,
         PLAYER_MOVE,
-        ENEMY_MOVE
+        ENEMY_MOVE,
+        SHOOT
     };
 
     /////////////////// header
