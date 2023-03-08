@@ -20,9 +20,6 @@
 
 namespace Otter::Games::RType::Components {
     namespace pt = boost::property_tree;
-    namespace utils = Otter::Games::RType::Utils;
-
-    utils::Vector2 getVector2(pt::ptree json, std::string key);
 
     enum ObstacleType { WALL, BULLET, POWERUP };
 

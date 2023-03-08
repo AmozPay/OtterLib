@@ -36,10 +36,10 @@ namespace Otter::Games::RType::System::Collision {
             auto& collisionsSecond = collisions[i];
             auto& transformSecond = transforms[i];
             if (collisionsSecond && transformSecond) {
-                utils::Rectangle rectangleFirst = {
+                Otter::Core::Utils::Rectangle rectangleFirst = {
                     transforms[firstEntityIndex]->_position.x, transforms[firstEntityIndex]->_position.y,
                     collisions[firstEntityIndex]->_width, collisions[firstEntityIndex]->_height};
-                utils::Rectangle rectangleSecond = {transforms[i]->_position.x, transforms[i]->_position.y,
+                Otter::Core::Utils::Rectangle rectangleSecond = {transforms[i]->_position.x, transforms[i]->_position.y,
                                                     collisionsSecond->_width, collisionsSecond->_height};
                 if (collisionsSecond->CheckCollisionRecs(rectangleFirst, rectangleSecond))
                     TriggerCollision(ref, firstEntityIndex, i);

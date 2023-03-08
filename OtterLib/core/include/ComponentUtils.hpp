@@ -5,10 +5,8 @@
 ** Utils.hpp
 */
 
-#ifndef RTYPE_UTILS_HPP
-#define RTYPE_UTILS_HPP
-
-namespace Otter::Games::RType::Utils {
+#pragma once
+namespace Otter::Core::Utils {
 
     /**
      * @brief Struct for the vector2
@@ -41,5 +39,3 @@ namespace Otter::Games::RType::Utils {
     enum EventState { FORWARD, BACKWARD, UP, DOWN, CLOSE, SHOOT };
 
 } // namespace Otter::Games::RType::Utils
-
-#endif // RTYPE_UTILS_HPP

@@ -36,7 +36,7 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             powerupType = rand() % 5;
             Otter::Games::GameClient::Init::InitPowerup powerup(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(1280 + powerupMaxPos, 34 * num), static_cast<components::PowerupType>(powerupType), powerupValue[powerupType]);
+                Otter::Core::Utils::Vector2(1280 + powerupMaxPos, 34 * num), static_cast<components::PowerupType>(powerupType), powerupValue[powerupType]);
         }
     }
 
@@ -56,10 +56,10 @@ namespace Otter::Games::RType::System::GameClient::InitGame {
             num = rand() % range;
             Otter::Games::GameClient::Init::InitEnemy enemy(
                 ref, baseEntity, "Enemy " + std::to_string(i),
-                Otter::Games::RType::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
+                Otter::Core::Utils::Vector2(800 + enemyMaxPos, 34 * num + 30));
         }
         Otter::Games::GameClient::Init::InitBoss boss(ref, baseEntity, "Boss 1",
-                Otter::Games::RType::Utils::Vector2(enmiesMaxNb * 300 + 1000, 150));
+                Otter::Core::Utils::Vector2(enmiesMaxNb * 300 + 1000, 150));
 
         CreatePowerup(ref, baseEntity);
     }

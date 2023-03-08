@@ -10,7 +10,7 @@
 namespace Otter::Games::GameClient::Init {
     
     InitEnemy::InitEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                         Otter::Games::RType::Utils::Vector2 pos)
+                         Otter::Core::Utils::Vector2 pos)
     {
         // srand(42);
         int enemyType = rand() % 2;
@@ -22,7 +22,7 @@ namespace Otter::Games::GameClient::Init {
     }
 
     void InitEnemy::InitShootingEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                         Otter::Games::RType::Utils::Vector2 pos)
+                         Otter::Core::Utils::Vector2 pos)
     {
         Otter::Core::Entity enemy = ref.createEntity();
         Otter::Core::Entity enemyHealth = ref.createEntity();
@@ -31,7 +31,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(enemy, Otter::Core::BaseComponents::Texture(
                                      "../assets/enemy1-34x34.png",
                                      textureStorages[baseEntity]->findTextureByPath("../assets/enemy1-34x34.png"),
-                                     Otter::Games::RType::Utils::Rectangle(0, 0, 34, 34)));
+                                     Otter::Core::Utils::Rectangle(0, 0, 34, 34)));
         ref.add_component(enemy, Otter::Core::BaseComponents::Render());
         ref.add_component(enemy, Otter::Core::BaseComponents::Transform(2, 0, {pos.x, pos.y}));
         ref.add_component(enemy, Otter::Core::BaseComponents::Velocity(2, 2, {-1, 0}, {0, 0}));
@@ -43,18 +43,18 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(enemy, components::Shooter(components::ShotDirection::LEFT, true, -1, 2000));
 
         utils::AnimRectVect animRectVect;
-        animRectVect.push_back(utils::Rectangle(0, 0, 34, 34));
-        animRectVect.push_back(utils::Rectangle(34, 0, 34, 34));
-        animRectVect.push_back(utils::Rectangle(34 * 2, 0, 34, 34));
-        animRectVect.push_back(utils::Rectangle(34 * 3, 0, 34, 34));
+        animRectVect.push_back(Otter::Core::Utils::Rectangle(0, 0, 34, 34));
+        animRectVect.push_back(Otter::Core::Utils::Rectangle(34, 0, 34, 34));
+        animRectVect.push_back(Otter::Core::Utils::Rectangle(34 * 2, 0, 34, 34));
+        animRectVect.push_back(Otter::Core::Utils::Rectangle(34 * 3, 0, 34, 34));
         utils::Animation anim("../assets/enemy1-34x34.png", animRectVect, 200);
         utils::AnimRectVect animRectVect2;
-        animRectVect2.push_back(utils::Rectangle(0, 26 * 2, 28, 28));
-        animRectVect2.push_back(utils::Rectangle(30, 26 * 2, 28, 28));
-        animRectVect2.push_back(utils::Rectangle(62, 26 * 2, 28, 28));
-        animRectVect2.push_back(utils::Rectangle(96, 26 * 2, 33, 36));
-        animRectVect2.push_back(utils::Rectangle(132, 26 * 2, 33, 36));
-        animRectVect2.push_back(utils::Rectangle(166, 26 * 2, 33, 36));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(0, 26 * 2, 28, 28));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(30, 26 * 2, 28, 28));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(62, 26 * 2, 28, 28));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(96, 26 * 2, 33, 36));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(132, 26 * 2, 33, 36));
+        animRectVect2.push_back(Otter::Core::Utils::Rectangle(166, 26 * 2, 33, 36));
         utils::Animation anim2("../assets/r-typesheet43.gif", animRectVect2, 100, true);
         components::IdAnimMap idAnimMap;
         idAnimMap.emplace(components::STANDUP_ANIM, anim);
@@ -67,7 +67,7 @@ namespace Otter::Games::GameClient::Init {
     }
 
     void InitEnemy::InitBasicEnemy(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                         Otter::Games::RType::Utils::Vector2 pos)
+                         Otter::Core::Utils::Vector2 pos)
     {
         Otter::Core::Entity enemy = ref.createEntity();
         Otter::Core::Entity enemyHealth = ref.createEntity();
@@ -76,7 +76,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(enemy, Otter::Core::BaseComponents::Texture(
                                      "../assets/enemy2-29x22.png",
                                      textureStorages[baseEntity]->findTextureByPath("../assets/enemy2-29x22.png"),
-                                     Otter::Games::RType::Utils::Rectangle(0, 0, 29, 22)));
+                                     Otter::Core::Utils::Rectangle(0, 0, 29, 22)));
         ref.add_component(enemy, Otter::Core::BaseComponents::Render());
         ref.add_component(enemy, Otter::Core::BaseComponents::Transform(2, 0, {pos.x, pos.y}));
         ref.add_component(enemy, Otter::Core::BaseComponents::Velocity(2, 2, {-1, 0}, {0, 0}));

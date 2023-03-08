@@ -37,4 +37,4 @@ endif()
 
 # Call CMakes List.txt in the subdirectories
 add_subdirectory(rtype)
-add_subdirectory(networkSimulator)
+# add_subdirectory(networkSimulator)

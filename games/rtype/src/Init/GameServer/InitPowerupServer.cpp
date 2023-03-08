@@ -9,7 +9,7 @@
 
 namespace Otter::Games::GameServer::Init {
     InitPowerup::InitPowerup(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                  Otter::Games::RType::Utils::Vector2 pos, Otter::Games::RType::Components::PowerupType powerupType, int powerupValue)
+                  Otter::Core::Utils::Vector2 pos, Otter::Games::RType::Components::PowerupType powerupType, int powerupValue)
     {
         Otter::Core::Entity powerup = ref.createEntity();
 

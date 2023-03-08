@@ -37,7 +37,7 @@ namespace Otter::Graphic::Raylib {
          * @param fontSize: The size of the font
          * @return Nothing
          */
-        void draw(std::string& text, Vector2 pos, int fontSize);
+        void draw(std::string& text, Otter::Core::Utils::Vector2 pos, int fontSize);
 
         /**
          * @brief Set the font to use
@@ -51,23 +51,23 @@ namespace Otter::Graphic::Raylib {
          * @param color: The color to set
          * @return Nothing
          */
-        void setColor(Color color);
+        void setColor(raylib::Color color);
 
         /**
          * @brief Get the font of the text
          * @return The font of the text
          */
-        [[nodiscard]] Font getFont() const;
+        [[nodiscard]] raylib::Font getFont() const;
 
         /**
          * @brief Get the color of the text
          * @return The color of the text
          */
-        [[nodiscard]] Color getColor() const;
+        [[nodiscard]] raylib::Color getColor() const;
 
       private:
-        Font _font;
-        Color _color;
+        raylib::Font _font;
+        raylib::Color _color;
     }; // class Text
 
 } // namespace Otter::Graphic::Raylib

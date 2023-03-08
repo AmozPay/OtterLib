@@ -32,7 +32,7 @@ namespace Otter::Games::RType::System::Shot {
                 ref.add_component(newShot, Otter::Core::BaseComponents::Texture(
                                                "../assets/projectile.gif",
                                                textureStorage->findTextureByPath("../assets/projectile.gif"),
-                                               Otter::Games::RType::Utils::Rectangle(0, 0, 16, 12)));
+                                               Otter::Core::Utils::Rectangle(0, 0, 16, 12)));
             }
         }
         ref.add_component(newShot, Otter::Core::BaseComponents::Render());
@@ -70,7 +70,7 @@ namespace Otter::Games::RType::System::Shot {
                 ref.add_component(newShot, Otter::Core::BaseComponents::Texture(
                                                "../assets/ennemyShoot2-16x16.png",
                                                textureStorage->findTextureByPath("../assets/ennemyShoot2-16x16.png"),
-                                               Otter::Games::RType::Utils::Rectangle(0, 0, 16, 16)));
+                                               Otter::Core::Utils::Rectangle(0, 0, 16, 16)));
             }
         }
         ref.add_component(newShot, Otter::Core::BaseComponents::Render());
@@ -121,11 +121,11 @@ namespace Otter::Games::RType::System::Shot {
                 ref.add_component(newShot, Otter::Core::BaseComponents::Texture(
                                                "../assets/ennemyShoot3-50x10.png",
                                                textureStorage->findTextureByPath("../assets/ennemyShoot3-50x10.png"),
-                                               Otter::Games::RType::Utils::Rectangle(0, 0, 50, 10)));
+                                               Otter::Core::Utils::Rectangle(0, 0, 50, 10)));
                 ref.add_component(newSecondShot, Otter::Core::BaseComponents::Texture(
                                                "../assets/ennemyShoot3-50x10.png",
                                                textureStorage->findTextureByPath("../assets/ennemyShoot3-50x10.png"),
-                                               Otter::Games::RType::Utils::Rectangle(0, 0, 50, 10)));
+                                               Otter::Core::Utils::Rectangle(0, 0, 50, 10)));
             }
         }
         ref.add_component(newShot, Otter::Core::BaseComponents::Render());

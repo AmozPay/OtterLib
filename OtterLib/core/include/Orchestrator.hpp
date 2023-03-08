@@ -1,6 +1,7 @@
 #ifndef ORCHESTRATOR_H
 #define ORCHESTRATOR_H
 
+#include "windows_config.hpp"
 #include "Factory.hpp"
 #include "registry.hpp"
 

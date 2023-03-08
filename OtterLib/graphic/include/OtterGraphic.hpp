@@ -7,7 +7,7 @@
 
 #ifndef RTYPE_OTTERGRAPHIC_HPP
 #define RTYPE_OTTERGRAPHIC_HPP
-
+#include "windows_config.hpp"
 #include "RaylibKeyboard.hpp"
 #include "RaylibMouse.hpp"
 #include "RaylibMusic.hpp"

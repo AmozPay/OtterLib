@@ -1,10 +1,10 @@
 #include <iostream>
-#include <raylib.h>
+#include "Raylib.hpp"
 
 namespace Otter::Graphic {
     void print_hello() { std::cout << "Hello" << std::endl; }
 
-    void start() { InitWindow(800, 450, "raylib [core] example - basic window"); }
+    void start() { raylib::InitWindow(800, 450, "raylib [core] example - basic window"); }
 
-    void end() { CloseWindow(); }
+    void end() { raylib::CloseWindow(); }
 } // namespace Otter::Graphic

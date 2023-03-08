@@ -18,7 +18,7 @@ namespace Otter::Graphic::Raylib {
      * @return Instance of the RaylibTexture class
      */
     RaylibTexture::RaylibTexture(const std::string& texturePath)
-        : _texture(LoadTexture(texturePath.c_str())), _color(WHITE)
+        : _texture(raylib::LoadTexture(texturePath.c_str())), _color(raylib::WHITE)
     {
         this->_texturePath = texturePath;
     }
@@ -34,12 +34,13 @@ namespace Otter::Graphic::Raylib {
      * @brief Draw the texture
      * @return Nothing
      */
-    void RaylibTexture::draw(Rectangle source, Vector2 position, float rotation, float scale)
+    void RaylibTexture::draw(Otter::Core::Utils::Rectangle source, Otter::Core::Utils::Vector2 position, float rotation, float scale)
     {
-        Rectangle dest = {position.x, position.y, source.width * scale, source.height * scale};
-        Vector2 origin = {0.0f, 0.0f};
+        raylib::Rectangle raylib_source = {source.x, source.y, source.width, source.height};
+        raylib::Rectangle dest = {position.x, position.y, source.width * scale, source.height * scale};
+        raylib::Vector2 origin = {0.0f, 0.0f};
 
-        DrawTextureTiled(_texture, source, dest, origin, rotation, scale, _color);
+        raylib::DrawTextureTiled(_texture, raylib_source, dest, origin, rotation, scale, _color);
     }
 
     /**
@@ -49,8 +50,8 @@ namespace Otter::Graphic::Raylib {
      */
     void RaylibTexture::setTexture(const std::string& texturePath)
     {
-        UnloadTexture(_texture);
-        _texture = LoadTexture(texturePath.c_str());
+        raylib::UnloadTexture(_texture);
+        _texture = raylib::LoadTexture(texturePath.c_str());
     }
 
     /**
@@ -58,19 +59,19 @@ namespace Otter::Graphic::Raylib {
      * @param color: Color of the texture
      * @return Nothing
      */
-    void RaylibTexture::setColor(Color color) { _color = color; }
+    void RaylibTexture::setColor(raylib::Color color) { _color = color; }
 
     /**
      * @brief Get the texture
      * @return Texture2D
      */
-    Texture2D RaylibTexture::getTexture() const { return _texture; }
+    raylib::Texture2D RaylibTexture::getTexture() const { return _texture; }
 
     /**
      * @brief Get the color of the texture
      * @return Color
      */
-    Color RaylibTexture::getColor() const { return _color; }
+    raylib::Color RaylibTexture::getColor() const { return _color; }
 
     int RaylibTexture::getWidth() const { return _texture.width; }
 

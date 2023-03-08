@@ -1,5 +1,6 @@
 #pragma once
 
+#include "windows_config.hpp"
 #include "Orchestrator.hpp"
 #include "ScriptingManager.hpp"
 #include "SystemManager.hpp"
