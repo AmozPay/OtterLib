@@ -57,7 +57,7 @@ namespace Otter::Games::GameClient {
         servers[0]->callBack.push_back(systems::GameClient::EndGameMessage::ReceiveGameOver);
         servers[0]->callBack.push_back(systems::GameClient::EndGameMessage::ReceiveWin);
 
-        serv[0]->mandatory_static.push_back(Otter::Network::MsgCode::INIT_GAME);
+        servers[0]->mandatory_static.push_back(Otter::Network::MsgCode::INIT_GAME);
         Init::InitBaseEntity baseEntity(ref);
     }
 

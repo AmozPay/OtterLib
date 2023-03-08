@@ -13,6 +13,8 @@
 #include "Utils.hpp"
 #include "baseComponents.hpp"
 
+#include "SendMessageToServer.hpp"
+
 namespace Otter::Games::RType::System::GameClient::InitGameMessage {
 
     namespace utils = Otter::Games::RType::Utils;

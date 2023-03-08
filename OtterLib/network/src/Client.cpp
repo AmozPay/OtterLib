@@ -262,10 +262,12 @@ namespace Otter::Network::Client {
             it->recv(data);
             if (data.str().empty())
                 continue;
-            if (Otter::Network::Server::test_header(data, cl->id, cl->seq) == false)
+	    while (!data.str().empty()) {
+	    if (Otter::Network::Server::test_header(data, cl->id, cl->seq) == false)
                 continue;
             computeTram(ref, *serv, data, index);
         }
+	}
     }
 
     ////////////////////////////////////////////////////////////////

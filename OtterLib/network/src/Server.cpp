@@ -323,12 +323,14 @@ namespace Otter::Network::Server {
             it->recv(data);
             if (data.str().empty())
                 continue;
+	    while (!data.str().empty()) {
 	    if (test_header(data, cl[j]->id, cl[j]->seq) == false)
                 continue;
             if (computeTram(ref, *serv, data, j) == -1) {
                 std::cout << "doublon" << std::endl;
                 soc->channel->disconnect(it->get_endpoint());
             }
+	    }
         }
     }
 
