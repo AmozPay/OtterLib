@@ -9,7 +9,7 @@
 
 namespace Otter::Games::GameServer::Init {
     InitBoss::InitBoss(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                    Otter::Games::RType::Utils::Vector2 pos)
+                    Otter::Core::Utils::Vector2 pos)
     {
         Otter::Core::Entity boss = ref.createEntity();
 

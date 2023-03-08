@@ -76,7 +76,7 @@ namespace Otter::Games::GameClient::Init {
         ref.add_component(enemy, Otter::Core::BaseComponents::Texture(
                                      "../assets/enemy2-29x22.png",
                                      textureStorages[baseEntity]->findTextureByPath("../assets/enemy2-29x22.png"),
-                                     Otter::Games::RType::Utils::Rectangle(0, 0, 29, 22)));
+                                     Otter::Core::Utils::Rectangle(0, 0, 29, 22)));
         ref.add_component(enemy, Otter::Core::BaseComponents::Render());
         ref.add_component(enemy, Otter::Core::BaseComponents::Transform(2, 0, {pos.x, pos.y}));
         ref.add_component(enemy, Otter::Core::BaseComponents::Velocity(2, 2, {-1, 0}, {0, 0}));

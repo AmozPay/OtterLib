@@ -22,7 +22,7 @@ namespace Otter::Games::GameClient::Init {
     class InitBoss {
         public:
             InitBoss(Otter::Core::Orchestrator& ref, Otter::Core::Entity baseEntity, std::string id,
-                    Otter::Games::RType::Utils::Vector2 pos);
+                    Otter::Core::Utils::Vector2 pos);
             ~InitBoss();
 
         protected:

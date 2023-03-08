@@ -25,7 +25,7 @@ namespace Otter::Games::RType::System::InitLobby {
         ref.add_component(menu, Otter::Core::BaseComponents::Texture(
                                      "../assets/menu.png",
                                      textureStorages[baseEntity]->findTextureByPath("../assets/menu.png"),
-                                     Otter::Games::RType::Utils::Rectangle(0, 0, 1280, 720)));
+                                     Otter::Core::Utils::Rectangle(0, 0, 1280, 720)));
         ref.add_component(menu, Otter::Core::BaseComponents::Render());
         ref.add_component(menu, Otter::Core::BaseComponents::Transform(1, 0, {0, 0}));
         ref.add_component(menu, Otter::Games::RType::Components::Menu());
