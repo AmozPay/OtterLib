@@ -17,6 +17,7 @@
 #include "ShootMessageServer.hpp"
 #include "EndGameMessageServer.hpp"
 #include "lobbyComponent.hpp"
+#include "InitGameMessageServer.hpp"
 
 namespace Otter::Games::GameServer {
     void test_upd(Otter::Core::Orchestrator& ref)
@@ -45,7 +46,7 @@ namespace Otter::Games::GameServer {
         auto &servers = ref.get_components<Otter::Network::ServerComponent>();
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
-        servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
+        servers[0]->callBack.push_back(systems::GameServer::InitGameMessage::HandleInitGame);
         servers[0]->callBack.push_back(systems::GameServer::MovePlayerMessage::ReceiveMovePlayerMessage);
         servers[0]->callBack.push_back([](Otter::Core::Orchestrator&, std::string&, int) {});
         servers[0]->callBack.push_back(systems::GameServer::ShootMessageServer::ReceiveShootMessage);
