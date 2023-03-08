@@ -16,6 +16,7 @@
 #include "MoveSystemServer.hpp"
 #include "ShootMessageServer.hpp"
 #include "EndGameMessageServer.hpp"
+#include "lobbyComponent.hpp"
 
 namespace Otter::Games::GameServer {
     void test_upd(Otter::Core::Orchestrator& ref)
@@ -50,7 +51,13 @@ namespace Otter::Games::GameServer {
         servers[0]->callBack.push_back(systems::GameServer::ShootMessageServer::ReceiveShootMessage);
         servers[0]->callBack.push_back(systems::GameServer::EndGameMessage::ReceiveGameOver);
         servers[0]->callBack.push_back(systems::GameServer::EndGameMessage::ReceiveWin);
-        Init::InitBaseEntity baseEntity(ref);
+
+
+	serv[0]->mandatory_static.push_back(Otter::Network::MsgCode::INIT_GAME);
+
+	ref.add_component(0, Otter::Games::RType::Components::lobbyComponent());
+	Init::InitBaseEntity baseEntity(ref);
+
     }
 
     void registerComponents(Otter::Core::Orchestrator& ref)
@@ -66,6 +73,7 @@ namespace Otter::Games::GameServer {
         ref.register_component<Otter::Network::SocketComponent>();
         ref.register_component<Otter::Network::ServerComponent>();
         ref.register_component<Otter::Network::ClientComponent>();
+	ref.register_component<Otter::Games::RType::Components::lobbyComponent>();
     }
 
     void registerSystems(Otter::Core::SystemManager& ref)
