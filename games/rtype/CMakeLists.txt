@@ -41,32 +41,42 @@ file(COPY ${OTTERLIB_DIR}/scripting/OtterLib.lua DESTINATION ${CMAKE_CURRENT_SOU
 
 include(ExternalProject)
 
+option(SHARED_LIBRARY "" ON)
+
+if(WIN32)
+set(LIB_PREFIX "")
+set(LIB_SUFFIX ".lib")
+set(CMAKE_SHELL "powershell.exe")
+set(LINUX_CONAN_FLAGS "")
+add_definitions("-D_WIN32_WINNT=0x0601")
+add_link_options("-NODEFAULTLIB:library" "-SUBSYSTEM:CONSOLE")
+else()
+set(LIB_PREFIX "lib")
+
+if(SHARED_LIBRARY)
+    set(LIB_SUFFIX ".so")
+    set(SHARED_LIBRARY "-DSHARED_LIBRARY=ON")
+    else()
+        set(SHARED_LIBRARY "-DSHARED_LIBRARY=OFF")
+        set(LIB_SUFFIX ".a")
+    endif()
+
+    set(CMAKE_SHELL bash -c)
+    set(LINUX_CONAN_FLAGS "-c tools.system.package_manager:sudo=true")
+    add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
+endif()
+
 ExternalProject_Add(OtterLib
 
     SOURCE_DIR ${OTTERLIB_DIR}
     BINARY_DIR ${OTTERLIB_DIR}/build
 
     # BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib
-    CMAKE_ARGS ${BUILD_TESTING}
+    CMAKE_ARGS ${BUILD_TESTING} ${SHARED_LIBRARY}
     BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target OtterLib ${CONFIG_VALUE}
     INSTALL_DIR ${OTTERLIB_DIR}/build
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 )
-
-if(WIN32)
-  set(prefix "")
-  set(suffix ".lib")
-  set(CMAKE_SHELL "powershell.exe")
-  set(LINUX_CONAN_FLAGS "")
-  add_definitions("-D_WIN32_WINNT=0x0601")
-  add_link_options("-NODEFAULTLIB:library" "-SUBSYSTEM:CONSOLE")
-else()
-  set(prefix "lib")
-  set(suffix ".a")
-  set(CMAKE_SHELL bash -c)
-  set(LINUX_CONAN_FLAGS "-c tools.system.package_manager:sudo=true")
-  add_definitions("-D_GLIBCXX_USE_CXX11_ABI=0")
-endif()
 
 # Check if conan is installed
 if(EXISTS ${OTTERLIB_DIR}/conanbuildinfo.cmake)
@@ -136,10 +146,10 @@ target_include_directories(
 )
 
 target_link_libraries(r-type_client
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterCore${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterNetwork${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterGraphic${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterScripting${LIB_SUFFIX}
     ${CONAN_LIBS}
 )
 
@@ -167,10 +177,10 @@ target_include_directories(
     ${OTTERLIB_DIR}/build/include
 )
 target_link_libraries(r-type_server
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterCore${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterNetwork${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterGraphic${suffix}
-    ${OTTERLIB_DIR}/build/lib/${prefix}OtterScripting${suffix}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterCore${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterNetwork${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterGraphic${LIB_SUFFIX}
+    ${OTTERLIB_DIR}/build/lib/${LIB_PREFIX}OtterScripting${LIB_SUFFIX}
     ${CONAN_LIBS}
 )
 

@@ -1,5 +1,18 @@
 #pragma once
 
+
+// Extern functions setup for shared libs
+
+// #if defined(_WIN32)
+//     #define DllImport   __declspec( dllimport )
+//     #define DllExport   __declspec( dllexport )
+// #else
+    #define DllImport   extern
+    #define DllExport
+// #endif
+
+
+
 #if defined(_WIN32)
 // To avoid conflicting windows.h symbols with raylib, some flags are defined
 // WARNING: Those flags avoid inclusion of some Win32 headers that could be required
