@@ -27,7 +27,7 @@ void test_upd(Otter::Core::Orchestrator& ref)
 void setupNetwork(Otter::Core::Orchestrator& ref)
 {
     auto& serv = ref.get_components<Otter::Network::ServerComponent>();
-    serv[0]->mandatory_static.push_back(Otter::Network::MSG);
+    serv[0]->mandatory_static.push_back(Otter::Network::INIT_GAME);
 
     serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string&, int) {std::cout << "msg 1" << std::endl;});
     serv[0]->callBack.push_back([](Otter::Core::Orchestrator &, std::string&, int) {std::cout << "msg 2" << std::endl;});
@@ -51,7 +51,7 @@ void sending_to(Otter::Core::Orchestrator &ref)
   if (count == 20000) {
     std::cout << "COUTNER DOWN" << std::endl;
     std::stringstream ss("testing");
-    Otter::Network::Sender::broadCast_msg(ref, Otter::Network::MSG, ss);
+    Otter::Network::Sender::broadCast_msg(ref, Otter::Network::INIT_GAME, ss);
   }
 }
 

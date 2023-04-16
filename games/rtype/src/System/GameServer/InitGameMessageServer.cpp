@@ -29,6 +29,6 @@ namespace Otter::Games::RType::System::GameServer::InitGameMessage {
       //        auto &lobby = ref.get_components<Otter::Games::RType::Components::lobbyComponent>()[0];
 
       
-      TriggerInitGame(ref);
+      //      TriggerInitGame(ref);
     }
 } // namespace Otter::Games::RType::System::GameClient::InitGame

@@ -27,9 +27,10 @@ namespace Otter::Games::RType::System::CheckClientNb {
 
             if (gameStatus[i]->gameStatusType == Otter::Core::BaseComponents::LOBBY) {
                 std::cout << "There is 1 client !" << std::endl;
-                std::stringstream notEmptyStream;
-                Otter::Network::Sender::broadCast_msg(ref, Otter::Network::MsgCode::INIT_GAME, notEmptyStream);
+                std::stringstream notEmptyStream("testing");
+	        Otter::Network::Sender::broadCast_msg(ref, Otter::Network::MsgCode::INIT_GAME, notEmptyStream);
                 std::cout << "Init game sent" << std::endl;
+		gameStatus[i]->gameStatusType = Otter::Core::BaseComponents::GAME_INIT;
             }
         }
     }

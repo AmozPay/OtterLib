@@ -52,7 +52,7 @@ void Otter::Network::Socket::send(const udp::endpoint& dest, const std::string& 
 
     _socket.async_send_to(boost::asio::buffer(*save), dest,
                           [this, dest, save](const boost::system::error_code& err, std::size_t sent)
-                          { /* std::cout << "Sent " << sent << " byte(s) to " << dest << std::endl;*/ });
+                          { /*std::cout << "Sent " << sent << " byte(s) to " << dest << std::endl;*/ });
 }
 
 void Otter::Network::Socket::_recv(void)
@@ -78,13 +78,13 @@ void Otter::Network::Socket::_recv(void)
                             return this->_sessions.insert({*source, Session(*source, *this)}).first;
                         });
                 }
-                // std::cout << "Received " << rcvd << " byte(s) from " << *source << std::endl;
+                /*std::cout << "Received " << rcvd << " byte(s) from " << *source << std::endl;*/
                 boost::with_lock_guard(*con->second._data_lock,
                                        [con, data, rcvd] { con->second._data.write((*data).data(), rcvd); });
             }
             this->_recv();
         });
-    //std::cout << "_recv registered" << std::endl;
+    /* std::cout << "_recv registered" << std::endl;*/
 }
 
 bool Otter::Network::Socket::disconnect(const udp::endpoint& dest)

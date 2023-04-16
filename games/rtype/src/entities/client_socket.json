@@ -3,10 +3,10 @@
     "components": {
         "Socket": {
             "ip": "127.0.0.1",
-            "port": 8080
+            "port": 8083
         },
         "RemoteServer": {
-            "RemotePort": 8082,
+            "RemotePort": 8084,
             "RemoteIp": "0.0.0.0"
         }
     }

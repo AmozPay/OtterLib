@@ -1,3 +1,4 @@
+
 #include "Server.hpp"
 #include "bitset"
 #include "OtterNetwork.hpp"
@@ -137,12 +138,14 @@ namespace Otter::Network::Server {
             if (cl.mandatory_msg_list.size() != 0 && ss.str().size() < 10000) {
                 ret = true;
                 nb += tramFillMandatory(tmp, cl);
+		std::cout << "serialisze new mandatory " << std::endl;
             }
-        } else {
+	} else {
             Otter::Network::Header::formatHeader(ss, cl.mandatory_seq, cl.id);
             ss << cl.mandatory_buffer.front().second;
             nb = cl.mandatory_buffer.front().first;
             ret = true;
+	    std::cout << "push mandatory buffer" << std::endl;
         }
 
         if (cl.msg_list.size() != 0 && ss.str().size() + tmp.str().size() < 10000)
@@ -321,15 +324,15 @@ namespace Otter::Network::Server {
 	      continue;
 	    }
             it->recv(data);
+	   
             if (data.str().empty())
                 continue;
-	    while (!data.str().empty()) {
+	    std::cout << "reading dt" << data.str() << std::endl;
 	    if (test_header(data, cl[j]->id, cl[j]->seq) == false)
                 continue;
             if (computeTram(ref, *serv, data, j) == -1) {
                 std::cout << "doublon" << std::endl;
                 soc->channel->disconnect(it->get_endpoint());
-            }
 	    }
         }
     }
@@ -340,7 +343,7 @@ namespace Otter::Network::Server {
         auto& clients = ref.get_components<Otter::Network::ClientComponent>();
         auto& sock = ref.get_components<Otter::Network::SocketComponent>();
         int index = -1;
-
+	static int count = 0;
         for (int i = 0; i < sock.size(); i++) {
             if (sock[i])
                 index = i;
@@ -350,8 +353,12 @@ namespace Otter::Network::Server {
         // std::cout << "gooing to update with index:" << index << std::endl;
         update_session(ref, *sock[index]);
         //	std::cout << "entering msg" << std::endl;
+	if (count <= 0) {
         update_msg(ref, index);
-        update_recv(ref, index);
+	count = 25;
+	}
+	count--;
+	update_recv(ref, index);
         // std::cout << "end update" << std::endl;
     }
 

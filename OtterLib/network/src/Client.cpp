@@ -134,7 +134,7 @@ namespace Otter::Network::Client {
         if (ret == true)
             nb = nb | 0X80;
 
-        Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, nb);
+         Otter::Network::Serializer::saveArchive<std::uint8_t>(ss, nb);
         ss << tmp.str();
         if (ss.str().size() == 0 || nb == 0)
             return ret;
@@ -229,6 +229,7 @@ namespace Otter::Network::Client {
 	if (manda)
 	  pac = pac ^ 0X80;
 
+	std::cout << "there is pack" << (int)pac << std::endl;
         if (pac == 0)
             return;
         for (int i = 0; pac > i; i++) {
@@ -236,12 +237,15 @@ namespace Otter::Network::Client {
             std::cout << serv.callBack.size() << std::endl;
             std::cout << dt.msgCode << std::endl;
 
-            if (compute_manda(ref, index, seq, manda) == true)
+
+	    std::cout << "entering" << std::endl;
+	    if (compute_manda(ref, index, seq, manda) == true)
                 continue;
             if (dt.msgCode == Otter::Network::VALIDATION) {
                 validation_handcheck(ref, index, dt.ss);
                 continue;
             }
+	    std::cout << "call back:" << dt.msgCode << std::endl;
             serv.callBack[dt.msgCode](ref, dt.ss, index);
         }
     }
@@ -262,11 +266,11 @@ namespace Otter::Network::Client {
             it->recv(data);
             if (data.str().empty())
                 continue;
-	    while (!data.str().empty()) {
-	    if (Otter::Network::Server::test_header(data, cl->id, cl->seq) == false)
-                continue;
-            computeTram(ref, *serv, data, index);
-        }
+	      std::cout << "depacs" << std::endl;
+	      if (Otter::Network::Server::test_header(data, cl->id, cl->seq) == false)
+                  continue;
+	      std::cout << "traiting" << std::endl;
+	      computeTram(ref, *serv, data, index);
 	}
     }
 
@@ -304,14 +308,14 @@ namespace Otter::Network::Client {
         if (sock[index]->channel->get_sessions().size() != 1) {
             Otter::Network::Client::update_connection(ref, index);
             Otter::Network::Client::update_session(ref, index);
-        } else {
-	  if (count >= 30000) {
-            Otter::Network::Client::update_msg(ref, index);
-            Otter::Network::Client::update_recv(ref, index);
-	    count= 0;
+	} else {
+	  if (count <= 0) {
+           Otter::Network::Client::update_msg(ref, index);
+	   count = 20;
 	  }
+	  Otter::Network::Client::update_recv(ref, index);
 	}
-	count++;
+	count--;
         /// std::cout << "end update" << std::endl;
     }
 

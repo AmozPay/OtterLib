@@ -17,9 +17,9 @@ namespace Otter::Games::RType::System::GameClient::InitGameMessage {
             auto& gameStatus = gameStatuses[i];
             if (!gameStatus)
 	      continue;
-	    std::stringstream ss;
+	    std::stringstream ss("bit");
 	    Otter::Games::RType::System::GameClient::SendMessageToServer::Send(ref, Otter::Network::INIT_GAME, ss);
-	gameStatus->gameStatusType = Otter::Core::BaseComponents::GAME_INIT;
+	    gameStatus->gameStatusType = Otter::Core::BaseComponents::GAME_INIT;
         }
     }
 
